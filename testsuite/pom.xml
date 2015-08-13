@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.wildfly.extras.creaper</groupId>
+        <artifactId>creaper-parent</artifactId>
+        <version>0.8.3-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>creaper-testsuite</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Creaper: Test Suite</name>
+    <description>Creaper: Test Suite</description>
+
+    <modules>
+        <module>common</module>
+        <module>standalone</module>
+    </modules>
+
+    <properties>
+        <version.as7>${version.org.jboss.as.jboss-as-everything}</version.as7>
+        <version.wildfly8>8.2.1.Final</version.wildfly8>
+        <version.wildfly9>9.0.1.Final</version.wildfly9>
+        <version.wildfly9.core>1.0.1.Final</version.wildfly9.core>
+        <version.wildfly10>10.0.0.Alpha5</version.wildfly10> <!-- patching tests fail with 10.0.0.Alpha6 -->
+        <version.wildfly10.core>2.0.0.Alpha11</version.wildfly10.core>
+
+        <version.org.wildfly.arquillian>1.0.0.Final</version.org.wildfly.arquillian>
+
+        <managementPort.as7>9999</managementPort.as7>
+        <managementPort.wildfly>9990</managementPort.wildfly>
+
+        <ignoredCategory.as7>org.wildfly.extras.creaper.test.WildFlyTests</ignoredCategory.as7>
+        <ignoredCategory.wildfly>org.wildfly.extras.creaper.test.AS7Tests</ignoredCategory.wildfly>
+
+        <specialJvmArgs.as7 />
+        <specialJvmArgs.wildfly>-Dcreaper.wildfly</specialJvmArgs.wildfly>
+
+        <as7.applicationServer.groupId>org.jboss.as</as7.applicationServer.groupId>
+        <as7.applicationServer.artifactId>jboss-as-dist</as7.applicationServer.artifactId>
+        <as7.applicationServer.version>${version.as7}</as7.applicationServer.version>
+        <as7.arquillianContainer.groupId>org.jboss.as</as7.arquillianContainer.groupId>
+        <as7.arquillianContainer.artifactId>jboss-as-arquillian-container-managed</as7.arquillianContainer.artifactId>
+        <as7.arquillianContainer.version>${version.as7}</as7.arquillianContainer.version>
+
+        <wildfly8.applicationServer.groupId>org.wildfly</wildfly8.applicationServer.groupId>
+        <wildfly8.applicationServer.artifactId>wildfly-dist</wildfly8.applicationServer.artifactId>
+        <wildfly8.applicationServer.version>${version.wildfly8}</wildfly8.applicationServer.version>
+        <wildfly8.arquillianContainer.groupId>org.wildfly</wildfly8.arquillianContainer.groupId>
+        <wildfly8.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly8.arquillianContainer.artifactId>
+        <wildfly8.arquillianContainer.version>${version.wildfly8}</wildfly8.arquillianContainer.version>
+
+        <wildfly9.applicationServer.groupId>org.wildfly</wildfly9.applicationServer.groupId>
+        <wildfly9.applicationServer.artifactId>wildfly-dist</wildfly9.applicationServer.artifactId>
+        <wildfly9.applicationServer.version>${version.wildfly9}</wildfly9.applicationServer.version>
+        <wildfly9.arquillianContainer.groupId>org.wildfly.arquillian</wildfly9.arquillianContainer.groupId>
+        <wildfly9.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly9.arquillianContainer.artifactId>
+        <wildfly9.arquillianContainer.version>${version.org.wildfly.arquillian}</wildfly9.arquillianContainer.version>
+
+        <wildfly10.applicationServer.groupId>org.wildfly</wildfly10.applicationServer.groupId>
+        <wildfly10.applicationServer.artifactId>wildfly-dist</wildfly10.applicationServer.artifactId>
+        <wildfly10.applicationServer.version>${version.wildfly10}</wildfly10.applicationServer.version>
+        <wildfly10.arquillianContainer.groupId>org.wildfly.arquillian</wildfly10.arquillianContainer.groupId>
+        <wildfly10.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly10.arquillianContainer.artifactId>
+        <wildfly10.arquillianContainer.version>${version.org.wildfly.arquillian}</wildfly10.arquillianContainer.version>
+
+        <!-- defined in profiles "as7", "wildfly8", "wildfly9" and "wildfly10" below -->
+        <applicationServer.groupId>MUST-BE-DEFINED</applicationServer.groupId>
+        <applicationServer.artifactId>MUST-BE-DEFINED</applicationServer.artifactId>
+        <applicationServer.version>MUST-BE-DEFINED</applicationServer.version>
+        <applicationServer.managementPort>MUST-BE-DEFINED</applicationServer.managementPort>
+
+        <arquillianContainer.groupId>MUST-BE-DEFINED</arquillianContainer.groupId>
+        <arquillianContainer.artifactId>MUST-BE-DEFINED</arquillianContainer.artifactId>
+        <arquillianContainer.version>MUST-BE-DEFINED</arquillianContainer.version>
+
+        <tests.ignoredCategory>MUST-BE-DEFINED</tests.ignoredCategory>
+        <tests.specialJvmArgs>MUST-BE-DEFINED</tests.specialJvmArgs>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${arquillianContainer.groupId}</groupId>
+            <artifactId>${arquillianContainer.artifactId}</artifactId>
+            <version>${arquillianContainer.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.remoting3</groupId>
+                    <artifactId>jboss-remoting</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.remotingjmx</groupId>
+                    <artifactId>remoting-jmx</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>unpack-jboss-as</id>
+                            <phase>generate-test-resources</phase>
+                            <goals>
+                                <goal>unpack</goal>
+                            </goals>
+                            <configuration>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>${applicationServer.groupId}</groupId>
+                                        <artifactId>${applicationServer.artifactId}</artifactId>
+                                        <version>${applicationServer.version}</version>
+                                        <type>zip</type>
+                                        <overWrite>true</overWrite>
+                                    </artifactItem>
+                                </artifactItems>
+                                <outputDirectory>${project.build.directory}</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>rename-unpacked-jboss-as</id>
+                            <phase>process-test-resources</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <delete dir="${project.build.directory}/jboss-as" />
+                                    <move todir="${project.build.directory}/jboss-as">
+                                        <fileset dir="${project.build.directory}">
+                                            <include name="jboss*/**/*" />
+                                            <include name="wildfly*/**/*" />
+                                        </fileset>
+                                        <cutdirsmapper dirs="1" />
+                                    </move>
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>default-test</id>
+                            <configuration>
+                                <excludedGroups>org.wildfly.extras.creaper.test.ManualTests,
+                                    org.wildfly.extras.creaper.test.SlowTests, ${tests.ignoredCategory}</excludedGroups>
+                                <systemPropertyVariables>
+                                    <management.port>${applicationServer.managementPort}</management.port>
+                                </systemPropertyVariables>
+                                <argLine>${tests.specialJvmArgs}</argLine>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>manual-test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>test</goal>
+                            </goals>
+                            <configuration>
+                                <groups>org.wildfly.extras.creaper.test.ManualTests AND NOT ${tests.ignoredCategory}</groups>
+                                <systemPropertyVariables>
+                                    <arquillian.launch>jboss-manual</arquillian.launch>
+                                    <management.port>${applicationServer.managementPort}</management.port>
+                                </systemPropertyVariables>
+                                <argLine>${tests.specialJvmArgs}</argLine>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>slow-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>slow-test</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <configuration>
+                                    <groups>org.wildfly.extras.creaper.test.SlowTests AND NOT ${tests.ignoredCategory}</groups>
+                                    <systemPropertyVariables>
+                                        <management.port>${applicationServer.managementPort}</management.port>
+                                    </systemPropertyVariables>
+                                    <argLine>${tests.specialJvmArgs}</argLine>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>as7</id>
+
+            <properties>
+                <applicationServer.groupId>${as7.applicationServer.groupId}</applicationServer.groupId>
+                <applicationServer.artifactId>${as7.applicationServer.artifactId}</applicationServer.artifactId>
+                <applicationServer.version>${as7.applicationServer.version}</applicationServer.version>
+                <applicationServer.managementPort>${managementPort.as7}</applicationServer.managementPort>
+
+                <arquillianContainer.groupId>${as7.arquillianContainer.groupId}</arquillianContainer.groupId>
+                <arquillianContainer.artifactId>${as7.arquillianContainer.artifactId}</arquillianContainer.artifactId>
+                <arquillianContainer.version>${as7.arquillianContainer.version}</arquillianContainer.version>
+
+                <tests.ignoredCategory>${ignoredCategory.as7}</tests.ignoredCategory>
+                <tests.specialJvmArgs>${specialJvmArgs.as7}</tests.specialJvmArgs>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-core</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-commands</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>wildfly8</id>
+
+            <properties>
+                <version.java>1.7</version.java>
+
+                <applicationServer.groupId>${wildfly8.applicationServer.groupId}</applicationServer.groupId>
+                <applicationServer.artifactId>${wildfly8.applicationServer.artifactId}</applicationServer.artifactId>
+                <applicationServer.version>${wildfly8.applicationServer.version}</applicationServer.version>
+                <applicationServer.managementPort>${managementPort.wildfly}</applicationServer.managementPort>
+
+                <arquillianContainer.groupId>${wildfly8.arquillianContainer.groupId}</arquillianContainer.groupId>
+                <arquillianContainer.artifactId>${wildfly8.arquillianContainer.artifactId}</arquillianContainer.artifactId>
+                <arquillianContainer.version>${wildfly8.arquillianContainer.version}</arquillianContainer.version>
+
+                <tests.ignoredCategory>${ignoredCategory.wildfly}</tests.ignoredCategory>
+                <tests.specialJvmArgs>${specialJvmArgs.wildfly}</tests.specialJvmArgs>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-core</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.jboss.as</groupId>
+                            <artifactId>jboss-as-controller-client</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.jboss.as</groupId>
+                            <artifactId>jboss-as-cli</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-commands</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.wildfly</groupId>
+                            <artifactId>wildfly-patching</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-controller-client</artifactId>
+                    <version>${version.wildfly8}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-cli</artifactId>
+                    <version>${version.wildfly8}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-patching</artifactId>
+                    <version>${version.wildfly8}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>wildfly9</id>
+
+            <properties>
+                <version.java>1.7</version.java>
+
+                <applicationServer.groupId>${wildfly9.applicationServer.groupId}</applicationServer.groupId>
+                <applicationServer.artifactId>${wildfly9.applicationServer.artifactId}</applicationServer.artifactId>
+                <applicationServer.version>${wildfly9.applicationServer.version}</applicationServer.version>
+                <applicationServer.managementPort>${managementPort.wildfly}</applicationServer.managementPort>
+
+                <arquillianContainer.groupId>${wildfly9.arquillianContainer.groupId}</arquillianContainer.groupId>
+                <arquillianContainer.artifactId>${wildfly9.arquillianContainer.artifactId}</arquillianContainer.artifactId>
+                <arquillianContainer.version>${wildfly9.arquillianContainer.version}</arquillianContainer.version>
+
+                <tests.ignoredCategory>${ignoredCategory.wildfly}</tests.ignoredCategory>
+                <tests.specialJvmArgs>${specialJvmArgs.wildfly}</tests.specialJvmArgs>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-core</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.jboss.as</groupId>
+                            <artifactId>jboss-as-controller-client</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.jboss.as</groupId>
+                            <artifactId>jboss-as-cli</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-commands</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.wildfly</groupId>
+                            <artifactId>wildfly-patching</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-controller-client</artifactId>
+                    <version>${version.wildfly9.core}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-cli</artifactId>
+                    <version>${version.wildfly9.core}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-patching</artifactId>
+                    <version>${version.wildfly9.core}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>wildfly10</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <properties>
+                <version.java>1.8</version.java>
+
+                <applicationServer.groupId>${wildfly10.applicationServer.groupId}</applicationServer.groupId>
+                <applicationServer.artifactId>${wildfly10.applicationServer.artifactId}</applicationServer.artifactId>
+                <applicationServer.version>${wildfly10.applicationServer.version}</applicationServer.version>
+                <applicationServer.managementPort>${managementPort.wildfly}</applicationServer.managementPort>
+
+                <arquillianContainer.groupId>${wildfly10.arquillianContainer.groupId}</arquillianContainer.groupId>
+                <arquillianContainer.artifactId>${wildfly10.arquillianContainer.artifactId}</arquillianContainer.artifactId>
+                <arquillianContainer.version>${wildfly10.arquillianContainer.version}</arquillianContainer.version>
+
+                <tests.ignoredCategory>${ignoredCategory.wildfly}</tests.ignoredCategory>
+                <tests.specialJvmArgs>${specialJvmArgs.wildfly}</tests.specialJvmArgs>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-core</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.jboss.as</groupId>
+                            <artifactId>jboss-as-controller-client</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.jboss.as</groupId>
+                            <artifactId>jboss-as-cli</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-commands</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.wildfly</groupId>
+                            <artifactId>wildfly-patching</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-controller-client</artifactId>
+                    <version>${version.wildfly10.core}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-cli</artifactId>
+                    <version>${version.wildfly10.core}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-patching</artifactId>
+                    <version>${version.wildfly10.core}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+</project>

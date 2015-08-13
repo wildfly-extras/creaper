@@ -1,0 +1,3 @@
+interfaces << {
+    "interface"(name: "foobar")
+}

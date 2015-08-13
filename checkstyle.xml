@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+
+<!--
+  - Some of the checks are commented out. This is because they require newer version of Checkstyle, which in turn
+  - requires Java 7. This project currently builds with Java 6 and uses the latest Checkstyle version that supports it.
+  -->
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+
+    <module name="SuppressionFilter">
+        <property name="file" value="checkstyle-suppressions.xml"/>
+    </module>
+
+    <!-- no tabs -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <!-- no trailing spaces -->
+    <module name="RegexpSingleline">
+        <property name="format" value="\s+$"/>
+        <property name="message" value="Line has trailing spaces."/>
+    </module>
+
+    <!-- mandatory newline at end of file -->
+    <module name="NewlineAtEndOfFile">
+        <property name="lineSeparator" value="lf"/>
+    </module>
+
+    <module name="TreeWalker">
+        <property name="cacheFile" value="target/cachefile"/>
+        <property name="tabWidth" value="4"/>
+
+        <!-- line length -->
+        <module name="LineLength">
+            <property name="max" value="120"/>
+            <property name="ignorePattern" value="^package|^import|href|http://|https://|ftp://|&quot;\p{Punct}*$"/>
+        </module>
+
+        <!-- imports -->
+        <module name="AvoidStarImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+        <module name="IllegalImport">
+            <property name="illegalPkgs" value="sun, junit.framework, org.custommonkey.xmlunit.XMLAssert"/>
+        </module>
+
+        <!-- code shape -->
+        <module name="DesignForExtension"/>
+        <module name="OneTopLevelClass"/>
+        <module name="OneStatementPerLine"/>
+        <module name="MultipleVariableDeclarations"/>
+        <module name="ArrayTypeStyle"/>
+        <module name="MissingSwitchDefault"/>
+        <module name="DefaultComesLast"/>
+        <module name="FallThrough"/>
+        <module name="UpperEll"/>
+        <module name="RedundantModifier"/>
+        <module name="CovariantEquals"/>
+        <module name="EqualsHashCode"/>
+        <module name="MutableException"/>
+        <module name="NoFinalizer"/>
+        <module name="ModifierOrder"/>
+        <module name="OverloadMethodsDeclarationOrder"/>
+        <module name="HideUtilityClassConstructor"/>
+        <module name="InnerAssignment"/>
+        <module name="PackageAnnotation"/>
+        <module name="AnnotationLocation">
+            <property name="tokens" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF"/>
+            <property name="allowSamelineSingleParameterlessAnnotation" value="false"/>
+        </module>
+        <module name="AnnotationLocation">
+            <property name="tokens" value="VARIABLE_DEF"/>
+            <property name="allowSamelineMultipleAnnotations" value="true"/>
+        </module>
+        <module name="EmptyStatement"/>
+        <module name="EmptyBlock">
+            <!--
+              - This is only needed because current Checkstyle version defaults to including LITERAL_CATCH here.
+              - Once the EmptyCatchBlock below is uncommented, which can only happen in a newer Checkstyle version
+              - that no longer includes LITERAL_CATCH here by default, this declaration can be removed.
+              -->
+            <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_IF, LITERAL_FOR, LITERAL_TRY, LITERAL_WHILE, INSTANCE_INIT, STATIC_INIT, LITERAL_SWITCH"/>
+        </module>
+<!--
+        <module name="EmptyCatchBlock">
+            <property name="exceptionVariableName" value="expected|ignored"/>
+        </module>
+-->
+<!--
+        <module name="NeedBraces">
+            <property name="tokens" value="LITERAL_IF"/>
+            <property name="allowSingleLineStatement" value="true"/>
+        </module>
+-->
+        <module name="NeedBraces">
+            <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE"/>
+        </module>
+        <module name="LeftCurly">
+            <property name="maxLineLength" value="120"/>
+<!--
+            <property name="ignoreEnums" value="false"/>
+-->
+        </module>
+        <module name="RightCurly">
+            <property name="option" value="same"/>
+            <property name="tokens" value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE"/>
+        </module>
+        <module name="RightCurly">
+            <property name="option" value="alone"/>
+            <property name="tokens" value="CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO, STATIC_INIT, INSTANCE_INIT"/>
+        </module>
+
+        <!-- names -->
+        <module name="PackageName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*(\.[a-z][a-zA-Z0-9]*)*$"/>
+        </module>
+        <module name="TypeName">
+            <property name="format" value="^[A-Z_][a-zA-Z0-9_]*$"/> <!-- underscore only in exceptional situations -->
+        </module>
+        <module name="ClassTypeParameterName">
+            <property name="format" value="^([A-Z][A-Z0-9]*)|([A-Z][a-zA-Z0-9]*Type)$"/>
+        </module>
+        <module name="InterfaceTypeParameterName">
+            <property name="format" value="^([A-Z][A-Z0-9]*)|([A-Z][a-zA-Z0-9]*Type)$"/>
+        </module>
+        <module name="ConstantName">
+            <property name="format" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*)|(log)$"/>
+        </module>
+        <module name="StaticVariableName">
+            <property name="format" value="^[a-z_][a-zA-Z0-9_]*$"/> <!-- underscore only in exceptional situations -->
+        </module>
+        <module name="MemberName">
+            <property name="format" value="^[a-z_][a-zA-Z0-9_]*$"/> <!-- underscore only in exceptional situations -->
+        </module>
+        <module name="MethodName">
+            <property name="format" value="^[a-z_][a-zA-Z0-9_]*$"/> <!-- underscore only in exceptional situations -->
+        </module>
+        <module name="MethodTypeParameterName">
+            <property name="format" value="^([A-Z][A-Z0-9]*)|([A-Z][a-zA-Z0-9]*Type)$"/>
+        </module>
+        <module name="ParameterName">
+            <property name="format" value="^[a-z_][a-zA-Z0-9_]*$"/> <!-- underscore only in exceptional situations -->
+        </module>
+        <module name="LocalVariableName">
+            <property name="format" value="^[a-z_][a-zA-Z0-9_]*$"/> <!-- underscore only in exceptional situations -->
+            <property name="allowOneCharVarInForLoop" value="true"/>
+        </module>
+        <module name="LocalFinalVariableName">
+            <property name="format" value="^[a-z_][a-zA-Z0-9_]*$"/> <!-- underscore only in exceptional situations -->
+        </module>
+
+        <!-- whitespace -->
+        <module name="NoLineWrap"/>
+        <module name="NoWhitespaceBefore">
+            <property name="allowLineBreaks" value="true"/>
+        </module>
+        <module name="NoWhitespaceAfter">
+            <property name="allowLineBreaks" value="true"/>
+        </module>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround">
+            <property name="allowEmptyConstructors" value="true"/>
+            <property name="ignoreEnhancedForColon" value="false"/>
+        </module>
+        <module name="EmptyLineSeparator">
+            <property name="allowNoEmptyLineBetweenFields" value="true"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="tokens" value="DOT"/>
+            <property name="option" value="nl"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="tokens" value="COMMA"/>
+            <property name="option" value="eol"/>
+        </module>
+        <module name="OperatorWrap"/>
+        <module name="GenericWhitespace"/>
+        <module name="Indentation">
+            <property name="arrayInitIndent" value="8"/>
+        </module>
+        <module name="MethodParamPad"/>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+
+        <!-- javadoc -->
+        <module name="JavadocParagraph"/>
+        <module name="AtclauseOrder"/>
+        <module name="NonEmptyAtclauseDescription"/>
+    </module>
+</module>

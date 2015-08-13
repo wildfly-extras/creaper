@@ -1,0 +1,11 @@
+# Maven
+target
+# IntelliJ IDEA
+*.iml
+.idea
+# Eclipse
+.classpath
+.project
+.settings
+.recommenders
+.checkstyle

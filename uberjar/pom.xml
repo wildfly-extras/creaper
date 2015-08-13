@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.wildfly.extras.creaper</groupId>
+        <artifactId>creaper-parent</artifactId>
+        <version>0.8.3-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>creaper-uberjar</artifactId>
+
+    <name>Creaper: Uber JAR</name>
+    <description>Creaper: Uber JAR</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wildfly.extras.creaper</groupId>
+            <artifactId>creaper-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.extras.creaper</groupId>
+            <artifactId>creaper-commands</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <!-- clean automatically to prevent duplication warnings from shade plugin -->
+                        <id>auto-clean</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <relocations>
+                        <relocation>
+                            <pattern>com</pattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>groovy</pattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org</pattern>
+                            <excludes>
+                                <exclude>%ant[org/wildfly/extras/creaper/**/*]</exclude>
+                            </excludes>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>uberjar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

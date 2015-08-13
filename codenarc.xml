@@ -1,0 +1,54 @@
+<ruleset xmlns="http://codenarc.org/ruleset/1.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://codenarc.org/ruleset/1.0 http://codenarc.org/ruleset-schema.xsd"
+         xsi:noNamespaceSchemaLocation="http://codenarc.org/ruleset-schema.xsd">
+
+    <ruleset-ref path="rulesets/basic.xml">
+        <rule-config name="EmptyCatchBlock">
+            <property name="ignoreRegex" value="ignored|expected"/>
+        </rule-config>
+    </ruleset-ref>
+
+    <ruleset-ref path="rulesets/convention.xml">
+        <exclude name="InvertedIfElse"/>
+        <exclude name="NoDef"/>
+        <exclude name="ParameterReassignment"/>
+    </ruleset-ref>
+
+    <ruleset-ref path="rulesets/design.xml">
+        <exclude name="NestedForLoop"/>
+        <exclude name="PublicInstanceField"/>
+    </ruleset-ref>
+
+    <ruleset-ref path="rulesets/formatting.xml">
+        <rule-config name="SpaceAfterOpeningBrace">
+            <property name="ignoreEmptyBlock" value="true"/>
+        </rule-config>
+        <rule-config name="SpaceAroundMapEntryColon">
+            <property name="characterBeforeColonRegex" value="\S"/>
+            <property name="characterAfterColonRegex" value="\s"/>
+        </rule-config>
+        <rule-config name="SpaceBeforeClosingBrace">
+            <property name="ignoreEmptyBlock" value="true"/>
+        </rule-config>
+        <exclude name="ClassJavadoc"/>
+        <exclude name="LineLength"/> <!-- I'd love to have this, but there's no way to configure exceptions -->
+    </ruleset-ref>
+
+    <ruleset-ref path="rulesets/groovyism.xml">
+        <exclude name="GStringExpressionWithinString"/>
+    </ruleset-ref>
+
+    <ruleset-ref path="rulesets/imports.xml">
+        <rule-config name="MisorderedStaticImports">
+            <property name="comesBefore" value="false"/>
+        </rule-config>
+    </ruleset-ref>
+
+    <ruleset-ref path="rulesets/unnecessary.xml">
+        <exclude name="UnnecessaryGString"/>
+        <exclude name="UnnecessaryReturnKeyword"/>
+    </ruleset-ref>
+
+    <ruleset-ref path="rulesets/unused.xml"/>
+</ruleset>

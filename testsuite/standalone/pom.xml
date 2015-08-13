@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.wildfly.extras.creaper</groupId>
+        <artifactId>creaper-testsuite</artifactId>
+        <version>0.8.3-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>creaper-testsuite-standalone</artifactId>
+
+    <name>Creaper: Test Suite: Standalone &amp; Offline</name>
+    <description>Creaper: Test Suite: Standalone &amp; Offline</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wildfly.extras.creaper</groupId>
+            <artifactId>creaper-testsuite-common</artifactId>
+            <version>${project.version}</version>
+            <!--
+              - Somehow a dependency on WildFly Core 2 creeps into testsuite-common, probably from the default
+              - testsuite profile. Excluding here to be able to run the test suite with all supported profiles.
+              -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-controller-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-cli</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-patching</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
