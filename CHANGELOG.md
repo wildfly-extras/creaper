@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0
+
+- first opensource release under the WildFly Extras umbrella
+- no changes since 0.8.2
+
+---
+
 ## 0.8.2
 
 - added commands for messaging (both HornetQ and ActiveMQ Artemis)
