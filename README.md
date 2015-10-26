@@ -8,8 +8,18 @@ be used when absolutely necessary.
 
 ## Install
 
-Creaper is distributed in the form of Maven artifacts. Declare the dependencies
+Creaper artifacts are available in the JBoss.org Maven repository. Configure it
 like this:
+
+    <repositories>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+Then, declare the dependencies like this:
 
     <dependency>
         <groupId>org.wildfly.extras.creaper</groupId>
@@ -21,6 +31,8 @@ like this:
         <artifactId>creaper-commands</artifactId>
         <version>${version.org.wildfly.extras.creaper}</version>
     </dependency>
+
+The latest and greatest released version is __`0.9.0`__.
 
 If you are in a non-Maven environment, you can build a Creaper uberjar
 that includes all the dependencies. Just run `mvn clean verify`.

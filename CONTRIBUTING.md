@@ -22,12 +22,15 @@ significantly, this can of course be reconsidered.
 
 ## Local Workflow
 
-Creaper uses Maven for build. For testing, the Surefire plugin is used
-and the tests that need a running application server use Arquillian.
-This means that it's enough to run `mvn test` to execute all the tests.
-There are some tests that take a long time to execute, so these are
-not executed by default. To execute them, activate the `slow-tests` profile
-by running `mvn test -Pslow-tests`.
+Creaper uses Maven for build. Some build dependencies are only present in
+the JBoss.org Maven repository, so it's recommended to
+[configure Maven to use the JBoss Repository](https://developer.jboss.org/wiki/MavenGettingStarted-Developers).
+
+For testing, the Surefire plugin is used and the tests that need a running
+application server use Arquillian. This means that it's enough to run
+`mvn test` to execute all the tests. There are some tests that take a long
+time to execute, so these are not executed by default. To execute them,
+activate the `slow-tests` profile by running `mvn test -Pslow-tests`.
 
 By default, the tests run against WildFly 10. If you want to run the tests
 against AS7 or previous WildFly, activate one of the test suite profiles:
