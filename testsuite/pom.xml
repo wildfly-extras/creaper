@@ -181,6 +181,9 @@
                                 <systemPropertyVariables>
                                     <management.port>${applicationServer.managementPort}</management.port>
                                 </systemPropertyVariables>
+                                <environmentVariables>
+                                    <JBOSS_HOME>${project.build.directory}/jboss-as</JBOSS_HOME>
+                                </environmentVariables>
                                 <argLine>${tests.specialJvmArgs}</argLine>
                             </configuration>
                         </execution>
