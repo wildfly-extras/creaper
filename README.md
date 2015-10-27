@@ -196,7 +196,7 @@ Build a management client like this:
     );
 
 Instead of specifying host and port directly, it's possible to connect to the
-default port the application server on `localhost`:
+default port of the application server on `localhost`:
 
     ManagementClient.online(OnlineOptions.standalone().localDefault().build());
 
@@ -216,11 +216,15 @@ This was for standalone mode. For domain, it looks very similar:
             .build()
     );
 
-If you are going to change configuration of a profile, you have to specify
-which one that will be (`forProfile`). If you are going to change configuration
-of a host, again, you have to specify which one that will be (`forHost`). You
-can only specify one profile and one host. After calling the first `build`,
-the rest is exactly the same as for standalone mode.
+The `forProfile` and `forHost` methods specify a default profile and a default
+host. These defaults will be used to automatically transform a standalone-like
+operation to the domain one (e.g. `/subsystem=infinispan:read-resource` will be
+transformed to `/profile=default-profile/subsystem-infinispan:read-resource`).
+If you don't specify a default profile or a default host, you'll have to use
+the full form of the operation.
+
+You can only specify one default profile and one default host. After calling
+the first `build`, the rest is exactly the same as for standalone mode.
 
 Once you have a `OnlineManagementClient`, you can use it to perform management
 operations:
@@ -478,4 +482,10 @@ is something that you usually want to do as soon as possible.
 
 ## Contribute
 
-Read `DESIGN.md`, `CONTRIBUTING.md` and `GOVERNANCE.md`.
+Please use [GitHub Issues](https://github.com/wildfly-extras/creaper/issues)
+to file bugs, feature requests or any other communication.
+
+For anything more involved, please read `DESIGN.md`, `CONTRIBUTING.md`
+and `GOVERNANCE.md` first.
+
+Pull requests are always welcome!
