@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.1 (not yet released)
+
+- added more commands for messaging (both HornetQ and ActiveMQ Artemis)
+- added commands for adding and removing modules
+- improved deprecations (all deprecated elements now have both
+  the `@Deprecated` annotation and the `@deprecated` javadoc tag)
+
 ## 0.9.0
 
 - first opensource release under the WildFly Extras umbrella
