@@ -125,7 +125,7 @@ public final class Values {
         return new Values(properties);
     }
 
-    // only for conversion from Parameters, remove when Parameters are removed
+    /** @deprecated only for conversion from {@code Parameters}, remove when {@code Parameters} are removed */
     @Deprecated
     static Values from(List<Property> propertyList) {
         return new Values(propertyList);

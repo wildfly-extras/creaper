@@ -7,7 +7,8 @@ import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import java.io.IOException;
 import java.util.Map;
 
-/** @deprecated use {@link GroovyXmlTransform} */
+/** @deprecated use {@link GroovyXmlTransform} instead, this will be removed before 1.0 */
+@Deprecated
 public final class XmlTransform implements OfflineCommand {
     private GroovyXmlTransform.Builder builder;
 

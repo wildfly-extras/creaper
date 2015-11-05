@@ -7,6 +7,7 @@ public final class OnlineCommandContext {
     public final OnlineOptions options; // same as client.options()
     public final ManagementVersion serverVersion; // same as client.serverVersion()
 
+    /** @deprecated use {@link #serverVersion} instead, this will be removed before 1.0 */
     @Deprecated
     public final ManagementVersion currentVersion;
 

@@ -10,6 +10,7 @@ public final class OfflineCommandContext {
     public final ManagementVersion serverVersion;
     public final File configurationFile; // same as client.options().configurationFile
 
+    /** @deprecated use {@link #serverVersion} instead, this will be removed before 1.0 */
     @Deprecated
     public final ManagementVersion currentVersion;
 

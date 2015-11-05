@@ -124,6 +124,7 @@ public final class Batch implements SharedCommonOperations<Batch> {
         return this;
     }
 
+    /** @deprecated use {@link #add(Address, Values)} instead, this will be removed before 1.0 */
     @Deprecated
     @Override
     public Batch add(Address address, Parameters parameters) {
@@ -148,6 +149,7 @@ public final class Batch implements SharedCommonOperations<Batch> {
         return this;
     }
 
+    /** @deprecated use {@link #invoke(String, Address, Values)} instead, this will be removed before 1.0 */
     @Deprecated
     @Override
     public Batch invoke(String operationName, Address address, Parameters parameters) {

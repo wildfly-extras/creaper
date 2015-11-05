@@ -27,7 +27,8 @@ import java.util.List;
  * <p>Other than that, work with {@code ModelNodeResult} just like with a {@code ModelNode}.</p>
  */
 public class ModelNodeResult extends ModelNode {
-    /** @deprecated not supposed to be called directly, only for Externalizable */
+    /** @deprecated not supposed to be called directly, only for {@code Externalizable} */
+    @Deprecated
     public ModelNodeResult() {}
 
     public ModelNodeResult(ModelNode original) {

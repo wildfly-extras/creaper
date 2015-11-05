@@ -41,6 +41,7 @@ interface SharedCommonOperations<T> {
 
     T add(Address address) throws IOException;
 
+    /** @deprecated use {@link #add(Address, Values)} instead, this will be removed before 1.0 */
     @Deprecated
     T add(Address address, Parameters parameters) throws IOException;
 
@@ -50,6 +51,7 @@ interface SharedCommonOperations<T> {
 
     T invoke(String operationName, Address address) throws IOException;
 
+    /** @deprecated use {@link #invoke(String, Address, Values)} instead, this will be removed before 1.0 */
     @Deprecated
     T invoke(String operationName, Address address, Parameters parameters) throws IOException;
 

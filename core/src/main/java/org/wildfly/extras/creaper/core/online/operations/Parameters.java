@@ -29,6 +29,8 @@ import java.util.List;
  * if (bbb != null) <b>params =</b> params.add("bbb", bbb);
  * if (ccc != null) <b>params =</b> params.add("ccc", ccc);
  * </pre>
+ *
+ * @deprecated use {@link Values} instead, this will be removed before 1.0
  */
 @Deprecated
 public final class Parameters {

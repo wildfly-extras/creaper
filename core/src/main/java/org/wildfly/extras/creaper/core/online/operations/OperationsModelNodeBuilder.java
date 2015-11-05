@@ -172,6 +172,7 @@ final class OperationsModelNodeBuilder implements SharedCommonOperations<ModelNo
         return add(address, Values.NONE);
     }
 
+    /** @deprecated use {@link #add(Address, Values)} instead, this will be removed before 1.0 */
     @Deprecated
     @Override
     public ModelNode add(Address address, Parameters parameters) {
@@ -200,6 +201,7 @@ final class OperationsModelNodeBuilder implements SharedCommonOperations<ModelNo
         return invoke(operationName, address, Values.NONE);
     }
 
+    /** @deprecated use {@link #invoke(String, Address, Values)} instead, this will be removed before 1.0 */
     @Deprecated
     @Override
     public ModelNode invoke(String operationName, Address address, Parameters parameters) {

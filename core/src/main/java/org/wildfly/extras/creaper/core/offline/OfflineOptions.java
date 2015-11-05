@@ -18,8 +18,10 @@ public final class OfflineOptions {
     public String defaultProfile;
     public String defaultHost;
     /** @deprecated use {@code defaulProfile} instead, this will be removed before 1.0 */
+    @Deprecated
     public final String domainProfile;
     /** @deprecated use {@code defaulhost} instead, this will be removed before 1.0 */
+    @Deprecated
     public final String domainHost;
 
     private final File configurationDirectory; // can be null if configurationFile is specified directly

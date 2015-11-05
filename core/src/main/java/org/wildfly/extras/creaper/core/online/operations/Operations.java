@@ -138,6 +138,7 @@ public final class Operations implements SharedCommonOperations<ModelNodeResult>
         return client.execute(builder.add(address));
     }
 
+    /** @deprecated use {@link #add(Address, Values)} instead, this will be removed before 1.0 */
     @Deprecated
     @Override
     public ModelNodeResult add(Address address, Parameters parameters) throws IOException {
@@ -159,6 +160,7 @@ public final class Operations implements SharedCommonOperations<ModelNodeResult>
         return client.execute(builder.invoke(operationName, address));
     }
 
+    /** @deprecated use {@link #invoke(String, Address, Values)} instead, this will be removed before 1.0 */
     @Deprecated
     @Override
     public ModelNodeResult invoke(String operationName, Address address, Parameters parameters) throws IOException {
