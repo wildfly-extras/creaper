@@ -6,6 +6,12 @@ bias towards testing. It provides a simple API for managing a running server
 Note that manipulating the XML files is generally discouraged and should only
 be used when absolutely necessary.
 
+Please refer to these WildFly wiki pages for an in-depth description
+of the management functionalities:
+
+- [Core Management Concepts](https://docs.jboss.org/author/display/WFLY10/Core+management+concepts)
+- [Management API Reference](https://docs.jboss.org/author/display/WFLY10/Management+API+reference)
+
 ## Install
 
 Creaper artifacts are available in the JBoss.org Maven repository. Configure it
