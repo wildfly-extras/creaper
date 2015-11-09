@@ -305,12 +305,13 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
     }
 
     /**
-     * Builder for configuration attributes of a datasource.
+     * Builder for configuration attributes of a datasource. The {@code THIS} type parameter is only meant
+     * to be used by subclasses. If you're not inheriting from this class, don't use it.
      *
      * @see <a href="http://wildscribe.github.io/JBoss%20EAP/6.2.0/subsystem/datasources/data-source/">
      *        http://wildscribe.github.io/JBoss%20EAP/6.2.0/subsystem/datasources/data-source/</a>
      */
-    public static class Builder {
+    public static class Builder<THIS extends Builder> {
         private String name;
         private boolean enableAfterCreation = false;
         private boolean replaceExisting = false;
@@ -375,26 +376,26 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
         /**
          * Defines the JDBC driver connection URL.
          */
-        public final Builder connectionUrl(String connectionUrl) {
+        public final THIS connectionUrl(String connectionUrl) {
             this.connectionUrl = connectionUrl;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Defines the JDBC driver the datasource should use. It is a symbolic name matching the the name of installed
          * driver. In case the driver is deployed as jar, the name is the name of deployment unit.
          */
-        public final Builder driverName(String driverName) {
+        public final THIS driverName(String driverName) {
             this.driverName = driverName;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Specifies the JNDI name for the datasource.
          */
-        public final Builder jndiName(String jndiName) {
+        public final THIS jndiName(String jndiName) {
             this.jndiName = jndiName;
-            return this;
+            return (THIS) this;
         }
 
         /**
@@ -403,9 +404,9 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
          * particular driver under META-INF/services/java.sql.Driver.
          * If you don't need some special handling this will be resolved to default on its own.
          */
-        public final Builder driverClass(String driverClass) {
+        public final THIS driverClass(String driverClass) {
             this.driverClass = driverClass;
-            return this;
+            return (THIS) this;
         }
 
         /**
@@ -416,9 +417,9 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
          * <p>By default driver class is used for establishing connection but you can enforce the datasource class
          * would be use. If you use datasource you will probably needs to define connection properties as well.</p>
          */
-        public final Builder datasourceClass(String datasourceClass) {
+        public final THIS datasourceClass(String datasourceClass) {
             this.datasourceClass = datasourceClass;
-            return this;
+            return (THIS) this;
         }
 
         /**
@@ -429,206 +430,206 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
          * When driver class is defined, these properties are passed
          * to {@link java.sql.Driver#connect(String, java.util.Properties)}.</p>
          */
-        public final Builder addConnectionProperty(String name, String value) {
+        public final THIS addConnectionProperty(String name, String value) {
             connectionProperties.put(name, value);
-            return this;
+            return (THIS) this;
         }
 
         /**
          * See {@link #addConnectionProperty(String, String)}
          */
-        public final Builder addConnectionProperty(String name, boolean value) {
+        public final THIS addConnectionProperty(String name, boolean value) {
             connectionProperties.put(name, Boolean.toString(value));
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Adding connection properties in bulk. See {@link #addConnectionProperty(String, String)}.
          */
-        public final Builder addConnectionProperties(Map<String, String> connectionProperties) {
+        public final THIS addConnectionProperties(Map<String, String> connectionProperties) {
             this.connectionProperties.putAll(connectionProperties);
-            return this;
+            return (THIS) this;
         }
 
         /**
          *  Specify the user name and password used when creating a new connection.
          */
-        public final Builder usernameAndPassword(String username, String password) {
+        public final THIS usernameAndPassword(String username, String password) {
             this.username = username;
             this.password = password;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Defines whether the connector should be started on startup.
          */
-        public final Builder enableAfterCreate() {
+        public final THIS enableAfterCreate() {
             this.enableAfterCreation = true;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Specify whether to replace the existing datasource based on its name (pool-name).
          * By default existing datasource is not replaced and exception is thrown.
          */
-        public final Builder replaceExisting() {
+        public final THIS replaceExisting() {
             this.replaceExisting = true;
-            return this;
+            return (THIS) this;
         }
 
         /**
          *  Enable JTA integration.
          */
-        public final Builder jta(Boolean jta) {
+        public final THIS jta(Boolean jta) {
             this.jta = jta;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Setting this to {@code false} will bind the datasource into global JNDI.
          */
-        public final Builder useJavaContext(Boolean useJavaContext) {
+        public final THIS useJavaContext(Boolean useJavaContext) {
             this.useJavaContext = useJavaContext;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Setting this to {@code true} will let to use CMR.
          */
-        public final Builder connectable(Boolean connectable) {
+        public final THIS connectable(Boolean connectable) {
             this.connectable = connectable;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Specifies the maximum number of connections for a pool. No more connections will be created in each sub-pool.
          */
-        public final Builder maxPoolSize(int maxPoolSize) {
+        public final THIS maxPoolSize(int maxPoolSize) {
             this.maxPoolSize = maxPoolSize;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Specifies the minimum number of connections for a pool.
          */
-        public final Builder minPoolSize(int minPoolSize) {
+        public final THIS minPoolSize(int minPoolSize) {
             this.minPoolSize = minPoolSize;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Sets whether runtime statistics are enabled or not.
          */
-        public final Builder statisticsEnabled(Boolean statisticsEnabled) {
+        public final THIS statisticsEnabled(Boolean statisticsEnabled) {
             this.statisticsEnabled = statisticsEnabled;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Enable the use of a cached connection manager.
          */
-        public final Builder useCcm(Boolean useCcm) {
+        public final THIS useCcm(Boolean useCcm) {
             this.useCcm = useCcm;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * SQL statement to execute whenever a connection is added to the JCA connection pool.
          */
-        public final Builder newConnectionSql(String newConnectionSql) {
+        public final THIS newConnectionSql(String newConnectionSql) {
             this.newConnectionSql = newConnectionSql;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Defines isolation level for connections created under this datasource.
          */
-        public final Builder transactionIsolation(TransactionIsolation transactionIsolation) {
+        public final THIS transactionIsolation(TransactionIsolation transactionIsolation) {
             this.transactionIsolation = transactionIsolation;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Specifies the delimeter for URLs in connection-url for HA datasources
          */
-        public final Builder urlDelimiter(String urlDelimiter) {
+        public final THIS urlDelimiter(String urlDelimiter) {
             this.urlDelimiter = urlDelimiter;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * A class that implements org.jboss.jca.adapters.jdbc.URLSelectorStrategy
          */
-        public final Builder urlSelectorStrategyClass(String urlSelectorStrategyClass) {
+        public final THIS urlSelectorStrategyClass(String urlSelectorStrategyClass) {
             this.urlSelectorStrategyClass = urlSelectorStrategyClass;
-            return this;
+            return (THIS) this;
         }
 
         /**
          *  Whether to attempt to prefill the connection pool.
          */
-        public final Builder prefill(Boolean prefill) {
+        public final THIS prefill(Boolean prefill) {
             this.prefill = prefill;
-            return this;
+            return (THIS) this;
         }
 
 
         /**
          * Security domain name to be used for authentication to datasource.
          */
-        public final Builder securityDomain(String securityDomain) {
+        public final THIS securityDomain(String securityDomain) {
             this.securityDomain = securityDomain;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Setting reauth plugin class name.
          */
-        public final Builder reauthPluginClass(String reauthPluginClass) {
+        public final THIS reauthPluginClass(String reauthPluginClass) {
             this.reauthPluginClass = reauthPluginClass;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Property for {@link #reauthPluginClass}
          */
-        public final Builder addReauthPluginProperty(String name, String value) {
+        public final THIS addReauthPluginProperty(String name, String value) {
             reauthPluginProperties.put(name, value);
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Property for {@link #reauthPluginClass}
          */
-        public final Builder addReauthPluginProperty(String name, boolean value) {
+        public final THIS addReauthPluginProperty(String name, boolean value) {
             reauthPluginProperties.put(name, Boolean.toString(value));
-            return this;
+            return (THIS) this;
         }
 
         /**
          * If the {@link #minPoolSize} should be considered a strictly.
          */
-        public final Builder useStrictMinPoolSize(Boolean useStrictMinPoolSize) {
+        public final THIS useStrictMinPoolSize(Boolean useStrictMinPoolSize) {
             this.useStrictMinPoolSize = useStrictMinPoolSize;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * How poool should be flushed. There is predefined strategies by JCA.
          * See {@link PoolFlushStrategy}.
          */
-        public final Builder flushStrategy(PoolFlushStrategy flushStrategy) {
+        public final THIS flushStrategy(PoolFlushStrategy flushStrategy) {
             this.flushStrategy = flushStrategy;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * SQL statement to check validity of a pool connection.
          * May be used when connection is taken from pool to use.
          */
-        public final Builder checkValidConnectionSql(String checkValidConnectionSql) {
+        public final THIS checkValidConnectionSql(String checkValidConnectionSql) {
             this.checkValidConnectionSql = checkValidConnectionSql;
-            return this;
+            return (THIS) this;
         }
 
         /**
@@ -637,9 +638,9 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
          *
          * <p>Typically exclusive to use of {@link #backgroundValidation}.</p>
          */
-        public final Builder validateOnMatch(Boolean validateOnMatch) {
+        public final THIS validateOnMatch(Boolean validateOnMatch) {
             this.validateOnMatch = validateOnMatch;
-            return this;
+            return (THIS) this;
         }
 
         /**
@@ -648,177 +649,177 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
          *
          * <p>Typically exclusive to use of {@link #validateOnMatch}.</p>
          */
-        public final Builder backgroundValidation(Boolean backgroundValidation) {
+        public final THIS backgroundValidation(Boolean backgroundValidation) {
             this.backgroundValidation = backgroundValidation;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Amount of time that background validation will run.
          */
-        public final Builder backgroundValidationMillis(Integer backgroundValidationMillis) {
+        public final THIS backgroundValidationMillis(Integer backgroundValidationMillis) {
             this.backgroundValidationMillis = backgroundValidationMillis;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Whether fail a connection allocation on the first connection if it
          * is invalid (true) or keep trying until the pool is exhausted of all potential connections (false).
          */
-        public final Builder useFastFailAllocation(Boolean useFastFailAllocation) {
+        public final THIS useFastFailAllocation(Boolean useFastFailAllocation) {
             this.useFastFailAllocation = useFastFailAllocation;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * An org.jboss.jca.adapters.jdbc.StaleConnectionChecker.
          */
-        public final Builder staleConnectionCheckerClass(String staleConnectionCheckerClass) {
+        public final THIS staleConnectionCheckerClass(String staleConnectionCheckerClass) {
             this.staleConnectionCheckerClass = staleConnectionCheckerClass;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Property for {@link #staleConnectionCheckerClass}
          */
-        public final Builder addStaleConnectionCheckerProperty(String name, String value) {
+        public final THIS addStaleConnectionCheckerProperty(String name, String value) {
             staleConnectionCheckerProperties.put(name, value);
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Property for {@link #staleConnectionCheckerClass}
          */
-        public final Builder addStaleConnectionCheckerProperty(String name, boolean value) {
+        public final THIS addStaleConnectionCheckerProperty(String name, boolean value) {
             staleConnectionCheckerProperties.put(name, Boolean.toString(value));
-            return this;
+            return (THIS) this;
         }
 
         /**
          * An org.jboss.jca.adapters.jdbc.ValidConnectionChecker.
          */
-        public final Builder validConnectionCheckerClass(String validConnectionCheckerClass) {
+        public final THIS validConnectionCheckerClass(String validConnectionCheckerClass) {
             this.validConnectionCheckerClass = validConnectionCheckerClass;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Property for {@link #validConnectionCheckerClass}
          */
-        public final Builder addValidConnectionCheckerProperty(String name, String value) {
+        public final THIS addValidConnectionCheckerProperty(String name, String value) {
             validConnectionCheckerProperties.put(name, value);
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Property for {@link #validConnectionCheckerClass}
          */
-        public final Builder addValidConnectionCheckerProperty(String name, boolean value) {
+        public final THIS addValidConnectionCheckerProperty(String name, boolean value) {
             validConnectionCheckerProperties.put(name, Boolean.toString(value));
-            return this;
+            return (THIS) this;
         }
 
         /**
          * org.jboss.jca.adapters.jdbc.ExceptionSorter
          */
-        public final Builder exceptionSorterClass(String exceptionSorterClass) {
+        public final THIS exceptionSorterClass(String exceptionSorterClass) {
             this.exceptionSorterClass = exceptionSorterClass;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Property for {@link #exceptionSorterClass}
          */
-        public final Builder addExceptionSorterProperty(String name, String value) {
+        public final THIS addExceptionSorterProperty(String name, String value) {
             exceptionSorterProperties.put(name, value);
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Property for {@link #exceptionSorterClass}
          */
-        public final Builder addExceptionSorterProperty(String name, boolean value) {
+        public final THIS addExceptionSorterProperty(String name, boolean value) {
             exceptionSorterProperties.put(name, Boolean.toString(value));
-            return this;
+            return (THIS) this;
         }
 
         /**
          * An org.jboss.jca.adapters.jdbc.ExceptionSorter.
          */
-        public final Builder spy(Boolean spy) {
+        public final THIS spy(Boolean spy) {
             this.spy = spy;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * The blocking-timeout-millis element indicates the maximum time in
          * milliseconds to block while waiting for a connection before throwing an exception.
          */
-        public final Builder blockingTimeoutWaitMillis(Integer blockingTimeoutWaitMillis) {
+        public final THIS blockingTimeoutWaitMillis(Integer blockingTimeoutWaitMillis) {
             this.blockingTimeoutWaitMillis = blockingTimeoutWaitMillis;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * The idle-timeout-minutes elements indicates the maximum time in minutes
          * a connection may be idle before being closed.
          */
-        public final Builder idleTimeoutMinutes(Integer idleTimeoutMinutes) {
+        public final THIS idleTimeoutMinutes(Integer idleTimeoutMinutes) {
             this.idleTimeoutMinutes = idleTimeoutMinutes;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Whether to set the query timeout based on the time remaining until
          * transaction timeout, any configured query timeout will be used if there is no transaction.
          */
-        public final Builder setTxQueryTimeout(Boolean setTxQueryTimeout) {
+        public final THIS setTxQueryTimeout(Boolean setTxQueryTimeout) {
             this.setTxQueryTimeout = setTxQueryTimeout;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Specifies if multiple users will access the datasource through the getConnection(user, password)
          * method and hence if the internal pool type should account for that
          */
-        public final Builder allowMultipleUsers(Boolean allowMultipleUsers) {
+        public final THIS allowMultipleUsers(Boolean allowMultipleUsers) {
             this.allowMultipleUsers = allowMultipleUsers;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Any configured query timeout in seconds.
          */
-        public final Builder queryTimeout(Integer queryTimeout) {
+        public final THIS queryTimeout(Integer queryTimeout) {
             this.queryTimeout = queryTimeout;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Any configured timeout for internal locks on the resource adapter
          * objects in seconds.
          */
-        public final Builder useTryLock(Integer useTryLock) {
+        public final THIS useTryLock(Integer useTryLock) {
             this.useTryLock = useTryLock;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * The allocation retry element indicates the number of times that allocating
          * a connection should be tried before throwing an exception.
          */
-        public final Builder allocationRetry(Integer allocationRetry) {
+        public final THIS allocationRetry(Integer allocationRetry) {
             this.allocationRetry = allocationRetry;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * The allocation retry wait millis element indicates the time in milliseconds
          * to wait between retrying to allocate a connection
          */
-        public final Builder allocationRetryWaitMillis(Integer allocationRetryWaitMillis) {
+        public final THIS allocationRetryWaitMillis(Integer allocationRetryWaitMillis) {
             this.allocationRetryWaitMillis = allocationRetryWaitMillis;
-            return this;
+            return (THIS) this;
         }
 
         /**
@@ -826,26 +827,26 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
          * to the pool and result sets are closed when a statement is closed/return
          * to the prepared statement cache.
          */
-        public final Builder trackPreparedStatements(TrackStatementType trackStatements) {
+        public final THIS trackPreparedStatements(TrackStatementType trackStatements) {
             this.trackPreparedStatements = trackStatements;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * Whether to share prepare statements, i.e. whether asking for same
          * statement twice without closing uses the same underlying prepared statement.
          */
-        public final Builder sharePreparedStatements(Boolean sharePreparedStatements) {
+        public final THIS sharePreparedStatements(Boolean sharePreparedStatements) {
             this.sharePreparedStatements = sharePreparedStatements;
-            return this;
+            return (THIS) this;
         }
 
         /**
          * The number of prepared statements per connection in an LRU cache
          */
-        public final Builder preparedStatementsCacheSize(Integer preparedStatementsCacheSize) {
+        public final THIS preparedStatementsCacheSize(Integer preparedStatementsCacheSize) {
             this.preparedStatementsCacheSize = preparedStatementsCacheSize;
-            return this;
+            return (THIS) this;
         }
 
         public AddDataSource build() {

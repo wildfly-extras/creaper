@@ -6,6 +6,8 @@
 - added commands for adding and removing modules
 - improved deprecations (all deprecated elements now have both
   the `@Deprecated` annotation and the `@deprecated` javadoc tag)
+- intermediate builder methods in the datasource commands now return
+  the correct builder type
 
 ## 0.9.0
 

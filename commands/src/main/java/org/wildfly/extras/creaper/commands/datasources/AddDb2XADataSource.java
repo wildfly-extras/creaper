@@ -50,7 +50,7 @@ public final class AddDb2XADataSource extends AddXADataSource {
         if (!xaDatasourceProperties.containsKey("PortNumber")) xaDatasourceProperties.put("PortNumber", "50000");
     }
 
-    public static final class Builder extends AddXADataSource.Builder {
+    public static final class Builder extends AddXADataSource.Builder<Builder> {
         public Builder(String name) {
             super(name);
         }

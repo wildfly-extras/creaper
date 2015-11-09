@@ -45,7 +45,7 @@ public final class AddMssqlXADataSource extends AddXADataSource {
         if (!xaDatasourceProperties.containsKey("SelectMethod")) xaDatasourceProperties.put("SelectMethod", "cursor");
     }
 
-    public static final class Builder extends AddXADataSource.Builder {
+    public static final class Builder extends AddXADataSource.Builder<Builder> {
         public Builder(String name) {
             super(name);
 

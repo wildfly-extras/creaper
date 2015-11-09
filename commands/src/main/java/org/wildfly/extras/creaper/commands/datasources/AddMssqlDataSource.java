@@ -30,7 +30,7 @@ public final class AddMssqlDataSource extends AddDataSource {
             exceptionSorterClass = MSSQL_EXCEPTION_SORTER;
     }
 
-    public static final class Builder extends AddDataSource.Builder {
+    public static final class Builder extends AddDataSource.Builder<Builder> {
         public Builder(String name) {
             super(name);
         }

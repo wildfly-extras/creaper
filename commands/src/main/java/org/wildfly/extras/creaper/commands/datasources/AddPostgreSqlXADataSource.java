@@ -40,7 +40,7 @@ public final class AddPostgreSqlXADataSource extends AddXADataSource {
         if (!xaDatasourceProperties.containsKey("PortNumber")) xaDatasourceProperties.put("PortNumber", "5432");
     }
 
-    public static final class Builder extends AddXADataSource.Builder {
+    public static final class Builder extends AddXADataSource.Builder<Builder> {
         public Builder(String name) {
             super(name);
         }

@@ -37,7 +37,7 @@ public final class AddOracleXADataSource extends AddXADataSource {
         if (xaDatasourceClass == null) xaDatasourceClass = ORACLE_XA_DATASOURCE_CLASS;
     }
 
-    public static final class Builder extends AddXADataSource.Builder {
+    public static final class Builder extends AddXADataSource.Builder<Builder> {
         public Builder(String name) {
             super(name);
         }

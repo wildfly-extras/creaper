@@ -28,10 +28,9 @@ public final class AddMysqlDataSource extends AddDataSource {
         if (exceptionSorterClass == null) exceptionSorterClass = MYSQL_EXCEPTION_SORTER;
     }
 
-    public static final class Builder extends AddDataSource.Builder {
+    public static final class Builder extends AddDataSource.Builder<Builder> {
         public Builder(String name) {
             super(name);
-
         }
 
         public AddMysqlDataSource build() {

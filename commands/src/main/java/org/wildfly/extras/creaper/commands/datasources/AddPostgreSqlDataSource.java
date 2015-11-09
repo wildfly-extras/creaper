@@ -28,7 +28,7 @@ public final class AddPostgreSqlDataSource extends AddDataSource {
         if (exceptionSorterClass == null) exceptionSorterClass = POSTGRESQL_EXCEPTION_SORTER;
     }
 
-    public static final class Builder extends AddDataSource.Builder {
+    public static final class Builder extends AddDataSource.Builder<Builder> {
         public Builder(String name) {
             super(name);
         }

@@ -30,7 +30,7 @@ public final class AddOracleDataSource extends AddDataSource {
         if (staleConnectionCheckerClass == null) staleConnectionCheckerClass = ORACLE_STALE_CONNECTION_CHECKER;
     }
 
-    public static final class Builder extends AddDataSource.Builder {
+    public static final class Builder extends AddDataSource.Builder<Builder> {
         public Builder(String name) {
             super(name);
         }
