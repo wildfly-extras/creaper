@@ -8,6 +8,9 @@
   the `@Deprecated` annotation and the `@deprecated` javadoc tag)
 - intermediate builder methods in the datasource commands now return
   the correct builder type
+- `ServerType` renamed to `ManagementProtocol` and `OnlineOptions.serverType`
+  renamed to `protocol`; the old names are still available, but deprecated
+  and scheduled for removal
 
 ## 0.9.0
 

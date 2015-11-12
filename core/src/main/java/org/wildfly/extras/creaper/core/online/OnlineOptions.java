@@ -40,7 +40,7 @@ public final class OnlineOptions {
 
     final String host;
     final int port;
-    private final ServerType serverType; // this can be "null" for unknown server type
+    private final ManagementProtocol protocol; // this can be "null" for unspecified protocol
     private final int connectionTimeout;
 
     private final String username;
@@ -52,15 +52,15 @@ public final class OnlineOptions {
     final boolean isWrappedClient; // see OnlineManagementClientImpl.reconnect
 
     private OnlineOptions(Data data) {
-        if (data.serverType == null && System.getProperty(CREAPER_WILDFLY) != null) {
-            data.serverType = ServerType.WILDFLY;
-            // if the server type wasn't set manually and the system property isn't set,
-            // it _doesn't_ mean that it's AS7! see also OptionalOnlineOptions.serverType below
+        if (data.protocol == null && System.getProperty(CREAPER_WILDFLY) != null) {
+            data.protocol = ManagementProtocol.HTTP_REMOTE;
+            // if the protocol wasn't set manually and the system property isn't set,
+            // it _doesn't_ mean that it's "remoting"! see also OptionalOnlineOptions.protocol below
         }
 
         if (data.localDefault) {
             data.host = "localhost";
-            data.port = data.serverType == ServerType.WILDFLY ? 9990 : 9999;
+            data.port = data.protocol == ManagementProtocol.HTTP_REMOTE ? 9990 : 9999;
         }
 
         this.isStandalone = data.isStandalone;
@@ -71,7 +71,7 @@ public final class OnlineOptions {
         this.domainHost = data.defaultHost;
         this.host = data.host;
         this.port = data.port;
-        this.serverType = data.serverType;
+        this.protocol = data.protocol;
         this.connectionTimeout = data.connectionTimeout;
         this.username = data.username;
         this.password = data.password;
@@ -95,7 +95,7 @@ public final class OnlineOptions {
         private int port;
         private boolean localDefault; // if true, then "host" and "port" above are not set
 
-        private ServerType serverType; // often not set at all
+        private ManagementProtocol protocol; // often not set at all
         private int connectionTimeout;
 
         private String username;
@@ -170,9 +170,9 @@ public final class OnlineOptions {
          * it changes to 9990 (WildFly). This makes it easy to run the same code against both AS7 and WildFly
          * only by defining a single system property.</p>
          *
-         * <p>Alternatively, the {@link OptionalOnlineOptions#serverType(ServerType) serverType()} method can be used,
-         * which takes precedence over the methods described above. When it is called, the default port depends on
-         * chosen {@link ServerType}.</p>
+         * <p>Alternatively, the {@link OptionalOnlineOptions#protocol(ManagementProtocol) protocol()} method
+         * can be used, which takes precedence over the methods described above. When it is called, the default port
+         * depends on chosen {@link ManagementProtocol}.</p>
          */
         public OptionalOnlineOptions localDefault() {
             data.localDefault = true;
@@ -260,14 +260,10 @@ public final class OnlineOptions {
         }
 
         /**
-         * <p>When connecting, assume that the server is of given {@link ServerType type}. Optional.</p>
+         * <p>When connecting, use the specified {@link ManagementProtocol protocol}. Optional.</p>
          *
-         * <p>This method affects two things:</p>
-         *
-         * <ul>
-         *     <li>the <i>connection protocol</i> that the client libraries will use to connect to the server</li>
-         *     <li>the <i>server port</i>, if {@link ConnectionOnlineOptions#localDefault() localDefault} is used</li>
-         * </ul>
+         * <p>This also affects the <i>server port</i>, if {@link ConnectionOnlineOptions#localDefault() localDefault}
+         * is used.</p>
          *
          * <p>AS7 uses a native remoting protocol, while WildFly uses the remoting protocol wrapped in HTTP
          * (using the HTTP upgrade mechanism). When the client libraries on classpath match the server version,
@@ -282,17 +278,29 @@ public final class OnlineOptions {
          * </p>
          *
          * <p>If the {@code creaper.wildfly} system property is set (because of
-         * {@link ConnectionOnlineOptions#localDefault() localDefault}), it is also used as a signal that the server
-         * type is WildFly, but this method has a priority. When the system property is not set, it <i>doesn't</i>
-         * mean that the server type is AS7; we simply don't know.</p>
+         * {@link ConnectionOnlineOptions#localDefault() localDefault}), it is also used as a signal that the protocol
+         * should be {@code http-remote}, but this method has a priority. When the system property is not set,
+         * it <i>doesn't</i> mean that the protocol should be {@code remoting}; we simply don't know.</p>
          */
+        public OptionalOnlineOptions protocol(ManagementProtocol protocol) {
+            if (protocol == null) {
+                throw new IllegalArgumentException("Management protocol must be set");
+            }
+
+            data.protocol = protocol;
+            return this;
+        }
+
+        /** @deprecated use {@link #protocol(ManagementProtocol)} instead, this will be removed before 1.0 */
+        @Deprecated
         public OptionalOnlineOptions serverType(ServerType serverType) {
             if (serverType == null) {
                 throw new IllegalArgumentException("Server type must be set");
             }
 
-            data.serverType = serverType;
-            return this;
+            return protocol(serverType == ServerType.WILDFLY
+                    ? ManagementProtocol.HTTP_REMOTE
+                    : ManagementProtocol.REMOTING);
         }
 
         /** Build the final {@code OnlineOptions}. */
@@ -353,20 +361,17 @@ public final class OnlineOptions {
                     Map.class              // saslOptions
             );
 
-            String protocol = null;
-            if (serverType == ServerType.WILDFLY) {
-                protocol = "http-remoting";
-            }
-            if (serverType == ServerType.AS7) {
-                protocol = "remote";
+            String protocolName = null;
+            if (protocol != null) {
+                protocolName = protocol.protocolName();
             }
 
             return (ModelControllerClient) createMethod.invoke(null, // static method
-                    protocol, host, port, callbackHandler, null, connectionTimeout, saslOptions);
+                    protocolName, host, port, callbackHandler, null, connectionTimeout, saslOptions);
         } catch (NoSuchMethodException e) {
-            if (serverType == ServerType.WILDFLY) {
+            if (protocol == ManagementProtocol.HTTP_REMOTE) {
                 // user asks for WildFly, but the client library is from AS7, this can't work
-                throw new IllegalStateException("Server type is WildFly (either ServerType.WILDFLY was used or the '"
+                throw new IllegalStateException("The server should be WildFly (either ManagementProtocol.HTTP_REMOTING was used or the '"
                         + CREAPER_WILDFLY + "' system property was set), but client libraries are AS7-only");
             }
 

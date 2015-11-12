@@ -257,35 +257,40 @@ only reasonable action is aborting everything and reporting a major fail.
 #### WildFly
 
 By default, `OnlineOptions.standalone().localDefault()` configures a management
-client that connects to `localhost:9999`, which makes sense for JBoss AS 7.
+client that connects to `localhost:9999` using the `remoting` protocol, which
+makes sense for JBoss AS 7.
 
-If you want to connect to WildFly (any version), you can either specify host
-and port directly, or define a system property `creaper.wildfly` (its value
-is ignored, the system property just needs to be defined). This causes
-`OnlineOptions.standalone().localDefault()` to switch the port to `9990`.
-
-This way, you can run the same code against JBoss AS 7 and WildFly without
-the need to rewrite or recompile anything. Just define a system property, and
-provide a proper version of the `controller-client` library (as explained
-above).
-
-Alternatively, you can use the `serverType` method:
+If you want to connect to WildFly (any version), you can use the `protocol`
+method:
 
     ManagementClient.online(OnlineOptions
             .standalone()
             .localDefault()
-            .serverType(ServerType.WILDFLY)
+            .protocol(ManagementProtocol.HTTP_REMOTE)
             .build()
     );
 
-The `serverType` method is more general, though: if you depend on the WildFly
-client libraries, you can use `.serverType(ServerType.AS7)` to connect to
-an AS7-based server. (It can't work the other way around, so in that case,
-you'll get an exception.)
+This changes the protocol to `http-remote` and also changes the default port
+to `9990`. If you define the port directly (using `hostAndPort`), you still
+have to define the correct protocol.
 
-It would actually be possible to implement handling of the `creaper.wildfly`
-system property completely outside of Creaper just in terms of the `serverType`
-method.
+Also, you can use `.protocol(ManagementProtocol.REMOTING)` to switch
+the protocol back to `remoting`, which is useful when using WildFly client
+libraries against an AS7-based server. (It can't work the other way around,
+so if you have AS7 client libraries and specify `http-remoting`, you'll get
+an exception.)
+
+Alternatively, you can define a system property `creaper.wildfly` (its value
+is ignored, the system property just needs to be defined). This switches
+the default protocol to `http-remoting` and the default port to `9990`.
+
+This way, you can run the same code against JBoss AS 7 and WildFly without
+the need to rewrite or recompile anything. Just define a system property, and
+provide a proper version of client libraries (as explained above).
+
+Note that it would actually be possible to implement handling
+of the `creaper.wildfly` system property completely outside of Creaper just
+in terms of the `protocol` method.
 
 ### Offline
 
