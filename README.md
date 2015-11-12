@@ -129,36 +129,35 @@ For WildFly 9, which is based on WildFly Core 1:
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-controller-client</artifactId>
-        <version>1.0.1.Final</version>
+        <version>1.0.2.Final</version>
     </dependency>
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-cli</artifactId>
-        <version>1.0.1.Final</version>
+        <version>1.0.2.Final</version>
     </dependency>
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-patching</artifactId>
-        <version>1.0.1.Final</version>
+        <version>1.0.2.Final</version>
     </dependency>
 
-For WildFly 10, which is based on WildFly Core 2
-(there's no `.Final` release yet):
+For WildFly 10, which is based on WildFly Core 2:
 
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-controller-client</artifactId>
-        <version>2.0.0.Beta1</version>
+        <version>2.0.1.Final</version>
     </dependency>
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-cli</artifactId>
-        <version>2.0.0.Beta1</version>
+        <version>2.0.1.Final</version>
     </dependency>
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-patching</artifactId>
-        <version>2.0.0.Beta1</version>
+        <version>2.0.1.Final</version>
     </dependency>
 
 #### Groovy Libraries
