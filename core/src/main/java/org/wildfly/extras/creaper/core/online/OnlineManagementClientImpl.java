@@ -10,6 +10,7 @@ import org.jboss.dmr.ModelNode;
 import org.jboss.logging.Logger;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -185,7 +186,16 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
         log.debugf("Executing CLI operation %s", cliOperation);
 
         try {
-            cliContext.handle(cliOperation);
+            if ("reload".equals(cliOperation.trim())) {
+                // CLI requires a special implementation of ModelControllerClient for "reload" and "shutdown",
+                // but we only have the standard one, so these operations won't work
+                //
+                // however, "reload" with no options is particularly common in CLI scripts, so this special case
+                // helps in those situations
+                new Administration(this).reload();
+            } else {
+                cliContext.handle(cliOperation);
+            }
         } catch (Exception e) {
             if (e.getCause() instanceof IOException) {
                 throw (IOException) e.getCause();

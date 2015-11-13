@@ -11,6 +11,8 @@
 - `ServerType` renamed to `ManagementProtocol` and `OnlineOptions.serverType`
   renamed to `protocol`; the old names are still available, but deprecated
   and scheduled for removal
+- `OnlineMamagementClient.executeCli` now supports the `reload` operation
+  (only without `--xxx` options)
 
 ## 0.9.0
 

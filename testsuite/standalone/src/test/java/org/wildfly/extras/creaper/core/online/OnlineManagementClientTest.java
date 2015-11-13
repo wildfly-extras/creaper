@@ -197,4 +197,67 @@ public class OnlineManagementClientTest {
 
         assertStillValid();
     }
+
+    @Test
+    public void executeThroughCli_reload() throws IOException {
+        try {
+            client.executeCli(" reload   ");
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertStillValid();
+    }
+
+    @Test
+    public void executeThroughCli_connect() throws IOException {
+        try {
+            client.executeCli("connect");
+            fail();
+        } catch (Exception e) {
+            // expected
+            assertTrue(e.getMessage().contains("The 'connect' operation is not supported"));
+        }
+
+        assertStillValid();
+    }
+
+    @Test
+    public void executeThroughCli_reloadAdminOnly() throws IOException {
+        try {
+            client.executeCli("reload --admin-only=true");
+            fail();
+        } catch (Exception e) {
+            // expected
+            assertTrue(e.getMessage().contains("Unsupported ModelControllerClient implementation"));
+        }
+
+        assertStillValid();
+    }
+
+    @Test
+    public void executeThroughCli_shutdown() throws IOException {
+        try {
+            client.executeCli("shutdown");
+            fail();
+        } catch (Exception e) {
+            // expected
+            assertTrue(e.getMessage().contains("Unsupported ModelControllerClient implementation"));
+        }
+
+        assertStillValid();
+    }
+
+    @Test
+    public void executeThroughCli_shutdownRestart() throws IOException {
+        try {
+            client.executeCli("shutdown --restart=true");
+            fail();
+        } catch (Exception e) {
+            // expected
+            assertTrue(e.getMessage().contains("Unsupported ModelControllerClient implementation"));
+        }
+
+        assertStillValid();
+    }
 }

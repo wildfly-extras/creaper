@@ -65,9 +65,12 @@ public interface OnlineManagementClient extends Closeable {
      * Performs the management operation (given in the CLI syntax) synchronously. The {@code cliOperation} can be
      * either a server-side management operation or a local CLI operation such as {@code cd} or {@code ls}. All local
      * CLI operations are supported <b>except of</b> {@code connect}, {@code reload} and {@code shutdown}. The
-     * {@code connect} operation can't be supported because it changes the underlying essential state. The restriction
-     * on {@code reload} and {@code shutdown} could be lifted in the future. This method returns normally if the
-     * operation was performed successfully; if there was any kind of error, it always throws an exception.
+     * {@code connect} operation can't be supported because it changes the underlying essential state.
+     * The {@code reload} operation is <b>only</b> supported when no {@code --xxx} options are passed (i.e.,
+     * the {@code cliOperation} string is equal to {@code "reload"}). The {@code shutdown} operation is not supported
+     * at all. The restrictions on {@code reload} and {@code shutdown} could be lifted in the future.
+     * This method returns normally if the operation was performed successfully; if there was any kind of error,
+     * it always throws an exception.
      * @throws CliException if there is a syntax error, the command failed or something else is horribly broken
      * @throws IOException if an I/O error occurs during the management operation
      */
