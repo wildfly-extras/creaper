@@ -38,7 +38,7 @@ Then, declare the dependencies like this:
         <version>${version.org.wildfly.extras.creaper}</version>
     </dependency>
 
-The latest and greatest released version is __`0.9.0`__.
+The latest and greatest released version is __`0.9.1`__.
 
 If you are in a non-Maven environment, you can build a Creaper uberjar
 that includes all the dependencies. Just run `mvn clean verify`.
