@@ -16,6 +16,7 @@
   when operations are executed from commands and failures are expected
   (e.g. `Operations.exists` or `Operations.removeIfExists`)
 - added `AddMariaDb[XA]DataSource`
+- added commands for the logging subsystem (see entrypoint class `Logging`)
 
 ## 0.9.2
 

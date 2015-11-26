@@ -104,8 +104,19 @@ public enum ManagementVersion {
     }
 
     public void assertAtLeast(ManagementVersion minimum) {
+        assertAtLeast(minimum, null);
+    }
+
+    public void assertAtLeast(ManagementVersion minimum, String message) {
+        String defaultMessage = "Expected management version to be at least " + minimum + ", but is " + this;
+        if (message == null || message.isEmpty()) {
+            message = defaultMessage;
+        } else {
+            message = message + "; " + defaultMessage;
+        }
+
         if (this.lessThan(minimum)) {
-            throw new AssertionError("Expected management version to be at least " + minimum + ", but is " + this);
+            throw new AssertionError(message);
         }
     }
 }
