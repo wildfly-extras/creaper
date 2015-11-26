@@ -160,6 +160,7 @@ public class AddDataSourceOnlineTest {
                 .addExceptionSorterProperty("exception-sorter-prop", "ok")
                 .idleTimeoutMinutes(10)
                 .jta(true)
+                .managedConnectionPool("org.jboss.jca.core.connectionmanager.pool.mcp.SemaphoreConcurrentLinkedDequeManagedConnectionPool")
                 .maxPoolSize(1)
                 .minPoolSize(1)
                 .newConnectionSql("SELECT 1")

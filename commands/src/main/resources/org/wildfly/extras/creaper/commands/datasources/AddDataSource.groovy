@@ -8,6 +8,7 @@ if (nn(spy)) datasourceAttrs['spy'] = spy
 if (nn(useCcm)) datasourceAttrs['use-ccm'] = useCcm
 if (nn(connectable)) datasourceAttrs['connectable'] = connectable
 if (nn(statisticsEnabled)) datasourceAttrs['statistics-enabled'] = statisticsEnabled
+if (nn(mcp)) datasourceAttrs['mcp'] = mcp
 
 // checks definition
 def isPool = nn(maxPoolSize, minPoolSize, prefill, useStrictMinPoolSize, allowMultipleUsers, flushStrategy)

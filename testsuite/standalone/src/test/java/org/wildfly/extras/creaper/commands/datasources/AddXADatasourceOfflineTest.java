@@ -55,7 +55,8 @@ public class AddXADatasourceOfflineTest {
             + "        <subsystem xmlns=\"urn:jboss:domain:datasources:1.2\">\n"
             + "            <datasources>\n"
             + "                 <xa-datasource pool-name=\"eap-qe\"/>\n"
-            + "                 <xa-datasource jndi-name=\"java:/jboss/datasources/" + XA_DATASOURCE_NAME + "\" pool-name=\"" + XA_DATASOURCE_NAME + "\" enabled=\"false\" use-java-context=\"true\" spy=\"true\" use-ccm=\"true\" statistics-enabled=\"true\">\n"
+            + "                 <xa-datasource jndi-name=\"java:/jboss/datasources/" + XA_DATASOURCE_NAME + "\" pool-name=\"" + XA_DATASOURCE_NAME + "\" enabled=\"false\" use-java-context=\"true\" spy=\"true\" use-ccm=\"true\"\n"
+            + "                     mcp=\"org.jboss.jca.core.connectionmanager.pool.mcp.SemaphoreConcurrentLinkedDequeManagedConnectionPool\" statistics-enabled=\"true\">\n"
             + "                     <xa-datasource-property name=\"other-user-name\">\n"
             + "                         right-its-other-username\n"
             + "                     </xa-datasource-property>\n"
@@ -223,6 +224,7 @@ public class AddXADatasourceOfflineTest {
             .exceptionSorterClass("org.jboss.jca.adapters.jdbc.extensions.novendor.NullExceptionSorter")
             .addExceptionSorterProperty("exception-sorter-prop", "ok")
             .idleTimeoutMinutes(10)
+            .managedConnectionPool("org.jboss.jca.core.connectionmanager.pool.mcp.SemaphoreConcurrentLinkedDequeManagedConnectionPool")
             .maxPoolSize(1)
             .minPoolSize(1)
             .newConnectionSql("SELECT 1")

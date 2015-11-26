@@ -54,6 +54,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
     protected Integer idleTimeoutMinutes;
     protected Boolean interleaving;
     protected String jndiName;
+    protected String mcp;
     protected Integer maxPoolSize;
     protected Integer minPoolSize;
     protected String newConnectionSql;
@@ -116,6 +117,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
         this.idleTimeoutMinutes = builder.idleTimeoutMinutes;
         this.interleaving = builder.interleaving;
         this.jndiName = builder.jndiName;
+        this.mcp = builder.mcp;
         this.maxPoolSize = builder.maxPoolSize;
         this.minPoolSize = builder.minPoolSize;
         this.newConnectionSql = builder.newConnectionSql;
@@ -190,6 +192,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
             .andOptional("idle-timeout-minutes", idleTimeoutMinutes)
             .andOptional("interleaving", interleaving)
             .andOptional("jndi-name", jndiName)
+            .andOptional("mcp", mcp)
             .andOptional("max-pool-size", maxPoolSize)
             .andOptional("min-pool-size", minPoolSize)
             .andOptional("new-connection-sql", newConnectionSql)
@@ -279,6 +282,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
                 .parameter("interleaving", interleaving)
                 .parameter("jndiName", jndiName)
                 .parameter("maxPoolSize", maxPoolSize)
+                .parameter("mcp", mcp)
                 .parameter("minPoolSize", minPoolSize)
                 .parameter("newConnectionSql", newConnectionSql)
                 .parameter("noRecovery", noRecovery)
@@ -363,6 +367,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
         private Boolean interleaving;
         private String jndiName;
         private Integer maxPoolSize;
+        private String mcp;
         private Integer minPoolSize;
         private String newConnectionSql;
         private Boolean noRecovery;
@@ -613,6 +618,11 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
          */
         public final THIS interleaving(boolean interleaving) {
             this.interleaving = interleaving;
+            return (THIS) this;
+        }
+
+        public final THIS managedConnectionPool(String mcp) {
+            this.mcp = mcp;
             return (THIS) this;
         }
 

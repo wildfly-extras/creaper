@@ -58,6 +58,7 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
     protected Map<String, String> exceptionSorterProperties;
     protected Integer idleTimeoutMinutes;
     protected Boolean jta;
+    protected String managedConnectionPool;
     protected Integer maxPoolSize;
     protected Integer minPoolSize;
     protected String newConnectionSql;
@@ -108,6 +109,7 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
         this.jta = builder.jta;
         this.useJavaContext = builder.useJavaContext;
         this.connectable = builder.connectable;
+        this.managedConnectionPool = builder.managedConnectionPool;
         this.maxPoolSize = builder.maxPoolSize;
         this.minPoolSize = builder.minPoolSize;
         this.statisticsEnabled = builder.statisticsEnabled;
@@ -169,6 +171,7 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
             .andOptional("jta", jta)
             .andOptional("use-java-context", useJavaContext)
             .andOptional("connectable", connectable)
+            .andOptional("mcp", managedConnectionPool)
             .andOptional("max-pool-size", maxPoolSize)
             .andOptional("min-pool-size", minPoolSize)
             .andOptional("statistics-enabled", statisticsEnabled)
@@ -254,6 +257,7 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
                 .parameter("useStrictMinPoolSize", useStrictMinPoolSize)
                 .parameter("flushStrategy", flushStrategy == null ? null : flushStrategy.value())
                 .parameter("allowMultipleUsers", allowMultipleUsers)
+                .parameter("mcp", managedConnectionPool)
                 .parameter("prefill", prefill)
                 .parameter("newConnectionSql", newConnectionSql)
                 .parameter("transactionIsolation", transactionIsolation == null ? null : transactionIsolation.value())
@@ -334,6 +338,7 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
         private Integer idleTimeoutMinutes;
         private String jndiName;
         private Boolean jta;
+        private String managedConnectionPool;
         private Integer maxPoolSize;
         private Integer minPoolSize;
         private String newConnectionSql;
@@ -846,6 +851,15 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
          */
         public final THIS preparedStatementsCacheSize(Integer preparedStatementsCacheSize) {
             this.preparedStatementsCacheSize = preparedStatementsCacheSize;
+            return (THIS) this;
+        }
+
+        /**
+         * Defines the ManagedConnectionPool implementation,
+         * f.ex. org.jboss.jca.core.connectionmanager.pool.mcp.SemaphoreArrayListManagedConnectionPool
+         */
+        public final THIS managedConnectionPool(String managedConnectionPool) {
+            this.managedConnectionPool = managedConnectionPool;
             return (THIS) this;
         }
 

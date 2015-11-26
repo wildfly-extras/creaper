@@ -6,6 +6,7 @@ if (nn(useJavaContext)) xaDatasourceAttrs['use-java-context'] = useJavaContext
 if (nn(spy)) xaDatasourceAttrs['spy'] = spy
 if (nn(useCcm)) xaDatasourceAttrs['use-ccm'] = useCcm
 if (nn(statisticsEnabled)) xaDatasourceAttrs['statistics-enabled'] = statisticsEnabled
+if (nn(mcp)) xaDatasourceAttrs['mcp'] = mcp
 // attributtes of <recovery>
 recoveryAttrs = [:]
 if (nn(noRecovery)) recoveryAttrs['no-recovery'] = noRecovery

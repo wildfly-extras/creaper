@@ -152,6 +152,7 @@ public class AddXADataSourceOnlineTest {
             .exceptionSorterClass("org.jboss.jca.adapters.jdbc.extensions.novendor.NullExceptionSorter")
             .addExceptionSorterProperty("exception-sorter-prop", "ok")
             .idleTimeoutMinutes(10)
+            .managedConnectionPool("org.jboss.jca.core.connectionmanager.pool.mcp.SemaphoreConcurrentLinkedDequeManagedConnectionPool")
             .maxPoolSize(1)
             .minPoolSize(1)
             .newConnectionSql("SELECT 1")

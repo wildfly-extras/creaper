@@ -55,7 +55,8 @@ public class AddDatasourceOfflineTest {
             + "            <datasources>\n"
             + "                 <datasource pool-name=\"eap-qe\"/>\n"
             + "                 <datasource jta=\"true\" jndi-name=\"java:/jboss/datasources/creaper-ds\" pool-name=\"creaper-ds\" enabled=\"false\"\n"
-            + "                     use-java-context=\"true\" spy=\"true\" use-ccm=\"true\" connectable=\"true\" statistics-enabled=\"true\">\n"
+            + "                     use-java-context=\"true\" spy=\"true\" use-ccm=\"true\" connectable=\"true\" statistics-enabled=\"true\"\n"
+            + "                     mcp=\"org.jboss.jca.core.connectionmanager.pool.mcp.SemaphoreConcurrentLinkedDequeManagedConnectionPool\">\n"
             + "                     <connection-url>jdbc:h2:mem:test-creaper;DB_CLOSE_DELAY=-1;</connection-url>\n"
             + "                     <driver-class>org.h2.Driver</driver-class>\n"
             + "                     <datasource-class>org.h2.jdbcx.JdbcDataSource</datasource-class>\n"
@@ -193,6 +194,7 @@ public class AddDatasourceOfflineTest {
             .addExceptionSorterProperty("exception-sorter-prop", "ok")
             .idleTimeoutMinutes(10)
             .jta(true)
+            .managedConnectionPool("org.jboss.jca.core.connectionmanager.pool.mcp.SemaphoreConcurrentLinkedDequeManagedConnectionPool")
             .maxPoolSize(1)
             .minPoolSize(1)
             .newConnectionSql("SELECT 1")
