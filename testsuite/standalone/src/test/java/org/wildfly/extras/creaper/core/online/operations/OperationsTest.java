@@ -273,6 +273,13 @@ public class OperationsTest {
     }
 
     @Test
+    public void readResource_attributesOnly() throws IOException {
+        ModelNodeResult result = ops.readResource(Address.subsystem(webSubsystem), ReadResourceOption.ATTRIBUTES_ONLY);
+        result.assertDefinedValue();
+        assertFalse(result.hasDefined("configuration"));
+    }
+
+    @Test
     public void readChildrenNames() throws IOException {
         ModelNodeResult result = ops.readChildrenNames(Address.root(), Constants.SUBSYSTEM);
         result.assertDefinedValue();

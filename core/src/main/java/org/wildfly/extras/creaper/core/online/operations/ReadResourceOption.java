@@ -46,6 +46,13 @@ public interface ReadResourceOption {
         }
     };
 
+    ReadResourceOption ATTRIBUTES_ONLY = new ReadResourceOptionInternal() {
+        @Override
+        void modifyReadResourceOperation(ModelNode op) {
+            op.get(Constants.ATTRIBUTES_ONLY).set(true);
+        }
+    };
+
     final class RecursiveDepth {
         private RecursiveDepth() {} // avoid instantiation
 
