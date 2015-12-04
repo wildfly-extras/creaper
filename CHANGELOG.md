@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.2
+
+- added command `AddSocketBinding`
+- added `ReadResourceOption.ATTRIBUTES_ONLY`
+- added `Add[XA]DataSource.managedConnectionPool`
+
 ## 0.9.1
 
 - added more commands for messaging (both HornetQ and ActiveMQ Artemis)
