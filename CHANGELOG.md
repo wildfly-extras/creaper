@@ -9,6 +9,8 @@
 - added a workaround for WFCORE-1082 to `AddModule`
 - the `Add[XA]DataSource` commands now reload the server if required
   when `replaceExisting()` is used
+- the test suite now uses latest WildFly 10 pre-release (was blocked
+  by wrong patching test)
 
 ## 0.9.2
 

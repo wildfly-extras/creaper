@@ -22,12 +22,12 @@
     <properties>
         <version.as7>${version.org.jboss.as.jboss-as-everything}</version.as7>
         <version.wildfly8>8.2.1.Final</version.wildfly8>
-        <version.wildfly9>9.0.1.Final</version.wildfly9>
-        <version.wildfly9.core>1.0.1.Final</version.wildfly9.core>
-        <version.wildfly10>10.0.0.Alpha5</version.wildfly10> <!-- patching tests fail with 10.0.0.Alpha6 -->
-        <version.wildfly10.core>2.0.0.Alpha11</version.wildfly10.core>
-
-        <version.org.wildfly.arquillian>1.0.0.Final</version.org.wildfly.arquillian>
+        <version.wildfly9>9.0.2.Final</version.wildfly9>
+        <version.wildfly9.core>1.0.2.Final</version.wildfly9.core>
+        <version.wildfly9.arquillian>1.0.2.Final</version.wildfly9.arquillian>
+        <version.wildfly10>10.0.0.CR4</version.wildfly10>
+        <version.wildfly10.core>2.0.4.Final</version.wildfly10.core>
+        <version.wildfly10.arquillian>1.1.0.Alpha1</version.wildfly10.arquillian>
 
         <managementPort.as7>9999</managementPort.as7>
         <managementPort.wildfly>9990</managementPort.wildfly>
@@ -57,14 +57,14 @@
         <wildfly9.applicationServer.version>${version.wildfly9}</wildfly9.applicationServer.version>
         <wildfly9.arquillianContainer.groupId>org.wildfly.arquillian</wildfly9.arquillianContainer.groupId>
         <wildfly9.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly9.arquillianContainer.artifactId>
-        <wildfly9.arquillianContainer.version>${version.org.wildfly.arquillian}</wildfly9.arquillianContainer.version>
+        <wildfly9.arquillianContainer.version>${version.wildfly9.arquillian}</wildfly9.arquillianContainer.version>
 
         <wildfly10.applicationServer.groupId>org.wildfly</wildfly10.applicationServer.groupId>
         <wildfly10.applicationServer.artifactId>wildfly-dist</wildfly10.applicationServer.artifactId>
         <wildfly10.applicationServer.version>${version.wildfly10}</wildfly10.applicationServer.version>
         <wildfly10.arquillianContainer.groupId>org.wildfly.arquillian</wildfly10.arquillianContainer.groupId>
         <wildfly10.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly10.arquillianContainer.artifactId>
-        <wildfly10.arquillianContainer.version>${version.org.wildfly.arquillian}</wildfly10.arquillianContainer.version>
+        <wildfly10.arquillianContainer.version>${version.wildfly10.arquillian}</wildfly10.arquillianContainer.version>
 
         <!-- defined in profiles "as7", "wildfly8", "wildfly9" and "wildfly10" below -->
         <applicationServer.groupId>MUST-BE-DEFINED</applicationServer.groupId>

@@ -147,17 +147,17 @@ For WildFly 10, which is based on WildFly Core 2:
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-controller-client</artifactId>
-        <version>2.0.1.Final</version>
+        <version>2.0.4.Final</version>
     </dependency>
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-cli</artifactId>
-        <version>2.0.1.Final</version>
+        <version>2.0.4.Final</version>
     </dependency>
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-patching</artifactId>
-        <version>2.0.1.Final</version>
+        <version>2.0.4.Final</version>
     </dependency>
 
 #### Groovy Libraries
