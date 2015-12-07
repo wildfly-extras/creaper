@@ -1,5 +1,7 @@
 package org.wildfly.extras.creaper.commands.patching;
 
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
@@ -15,6 +17,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+@RunWith(Arquillian.class)
 public class PatchingOperationsTest {
     private OnlineManagementClient client;
     private PatchingOperations patchingOps;

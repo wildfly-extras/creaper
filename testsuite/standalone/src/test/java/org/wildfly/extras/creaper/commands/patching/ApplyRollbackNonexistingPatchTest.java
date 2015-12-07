@@ -1,5 +1,7 @@
 package org.wildfly.extras.creaper.commands.patching;
 
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -10,6 +12,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+@RunWith(Arquillian.class)
 public class ApplyRollbackNonexistingPatchTest {
     private OnlineManagementClient client;
 

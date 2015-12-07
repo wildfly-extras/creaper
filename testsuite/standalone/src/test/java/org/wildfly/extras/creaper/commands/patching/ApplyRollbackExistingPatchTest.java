@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This test <b>needs</b> a manually-controlled Arquillian container and <b>can't</b> use
- * {@code Administration.restartIfRequired}, because it's not possible to restart the application server via management
+ * {@code Administration.restart}, because it's not possible to restart the application server via management
  * interface ({@code :shutdown(restart=true)}) if it was started by Arquillian. This is because restarting the entire
  * JVM process relies on the start script ({@code standalone.sh}), which Arquillian doesn't use.
  */
@@ -64,6 +64,12 @@ public class ApplyRollbackExistingPatchTest {
     public void applyPatch() throws Exception {
         File patchZip = tmp.newFile("test-patch.zip");
 
+        String serverName = "WildFly";
+        ModelNodeResult serverNameResult = ops.readAttribute(Address.root(), "product-name");
+        if (serverNameResult.hasDefinedValue()) {
+            serverName = serverNameResult.stringValue();
+        }
+
         ModelNodeResult serverVersionResult = ops.readAttribute(Address.root(), "product-version");
         if (!serverVersionResult.hasDefinedValue()) { // happens on WildFly 8
             serverVersionResult = ops.readAttribute(Address.root(), "release-version");
@@ -76,6 +82,7 @@ public class ApplyRollbackExistingPatchTest {
                 .as(GenericArchive.class);
         String patchXml = new AssetByteSource(zip.delete("patch.xml").getAsset()).asCharSource(Charsets.UTF_8).read();
         String newPatchXml = patchXml
+                .replace("%EAP_NAME%", serverName)
                 .replace("%EAP_VERSION_ORIG%", serverVersion)
                 .replace("%EAP_VERSION_NEW%", serverVersion + "_PATCHED");
         zip.add(new StringAsset(newPatchXml), "patch.xml");

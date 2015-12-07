@@ -21,7 +21,6 @@ import java.util.concurrent.TimeoutException;
 
 @RunWith(Arquillian.class)
 public class AddSocketBindingTest {
-
     private static final String SOCKET_BINDING_NAME = "creaper-sb";
     private static final String SOCKET_BINDING_GROUP = "standard-sockets";
     private static final Address TEST_SOCKET_BINDING_ADDRESS = Address.of("socket-binding-group", SOCKET_BINDING_GROUP)
