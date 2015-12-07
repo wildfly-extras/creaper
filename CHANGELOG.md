@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.3 (not yet released)
+
+- `ManagementProtocol.REMOTING` and `HTTP_REMOTE` renamed to `REMOTE`
+  and `HTTP_REMOTING`; the old names are still available, but deprecated
+  and scheduled for removal
+
 ## 0.9.2
 
 - added command `AddSocketBinding`

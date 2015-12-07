@@ -53,14 +53,14 @@ public final class OnlineOptions {
 
     private OnlineOptions(Data data) {
         if (data.protocol == null && System.getProperty(CREAPER_WILDFLY) != null) {
-            data.protocol = ManagementProtocol.HTTP_REMOTE;
+            data.protocol = ManagementProtocol.HTTP_REMOTING;
             // if the protocol wasn't set manually and the system property isn't set,
-            // it _doesn't_ mean that it's "remoting"! see also OptionalOnlineOptions.protocol below
+            // it _doesn't_ mean that it's "remote"! see also OptionalOnlineOptions.protocol below
         }
 
         if (data.localDefault) {
             data.host = "localhost";
-            data.port = data.protocol == ManagementProtocol.HTTP_REMOTE ? 9990 : 9999;
+            data.port = data.protocol == ManagementProtocol.HTTP_REMOTING ? 9990 : 9999;
         }
 
         this.isStandalone = data.isStandalone;
@@ -265,12 +265,12 @@ public final class OnlineOptions {
          * <p>This also affects the <i>server port</i>, if {@link ConnectionOnlineOptions#localDefault() localDefault}
          * is used.</p>
          *
-         * <p>AS7 uses a native remoting protocol, while WildFly uses the remoting protocol wrapped in HTTP
-         * (using the HTTP upgrade mechanism). When the client libraries on classpath match the server version,
-         * they should choose the correct protocol automatically, so in this situation, this method is not required.
-         * However, when using a single set of client libraries for all server versions (which is possible, because
-         * the client libraries should be backward compatible), this method must be used to specify the type
-         * of the server.</p>
+         * <p>AS7 uses a native remoting protocol, called {@code remote}. WildFly uses the remoting protocol wrapped
+         * in HTTP (using the HTTP upgrade mechanism), called {@code http-remoting}. When the client libraries
+         * on classpath match the server version, they should choose the correct protocol automatically, so in this
+         * situation, this method is not required. However, when using a single set of client libraries for all server
+         * versions (which is possible, because the client libraries should be backward compatible), this method must
+         * be used to specify the type of the server.</p>
          *
          * <p>The server port is only affected by this method when
          * {@link ConnectionOnlineOptions#localDefault() localDefault} is used. When server port is specified directly
@@ -279,8 +279,8 @@ public final class OnlineOptions {
          *
          * <p>If the {@code creaper.wildfly} system property is set (because of
          * {@link ConnectionOnlineOptions#localDefault() localDefault}), it is also used as a signal that the protocol
-         * should be {@code http-remote}, but this method has a priority. When the system property is not set,
-         * it <i>doesn't</i> mean that the protocol should be {@code remoting}; we simply don't know.</p>
+         * should be {@code http-remoting}, but this method has a priority. When the system property is not set,
+         * it <i>doesn't</i> mean that the protocol should be {@code remote}; we simply don't know.</p>
          */
         public OptionalOnlineOptions protocol(ManagementProtocol protocol) {
             if (protocol == null) {
@@ -299,8 +299,8 @@ public final class OnlineOptions {
             }
 
             return protocol(serverType == ServerType.WILDFLY
-                    ? ManagementProtocol.HTTP_REMOTE
-                    : ManagementProtocol.REMOTING);
+                    ? ManagementProtocol.HTTP_REMOTING
+                    : ManagementProtocol.REMOTE);
         }
 
         /** Build the final {@code OnlineOptions}. */
@@ -369,7 +369,7 @@ public final class OnlineOptions {
             return (ModelControllerClient) createMethod.invoke(null, // static method
                     protocolName, host, port, callbackHandler, null, connectionTimeout, saslOptions);
         } catch (NoSuchMethodException e) {
-            if (protocol == ManagementProtocol.HTTP_REMOTE) {
+            if (protocol == ManagementProtocol.HTTP_REMOTING) {
                 // user asks for WildFly, but the client library is from AS7, this can't work
                 throw new IllegalStateException("The server should be WildFly (either ManagementProtocol.HTTP_REMOTING was used or the '"
                         + CREAPER_WILDFLY + "' system property was set), but client libraries are AS7-only");

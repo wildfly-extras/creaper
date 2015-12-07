@@ -2,8 +2,15 @@ package org.wildfly.extras.creaper.core.online;
 
 public enum ManagementProtocol {
     /** Used in JBoss AS 7. Default port 9999. */
-    REMOTING("remote"),
+    REMOTE("remote"),
     /** Used in WildFly. Default port 9990. */
+    HTTP_REMOTING("http-remoting"),
+
+    /** @deprecated use {@link #REMOTE} instead, this will be removed before 1.0 */
+    @Deprecated
+    REMOTING("remote"),
+    /** @deprecated use {@link #HTTP_REMOTING} instead, this will be removed before 1.0 */
+    @Deprecated
     HTTP_REMOTE("http-remoting"),
     ;
 

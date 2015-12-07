@@ -256,7 +256,7 @@ only reasonable action is aborting everything and reporting a major fail.
 #### WildFly
 
 By default, `OnlineOptions.standalone().localDefault()` configures a management
-client that connects to `localhost:9999` using the `remoting` protocol, which
+client that connects to `localhost:9999` using the `remote` protocol, which
 makes sense for JBoss AS 7.
 
 If you want to connect to WildFly (any version), you can use the `protocol`
@@ -265,16 +265,16 @@ method:
     ManagementClient.online(OnlineOptions
             .standalone()
             .localDefault()
-            .protocol(ManagementProtocol.HTTP_REMOTE)
+            .protocol(ManagementProtocol.HTTP_REMOTING)
             .build()
     );
 
-This changes the protocol to `http-remote` and also changes the default port
+This changes the protocol to `http-remoting` and also changes the default port
 to `9990`. If you define the port directly (using `hostAndPort`), you still
 have to define the correct protocol.
 
-Also, you can use `.protocol(ManagementProtocol.REMOTING)` to switch
-the protocol back to `remoting`, which is useful when using WildFly client
+Also, you can use `.protocol(ManagementProtocol.REMOTE)` to switch
+the protocol back to `remote`, which is useful when using WildFly client
 libraries against an AS7-based server. (It can't work the other way around,
 so if you have AS7 client libraries and specify `http-remoting`, you'll get
 an exception.)
