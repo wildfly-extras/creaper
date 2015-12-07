@@ -6,6 +6,7 @@
   and `HTTP_REMOTING`; the old names are still available, but deprecated
   and scheduled for removal
 - fixed `Administration.reload` when the server is in `restart-required`
+- added a workaround for WFCORE-1082 to `AddModule`
 
 ## 0.9.2
 

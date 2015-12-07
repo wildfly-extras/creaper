@@ -2,6 +2,9 @@ package org.wildfly.extras.creaper.commands.modules;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.ElementNameAndAttributeQualifier;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
@@ -10,16 +13,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
+import org.wildfly.extras.creaper.core.ManagementVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
-import org.wildfly.extras.creaper.test.WildFlyTests;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -27,10 +29,9 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
+import static org.junit.Assert.fail;
 
 @RunWith(Arquillian.class)
-@Category(WildFlyTests.class)
 public class AddRemoveModuleTest {
     private static final String TEST_MODULE_NAME = "org.jboss.testmodule";
     private static final String EXPECTED_MODULE_XML = ""
@@ -43,7 +44,7 @@ public class AddRemoveModuleTest {
             + "        <property name=\"john\" value=\"doe\"/>\n"
             + "    </properties>\n"
             + "\n"
-            + "    <main-class value=\"test.mainclass\"/>\n"
+            + "    <main-class name=\"test.mainclass\"/>\n"
             + "\n"
             + "    <resources>\n"
             + "        <resource-root path=\"testJar1.jar\"/>\n"
@@ -62,19 +63,26 @@ public class AddRemoveModuleTest {
     public TemporaryFolder tmp = new TemporaryFolder();
 
     @Before
-    public void connect() throws IOException {
+    public void setUp() throws IOException {
+        XMLUnit.setNormalizeWhitespace(true);
+
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
     }
 
     @After
-    public void close() throws IOException {
+    public void tearDown() throws IOException {
         client.close();
     }
 
     @Test
     public void addRemoveModuleTest() throws IOException, CommandFailedException, CliException, SAXException {
-        // create test module
-        File testJar1 = createTestJar("testJar1.jar", "folder with spaces");
+        String directoryName = "directory with spaces";
+        if (client.serverVersion().lessThan(ManagementVersion.VERSION_2_0_0)) {
+            // AS7 doesn't accept paths with spaces
+            directoryName = "directory_without_spaces";
+        }
+
+        File testJar1 = createTestJar("testJar1.jar", directoryName);
         File testJar2 = createTestJar("testJar2.jar", null);
         AddModule addModule = new AddModule.Builder(TEST_MODULE_NAME)
                 .resource(testJar1)
@@ -102,7 +110,11 @@ public class AddRemoveModuleTest {
         File moduleXml = new File(module, "main" + File.separator + "module.xml");
         assertTrue("File " + moduleXml.getName() + " should exist in " + module.getAbsolutePath(), moduleXml.exists());
 
-        assertXmlIdentical(EXPECTED_MODULE_XML, Files.toString(moduleXml, Charsets.UTF_8));
+        Diff diff = new Diff(EXPECTED_MODULE_XML, Files.toString(moduleXml, Charsets.UTF_8));
+        diff.overrideElementQualifier(new ElementNameAndAttributeQualifier());
+        if (!diff.similar()) {
+            fail(diff.toString());
+        }
 
         // remove test module
         RemoveModule removeModule = new RemoveModule(TEST_MODULE_NAME);
@@ -112,11 +124,11 @@ public class AddRemoveModuleTest {
         assertFalse("Module shouldn't exist on path " + module.getAbsolutePath(), module.exists());
     }
 
-    private File createTestJar(String fileName, String folder) throws IOException {
+    private File createTestJar(String fileName, String directoryName) throws IOException {
         File testJar = null;
-        if (folder != null) {
-            File folderWithSpacesInName = tmp.newFolder(folder);
-            testJar = new File(folderWithSpacesInName, fileName);
+        if (directoryName != null) {
+            File directory = tmp.newFolder(directoryName);
+            testJar = new File(directory, fileName);
         } else {
             testJar = tmp.newFile(fileName);
         }

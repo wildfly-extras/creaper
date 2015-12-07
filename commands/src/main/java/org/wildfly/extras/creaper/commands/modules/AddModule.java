@@ -1,12 +1,19 @@
 package org.wildfly.extras.creaper.commands.modules;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
+import com.google.common.io.Files;
+import com.google.common.primitives.Bytes;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.online.CliException;
+import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
+import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +87,38 @@ public class AddModule implements OnlineCommand {
         if (!properties.isEmpty()) {
             cmd.append(" --properties=").append(defaultJoiner.join(properties));
         }
+
         ctx.client.executeCli(cmd.toString());
+
+        if (moduleXml == null && mainClass != null) {
+            // module.xml was generated automatically, it might contain an error in the main-class element
+            fixMainClassInModuleXml(ctx.client);
+        }
+    }
+
+    // this is a workaround for WFCORE-1082
+    private void fixMainClassInModuleXml(OnlineManagementClient client) throws CliException, IOException {
+        ModelNodeResult jbossHomeResult = client.execute(":resolve-expression(expression=${jboss.home.dir})");
+        if (jbossHomeResult.hasDefinedValue()) {
+            String jbossHome = jbossHomeResult.stringValue();
+            File modulesDir = new File(jbossHome, "modules");
+            File targetModuleDir = new File(modulesDir, moduleName.replace('.', File.separatorChar)
+                    + File.separatorChar + (slot == null ? "main" : slot));
+            File moduleXml = new File(targetModuleDir, "module.xml");
+
+            // it's critical that these two arrays are of the same length!
+            // the trick used here to achieve that is to insert an extra space into the second one
+            byte[] badBytes = "<main-class value=".getBytes(Charsets.US_ASCII);
+            byte[] goodBytes = "<main-class  name=".getBytes(Charsets.US_ASCII);
+
+            byte[] moduleXmlContent = Files.toByteArray(moduleXml);
+            int indexOfBadSequence = Bytes.indexOf(moduleXmlContent, badBytes);
+            if (indexOfBadSequence >= 0) {
+                System.arraycopy(goodBytes, 0, moduleXmlContent, indexOfBadSequence, goodBytes.length);
+            }
+
+            Files.write(moduleXmlContent, moduleXml);
+        }
     }
 
     @Override
