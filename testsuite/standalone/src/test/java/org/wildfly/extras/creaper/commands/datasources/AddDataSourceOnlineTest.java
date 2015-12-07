@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -66,7 +67,29 @@ public class AddDataSourceOnlineTest {
                 .build();
         client.apply(addDataSource);
 
-        assertTrue("The data source wasn't created", ops.exists(TEST_DATASOURCE_ADDRESS));
+        assertTrue("The data source should be created", ops.exists(TEST_DATASOURCE_ADDRESS));
+    }
+
+    @Test
+    public void addDataSource_replaceExisting() throws Exception {
+        client.apply(new AddDataSource.Builder(TEST_DATASOURCE_NAME)
+                .connectionUrl(VALID_DS_URL)
+                .jndiName("java:/jboss/datasources/" + TEST_DATASOURCE_NAME)
+                .driverName("h2")
+                .usernameAndPassword("creaper", "creaper")
+                .build());
+        assertTrue("The datasource should be created", ops.exists(TEST_DATASOURCE_ADDRESS));
+
+        client.apply(new AddDataSource.Builder(TEST_DATASOURCE_NAME)
+                .connectionUrl(VALID_DS_URL)
+                .jndiName("java:/jboss/datasources/" + TEST_DATASOURCE_NAME)
+                .driverName("h2")
+                .usernameAndPassword("creaper2", "creaper2")
+                .replaceExisting()
+                .build());
+        assertTrue("The datasource should be created", ops.exists(TEST_DATASOURCE_ADDRESS));
+        assertEquals("The datasource should be replaced with the new one with different username",
+                "creaper2", ops.readAttribute(TEST_DATASOURCE_ADDRESS, "user-name").stringValue());
     }
 
     @Test(expected = CommandFailedException.class)
@@ -93,7 +116,7 @@ public class AddDataSourceOnlineTest {
                 .build();
         client.apply(addDataSource);
 
-        assertTrue("The data source wasn't created", ops.exists(TEST_DATASOURCE_ADDRESS));
+        assertTrue("The data source should be created", ops.exists(TEST_DATASOURCE_ADDRESS));
         assertTrue("The data source should be enabled",
                 ops.readAttribute(TEST_DATASOURCE_ADDRESS, "enabled").booleanValue());
     }

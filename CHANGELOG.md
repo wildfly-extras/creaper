@@ -7,6 +7,8 @@
   and scheduled for removal
 - fixed `Administration.reload` when the server is in `restart-required`
 - added a workaround for WFCORE-1082 to `AddModule`
+- the `Add[XA]DataSource` commands now reload the server if required
+  when `replaceExisting()` is used
 
 ## 0.9.2
 

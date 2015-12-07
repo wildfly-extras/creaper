@@ -83,7 +83,7 @@ public class AddXADataSourceOnlineTest {
             .build());
         assertTrue("The XA datasource should be created", ops.exists(TEST_XA_DATASOURCE_ADDRESS));
         assertEquals("The XA datasource should be replaced with the new one with different username",
-                "creaper2", ops.readAttribute(TEST_XA_DATASOURCE_ADDRESS, "user-name").get("result").asString());
+                "creaper2", ops.readAttribute(TEST_XA_DATASOURCE_ADDRESS, "user-name").stringValue());
     }
 
     @Test(expected = CommandFailedException.class)

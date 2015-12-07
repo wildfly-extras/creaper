@@ -10,9 +10,9 @@ import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
-import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
+import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -157,7 +157,8 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
         if (replaceExisting) {
             try {
                 ops.removeIfExists(dsAddress);
-            } catch (OperationException e) {
+                new Administration(ctx.client).reloadIfRequired();
+            } catch (Exception e) {
                 throw new CommandFailedException("Failed to remove existing datasource " + name, e);
             }
         }
@@ -476,6 +477,7 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
         /**
          * Specify whether to replace the existing datasource based on its name (pool-name).
          * By default existing datasource is not replaced and exception is thrown.
+         * <b>Note that when enabled, this can cause server reload!</b>
          */
         public final THIS replaceExisting() {
             this.replaceExisting = true;
