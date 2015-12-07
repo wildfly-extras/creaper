@@ -165,13 +165,12 @@ final class DomainAdministrationOperations implements AdministrationOperations {
         if (servers == null || servers.isEmpty()) {
             ModelNodeResult result = ops.readAttribute(Address.host(host), Constants.HOST_STATE);
             result.assertDefinedValue();
-            return Constants.CONTROLLER_PROCESS_STATE_RUNNING.equals(result.stringValue());
+            return ServerState.isRunning(result.stringValue());
         } else {
             for (String server : servers) {
                 Address serverAddress = hostAddress.and(Constants.SERVER, server);
                 ModelNodeResult result = ops.readAttribute(serverAddress, Constants.SERVER_STATE);
-                if (!result.hasDefinedValue()
-                        || !Constants.CONTROLLER_PROCESS_STATE_RUNNING.equals(result.stringValue())) {
+                if (!result.hasDefinedValue() || !ServerState.isRunning(result.stringValue())) {
                     return false;
                 }
             }

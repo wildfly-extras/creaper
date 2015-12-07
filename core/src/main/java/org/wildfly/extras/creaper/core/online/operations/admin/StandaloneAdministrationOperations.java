@@ -112,6 +112,6 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
     private boolean isServerRunning() throws IOException {
         ModelNodeResult result = ops.readAttribute(Address.root(), Constants.SERVER_STATE);
         result.assertDefinedValue();
-        return Constants.CONTROLLER_PROCESS_STATE_RUNNING.equals(result.stringValue());
+        return ServerState.isRunning(result.stringValue());
     }
 }
