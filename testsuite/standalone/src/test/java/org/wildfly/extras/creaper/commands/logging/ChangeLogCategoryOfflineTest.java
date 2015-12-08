@@ -17,10 +17,6 @@ import java.io.File;
 
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
 public class ChangeLogCategoryOfflineTest {
 
     private static final Logger log = Logger.getLogger(ChangeLogCategoryOfflineTest.class);
@@ -157,6 +153,33 @@ public class ChangeLogCategoryOfflineTest {
     }
 
     @Test
+    public void changeNothing() throws Exception {
+        File cfg = tmp.newFile("xmlTransform.xml");
+        String loggingXmlOriginal = String.format(LOGGER_ORIGINAL, ""
+                + "            <logger category=\"creaper.category\" use-parent-handlers=\"false\">\n"
+                + "                <level name=\"TRACE\"/>\n"
+                + "                <filter-spec value=\"match(&quot;filter&quot;)\"/>\n"
+                + "                <handlers>\n"
+                + "                    <handler name=\"HANDLER-1\"/>\n"
+                + "                </handlers>\n"
+                + "            </logger>\n"
+        );
+
+        Files.write(loggingXmlOriginal, cfg, Charsets.UTF_8);
+
+        OfflineManagementClient client = ManagementClient.offline(
+                OfflineOptions.standalone().configurationFile(cfg).build());
+
+        ChangeLogCategory changeLogCategory = new ChangeLogCategory.Builder("creaper.category")
+                .build();
+
+        assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
+        client.apply(changeLogCategory);
+        assertXmlIdentical(LOGGER_CHANGE_EXPECTED, Files.toString(cfg, Charsets.UTF_8));
+
+    }
+
+    @Test
     public void removeHandlers() throws Exception {
         File cfg = tmp.newFile("xmlTransform.xml");
         String loggingXmlOriginal = String.format(LOGGER_ORIGINAL, ""
@@ -177,6 +200,7 @@ public class ChangeLogCategoryOfflineTest {
 
         ChangeLogCategory changeLogCategory = new ChangeLogCategory.Builder("creaper.category")
                 .handlers(new String[]{})
+                .setUseParentHandler(false)
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));

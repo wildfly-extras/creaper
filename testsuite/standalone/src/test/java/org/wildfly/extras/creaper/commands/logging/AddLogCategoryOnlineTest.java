@@ -20,10 +20,6 @@ import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
 @RunWith(Arquillian.class)
 public class AddLogCategoryOnlineTest {
 
@@ -89,6 +85,6 @@ public class AddLogCategoryOnlineTest {
 
         client.apply(addLogCategory);
 
-        assertTrue("logger wasn't created", ops.exists(TEST_LOGGER_ADDRESS));
+        assertTrue("logger should be created", ops.exists(TEST_LOGGER_ADDRESS));
     }
 }

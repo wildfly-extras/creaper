@@ -7,22 +7,15 @@ import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
-import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
 
-/**
- * <p>
- * Command adds log category.
- * </p>
- */
-
-public class AddLogCategory extends ManipulateLogCategory {
+public final class AddLogCategory extends AbstractLogCategory {
 
     private boolean replaceExisting;
 
-    protected AddLogCategory(Builder builder) {
+    private AddLogCategory(Builder builder) {
         setBaseProperties(builder);
         replaceExisting = builder.replaceExisting;
     }
@@ -58,14 +51,6 @@ public class AddLogCategory extends ManipulateLogCategory {
             }
         }
 
-        if (handlers != null && handlers.size() > 0) {
-            Values handlersValues = Values.empty();
-            for (String handler : handlers) {
-                handlersValues.andOptional("handler", handler);
-            }
-        }
-
-
         Values values = Values.empty()
                 .and("category", category)
                 .andOptional("level", level == null ? null : level.value())
@@ -73,16 +58,12 @@ public class AddLogCategory extends ManipulateLogCategory {
                 .andOptional("use-parent-handlers", useParentHandler)
                 .andListOptional(String.class, "handlers", handlers);
 
-
-        Batch batch = new Batch();
-        batch.add(loggerAddress, values);
-
-        ops.batch(batch);
+        ops.add(loggerAddress, values);
     }
 
-    public static final class Builder extends ManipulateLogCategory.Builder<Builder> {
+    public static final class Builder extends AbstractLogCategory.Builder<Builder> {
 
-        private boolean replaceExisting = false;
+        private boolean replaceExisting;
 
         public Builder(final String category) {
             super(category);

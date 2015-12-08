@@ -1,10 +1,8 @@
 def handlerExists = logging.'console-handler'.find { it.@name == name }
 
-
 handlerAttrs = ['name': name]
 if (nn(autoflush)) handlerAttrs['autoflush'] = autoflush
 if (nn(enabled)) handlerAttrs['enabled'] = enabled
-
 
 def newHandlerDef = {
     'console-handler'(handlerAttrs) {
@@ -13,12 +11,12 @@ def newHandlerDef = {
         }
         if (nn(filter)) 'filter-spec'(value: filter)
         if (nn(encoding)) 'encoding'(value: encoding)
-        if (nn(namedFormatter)){
+        if (nn(namedFormatter)) {
             'formatter' {
                 'named-formatter'(name: namedFormatter)
             }
         }
-        if (nn(patternFormatter)){
+        if (nn(patternFormatter)) {
             'formatter' {
                 'pattern-formatter'(pattern: patternFormatter)
             }
@@ -27,7 +25,6 @@ def newHandlerDef = {
 
     }
 }
-
 
 if (!handlerExists) {
     logging.appendNode newHandlerDef

@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.logging;
 
-import com.google.common.base.Charsets;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
 import org.junit.Before;
@@ -21,9 +20,6 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
 @RunWith(Arquillian.class)
 public class RemoveLogCategoryOnlineTest {
 
@@ -61,10 +57,10 @@ public class RemoveLogCategoryOnlineTest {
 
         client.apply(addLogCategory);
 
-        assertTrue("logger wasn't created", ops.exists(TEST_LOGGER_ADDRESS));
+        assertTrue("logger should be created", ops.exists(TEST_LOGGER_ADDRESS));
 
         RemoveLogCategory removeLogger = new RemoveLogCategory(TEST_LOGGER_NAME);
         client.apply(removeLogger);
-        assertFalse("logger wasn't deleted", ops.exists(TEST_LOGGER_ADDRESS));
+        assertFalse("logger should be deleted", ops.exists(TEST_LOGGER_ADDRESS));
     }
 }

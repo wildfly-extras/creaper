@@ -1,12 +1,10 @@
 package org.wildfly.extras.creaper.commands.logging;
 
-import com.google.common.base.Charsets;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
@@ -21,12 +19,8 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
 @RunWith(Arquillian.class)
 public class ChangeLogCategoryOnlineTest {
 
@@ -55,11 +49,11 @@ public class ChangeLogCategoryOnlineTest {
     }
 
     @Test
-    public void changeLogger() throws Exception {
+    public void changeEverything() throws Exception {
         AddLogCategory addLogger = new AddLogCategory.Builder(TEST_LOGGER_NAME)
                 .build();
         client.apply(addLogger);
-        assertTrue("console handler wasn't created", ops.exists(TEST_LOGGER_ADDRESS));
+        assertTrue("console handler should be created", ops.exists(TEST_LOGGER_ADDRESS));
 
         ChangeLogCategory changeLogger = new ChangeLogCategory.Builder(TEST_LOGGER_NAME)
                 .filter("match(\"filter\")")
@@ -70,22 +64,57 @@ public class ChangeLogCategoryOnlineTest {
         client.apply(changeLogger);
 
 
-        assertTrue("console handler wasn't created", ops.exists(TEST_LOGGER_ADDRESS));
+        assertTrue("console handler should be created", ops.exists(TEST_LOGGER_ADDRESS));
 
         ModelNodeResult result = ops.readAttribute(TEST_LOGGER_ADDRESS, "level");
         result.assertSuccess();
-        assertEquals("level has not been changed", Level.DEBUG.value(), result.stringValue());
+        assertEquals("level should be changed", Level.DEBUG.value(), result.stringValue());
 
         result = ops.readAttribute(TEST_LOGGER_ADDRESS, "filter-spec");
         result.assertSuccess();
-        assertEquals("filter-spec has not been changed", "match(\"filter\")", result.stringValue());
+        assertEquals("filter-spec should be changed", "match(\"filter\")", result.stringValue());
 
         result = ops.readAttribute(TEST_LOGGER_ADDRESS, "use-parent-handlers");
         result.assertSuccess();
-        assertTrue("using parent handlers has not been changed", result.booleanValue());
+        assertTrue("using parent handlers should be changed", result.booleanValue());
 
         result = ops.readAttribute(TEST_LOGGER_ADDRESS, "handlers");
         result.assertSuccess();
-        assertEquals("enabled has not been changed", 2, result.stringListValue().size());
+        assertEquals("enabled should be changed", 2, result.stringListValue().size());
+    }
+
+    @Test
+    public void changeNothing() throws Exception {
+        AddLogCategory addLogger = new AddLogCategory.Builder(TEST_LOGGER_NAME)
+                .filter("match(\"filter\")")
+                .handlers("CONSOLE", "FILE")
+                .level(Level.DEBUG)
+                .setUseParentHandler(true)
+                .build();
+        client.apply(addLogger);
+        assertTrue("console handler should be created", ops.exists(TEST_LOGGER_ADDRESS));
+
+        ChangeLogCategory changeLogger = new ChangeLogCategory.Builder(TEST_LOGGER_NAME)
+                .build();
+        client.apply(changeLogger);
+
+
+        assertTrue("console handler should be created", ops.exists(TEST_LOGGER_ADDRESS));
+
+        ModelNodeResult result = ops.readAttribute(TEST_LOGGER_ADDRESS, "level");
+        result.assertSuccess();
+        assertEquals("level should not be changed", Level.DEBUG.value(), result.stringValue());
+
+        result = ops.readAttribute(TEST_LOGGER_ADDRESS, "filter-spec");
+        result.assertSuccess();
+        assertEquals("filter-spec should not be changed", "match(\"filter\")", result.stringValue());
+
+        result = ops.readAttribute(TEST_LOGGER_ADDRESS, "use-parent-handlers");
+        result.assertSuccess();
+        assertTrue("using parent handlers should not be changed", result.booleanValue());
+
+        result = ops.readAttribute(TEST_LOGGER_ADDRESS, "handlers");
+        result.assertSuccess();
+        assertEquals("enabled should not be changed", 2, result.stringListValue().size());
     }
 }

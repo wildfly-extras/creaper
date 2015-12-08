@@ -11,7 +11,7 @@ if (nn(level)) {
         logging.'root-logger'.level.@name = level
     } else {
         logging.'root-logger'.appendNode {
-            level (name: level)
+            level(name: level)
         }
     }
 }
@@ -29,7 +29,7 @@ if (nn(handlers)) {
     if (handlers.isEmpty()) {
         logging.'root-logger'.handlers.replaceNode {}
     } else {
-        if(logging.'root-logger'.handlers.size() > 0) {
+        if (logging.'root-logger'.handlers.size() > 0) {
             logging.'root-logger'.handlers.replaceNode handlersDef
         } else {
             logging.'root-logger'.appendNode handlersDef

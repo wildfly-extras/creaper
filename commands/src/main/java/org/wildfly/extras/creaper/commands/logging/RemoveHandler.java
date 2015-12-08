@@ -11,16 +11,12 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
 public class RemoveHandler implements OnlineCommand, OfflineCommand {
 
     private final HandlerType type;
     private final String name;
 
-    public RemoveHandler (final HandlerType type, final String name) {
+    public RemoveHandler(final HandlerType type, final String name) {
         if (type == null || name == null) {
             throw new IllegalArgumentException("Handler type and name can not be null.");
         }
@@ -29,7 +25,7 @@ public class RemoveHandler implements OnlineCommand, OfflineCommand {
     }
 
     @Override
-    public void apply(OfflineCommandContext ctx) throws Exception {
+    public final void apply(OfflineCommandContext ctx) throws Exception {
         GroovyXmlTransform transform = GroovyXmlTransform.of(RemoveHandler.class)
                 .subtree("logging", Subtree.subsystem("logging"))
 
@@ -42,7 +38,7 @@ public class RemoveHandler implements OnlineCommand, OfflineCommand {
     }
 
     @Override
-    public void apply(final OnlineCommandContext ctx) throws Exception {
+    public final void apply(final OnlineCommandContext ctx) throws Exception {
         Operations ops = new Operations(ctx.client);
 
         Address handlerAddress = Address.subsystem("logging").and(type.value(), name);

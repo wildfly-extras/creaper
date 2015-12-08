@@ -9,13 +9,9 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
+public final class ChangeLogCategory extends AbstractLogCategory {
 
-public class ChangeLogCategory extends ManipulateLogCategory {
-
-    protected ChangeLogCategory(Builder builder) {
+    private ChangeLogCategory(Builder builder) {
         setBaseProperties(builder);
     }
 
@@ -37,6 +33,7 @@ public class ChangeLogCategory extends ManipulateLogCategory {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
+        boolean isSomethingChanged = false;
         Operations ops = new Operations(ctx.client);
 
         Address loggerAddress = Address.subsystem("logging").and("logger", category);
@@ -47,18 +44,23 @@ public class ChangeLogCategory extends ManipulateLogCategory {
 
         Batch batch = new Batch();
         if (filter != null) {
+            isSomethingChanged = true;
             batch.writeAttribute(loggerAddress, "filter-spec", filter);
         }
         if (level != null) {
+            isSomethingChanged = true;
             batch.writeAttribute(loggerAddress, "level", level.value());
         }
         if (useParentHandler != null) {
+            isSomethingChanged = true;
             batch.writeAttribute(loggerAddress, "use-parent-handlers", useParentHandler);
         }
         if (level != null) {
+            isSomethingChanged = true;
             batch.writeAttribute(loggerAddress, "level", level.value());
         }
         if (handlers != null) {
+            isSomethingChanged = true;
             if (handlers.isEmpty()) {
                 batch.undefineAttribute(loggerAddress, "handlers");
             } else {
@@ -66,11 +68,13 @@ public class ChangeLogCategory extends ManipulateLogCategory {
             }
         }
 
-        ops.batch(batch);
+        if (isSomethingChanged) {
+            ops.batch(batch);
+        }
 
     }
 
-    public static final class Builder extends ManipulateLogCategory.Builder<Builder> {
+    public static final class Builder extends AbstractLogCategory.Builder<Builder> {
 
         public Builder(final String category) {
             super(category);

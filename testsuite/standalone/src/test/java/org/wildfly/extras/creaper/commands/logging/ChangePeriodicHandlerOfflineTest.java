@@ -17,9 +17,6 @@ import java.io.File;
 
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
 public class ChangePeriodicHandlerOfflineTest {
     private static final Logger log = Logger.getLogger(ChangePeriodicHandlerOfflineTest.class);
 
@@ -100,7 +97,7 @@ public class ChangePeriodicHandlerOfflineTest {
                 + "                    <pattern-formatter pattern=\"p\"/>\n"
                 + "                </formatter>\n"
                 + "                <file relative-to=\"jboss.server.log.dir.bad\" path=\"server.log-bad\"/>\n"
-                + "                <suffix value=\".suffixx\"/>\n"
+                + "                <suffix value=\".bad-suffix\"/>\n"
                 + "                <append value=\"false\"/>\n"
                 + "            </periodic-rotating-file-handler>\n"
         );
@@ -151,6 +148,36 @@ public class ChangePeriodicHandlerOfflineTest {
         ChangePeriodicHandler changePeriodicHandler = new ChangePeriodicHandler.Builder("handler", "server.log", ".suffix")
                 .filter("match(\"filter*\")")
                 .encoding(Charsets.UTF_8)
+                .build();
+
+        assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
+        client.apply(changePeriodicHandler);
+        assertXmlIdentical(HANDLER_CHANGE_EXPECTED, Files.toString(cfg, Charsets.UTF_8));
+    }
+
+    @Test
+    public void changeNothing() throws Exception {
+        File cfg = tmp.newFile("xmlTransform.xml");
+        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL, ""
+                + "            <periodic-rotating-file-handler name=\"handler\" autoflush=\"false\" enabled=\"false\">\n"
+                + "                <level name=\"FINEST\"/>\n"
+                + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
+                + "                <encoding value=\"UTF-8\"/>\n"
+                + "                <formatter>\n"
+                + "                    <named-formatter name=\"PATTERN\"/>\n"
+                + "                </formatter>\n"
+                + "                <file relative-to=\"jboss.server.log.dir\" path=\"server.log\"/>\n"
+                + "                <suffix value=\".suffix\"/>\n"
+                + "                <append value=\"true\"/>\n"
+                + "            </periodic-rotating-file-handler>\n"
+        );
+
+        Files.write(loggingXmlOriginal, cfg, Charsets.UTF_8);
+
+        OfflineManagementClient client = ManagementClient.offline(
+                OfflineOptions.standalone().configurationFile(cfg).build());
+
+        ChangePeriodicHandler changePeriodicHandler = new ChangePeriodicHandler.Builder("handler", null, null)
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));

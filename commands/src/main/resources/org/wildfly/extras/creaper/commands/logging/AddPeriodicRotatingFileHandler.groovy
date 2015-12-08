@@ -1,6 +1,5 @@
 def handlerExists = logging.'periodic-rotating-file-handler'.find { it.@name == name }
 
-
 handlerAttrs = ['name': name]
 if (nn(autoflush)) handlerAttrs['autoflush'] = autoflush
 if (nn(enabled)) handlerAttrs['enabled'] = enabled
@@ -17,22 +16,21 @@ def newHandlerDef = {
         }
         if (nn(filter)) 'filter-spec'(value: filter)
         if (nn(encoding)) 'encoding'(value: encoding)
-        if (nn(namedFormatter)){
+        if (nn(namedFormatter)) {
             'formatter' {
                 'named-formatter'(name: namedFormatter)
             }
         }
-        if (nn(patternFormatter)){
+        if (nn(patternFormatter)) {
             'formatter' {
                 'pattern-formatter'(pattern: patternFormatter)
             }
         }
         if (nn(file)) 'file'(fileAttrs)
         if (nn(suffix)) 'suffix'(value: suffix)
-        if (nn(append)) 'append'(value:append)
+        if (nn(append)) 'append'(value: append)
     }
 }
-
 
 if (!handlerExists) {
     logging.appendNode newHandlerDef

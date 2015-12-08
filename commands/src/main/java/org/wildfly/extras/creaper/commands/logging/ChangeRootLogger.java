@@ -14,10 +14,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
 public class ChangeRootLogger implements OfflineCommand, OnlineCommand {
 
     private Level level;
@@ -45,13 +41,14 @@ public class ChangeRootLogger implements OfflineCommand, OnlineCommand {
     }
 
     @Override
-    public void apply(OnlineCommandContext ctx) throws Exception {
-
+    public  void apply(OnlineCommandContext ctx) throws Exception {
+        boolean isSomethingChanged = false;
         Operations ops = new Operations(ctx.client);
         Address rootAddress = Address.subsystem("logging").and("root-logger", "ROOT");
 
         Batch batch = new Batch();
         if (handlers != null) {
+            isSomethingChanged = true;
             if (handlers.isEmpty()) {
                 batch.undefineAttribute(rootAddress, "handlers");
             } else {
@@ -59,13 +56,17 @@ public class ChangeRootLogger implements OfflineCommand, OnlineCommand {
             }
         }
         if (level != null) {
+            isSomethingChanged = true;
             batch.writeAttribute(rootAddress, "level", level.value());
         }
         if (filter != null) {
+            isSomethingChanged = true;
             batch.writeAttribute(rootAddress, "filter-spec", filter);
         }
 
-        ops.batch(batch);
+        if (isSomethingChanged) {
+            ops.batch(batch);
+        }
     }
 
     public static final class Builder<THIS extends Builder> {
@@ -108,12 +109,6 @@ public class ChangeRootLogger implements OfflineCommand, OnlineCommand {
             this.handlers = new LinkedList<String>();
         }
 
-        /**
-         * For example match("a*").
-         *
-         * @param filter
-         * @return
-         */
         public THIS changeFilter(final String filter) {
             if (filter == null) {
                 throw new IllegalArgumentException("filter can not be null");

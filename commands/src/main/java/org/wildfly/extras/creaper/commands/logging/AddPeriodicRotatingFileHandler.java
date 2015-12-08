@@ -6,26 +6,21 @@ import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
-import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
-public class AddPeriodicHandler extends ManipulatePeriodicHandler {
+public final class AddPeriodicRotatingFileHandler extends AbstractPeriodicHandler {
     private final boolean replaceExisting;
 
-    private AddPeriodicHandler(Builder builder) {
+    private AddPeriodicRotatingFileHandler(Builder builder) {
         setBaseProperties(builder);
         replaceExisting = builder.replaceExisting;
     }
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        GroovyXmlTransform transform = GroovyXmlTransform.of(AddPeriodicHandler.class)
+        GroovyXmlTransform transform = GroovyXmlTransform.of(AddPeriodicRotatingFileHandler.class)
                 .subtree("logging", Subtree.subsystem("logging"))
 
                 .parameter("name", name)
@@ -76,26 +71,21 @@ public class AddPeriodicHandler extends ManipulatePeriodicHandler {
                                 .andOptional("path", file)
                                 .andOptional("relative-to", fileRelativeTo));
 
-
-        Batch batch = new Batch();
-        batch.add(handlerAddress, values);
-
-        ops.batch(batch);
-
+        ops.add(handlerAddress, values);
     }
 
-    public static final class Builder extends ManipulatePeriodicHandler.Builder<Builder> {
+    public static final class Builder extends AbstractPeriodicHandler.Builder<Builder> {
 
-        private boolean replaceExisting = false;
+        private boolean replaceExisting;
 
-        public Builder(String name, String file, String suffix) {
+        public Builder(final String name, final String file, final String suffix) {
             super(name, file, suffix);
         }
 
         @Override
-        public AddPeriodicHandler build() {
+        public AddPeriodicRotatingFileHandler build() {
             validate();
-            return new AddPeriodicHandler(this);
+            return new AddPeriodicRotatingFileHandler(this);
         }
 
         @Override
@@ -110,7 +100,7 @@ public class AddPeriodicHandler extends ManipulatePeriodicHandler {
          * Set true if replacing of existing node is needed.
          * Default value is false.
          */
-        public Builder setReplaceExisting(final boolean value) {
+        public Builder setReplaceExisting(boolean value) {
             replaceExisting = value;
             return this;
         }

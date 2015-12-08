@@ -17,10 +17,6 @@ import java.io.File;
 
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
 public class RemoveHandlerOfflineTest {
     private static final Logger log = Logger.getLogger(RemoveHandlerOfflineTest.class);
 
@@ -122,7 +118,7 @@ public class RemoveHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        RemoveHandler removeHandler = new RemoveHandler(HandlerType.PERIODIC, "periodic");
+        RemoveHandler removeHandler = new RemoveHandler(HandlerType.PERIODIC_ROTATING_FILE, "periodic");
 
         assertXmlIdentical(HANDLER_ORIGINAL, Files.toString(cfg, Charsets.UTF_8));
         client.apply(removeHandler);
@@ -139,7 +135,7 @@ public class RemoveHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        RemoveHandler removeHandler = new RemoveHandler(HandlerType.PERIODIC, "NONEXISTING");
+        RemoveHandler removeHandler = new RemoveHandler(HandlerType.PERIODIC_ROTATING_FILE, "NONEXISTING");
 
         assertXmlIdentical(HANDLER_ORIGINAL, Files.toString(cfg, Charsets.UTF_8));
         client.apply(removeHandler);

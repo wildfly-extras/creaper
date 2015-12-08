@@ -7,16 +7,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
-public abstract class ManipulateLogCategory implements OnlineCommand, OfflineCommand {
+abstract class AbstractLogCategory implements OnlineCommand, OfflineCommand {
 
     protected String category;
     protected Level level;
     protected List<String> handlers = null;
-    protected Boolean useParentHandler = false;
+    protected Boolean useParentHandler;
     protected String filter;
 
     protected void setBaseProperties(Builder builder) {
@@ -27,12 +23,12 @@ public abstract class ManipulateLogCategory implements OnlineCommand, OfflineCom
         filter = builder.filter;
     }
 
-    public static abstract class Builder<THIS extends Builder> {
+    public abstract static class Builder<THIS extends Builder> {
 
         protected final String category;
         protected Level level = null;
         protected List<String> handlers = null;
-        protected boolean useParentHandler;
+        protected Boolean useParentHandler;
         protected String filter = null;
 
         public Builder(final String category) {
@@ -72,8 +68,8 @@ public abstract class ManipulateLogCategory implements OnlineCommand, OfflineCom
             return (THIS) this;
         }
 
-        public THIS setUseParentHandler(final boolean option) {
-            this.useParentHandler = option;
+        public THIS setUseParentHandler(final Boolean option) {
+            useParentHandler = option;
             return (THIS) this;
         }
 
@@ -81,12 +77,6 @@ public abstract class ManipulateLogCategory implements OnlineCommand, OfflineCom
             this.handlers = new LinkedList<String>();
         }
 
-        /**
-         * For example match("a*").
-         *
-         * @param filter
-         * @return
-         */
         public THIS filter(final String filter) {
             if (filter == null) {
                 throw new IllegalArgumentException("filter can not be null");
@@ -96,6 +86,6 @@ public abstract class ManipulateLogCategory implements OnlineCommand, OfflineCom
             return (THIS) this;
         }
 
-        public abstract ManipulateLogCategory build();
+        public abstract AbstractLogCategory build();
     }
 }

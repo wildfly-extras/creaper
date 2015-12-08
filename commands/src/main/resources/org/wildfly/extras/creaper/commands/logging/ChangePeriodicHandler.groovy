@@ -4,7 +4,6 @@ if (!handler) {
     throw new IllegalStateException(String.format("handler with name %s does not exists.", name))
 }
 
-
 fileNodeNeeded = filePath || fileRelativeTo
 fileAttrs = [:]
 if (nn(filePath)) fileAttrs['path'] = filePath
@@ -23,7 +22,7 @@ if (nn(level)) {
         handler.level.@name = level
     } else {
         handler.appendNode {
-            level (name: level)
+            level(name: level)
         }
     }
 }

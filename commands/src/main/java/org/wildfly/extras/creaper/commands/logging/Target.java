@@ -8,9 +8,6 @@ public enum Target {
 
     private final String val;
 
-    /**
-     * @param val
-     */
     private Target(final String val) {
         this.val = val;
     }
@@ -18,4 +15,4 @@ public enum Target {
     public String value() {
         return val;
     }
-};
+}

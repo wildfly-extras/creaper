@@ -20,7 +20,7 @@ if (nn(level)) {
         logger.level.@name = level
     } else {
         logger.appendNode {
-            level (name: level)
+            level(name: level)
         }
     }
 }
@@ -37,7 +37,7 @@ if (nn(handlers)) {
     if (handlers.isEmpty()) {
         logger.handlers.replaceNode {}
     } else {
-        if(logger.handlers.size() > 0) {
+        if (logger.handlers.size() > 0) {
             logger.handlers.replaceNode handlersDef
         } else {
             logger.appendNode handlersDef

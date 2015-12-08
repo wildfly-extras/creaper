@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.online.CliException;
-import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -22,9 +21,6 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
 @RunWith(Arquillian.class)
 public class RemoveHandlerOnlineTest {
     private static final String TEST_HANDLER_NAME = "creaper-handler";
@@ -67,16 +63,16 @@ public class RemoveHandlerOnlineTest {
 
         client.apply(addConsoleHandler);
 
-        assertTrue("console handler wasn't created", ops.exists(TEST_CONSOLE_HANDLER_ADDRESS));
+        assertTrue("console handler should be created", ops.exists(TEST_CONSOLE_HANDLER_ADDRESS));
 
         RemoveHandler removeHandler = new RemoveHandler(HandlerType.CONSOLE, TEST_HANDLER_NAME);
         client.apply(removeHandler);
-        assertFalse("console handler wasn't deleted", ops.exists(TEST_CONSOLE_HANDLER_ADDRESS));
+        assertFalse("console handler should be deleted", ops.exists(TEST_CONSOLE_HANDLER_ADDRESS));
     }
 
     @Test
     public void removePeriodic() throws Exception {
-        AddPeriodicHandler addPeriodicHandler = new AddPeriodicHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler = new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -87,12 +83,12 @@ public class RemoveHandlerOnlineTest {
                 .encoding(Charsets.UTF_8)
                 .build();
 
-        client.apply(addPeriodicHandler);
+        client.apply(addPeriodicRotatingFileHandler);
 
-        assertTrue("console handler wasn't created", ops.exists(TEST_PERIODIC_HANDLER_ADDRESS));
+        assertTrue("console handler should be created", ops.exists(TEST_PERIODIC_HANDLER_ADDRESS));
 
-        RemoveHandler removeHandler = new RemoveHandler(HandlerType.PERIODIC, TEST_HANDLER_NAME);
+        RemoveHandler removeHandler = new RemoveHandler(HandlerType.PERIODIC_ROTATING_FILE, TEST_HANDLER_NAME);
         client.apply(removeHandler);
-        assertFalse("periodic handler wasn't deleted", ops.exists(TEST_PERIODIC_HANDLER_ADDRESS));
+        assertFalse("periodic handler should be deleted", ops.exists(TEST_PERIODIC_HANDLER_ADDRESS));
     }
 }

@@ -6,11 +6,7 @@ import org.wildfly.extras.creaper.core.online.OnlineCommand;
 
 import java.nio.charset.Charset;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
-public abstract class ManipulateConsoleHandler implements OnlineCommand, OfflineCommand {
+abstract class AbstractConsoleHandler implements OnlineCommand, OfflineCommand {
 
     protected String name;
     protected Boolean autoflush;
@@ -34,7 +30,7 @@ public abstract class ManipulateConsoleHandler implements OnlineCommand, Offline
         target = builder.target;
     }
 
-    public static abstract class Builder<THIS extends Builder> {
+    public abstract static class Builder<THIS extends Builder> {
         protected String name;
         protected Boolean autoflush;
         protected Boolean enabled;
@@ -58,10 +54,6 @@ public abstract class ManipulateConsoleHandler implements OnlineCommand, Offline
             }
         }
 
-        /**
-         * @param val
-         * @return
-         */
         public THIS setAutoFlush(final boolean val) {
             autoflush = val;
             return (THIS) this;
@@ -104,9 +96,6 @@ public abstract class ManipulateConsoleHandler implements OnlineCommand, Offline
             return (THIS) this;
         }
 
-        /**
-         * You can use PATTERN. This should be configured already.
-         */
         public THIS namedFormatter(final String namedFormatter) {
             if (namedFormatter == null) {
                 throw new IllegalArgumentException("named formatter can not be null.");
@@ -123,7 +112,7 @@ public abstract class ManipulateConsoleHandler implements OnlineCommand, Offline
             return (THIS) this;
         }
 
-        public abstract ManipulateConsoleHandler build();
+        public abstract AbstractConsoleHandler build();
 
     }
 }

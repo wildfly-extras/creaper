@@ -22,10 +22,6 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
 @RunWith(Arquillian.class)
 public class ChangeConsoleHandlerOnlineTest {
     private static final String TEST_HANDLER_NAME = "NEW";
@@ -53,7 +49,7 @@ public class ChangeConsoleHandlerOnlineTest {
     }
 
     @Test
-    public void changeHandler() throws Exception {
+    public void changeAll() throws Exception {
         AddConsoleHandler addHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME)
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
@@ -65,7 +61,7 @@ public class ChangeConsoleHandlerOnlineTest {
                 .build();
 
         client.apply(addHandler);
-        assertTrue("handler wasn't created", ops.exists(TEST_HANDLER_ADDRESS));
+        assertTrue("handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
 
         ChangeConsoleHandler changeHandler = new ChangeConsoleHandler.Builder(TEST_HANDLER_NAME)
@@ -80,35 +76,88 @@ public class ChangeConsoleHandlerOnlineTest {
 
         client.apply(changeHandler);
 
-        assertTrue("handeler wasn't created", ops.exists(TEST_HANDLER_ADDRESS));
+        assertTrue("handeler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
 
         ModelNodeResult result = ops.readAttribute(TEST_HANDLER_ADDRESS, "level");
         result.assertSuccess();
-        assertEquals("level has not been changed", Level.WARN.value(), result.stringValue());
+        assertEquals("level should be changed", Level.WARN.value(), result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "filter-spec");
         result.assertSuccess();
-        assertEquals("filter-spec has not been changed", "match(\"new-filter*\")", result.stringValue());
+        assertEquals("filter-spec should be changed", "match(\"new-filter*\")", result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "autoflush");
         result.assertSuccess();
-        assertTrue("autoflush has not been changed", result.booleanValue());
+        assertTrue("autoflush should be changed", result.booleanValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "enabled");
         result.assertSuccess();
-        assertTrue("enabled has not been changed", result.booleanValue());
+        assertTrue("enabled should be changed", result.booleanValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "formatter");
         result.assertSuccess();
-        assertEquals("pattern-formatter has not been changed", "new-pattern", result.stringValue());
+        assertEquals("pattern-formatter should be changed", "new-pattern", result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "encoding");
         result.assertSuccess();
-        assertEquals("pattern-formatter has not been changed", Charsets.ISO_8859_1.displayName(), result.stringValue());
+        assertEquals("encoding should be changed", Charsets.ISO_8859_1.displayName(), result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "target");
         result.assertSuccess();
-        assertEquals("pattern-formatter has not been changed", Target.STDOUT.value(), result.stringValue());
+        assertEquals("target should be changed", Target.STDOUT.value(), result.stringValue());
+    }
+
+    @Test
+    public void changeNothing() throws Exception {
+        AddConsoleHandler addHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME)
+                .level(Level.WARN)
+                .filter("match(\"new-filter*\")")
+                .setAutoFlush(true)
+                .setEnabled(true)
+                .patternFormatter("new-pattern")
+                .target(Target.STDOUT)
+                .encoding(Charsets.ISO_8859_1)
+                .build();
+
+        client.apply(addHandler);
+        assertTrue("handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+
+
+        ChangeConsoleHandler changeHandler = new ChangeConsoleHandler.Builder(TEST_HANDLER_NAME)
+                .build();
+
+        client.apply(changeHandler);
+
+        assertTrue("handeler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+
+
+        ModelNodeResult result = ops.readAttribute(TEST_HANDLER_ADDRESS, "level");
+        result.assertSuccess();
+        assertEquals("level should be changed", Level.WARN.value(), result.stringValue());
+
+        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "filter-spec");
+        result.assertSuccess();
+        assertEquals("filter-spec should not be changed", "match(\"new-filter*\")", result.stringValue());
+
+        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "autoflush");
+        result.assertSuccess();
+        assertTrue("autoflush should not be changed", result.booleanValue());
+
+        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "enabled");
+        result.assertSuccess();
+        assertTrue("enabled should not be changed", result.booleanValue());
+
+        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "formatter");
+        result.assertSuccess();
+        assertEquals("pattern-formatter should not be changed", "new-pattern", result.stringValue());
+
+        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "encoding");
+        result.assertSuccess();
+        assertEquals("encoding should not be changed", Charsets.ISO_8859_1.displayName(), result.stringValue());
+
+        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "target");
+        result.assertSuccess();
+        assertEquals("target should not be changed", Target.STDOUT.value(), result.stringValue());
     }
 }

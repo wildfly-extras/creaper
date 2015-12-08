@@ -1,6 +1,5 @@
 def loggerExist = logging.logger.find { it.@category == category }
 
-
 loggerAttrs = ['category': category]
 if (nn(useParentHandler)) loggerAttrs['use-parent-handlers'] = useParentHandler
 
@@ -15,17 +14,16 @@ def newLoggerDef = {
                 handlers.each {
                     handler(name: it)
                 }
-        }
+            }
     }
 }
-
 
 if (!loggerExist) {
     logging.appendNode newLoggerDef
 } else if (replaceExisting) {
     loggerExist.replaceNode newLoggerDef
 } else {
-   throw new IllegalStateException(String.format("Logger with category %s already exists. If You want to add this logger, please set replaceExisting.", category))
+    throw new IllegalStateException(String.format("Logger with category %s already exists. If You want to add this logger, please set replaceExisting.", category))
 }
 
 /**

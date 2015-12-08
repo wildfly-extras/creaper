@@ -17,9 +17,6 @@ import java.io.File;
 
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
 public class AddConsoleHandlerOfflineTest {
     private static final Logger log = Logger.getLogger(AddConsoleHandlerOfflineTest.class);
 
@@ -104,13 +101,13 @@ public class AddConsoleHandlerOfflineTest {
     @Test
     public void replaceExisting() throws Exception {
         File cfg = tmp.newFile("xmlTransform.xml");
-        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL,
-                "            <console-handler name=\"consolehandler\" autoflush=\"false\" enabled=\"false\">\n"
-                        + "                <level name=\"FINEST\"/>\n"
-                        + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
-                        + "                <encoding value=\"UTF-8\"/>\n"
-                        + "                <target name=\"System.out\"/>\n"
-                        + "            </console-handler>\n"
+        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL, ""
+                + "            <console-handler name=\"consolehandler\" autoflush=\"false\" enabled=\"false\">\n"
+                + "                <level name=\"FINEST\"/>\n"
+                + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
+                + "                <encoding value=\"UTF-8\"/>\n"
+                + "                <target name=\"System.out\"/>\n"
+                + "            </console-handler>\n"
         );
 
         Files.write(loggingXmlOriginal, cfg, Charsets.UTF_8);
@@ -138,13 +135,13 @@ public class AddConsoleHandlerOfflineTest {
     @Test(expected = CommandFailedException.class)
     public void replaceExisting2() throws Exception {
         File cfg = tmp.newFile("xmlTransform.xml");
-        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL,
-                "            <console-handler name=\"consolehandler\" autoflush=\"false\" enabled=\"false\">\n"
-                        + "                <level name=\"FINEST\"/>\n"
-                        + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
-                        + "                <encoding value=\"UTF-8\"/>\n"
-                        + "                <target name=\"System.out\"/>\n"
-                        + "            </console-handler>\n"
+        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL, ""
+                + "            <console-handler name=\"consolehandler\" autoflush=\"false\" enabled=\"false\">\n"
+                + "                <level name=\"FINEST\"/>\n"
+                + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
+                + "                <encoding value=\"UTF-8\"/>\n"
+                + "                <target name=\"System.out\"/>\n"
+                + "            </console-handler>\n"
         );
 
         Files.write(loggingXmlOriginal, cfg, Charsets.UTF_8);

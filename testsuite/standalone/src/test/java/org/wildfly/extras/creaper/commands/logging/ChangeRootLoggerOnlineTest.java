@@ -21,10 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
 @RunWith(Arquillian.class)
 public class ChangeRootLoggerOnlineTest {
     private static final String ROOT_NAME = "ROOT";
@@ -52,7 +48,7 @@ public class ChangeRootLoggerOnlineTest {
     }
 
     @Test
-    public void changeRootLogger() throws Exception {
+    public void changeEverything() throws Exception {
         ChangeRootLogger changeRootLogger = new ChangeRootLogger.Builder()
                 .changeFilter("match(\"new-filter\")")
                 .changeHandlers(new String[]{})
@@ -68,11 +64,11 @@ public class ChangeRootLoggerOnlineTest {
                 ops.readAttribute(TEST_ROOT_LOGGER_ADDRESS, "handlers").hasDefinedValue());
 
         ops.readAttribute(TEST_ROOT_LOGGER_ADDRESS, "level").assertSuccess();
-        assertEquals("level is not changed", Level.OFF.value(),
+        assertEquals("level should be changed", Level.OFF.value(),
                 ops.readAttribute(TEST_ROOT_LOGGER_ADDRESS, "level").stringValue());
 
         ops.readAttribute(TEST_ROOT_LOGGER_ADDRESS, "filter-spec").assertSuccess();
-        assertEquals("filter-spec is not changed", "match(\"new-filter\")",
+        assertEquals("filter-spec should be changed", "match(\"new-filter\")",
                 ops.readAttribute(TEST_ROOT_LOGGER_ADDRESS, "filter-spec").stringValue());
 
 

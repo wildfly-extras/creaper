@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
@@ -24,12 +25,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
-public class ChangePeriodicHandlerOnlineTest {
-    private static final String TEST_HANDLER_NAME = "NEW";
+public class AddPeriodicRotatingFileHandlerOnlineTest {
+    private static final String TEST_HANDLER_NAME = "creaper-handler_1";
     private static final Address TEST_HANDLER_ADDRESS =
             Address.subsystem("logging").and("periodic-rotating-file-handler", TEST_HANDLER_NAME);
-    private static final Address DEFAULT_PATTERN_ADDRESS =
-            Address.subsystem("logging").and("pattern-formatter", "PATTERN");
     private OnlineManagementClient client;
     private Operations ops;
     private Administration administration;
@@ -52,35 +51,20 @@ public class ChangePeriodicHandlerOnlineTest {
     }
 
     @Test
-    public void changeEverything() throws Exception {
-        AddPeriodicRotatingFileHandler addHandler =
+    public void addHandler() throws Exception {
+        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler =
                 new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
-                        .level(Level.FINEST)
-                        .filter("match(\"filter*\")")
-                        .setAutoFlush(false)
-                        .setEnabled(false)
-                        .patternFormatter("pattern")
-                        .setAppend(true)
-                        .encoding(Charsets.UTF_8)
-                        .build();
-
-        client.apply(addHandler);
-        assertTrue("periodic handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
-
-
-        ChangePeriodicHandler changeHandler =
-                new ChangePeriodicHandler.Builder(TEST_HANDLER_NAME, "new-server.log", ".yyyy")
                         .level(Level.WARN)
-                        .filter("match(\"new-filter*\")")
+                        .filter("match(\"filter*\")")
                         .setAutoFlush(true)
                         .setEnabled(true)
-                        .patternFormatter("new-pattern")
+                        .patternFormatter("pattern")
                         .setAppend(false)
                         .fileRelativeTo("jboss.server.log.dir")
                         .encoding(Charsets.ISO_8859_1)
                         .build();
 
-        client.apply(changeHandler);
+        client.apply(addPeriodicRotatingFileHandler);
 
         assertTrue("periodic handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
@@ -91,7 +75,7 @@ public class ChangePeriodicHandlerOnlineTest {
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "filter-spec");
         result.assertSuccess();
-        assertEquals("filter-spec should be changed", "match(\"new-filter*\")", result.stringValue());
+        assertEquals("filter-spec should be changed", "match(\"filter*\")", result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "autoflush");
         result.assertSuccess();
@@ -107,11 +91,11 @@ public class ChangePeriodicHandlerOnlineTest {
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "formatter");
         result.assertSuccess();
-        assertEquals("pattern-formatter should be changed", "new-pattern", result.stringValue());
+        assertEquals("pattern-formatter should be changed", "pattern", result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "file");
         result.assertSuccess();
-        assertEquals("log file should be changed", "new-server.log", result.get("result").get("path").asString());
+        assertEquals("log file should be changed", "server.log", result.get("result").get("path").asString());
         assertEquals("relative-to attr should be changed", "jboss.server.log.dir",
                 result.get("result").get("relative-to").asString());
 
@@ -121,63 +105,75 @@ public class ChangePeriodicHandlerOnlineTest {
     }
 
     @Test
-    public void changeNothing() throws Exception {
-        AddPeriodicRotatingFileHandler addHandler =
+    public void replaceHandler() throws Exception {
+        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler =
                 new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
-                        .level(Level.WARN)
-                        .filter("match(\"new-filter*\")")
-                        .setAutoFlush(true)
-                        .setEnabled(true)
-                        .patternFormatter("new-pattern")
-                        .setAppend(false)
+                        .level(Level.FINEST)
+                        .filter("match(\"filter*\")")
+                        .setAutoFlush(false)
+                        .setEnabled(false)
+                        .patternFormatter("pattern")
+                        .setAppend(true)
                         .fileRelativeTo("jboss.server.log.dir")
-                        .encoding(Charsets.ISO_8859_1)
+                        .encoding(Charsets.UTF_8)
                         .build();
 
-        client.apply(addHandler);
-        assertTrue("periodic handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+        client.apply(addPeriodicRotatingFileHandler);
 
+        assertTrue("periodic file handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
-        ChangePeriodicHandler changeHandler = new ChangePeriodicHandler.Builder(TEST_HANDLER_NAME, null, null)
-                .build();
+        addPeriodicRotatingFileHandler =
+                new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+                        .level(Level.FINEST)
+                        .filter("match(\"new-filter*\")")
+                        .setAutoFlush(false)
+                        .setEnabled(false)
+                        .patternFormatter("pattern")
+                        .setAppend(true)
+                        .fileRelativeTo("jboss.server.log.dir")
+                        .encoding(Charsets.UTF_8)
+                        .setReplaceExisting(true)
+                        .build();
 
-        client.apply(changeHandler);
+        client.apply(addPeriodicRotatingFileHandler);
 
-        assertTrue("periodic handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+        assertTrue("periodic fila handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+        ops.readAttribute(TEST_HANDLER_ADDRESS, "filter-spec").assertSuccess();
+        assertEquals("filter-spec is not changed", "match(\"new-filter*\")",
+                ops.readAttribute(TEST_HANDLER_ADDRESS, "filter-spec").stringValue());
+    }
 
+    @Test(expected = CommandFailedException.class)
+    public void replaceHandler2() throws Exception {
+        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler =
+                new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+                        .level(Level.FINEST)
+                        .filter("match(\"filter*\")")
+                        .setAutoFlush(false)
+                        .setEnabled(false)
+                        .patternFormatter("pattern")
+                        .setAppend(true)
+                        .fileRelativeTo("jboss.server.log.dir")
+                        .encoding(Charsets.UTF_8)
+                        .build();
 
-        ModelNodeResult result = ops.readAttribute(TEST_HANDLER_ADDRESS, "level");
-        result.assertSuccess();
-        assertEquals("level should not be changed", Level.WARN.value(), result.stringValue());
+        client.apply(addPeriodicRotatingFileHandler);
 
-        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "filter-spec");
-        result.assertSuccess();
-        assertEquals("filter-spec should not be changed", "match(\"new-filter*\")", result.stringValue());
+        assertTrue("periodic file handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
-        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "autoflush");
-        result.assertSuccess();
-        assertTrue("autoflush should not be changed", result.booleanValue());
+        addPeriodicRotatingFileHandler =
+                new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+                        .level(Level.FINEST)
+                        .filter("match(\"new-filter*\")")
+                        .setAutoFlush(false)
+                        .setEnabled(false)
+                        .patternFormatter("pattern")
+                        .setAppend(true)
+                        .fileRelativeTo("jboss.server.log.dir")
+                        .encoding(Charsets.UTF_8)
+                        .setReplaceExisting(false)
+                        .build();
 
-        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "enabled");
-        result.assertSuccess();
-        assertTrue("enabled should not be changed", result.booleanValue());
-
-        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "append");
-        result.assertSuccess();
-        assertFalse("append should not be changed", result.booleanValue());
-
-        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "formatter");
-        result.assertSuccess();
-        assertEquals("pattern-formatter should not be changed", "new-pattern", result.stringValue());
-
-        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "file");
-        result.assertSuccess();
-        assertEquals("log file should not be changed", "server.log", result.get("result").get("path").asString());
-        assertEquals("relative-to attr should not be changed", "jboss.server.log.dir",
-                result.get("result").get("relative-to").asString());
-
-        result = ops.readAttribute(TEST_HANDLER_ADDRESS, "encoding");
-        result.assertSuccess();
-        assertEquals("encoding should not be changed", Charsets.ISO_8859_1.displayName(), result.stringValue());
+        client.apply(addPeriodicRotatingFileHandler);
     }
 }

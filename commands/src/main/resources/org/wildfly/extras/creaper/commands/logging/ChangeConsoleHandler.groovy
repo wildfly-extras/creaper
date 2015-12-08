@@ -1,7 +1,7 @@
 def handler = logging.'console-handler'.find { it.@name == name }
 
 if (!handler) {
-    throw new IllegalStateException(String.format("periodic file handler with name %s does not exists.", name))
+    throw new IllegalStateException(String.format("console handler with name %s does not exists.", name))
 }
 
 if (nn(autoflush)) {
@@ -17,7 +17,7 @@ if (nn(level)) {
         handler.level.@name = level
     } else {
         handler.appendNode {
-            level (name: level)
+            level(name: level)
         }
     }
 }

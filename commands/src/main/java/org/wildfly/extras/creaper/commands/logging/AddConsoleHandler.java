@@ -6,16 +6,11 @@ import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
-import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
-public class AddConsoleHandler extends ManipulateConsoleHandler {
+public final class AddConsoleHandler extends AbstractConsoleHandler {
     private final boolean replaceExisting;
 
     private AddConsoleHandler(Builder builder) {
@@ -69,17 +64,14 @@ public class AddConsoleHandler extends ManipulateConsoleHandler {
                 .andOptional("formatter", patternFormatter);
 
 
-        Batch batch = new Batch();
-        batch.add(handlerAddress, values);
-
-        ops.batch(batch);
+        ops.add(handlerAddress, values);
     }
 
-    public static final class Builder extends ManipulateConsoleHandler.Builder<Builder> {
+    public static final class Builder extends AbstractConsoleHandler.Builder<Builder> {
 
-        private boolean replaceExisting = false;
+        private boolean replaceExisting;
 
-        public Builder(String name) {
+        public Builder(final String name) {
             super(name);
         }
 
@@ -93,7 +85,7 @@ public class AddConsoleHandler extends ManipulateConsoleHandler {
          * Set true if replacing of existing node is needed.
          * Default value is false.
          */
-        public Builder setReplaceExisting(final boolean value) {
+        public Builder setReplaceExisting(boolean value) {
             replaceExisting = value;
             return this;
         }

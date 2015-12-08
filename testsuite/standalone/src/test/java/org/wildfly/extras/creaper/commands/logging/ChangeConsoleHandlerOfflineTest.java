@@ -17,9 +17,6 @@ import java.io.File;
 
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
 public class ChangeConsoleHandlerOfflineTest {
     private static final Logger log = Logger.getLogger(ChangeConsoleHandlerOfflineTest.class);
 
@@ -60,9 +57,9 @@ public class ChangeConsoleHandlerOfflineTest {
     @Test
     public void addAll() throws Exception {
         File cfg = tmp.newFile("xmlTransform.xml");
-        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL,
-                "            <console-handler name=\"consolehandler\">\n"
-                        + "            </console-handler>\n"
+        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL, ""
+                + "            <console-handler name=\"consolehandler\">\n"
+                + "            </console-handler>\n"
         );
 
         Files.write(loggingXmlOriginal, cfg, Charsets.UTF_8);
@@ -70,7 +67,7 @@ public class ChangeConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ManipulateConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
+        AbstractConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -105,7 +102,7 @@ public class ChangeConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ManipulateConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
+        AbstractConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -140,9 +137,37 @@ public class ChangeConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ManipulateConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
+        ChangeConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
                 .filter("match(\"filter*\")")
                 .target(Target.CONSOLE)
+                .build();
+
+        assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
+        client.apply(changeConsoleHandler);
+        assertXmlIdentical(HANDLER_CHANGE_EXPECTED, Files.toString(cfg, Charsets.UTF_8));
+    }
+
+    @Test
+    public void changeNothing() throws Exception {
+        File cfg = tmp.newFile("xmlTransform.xml");
+        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL, ""
+                + "            <console-handler name=\"consolehandler\" autoflush=\"false\" enabled=\"false\">\n"
+                + "                <level name=\"FINEST\"/>\n"
+                + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
+                + "                <encoding value=\"UTF-8\"/>\n"
+                + "                <formatter>\n"
+                + "                    <pattern-formatter pattern=\"pattern\"/>\n"
+                + "                </formatter>\n"
+                + "                <target name=\"console\"/>\n"
+                + "            </console-handler>\n"
+        );
+
+        Files.write(loggingXmlOriginal, cfg, Charsets.UTF_8);
+
+        OfflineManagementClient client = ManagementClient.offline(
+                OfflineOptions.standalone().configurationFile(cfg).build());
+
+        ChangeConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
@@ -153,9 +178,9 @@ public class ChangeConsoleHandlerOfflineTest {
     @Test(expected = CommandFailedException.class)
     public void nonExisting() throws Exception {
         File cfg = tmp.newFile("xmlTransform.xml");
-        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL,
-                "            <console-handler name=\"consolehandler\">\n"
-                        + "            </console-handler>\n"
+        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL, ""
+                + "            <console-handler name=\"consolehandler\">\n"
+                + "            </console-handler>\n"
         );
 
         Files.write(loggingXmlOriginal, cfg, Charsets.UTF_8);
@@ -163,7 +188,7 @@ public class ChangeConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ManipulateConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("NOTEXISTING")
+        AbstractConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("NOTEXISTING")
                 .level(Level.FINEST)
                 .build();
 

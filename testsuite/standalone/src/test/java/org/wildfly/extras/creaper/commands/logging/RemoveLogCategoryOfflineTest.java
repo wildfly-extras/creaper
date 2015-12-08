@@ -17,10 +17,6 @@ import java.io.File;
 
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
 public class RemoveLogCategoryOfflineTest {
     private static final Logger log = Logger.getLogger(RemoveLogCategoryOfflineTest.class);
 

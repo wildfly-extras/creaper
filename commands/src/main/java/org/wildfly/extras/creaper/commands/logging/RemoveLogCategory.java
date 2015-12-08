@@ -12,20 +12,16 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
-public class RemoveLogCategory implements OfflineCommand, OnlineCommand{
+public class RemoveLogCategory implements OfflineCommand, OnlineCommand {
 
     private String category;
 
-    public RemoveLogCategory (String category) {
+    public RemoveLogCategory(String category) {
         this.category = category;
     }
 
     @Override
-    public void apply(OfflineCommandContext ctx) throws Exception {
+    public final void apply(OfflineCommandContext ctx) throws Exception {
         GroovyXmlTransform transform = GroovyXmlTransform.of(RemoveLogCategory.class)
                 .subtree("logging", Subtree.subsystem("logging"))
 
@@ -37,7 +33,7 @@ public class RemoveLogCategory implements OfflineCommand, OnlineCommand{
     }
 
     @Override
-    public void apply(OnlineCommandContext ctx) throws Exception {
+    public final void apply(OnlineCommandContext ctx) throws Exception {
         Operations ops = new Operations(ctx.client);
 
         Address handlerAddress = Address.subsystem("logging").and("logger", category);

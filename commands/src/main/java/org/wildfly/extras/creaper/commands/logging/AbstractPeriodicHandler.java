@@ -6,11 +6,7 @@ import org.wildfly.extras.creaper.core.online.OnlineCommand;
 
 import java.nio.charset.Charset;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
-public abstract class ManipulatePeriodicHandler implements OnlineCommand, OfflineCommand {
+abstract class AbstractPeriodicHandler implements OnlineCommand, OfflineCommand {
 
     protected String name;
     protected Boolean autoflush;
@@ -40,7 +36,7 @@ public abstract class ManipulatePeriodicHandler implements OnlineCommand, Offlin
         suffix = builder.suffix;
     }
 
-    public static abstract class Builder<THIS extends Builder> {
+    public abstract static class Builder<THIS extends Builder> {
         protected String name;
         protected Boolean autoflush;
         protected Boolean enabled;
@@ -69,10 +65,6 @@ public abstract class ManipulatePeriodicHandler implements OnlineCommand, Offlin
             }
         }
 
-        /**
-         * @param val
-         * @return
-         */
         public THIS setAutoFlush(final boolean val) {
             autoflush = val;
             return (THIS) this;
@@ -139,7 +131,7 @@ public abstract class ManipulatePeriodicHandler implements OnlineCommand, Offlin
             return (THIS) this;
         }
 
-        public abstract ManipulatePeriodicHandler build();
+        public abstract AbstractPeriodicHandler build();
 
     }
 }

@@ -9,11 +9,7 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-
-public class ChangePeriodicHandler extends ManipulatePeriodicHandler {
+public final class ChangePeriodicHandler extends AbstractPeriodicHandler {
 
     private ChangePeriodicHandler(Builder builder) {
         setBaseProperties(builder);
@@ -29,7 +25,7 @@ public class ChangePeriodicHandler extends ManipulatePeriodicHandler {
                 .parameter("enabled", enabled == null ? null : String.valueOf(enabled))
                 .parameter("append", append == null ? null : String.valueOf(append))
                 .parameter("filter", filter)
-                .parameter("encoding", encoding.displayName())
+                .parameter("encoding", encoding == null ? null : encoding.displayName())
                 .parameter("patternFormatter", patternFormatter)
                 .parameter("namedFormatter", namedFormatter)
                 .parameter("level", level == null ? null : level.value())
@@ -44,6 +40,7 @@ public class ChangePeriodicHandler extends ManipulatePeriodicHandler {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
+        boolean isSomethingChanged = false;
         Operations ops = new Operations(ctx.client);
 
         Address handlerAddress = Address.subsystem("logging").and("periodic-rotating-file-handler", name);
@@ -52,38 +49,47 @@ public class ChangePeriodicHandler extends ManipulatePeriodicHandler {
             throw new IllegalStateException(String.format("periodic rotating file handler %s does not exist.", name));
         }
 
-
         Batch batch = new Batch();
         if (autoflush != null) {
             batch.writeAttribute(handlerAddress, "autoflush", autoflush);
+            isSomethingChanged = true;
         }
         if (enabled != null) {
             batch.writeAttribute(handlerAddress, "enabled", enabled);
+            isSomethingChanged = true;
         }
         if (filter != null) {
             batch.writeAttribute(handlerAddress, "filter-spec", filter);
+            isSomethingChanged = true;
         }
         if (encoding != null) {
             batch.writeAttribute(handlerAddress, "encoding", encoding.displayName());
+            isSomethingChanged = true;
         }
         if (patternFormatter != null) {
             batch.writeAttribute(handlerAddress, "formatter", patternFormatter);
+            isSomethingChanged = true;
         }
         if (namedFormatter != null) {
             batch.writeAttribute(handlerAddress, "named-formatter", namedFormatter);
+            isSomethingChanged = true;
         }
         if (level != null) {
             batch.writeAttribute(handlerAddress, "level", level.value());
+            isSomethingChanged = true;
         }
         if (append != null) {
             batch.writeAttribute(handlerAddress, "append", append);
+            isSomethingChanged = true;
         }
         if (suffix != null) {
             batch.writeAttribute(handlerAddress, "suffix", suffix);
+            isSomethingChanged = true;
         }
         if (file != null || fileRelativeTo != null) {
             ModelNode node = new ModelNode();
             ModelNode oldFileNode = ops.readAttribute(handlerAddress, "file").get("result");
+            isSomethingChanged = true;
             if (file != null) {
                 node.get("path").set(this.file);
             } else {
@@ -96,12 +102,18 @@ public class ChangePeriodicHandler extends ManipulatePeriodicHandler {
             }
             batch.writeAttribute(handlerAddress, "file", node);
         }
-        ops.batch(batch);
+
+        if (isSomethingChanged) {
+            ops.batch(batch);
+        }
 
     }
 
-    public static final class Builder extends ManipulatePeriodicHandler.Builder<Builder> {
+    public static final class Builder extends AbstractPeriodicHandler.Builder<Builder> {
 
+        /**
+         * if file and suffix is not needed to be changed, use null
+         */
         public Builder(String name, String file, String suffix) {
             super(name, file, suffix);
         }

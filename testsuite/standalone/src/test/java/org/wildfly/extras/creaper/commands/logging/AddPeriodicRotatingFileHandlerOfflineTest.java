@@ -17,11 +17,8 @@ import java.io.File;
 
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
-/**
- * @author Ivan Straka istraka@redhat.com
- */
-public class AddPeriodicHandlerOfflineTest {
-    private static final Logger log = Logger.getLogger(AddPeriodicHandlerOfflineTest.class);
+public class AddPeriodicRotatingFileHandlerOfflineTest {
+    private static final Logger log = Logger.getLogger(AddPeriodicRotatingFileHandlerOfflineTest.class);
 
     private static final String HANDLER_ORIGINAL = ""
             + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
@@ -88,7 +85,7 @@ public class AddPeriodicHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddPeriodicHandler addPeriodicHandler = new AddPeriodicHandler.Builder("handler", "server.log", ".suffix")
+        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler = new AddPeriodicRotatingFileHandler.Builder("handler", "server.log", ".suffix")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -100,7 +97,7 @@ public class AddPeriodicHandlerOfflineTest {
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
-        client.apply(addPeriodicHandler);
+        client.apply(addPeriodicRotatingFileHandler);
 
         assertXmlIdentical(HANDLER_ADD_EXPECTED, Files.toString(cfg, Charsets.UTF_8));
     }
@@ -109,13 +106,13 @@ public class AddPeriodicHandlerOfflineTest {
     @Test
     public void replaceExisting() throws Exception {
         File cfg = tmp.newFile("xmlTransform.xml");
-        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL,
-                "            <periodic-rotating-file-handler name=\"handler\" autoflush=\"false\" enabled=\"false\">\n"
-                        + "                <level name=\"FINEST\"/>\n"
-                        + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
-                        + "                <encoding value=\"UTF-8\"/>\n"
-                        + "                <target name=\"System.out\"/>\n"
-                        + "            </periodic-rotating-file-handler>\n"
+        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL, ""
+                + "            <periodic-rotating-file-handler name=\"handler\" autoflush=\"false\" enabled=\"false\">\n"
+                + "                <level name=\"FINEST\"/>\n"
+                + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
+                + "                <encoding value=\"UTF-8\"/>\n"
+                + "                <target name=\"System.out\"/>\n"
+                + "            </periodic-rotating-file-handler>\n"
         );
 
         Files.write(loggingXmlOriginal, cfg, Charsets.UTF_8);
@@ -123,7 +120,7 @@ public class AddPeriodicHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddPeriodicHandler addPeriodicHandler = new AddPeriodicHandler.Builder("handler", "server.log", ".suffix")
+        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler = new AddPeriodicRotatingFileHandler.Builder("handler", "server.log", ".suffix")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -136,7 +133,7 @@ public class AddPeriodicHandlerOfflineTest {
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
-        client.apply(addPeriodicHandler);
+        client.apply(addPeriodicRotatingFileHandler);
         assertXmlIdentical(HANDLER_ADD_EXPECTED_2, Files.toString(cfg, Charsets.UTF_8));
 
     }
@@ -144,13 +141,13 @@ public class AddPeriodicHandlerOfflineTest {
     @Test(expected = CommandFailedException.class)
     public void replaceExisting2() throws Exception {
         File cfg = tmp.newFile("xmlTransform.xml");
-        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL,
-                "            <periodic-rotating-file-handler name=\"handler\" autoflush=\"false\" enabled=\"false\">\n"
-                        + "                <level name=\"FINEST\"/>\n"
-                        + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
-                        + "                <encoding value=\"UTF-8\"/>\n"
-                        + "                <target name=\"System.out\"/>\n"
-                        + "            </periodic-rotating-file-handler>\n"
+        String loggingXmlOriginal = String.format(HANDLER_ORIGINAL, ""
+                + "            <periodic-rotating-file-handler name=\"handler\" autoflush=\"false\" enabled=\"false\">\n"
+                + "                <level name=\"FINEST\"/>\n"
+                + "                <filter-spec value=\"match(&quot;filter*&quot;)\"/>"
+                + "                <encoding value=\"UTF-8\"/>\n"
+                + "                <target name=\"System.out\"/>\n"
+                + "            </periodic-rotating-file-handler>\n"
         );
 
         Files.write(loggingXmlOriginal, cfg, Charsets.UTF_8);
@@ -158,7 +155,7 @@ public class AddPeriodicHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddPeriodicHandler addPeriodicHandler = new AddPeriodicHandler.Builder("handler", "server.log", ".suffix")
+        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler = new AddPeriodicRotatingFileHandler.Builder("handler", "server.log", ".suffix")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -169,6 +166,6 @@ public class AddPeriodicHandlerOfflineTest {
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
-        client.apply(addPeriodicHandler);
+        client.apply(addPeriodicRotatingFileHandler);
     }
 }
