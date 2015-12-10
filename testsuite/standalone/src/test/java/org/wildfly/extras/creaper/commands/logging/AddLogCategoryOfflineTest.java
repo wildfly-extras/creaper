@@ -63,7 +63,7 @@ public class AddLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddLogCategory addLogCategory = new AddLogCategory.Builder("creaper.category")
+        LogCategoryCommand addLogCategory = LogCategoryCommand.add("creaper.category")
                 .level(Level.OFF)
                 .filter("match(\"filter\")")
                 .handlers("HANDLER-1", "HANDLER-2")
@@ -91,12 +91,12 @@ public class AddLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddLogCategory addLogCategory = new AddLogCategory.Builder("creaper.category")
+        LogCategoryCommand addLogCategory = LogCategoryCommand.add("creaper.category")
                 .level(Level.OFF)
                 .filter("match(\"filter\")")
                 .handlers("HANDLER-1", "HANDLER-2")
                 .setUseParentHandler(true)
-                .setReplaceExisting(true)
+                .replaceExisting()
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
@@ -120,12 +120,11 @@ public class AddLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddLogCategory addLogCategory = new AddLogCategory.Builder("creaper.category")
+        LogCategoryCommand addLogCategory = LogCategoryCommand.add("creaper.category")
                 .level(Level.OFF)
                 .filter("match(\"filter\")")
                 .handlers("HANDLER-1", "HANDLER-2")
                 .setUseParentHandler(true)
-                .setReplaceExisting(false)
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));

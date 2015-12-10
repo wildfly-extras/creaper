@@ -52,8 +52,8 @@ public class AddPeriodicRotatingFileHandlerOnlineTest {
 
     @Test
     public void addHandler() throws Exception {
-        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler =
-                new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+        LogHandlerCommand addPeriodicRotatingFileHandler =
+                LogHandlerCommand.periodicRotatingFile().add(TEST_HANDLER_NAME, "server.log", ".yyyy")
                         .level(Level.WARN)
                         .filter("match(\"filter*\")")
                         .setAutoFlush(true)
@@ -106,8 +106,8 @@ public class AddPeriodicRotatingFileHandlerOnlineTest {
 
     @Test
     public void replaceHandler() throws Exception {
-        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler =
-                new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+        LogHandlerCommand addPeriodicRotatingFileHandler =
+                LogHandlerCommand.periodicRotatingFile().add(TEST_HANDLER_NAME, "server.log", ".yyyy")
                         .level(Level.FINEST)
                         .filter("match(\"filter*\")")
                         .setAutoFlush(false)
@@ -132,7 +132,7 @@ public class AddPeriodicRotatingFileHandlerOnlineTest {
                         .setAppend(true)
                         .fileRelativeTo("jboss.server.log.dir")
                         .encoding(Charsets.UTF_8)
-                        .setReplaceExisting(true)
+                        .replaceExisting()
                         .build();
 
         client.apply(addPeriodicRotatingFileHandler);
@@ -145,8 +145,8 @@ public class AddPeriodicRotatingFileHandlerOnlineTest {
 
     @Test(expected = CommandFailedException.class)
     public void replaceHandler2() throws Exception {
-        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler =
-                new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+        LogHandlerCommand addPeriodicRotatingFileHandler =
+                LogHandlerCommand.periodicRotatingFile().add(TEST_HANDLER_NAME, "server.log", ".yyyy")
                         .level(Level.FINEST)
                         .filter("match(\"filter*\")")
                         .setAutoFlush(false)
@@ -162,7 +162,7 @@ public class AddPeriodicRotatingFileHandlerOnlineTest {
         assertTrue("periodic file handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
         addPeriodicRotatingFileHandler =
-                new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+                LogHandlerCommand.periodicRotatingFile().add(TEST_HANDLER_NAME, "server.log", ".yyyy")
                         .level(Level.FINEST)
                         .filter("match(\"new-filter*\")")
                         .setAutoFlush(false)
@@ -171,7 +171,6 @@ public class AddPeriodicRotatingFileHandlerOnlineTest {
                         .setAppend(true)
                         .fileRelativeTo("jboss.server.log.dir")
                         .encoding(Charsets.UTF_8)
-                        .setReplaceExisting(false)
                         .build();
 
         client.apply(addPeriodicRotatingFileHandler);

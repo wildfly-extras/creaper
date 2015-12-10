@@ -3,20 +3,18 @@ package org.wildfly.extras.creaper.commands.logging;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
-import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-public class RemoveHandler implements OnlineCommand, OfflineCommand {
+public final class RemoveHandler extends LogHandlerCommand {
 
     private final HandlerType type;
     private final String name;
 
-    public RemoveHandler(final HandlerType type, final String name) {
+    public RemoveHandler(HandlerType type, String name) {
         if (type == null || name == null) {
             throw new IllegalArgumentException("Handler type and name can not be null.");
         }
@@ -25,7 +23,7 @@ public class RemoveHandler implements OnlineCommand, OfflineCommand {
     }
 
     @Override
-    public final void apply(OfflineCommandContext ctx) throws Exception {
+    public void apply(OfflineCommandContext ctx) throws Exception {
         GroovyXmlTransform transform = GroovyXmlTransform.of(RemoveHandler.class)
                 .subtree("logging", Subtree.subsystem("logging"))
 
@@ -38,7 +36,7 @@ public class RemoveHandler implements OnlineCommand, OfflineCommand {
     }
 
     @Override
-    public final void apply(final OnlineCommandContext ctx) throws Exception {
+    public void apply(OnlineCommandContext ctx) throws Exception {
         Operations ops = new Operations(ctx.client);
 
         Address handlerAddress = Address.subsystem("logging").and(type.value(), name);

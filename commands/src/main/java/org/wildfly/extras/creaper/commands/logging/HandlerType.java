@@ -1,12 +1,12 @@
 package org.wildfly.extras.creaper.commands.logging;
 
-public enum HandlerType {
+enum HandlerType {
 
     CONSOLE("console-handler"),
     PERIODIC_ROTATING_FILE("periodic-rotating-file-handler");
     private final String val;
 
-    private HandlerType(final String val) {
+    private HandlerType(String val) {
         this.val = val;
     }
 

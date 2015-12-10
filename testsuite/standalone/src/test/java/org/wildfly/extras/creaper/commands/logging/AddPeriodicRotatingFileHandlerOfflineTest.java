@@ -85,7 +85,7 @@ public class AddPeriodicRotatingFileHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler = new AddPeriodicRotatingFileHandler.Builder("handler", "server.log", ".suffix")
+        LogHandlerCommand addPeriodicRotatingFileHandler = LogHandlerCommand.periodicRotatingFile().add("handler", "server.log", ".suffix")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -120,7 +120,7 @@ public class AddPeriodicRotatingFileHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler = new AddPeriodicRotatingFileHandler.Builder("handler", "server.log", ".suffix")
+        LogHandlerCommand addPeriodicRotatingFileHandler = LogHandlerCommand.periodicRotatingFile().add("handler", "server.log", ".suffix")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -129,7 +129,7 @@ public class AddPeriodicRotatingFileHandlerOfflineTest {
                 .setAppend(true)
                 .fileRelativeTo("jboss.server.log.dir")
                 .encoding(Charsets.UTF_8)
-                .setReplaceExisting(true)
+                .replaceExisting()
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
@@ -155,14 +155,13 @@ public class AddPeriodicRotatingFileHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler = new AddPeriodicRotatingFileHandler.Builder("handler", "server.log", ".suffix")
+        LogHandlerCommand addPeriodicRotatingFileHandler = LogHandlerCommand.periodicRotatingFile().add("handler", "server.log", ".suffix")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
                 .setEnabled(false)
                 .patternFormatter("pattern")
                 .encoding(Charsets.UTF_8)
-                .setReplaceExisting(false)
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));

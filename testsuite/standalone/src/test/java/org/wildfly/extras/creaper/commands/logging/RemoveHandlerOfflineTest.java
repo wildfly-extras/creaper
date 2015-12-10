@@ -101,7 +101,7 @@ public class RemoveHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        RemoveHandler removeHandler = new RemoveHandler(HandlerType.CONSOLE, "console");
+        LogHandlerCommand removeHandler = LogHandlerCommand.console().remove("console");
 
         assertXmlIdentical(HANDLER_ORIGINAL, Files.toString(cfg, Charsets.UTF_8));
         client.apply(removeHandler);
@@ -118,7 +118,7 @@ public class RemoveHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        RemoveHandler removeHandler = new RemoveHandler(HandlerType.PERIODIC_ROTATING_FILE, "periodic");
+        LogHandlerCommand removeHandler = LogHandlerCommand.periodicRotatingFile().remove("periodic");
 
         assertXmlIdentical(HANDLER_ORIGINAL, Files.toString(cfg, Charsets.UTF_8));
         client.apply(removeHandler);
@@ -135,7 +135,7 @@ public class RemoveHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        RemoveHandler removeHandler = new RemoveHandler(HandlerType.PERIODIC_ROTATING_FILE, "NONEXISTING");
+        LogHandlerCommand removeHandler = LogHandlerCommand.console().remove("NONEXISTING");
 
         assertXmlIdentical(HANDLER_ORIGINAL, Files.toString(cfg, Charsets.UTF_8));
         client.apply(removeHandler);

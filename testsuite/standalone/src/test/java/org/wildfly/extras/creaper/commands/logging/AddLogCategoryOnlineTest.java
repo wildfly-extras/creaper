@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.logging;
 
-import com.google.common.base.Charsets;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
 import org.junit.Before;
@@ -24,8 +23,8 @@ import static org.junit.Assert.assertTrue;
 public class AddLogCategoryOnlineTest {
 
     private static final String TEST_LOGGER_NAME = "creaper-logger";
-    private static final String TEST_HANDLER_NAME_1 = "creaper-handler1";
-    private static final String TEST_HANDLER_NAME_2 = "creaper-handler2";
+    private static final String TEST_HANDLER_NAME_1 = "CONSOLE";
+    private static final String TEST_HANDLER_NAME_2 = "FILE";
     private static final Address TEST_LOGGER_ADDRESS =
             Address.subsystem("logging").and("logger", TEST_LOGGER_NAME);
     private OnlineManagementClient client;
@@ -51,32 +50,7 @@ public class AddLogCategoryOnlineTest {
 
     @Test
     public void addLogger() throws Exception {
-
-        AddConsoleHandler addConsoleHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME_1)
-                .setAutoFlush(true)
-                .setEnabled(true)
-                .level(Level.OFF)
-                .filter("match(\"filter\")")
-                .encoding(Charsets.UTF_8)
-                .target(Target.CONSOLE)
-                .patternFormatter("aaa")
-                .build();
-
-        client.apply(addConsoleHandler);
-
-        addConsoleHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME_2)
-                .setAutoFlush(true)
-                .setEnabled(true)
-                .level(Level.OFF)
-                .filter("match(\"filter\")")
-                .encoding(Charsets.UTF_8)
-                .target(Target.CONSOLE)
-                .patternFormatter("bbb")
-                .build();
-
-        client.apply(addConsoleHandler);
-
-        AddLogCategory addLogCategory = new AddLogCategory.Builder(TEST_LOGGER_NAME)
+        LogCategoryCommand addLogCategory = LogCategoryCommand.add(TEST_LOGGER_NAME)
                 .level(Level.OFF)
                 .filter("match(\"filter\")")
                 .handlers(TEST_HANDLER_NAME_1, TEST_HANDLER_NAME_2)

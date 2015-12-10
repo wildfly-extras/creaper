@@ -10,17 +10,17 @@ import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
 
-public final class AddConsoleHandler extends AbstractConsoleHandler {
+final class AddConsoleLogHandler extends AbstractConsoleLogHandlerCommand {
     private final boolean replaceExisting;
 
-    private AddConsoleHandler(Builder builder) {
+    private AddConsoleLogHandler(Builder builder) {
         setBaseProperties(builder);
         replaceExisting = builder.replaceExisting;
     }
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        GroovyXmlTransform transform = GroovyXmlTransform.of(AddConsoleHandler.class)
+        GroovyXmlTransform transform = GroovyXmlTransform.of(AddConsoleLogHandler.class)
                 .subtree("logging", Subtree.subsystem("logging"))
 
                 .parameter("name", name)
@@ -67,26 +67,26 @@ public final class AddConsoleHandler extends AbstractConsoleHandler {
         ops.add(handlerAddress, values);
     }
 
-    public static final class Builder extends AbstractConsoleHandler.Builder<Builder> {
+    public static final class Builder extends AbstractConsoleLogHandlerCommand.Builder<Builder> {
 
         private boolean replaceExisting;
 
-        public Builder(final String name) {
+        public Builder(String name) {
             super(name);
         }
 
         @Override
-        public AddConsoleHandler build() {
+        public LogHandlerCommand build() {
             validate();
-            return new AddConsoleHandler(this);
+            return new AddConsoleLogHandler(this);
         }
 
         /**
          * Set true if replacing of existing node is needed.
          * Default value is false.
          */
-        public Builder setReplaceExisting(boolean value) {
-            replaceExisting = value;
+        public Builder replaceExisting() {
+            replaceExisting = true;
             return this;
         }
     }

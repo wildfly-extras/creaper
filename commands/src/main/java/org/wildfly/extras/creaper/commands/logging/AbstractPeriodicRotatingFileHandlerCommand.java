@@ -1,12 +1,9 @@
 package org.wildfly.extras.creaper.commands.logging;
 
 
-import org.wildfly.extras.creaper.core.offline.OfflineCommand;
-import org.wildfly.extras.creaper.core.online.OnlineCommand;
-
 import java.nio.charset.Charset;
 
-abstract class AbstractPeriodicHandler implements OnlineCommand, OfflineCommand {
+abstract class AbstractPeriodicRotatingFileHandlerCommand extends LogHandlerCommand {
 
     protected String name;
     protected Boolean autoflush;
@@ -59,28 +56,28 @@ abstract class AbstractPeriodicHandler implements OnlineCommand, OfflineCommand 
             this.suffix = suffix;
         }
 
-        public void validate() {
+        protected void validate() {
             if (patternFormatter != null && namedFormatter != null) {
                 throw new IllegalStateException("You can not define both pattern formater and named formatter.");
             }
         }
 
-        public THIS setAutoFlush(final boolean val) {
+        public final THIS setAutoFlush(boolean val) {
             autoflush = val;
             return (THIS) this;
         }
 
-        public THIS setEnabled(final boolean val) {
+        public final THIS setEnabled(boolean val) {
             enabled = val;
             return (THIS) this;
         }
 
-        public THIS setAppend(final boolean val) {
+        public final THIS setAppend(boolean val) {
             append = val;
             return (THIS) this;
         }
 
-        public THIS encoding(final Charset encoding) {
+        public final THIS encoding(Charset encoding) {
             if (encoding == null) {
                 throw new IllegalArgumentException("Encoding can not be null.");
             }
@@ -88,7 +85,7 @@ abstract class AbstractPeriodicHandler implements OnlineCommand, OfflineCommand 
             return (THIS) this;
         }
 
-        public THIS level(final Level level) {
+        public final THIS level(Level level) {
             if (level == null) {
                 throw new IllegalArgumentException("level can not be null.");
             }
@@ -96,7 +93,7 @@ abstract class AbstractPeriodicHandler implements OnlineCommand, OfflineCommand 
             return (THIS) this;
         }
 
-        public THIS filter(final String filter) {
+        public final THIS filter(String filter) {
             if (filter == null) {
                 throw new IllegalArgumentException("filter can not be null.");
             }
@@ -107,7 +104,7 @@ abstract class AbstractPeriodicHandler implements OnlineCommand, OfflineCommand 
         /**
          * You can use PATTERN. This should be configured already.
          */
-        public THIS namedFormatter(final String namedFormatter) {
+        public final THIS namedFormatter(String namedFormatter) {
             if (namedFormatter == null) {
                 throw new IllegalArgumentException("named formatter can not be null.");
             }
@@ -115,7 +112,7 @@ abstract class AbstractPeriodicHandler implements OnlineCommand, OfflineCommand 
             return (THIS) this;
         }
 
-        public THIS patternFormatter(final String patternFormatter) {
+        public final THIS patternFormatter(String patternFormatter) {
             if (patternFormatter == null) {
                 throw new IllegalArgumentException("pattern formatter can not be null.");
             }
@@ -123,7 +120,7 @@ abstract class AbstractPeriodicHandler implements OnlineCommand, OfflineCommand 
             return (THIS) this;
         }
 
-        public THIS fileRelativeTo(final String fileRelativeTo) {
+        public final THIS fileRelativeTo(String fileRelativeTo) {
             if (fileRelativeTo == null) {
                 throw new IllegalArgumentException("file relative to can not be null.");
             }
@@ -131,7 +128,7 @@ abstract class AbstractPeriodicHandler implements OnlineCommand, OfflineCommand 
             return (THIS) this;
         }
 
-        public abstract AbstractPeriodicHandler build();
+        public abstract LogHandlerCommand build();
 
     }
 }

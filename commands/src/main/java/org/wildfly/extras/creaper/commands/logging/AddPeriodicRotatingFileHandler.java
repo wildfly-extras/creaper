@@ -10,7 +10,7 @@ import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
 
-public final class AddPeriodicRotatingFileHandler extends AbstractPeriodicHandler {
+public final class AddPeriodicRotatingFileHandler extends AbstractPeriodicRotatingFileHandlerCommand {
     private final boolean replaceExisting;
 
     private AddPeriodicRotatingFileHandler(Builder builder) {
@@ -74,22 +74,22 @@ public final class AddPeriodicRotatingFileHandler extends AbstractPeriodicHandle
         ops.add(handlerAddress, values);
     }
 
-    public static final class Builder extends AbstractPeriodicHandler.Builder<Builder> {
+    public static final class Builder extends AbstractPeriodicRotatingFileHandlerCommand.Builder<Builder> {
 
         private boolean replaceExisting;
 
-        public Builder(final String name, final String file, final String suffix) {
+        public Builder(String name, String file, String suffix) {
             super(name, file, suffix);
         }
 
         @Override
-        public AddPeriodicRotatingFileHandler build() {
+        public LogHandlerCommand build() {
             validate();
             return new AddPeriodicRotatingFileHandler(this);
         }
 
         @Override
-        public void validate() {
+        protected void validate() {
             if (file == null) {
                 throw new IllegalArgumentException("file can not be null!");
             }
@@ -100,8 +100,8 @@ public final class AddPeriodicRotatingFileHandler extends AbstractPeriodicHandle
          * Set true if replacing of existing node is needed.
          * Default value is false.
          */
-        public Builder setReplaceExisting(boolean value) {
-            replaceExisting = value;
+        public Builder replaceExisting() {
+            replaceExisting = true;
             return this;
         }
     }

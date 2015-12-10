@@ -50,12 +50,12 @@ public class ChangeLogCategoryOnlineTest {
 
     @Test
     public void changeEverything() throws Exception {
-        AddLogCategory addLogger = new AddLogCategory.Builder(TEST_LOGGER_NAME)
+        LogCategoryCommand addLogger = LogCategoryCommand.add(TEST_LOGGER_NAME)
                 .build();
         client.apply(addLogger);
         assertTrue("console handler should be created", ops.exists(TEST_LOGGER_ADDRESS));
 
-        ChangeLogCategory changeLogger = new ChangeLogCategory.Builder(TEST_LOGGER_NAME)
+        LogCategoryCommand changeLogger = LogCategoryCommand.change(TEST_LOGGER_NAME)
                 .filter("match(\"filter\")")
                 .handlers("CONSOLE", "FILE")
                 .level(Level.DEBUG)
@@ -85,7 +85,7 @@ public class ChangeLogCategoryOnlineTest {
 
     @Test
     public void changeNothing() throws Exception {
-        AddLogCategory addLogger = new AddLogCategory.Builder(TEST_LOGGER_NAME)
+        LogCategoryCommand addLogger = LogCategoryCommand.add(TEST_LOGGER_NAME)
                 .filter("match(\"filter\")")
                 .handlers("CONSOLE", "FILE")
                 .level(Level.DEBUG)
@@ -94,7 +94,7 @@ public class ChangeLogCategoryOnlineTest {
         client.apply(addLogger);
         assertTrue("console handler should be created", ops.exists(TEST_LOGGER_ADDRESS));
 
-        ChangeLogCategory changeLogger = new ChangeLogCategory.Builder(TEST_LOGGER_NAME)
+        LogCategoryCommand changeLogger = LogCategoryCommand.change(TEST_LOGGER_NAME)
                 .build();
         client.apply(changeLogger);
 

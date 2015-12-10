@@ -9,7 +9,7 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-public final class ChangeLogCategory extends AbstractLogCategory {
+final class ChangeLogCategory extends LogCategoryCommand {
 
     private ChangeLogCategory(Builder builder) {
         setBaseProperties(builder);
@@ -74,9 +74,9 @@ public final class ChangeLogCategory extends AbstractLogCategory {
 
     }
 
-    public static final class Builder extends AbstractLogCategory.Builder<Builder> {
+    public static final class Builder extends LogCategoryCommand.Builder<Builder> {
 
-        public Builder(final String category) {
+        public Builder(String category) {
             super(category);
         }
 

@@ -17,8 +17,8 @@ import java.io.File;
 
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
-public class ChangeConsoleHandlerOfflineTest {
-    private static final Logger log = Logger.getLogger(ChangeConsoleHandlerOfflineTest.class);
+public class ChangeConsoleLogHandlerOfflineTest {
+    private static final Logger log = Logger.getLogger(ChangeConsoleLogHandlerOfflineTest.class);
 
     private static final String HANDLER_ORIGINAL = ""
             + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
@@ -67,7 +67,7 @@ public class ChangeConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AbstractConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
+        LogHandlerCommand changeConsoleHandler = LogHandlerCommand.console().change("consolehandler")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -102,7 +102,7 @@ public class ChangeConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AbstractConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
+        LogHandlerCommand changeConsoleHandler = LogHandlerCommand.console().change("consolehandler")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -137,7 +137,7 @@ public class ChangeConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangeConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
+        LogHandlerCommand changeConsoleHandler = LogHandlerCommand.console().change("consolehandler")
                 .filter("match(\"filter*\")")
                 .target(Target.CONSOLE)
                 .build();
@@ -167,7 +167,7 @@ public class ChangeConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangeConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("consolehandler")
+        LogHandlerCommand changeConsoleHandler = LogHandlerCommand.console().change("consolehandler")
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
@@ -188,7 +188,7 @@ public class ChangeConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AbstractConsoleHandler changeConsoleHandler = new ChangeConsoleHandler.Builder("NOTEXISTING")
+        LogHandlerCommand changeConsoleHandler = LogHandlerCommand.console().change("NOTEXISTING")
                 .level(Level.FINEST)
                 .build();
 

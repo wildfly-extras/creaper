@@ -85,7 +85,7 @@ public class ChangeLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangeLogCategory changeLogCategory = new ChangeLogCategory.Builder("creaper.category")
+        LogCategoryCommand changeLogCategory = LogCategoryCommand.change("creaper.category")
                 .level(Level.TRACE)
                 .handlers("HANDLER-1")
                 .setUseParentHandler(false)
@@ -115,7 +115,7 @@ public class ChangeLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangeLogCategory changeLogCategory = new ChangeLogCategory.Builder("creaper.category")
+        LogCategoryCommand changeLogCategory = LogCategoryCommand.change("creaper.category")
                 .level(Level.TRACE)
                 .setUseParentHandler(false)
                 .build();
@@ -139,7 +139,7 @@ public class ChangeLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangeLogCategory changeLogCategory = new ChangeLogCategory.Builder("creaper.category")
+        LogCategoryCommand changeLogCategory = LogCategoryCommand.change("creaper.category")
                 .level(Level.TRACE)
                 .handlers("HANDLER-1")
                 .setUseParentHandler(false)
@@ -170,7 +170,7 @@ public class ChangeLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangeLogCategory changeLogCategory = new ChangeLogCategory.Builder("creaper.category")
+        LogCategoryCommand changeLogCategory = LogCategoryCommand.change("creaper.category")
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
@@ -198,7 +198,7 @@ public class ChangeLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangeLogCategory changeLogCategory = new ChangeLogCategory.Builder("creaper.category")
+        LogCategoryCommand changeLogCategory = LogCategoryCommand.change("creaper.category")
                 .handlers(new String[]{})
                 .setUseParentHandler(false)
                 .build();
@@ -228,7 +228,7 @@ public class ChangeLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangeLogCategory changeLogCategory = new ChangeLogCategory.Builder("NOT_EXISTING")
+        LogCategoryCommand changeLogCategory = LogCategoryCommand.change("NOT_EXISTING")
                 .handlers(new String[]{})
                 .build();
 

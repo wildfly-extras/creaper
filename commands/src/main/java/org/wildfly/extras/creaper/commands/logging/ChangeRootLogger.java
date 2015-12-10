@@ -41,7 +41,7 @@ public class ChangeRootLogger implements OfflineCommand, OnlineCommand {
     }
 
     @Override
-    public  void apply(OnlineCommandContext ctx) throws Exception {
+    public void apply(OnlineCommandContext ctx) throws Exception {
         boolean isSomethingChanged = false;
         Operations ops = new Operations(ctx.client);
         Address rootAddress = Address.subsystem("logging").and("root-logger", "ROOT");
@@ -75,7 +75,7 @@ public class ChangeRootLogger implements OfflineCommand, OnlineCommand {
         private List<String> handlers = null;
         private String filter = null;
 
-        public THIS changeLevel(final Level level) {
+        public THIS changeLevel(Level level) {
             if (level == null) {
                 throw new IllegalArgumentException("level can not be null");
             }
@@ -83,7 +83,7 @@ public class ChangeRootLogger implements OfflineCommand, OnlineCommand {
             return (THIS) this;
         }
 
-        public THIS changeHandler(final String handler) {
+        public THIS changeHandler(String handler) {
             if (handler == null) {
                 throw new IllegalArgumentException("handler can not be null");
             }
@@ -94,7 +94,7 @@ public class ChangeRootLogger implements OfflineCommand, OnlineCommand {
             return (THIS) this;
         }
 
-        public THIS changeHandlers(final String... handlers) {
+        public THIS changeHandlers(String... handlers) {
             if (handlers == null) {
                 throw new IllegalArgumentException("handlers can not be null");
             }
@@ -109,7 +109,7 @@ public class ChangeRootLogger implements OfflineCommand, OnlineCommand {
             this.handlers = new LinkedList<String>();
         }
 
-        public THIS changeFilter(final String filter) {
+        public THIS changeFilter(String filter) {
             if (filter == null) {
                 throw new IllegalArgumentException("filter can not be null");
             }

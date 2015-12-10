@@ -17,8 +17,8 @@ import java.io.File;
 
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
-public class AddConsoleHandlerOfflineTest {
-    private static final Logger log = Logger.getLogger(AddConsoleHandlerOfflineTest.class);
+public class AddConsoleLogHandlerOfflineTest {
+    private static final Logger log = Logger.getLogger(AddConsoleLogHandlerOfflineTest.class);
 
     private static final String HANDLER_ORIGINAL = ""
             + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
@@ -81,7 +81,7 @@ public class AddConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddConsoleHandler addConsoleHandler = new AddConsoleHandler.Builder("consolehandler")
+        LogHandlerCommand addConsoleHandler = LogHandlerCommand.console().add("consolehandler")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -115,7 +115,7 @@ public class AddConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddConsoleHandler addConsoleHandler = new AddConsoleHandler.Builder("consolehandler")
+        LogHandlerCommand addConsoleHandler = LogHandlerCommand.console().add("consolehandler")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -123,7 +123,7 @@ public class AddConsoleHandlerOfflineTest {
                 .patternFormatter("pattern")
                 .target(Target.CONSOLE)
                 .encoding(Charsets.UTF_8)
-                .setReplaceExisting(true)
+                .replaceExisting()
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
@@ -149,7 +149,7 @@ public class AddConsoleHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddConsoleHandler addConsoleHandler = new AddConsoleHandler.Builder("consolehandler")
+        LogHandlerCommand addConsoleHandler = LogHandlerCommand.console().add("consolehandler")
                 .level(Level.FINEST)
                 .filter("match(\"filter*\")")
                 .setAutoFlush(false)
@@ -157,7 +157,6 @@ public class AddConsoleHandlerOfflineTest {
                 .patternFormatter("pattern")
                 .target(Target.CONSOLE)
                 .encoding(Charsets.UTF_8)
-                .setReplaceExisting(false)
                 .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));

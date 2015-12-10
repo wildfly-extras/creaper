@@ -69,16 +69,17 @@ public class ChangePeriodicHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangePeriodicHandler changePeriodicHandler = new ChangePeriodicHandler.Builder("handler", "server.log", ".suffix")
-                .level(Level.FINEST)
-                .filter("match(\"filter*\")")
-                .setAutoFlush(false)
-                .setEnabled(false)
-                .namedFormatter("PATTERN")
-                .setAppend(true)
-                .fileRelativeTo("jboss.server.log.dir")
-                .encoding(Charsets.UTF_8)
-                .build();
+        LogHandlerCommand changePeriodicHandler =
+                LogHandlerCommand.periodicRotatingFile().change("handler", "server.log", ".suffix")
+                        .level(Level.FINEST)
+                        .filter("match(\"filter*\")")
+                        .setAutoFlush(false)
+                        .setEnabled(false)
+                        .namedFormatter("PATTERN")
+                        .setAppend(true)
+                        .fileRelativeTo("jboss.server.log.dir")
+                        .encoding(Charsets.UTF_8)
+                        .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
         client.apply(changePeriodicHandler);
@@ -107,16 +108,17 @@ public class ChangePeriodicHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangePeriodicHandler changePeriodicHandler = new ChangePeriodicHandler.Builder("handler", "server.log", ".suffix")
-                .level(Level.FINEST)
-                .filter("match(\"filter*\")")
-                .setAutoFlush(false)
-                .setEnabled(false)
-                .namedFormatter("PATTERN")
-                .setAppend(true)
-                .fileRelativeTo("jboss.server.log.dir")
-                .encoding(Charsets.UTF_8)
-                .build();
+        LogHandlerCommand changePeriodicHandler =
+                LogHandlerCommand.periodicRotatingFile().change("handler", "server.log", ".suffix")
+                        .level(Level.FINEST)
+                        .filter("match(\"filter*\")")
+                        .setAutoFlush(false)
+                        .setEnabled(false)
+                        .namedFormatter("PATTERN")
+                        .setAppend(true)
+                        .fileRelativeTo("jboss.server.log.dir")
+                        .encoding(Charsets.UTF_8)
+                        .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
         client.apply(changePeriodicHandler);
@@ -145,10 +147,11 @@ public class ChangePeriodicHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangePeriodicHandler changePeriodicHandler = new ChangePeriodicHandler.Builder("handler", "server.log", ".suffix")
-                .filter("match(\"filter*\")")
-                .encoding(Charsets.UTF_8)
-                .build();
+        LogHandlerCommand changePeriodicHandler =
+                LogHandlerCommand.periodicRotatingFile().change("handler", "server.log", ".suffix")
+                        .filter("match(\"filter*\")")
+                        .encoding(Charsets.UTF_8)
+                        .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
         client.apply(changePeriodicHandler);
@@ -177,8 +180,9 @@ public class ChangePeriodicHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangePeriodicHandler changePeriodicHandler = new ChangePeriodicHandler.Builder("handler", null, null)
-                .build();
+        LogHandlerCommand changePeriodicHandler =
+                LogHandlerCommand.periodicRotatingFile().change("handler", null, null)
+                        .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
         client.apply(changePeriodicHandler);
@@ -207,10 +211,11 @@ public class ChangePeriodicHandlerOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        ChangePeriodicHandler changePeriodicHandler = new ChangePeriodicHandler.Builder("Noexisting", "server.log", ".suffix")
-                .filter("match(\"filter*\")")
-                .encoding(Charsets.UTF_8)
-                .build();
+        LogHandlerCommand changePeriodicHandler =
+                LogHandlerCommand.periodicRotatingFile().change("Noexisting", "server.log", ".suffix")
+                        .filter("match(\"filter*\")")
+                        .encoding(Charsets.UTF_8)
+                        .build();
 
         assertXmlIdentical(loggingXmlOriginal, Files.toString(cfg, Charsets.UTF_8));
         client.apply(changePeriodicHandler);

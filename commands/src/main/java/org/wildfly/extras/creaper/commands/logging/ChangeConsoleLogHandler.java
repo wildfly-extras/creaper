@@ -8,15 +8,15 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-public final class ChangeConsoleHandler extends AbstractConsoleHandler {
+final class ChangeConsoleLogHandler extends AbstractConsoleLogHandlerCommand {
 
-    private ChangeConsoleHandler(Builder builder) {
+    private ChangeConsoleLogHandler(Builder builder) {
         setBaseProperties(builder);
     }
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        GroovyXmlTransform transform = GroovyXmlTransform.of(ChangeConsoleHandler.class)
+        GroovyXmlTransform transform = GroovyXmlTransform.of(ChangeConsoleLogHandler.class)
                 .subtree("logging", Subtree.subsystem("logging"))
 
                 .parameter("name", name)
@@ -85,16 +85,16 @@ public final class ChangeConsoleHandler extends AbstractConsoleHandler {
 
     }
 
-    public static final class Builder extends AbstractConsoleHandler.Builder<Builder> {
+    public static final class Builder extends AbstractConsoleLogHandlerCommand.Builder<Builder> {
 
         public Builder(String name) {
             super(name);
         }
 
         @Override
-        public ChangeConsoleHandler build() {
+        public LogHandlerCommand build() {
             validate();
-            return new ChangeConsoleHandler(this);
+            return new ChangeConsoleLogHandler(this);
         }
     }
 }

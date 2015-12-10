@@ -11,7 +11,7 @@ import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
 
-public final class AddLogCategory extends AbstractLogCategory {
+final class AddLogCategory extends LogCategoryCommand {
 
     private boolean replaceExisting;
 
@@ -61,11 +61,11 @@ public final class AddLogCategory extends AbstractLogCategory {
         ops.add(loggerAddress, values);
     }
 
-    public static final class Builder extends AbstractLogCategory.Builder<Builder> {
+    public static final class Builder extends LogCategoryCommand.Builder<Builder> {
 
         private boolean replaceExisting;
 
-        public Builder(final String category) {
+        public Builder(String category) {
             super(category);
         }
 
@@ -77,8 +77,8 @@ public final class AddLogCategory extends AbstractLogCategory {
          * Set true if replacing of existing node is needed.
          * Default value is false.
          */
-        public Builder setReplaceExisting(final boolean value) {
-            replaceExisting = value;
+        public Builder replaceExisting() {
+            replaceExisting = true;
             return this;
         }
     }

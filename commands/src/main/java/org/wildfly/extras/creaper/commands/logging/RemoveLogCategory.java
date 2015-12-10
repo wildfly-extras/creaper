@@ -4,15 +4,13 @@ package org.wildfly.extras.creaper.commands.logging;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
-import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-public class RemoveLogCategory implements OfflineCommand, OnlineCommand {
+final class RemoveLogCategory extends LogCategoryCommand {
 
     private String category;
 
@@ -21,7 +19,7 @@ public class RemoveLogCategory implements OfflineCommand, OnlineCommand {
     }
 
     @Override
-    public final void apply(OfflineCommandContext ctx) throws Exception {
+    public void apply(OfflineCommandContext ctx) throws Exception {
         GroovyXmlTransform transform = GroovyXmlTransform.of(RemoveLogCategory.class)
                 .subtree("logging", Subtree.subsystem("logging"))
 
@@ -33,7 +31,7 @@ public class RemoveLogCategory implements OfflineCommand, OnlineCommand {
     }
 
     @Override
-    public final void apply(OnlineCommandContext ctx) throws Exception {
+    public void apply(OnlineCommandContext ctx) throws Exception {
         Operations ops = new Operations(ctx.client);
 
         Address handlerAddress = Address.subsystem("logging").and("logger", category);

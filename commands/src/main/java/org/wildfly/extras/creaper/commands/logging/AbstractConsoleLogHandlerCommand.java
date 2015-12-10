@@ -1,12 +1,9 @@
 package org.wildfly.extras.creaper.commands.logging;
 
 
-import org.wildfly.extras.creaper.core.offline.OfflineCommand;
-import org.wildfly.extras.creaper.core.online.OnlineCommand;
-
 import java.nio.charset.Charset;
 
-abstract class AbstractConsoleHandler implements OnlineCommand, OfflineCommand {
+abstract class AbstractConsoleLogHandlerCommand extends LogHandlerCommand {
 
     protected String name;
     protected Boolean autoflush;
@@ -48,23 +45,23 @@ abstract class AbstractConsoleHandler implements OnlineCommand, OfflineCommand {
             this.name = name;
         }
 
-        public void validate() {
+        protected void validate() {
             if (patternFormatter != null && namedFormatter != null) {
                 throw new IllegalStateException("You can not define both pattern formater and named formatter.");
             }
         }
 
-        public THIS setAutoFlush(final boolean val) {
+        public final THIS setAutoFlush(boolean val) {
             autoflush = val;
             return (THIS) this;
         }
 
-        public THIS setEnabled(final boolean val) {
+        public final THIS setEnabled(boolean val) {
             enabled = val;
             return (THIS) this;
         }
 
-        public THIS encoding(final Charset encoding) {
+        public final THIS encoding(Charset encoding) {
             if (encoding == null) {
                 throw new IllegalArgumentException("Encoding can not be null.");
             }
@@ -72,7 +69,7 @@ abstract class AbstractConsoleHandler implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public THIS target(final Target target) {
+        public final THIS target(Target target) {
             if (target == null) {
                 throw new IllegalArgumentException("target can not be null.");
             }
@@ -80,7 +77,7 @@ abstract class AbstractConsoleHandler implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public THIS level(final Level level) {
+        public final THIS level(Level level) {
             if (level == null) {
                 throw new IllegalArgumentException("level can not be null.");
             }
@@ -88,7 +85,7 @@ abstract class AbstractConsoleHandler implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public THIS filter(final String filter) {
+        public final THIS filter(String filter) {
             if (filter == null) {
                 throw new IllegalArgumentException("filter can not be null.");
             }
@@ -96,7 +93,7 @@ abstract class AbstractConsoleHandler implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public THIS namedFormatter(final String namedFormatter) {
+        public final THIS namedFormatter(String namedFormatter) {
             if (namedFormatter == null) {
                 throw new IllegalArgumentException("named formatter can not be null.");
             }
@@ -104,7 +101,7 @@ abstract class AbstractConsoleHandler implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public THIS patternFormatter(final String patternFormatter) {
+        public final THIS patternFormatter(String patternFormatter) {
             if (patternFormatter == null) {
                 throw new IllegalArgumentException("pattern formatter can not be null.");
             }
@@ -112,7 +109,7 @@ abstract class AbstractConsoleHandler implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public abstract AbstractConsoleHandler build();
+        public abstract LogHandlerCommand build();
 
     }
 }

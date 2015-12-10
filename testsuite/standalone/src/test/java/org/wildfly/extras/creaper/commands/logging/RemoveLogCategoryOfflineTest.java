@@ -77,7 +77,7 @@ public class RemoveLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        RemoveLogCategory removeLogCategory = new RemoveLogCategory("creaper.category1");
+        LogCategoryCommand removeLogCategory = LogCategoryCommand.remove("creaper.category1");
 
         assertXmlIdentical(LOGGER_ORIGINAL, Files.toString(cfg, Charsets.UTF_8));
         client.apply(removeLogCategory);
@@ -94,7 +94,7 @@ public class RemoveLogCategoryOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        RemoveLogCategory removeLogCategory = new RemoveLogCategory("nonexisting");
+        LogCategoryCommand removeLogCategory = LogCategoryCommand.remove("nonexisting");
 
         assertXmlIdentical(LOGGER_ORIGINAL, Files.toString(cfg, Charsets.UTF_8));
         client.apply(removeLogCategory);

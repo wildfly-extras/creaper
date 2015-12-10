@@ -7,7 +7,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-abstract class AbstractLogCategory implements OnlineCommand, OfflineCommand {
+/**
+ * Class encapsulate commands for configuring loggers in logging subsystem.
+ * Class also provides static methods for obtaining factories that provides methods for configuring handler of specific
+ * type. E.G. LogHandlerCommand.console().add("handler").build()
+ */
+public abstract class LogCategoryCommand implements OnlineCommand, OfflineCommand {
 
     protected String category;
     protected Level level;
@@ -15,7 +20,28 @@ abstract class AbstractLogCategory implements OnlineCommand, OfflineCommand {
     protected Boolean useParentHandler;
     protected String filter;
 
-    protected void setBaseProperties(Builder builder) {
+    /**
+     * @return builder for command that add logger category of given category
+     */
+    public static AddLogCategory.Builder add(String category) {
+        return new AddLogCategory.Builder(category);
+    }
+
+    /**
+     * @return builder for command that change logger category of given category
+     */
+    public static ChangeLogCategory.Builder change(String category) {
+        return new ChangeLogCategory.Builder(category);
+    }
+
+    /**
+     * @return command that remove logger category of given name
+     */
+    public static RemoveLogCategory remove(String category) {
+        return new RemoveLogCategory(category);
+    }
+
+    protected final void setBaseProperties(Builder builder) {
         category = builder.category;
         level = builder.level;
         handlers = builder.handlers;
@@ -31,14 +57,14 @@ abstract class AbstractLogCategory implements OnlineCommand, OfflineCommand {
         protected Boolean useParentHandler;
         protected String filter = null;
 
-        public Builder(final String category) {
+        public Builder(String category) {
             if (category == null || category.equals("")) {
                 throw new IllegalArgumentException("category can not be null, nor empty string");
             }
             this.category = category;
         }
 
-        public THIS level(final Level level) {
+        public final THIS level(Level level) {
             if (level == null) {
                 throw new IllegalArgumentException("level can not be null");
             }
@@ -46,7 +72,7 @@ abstract class AbstractLogCategory implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public THIS handler(final String handler) {
+        public final THIS handler(String handler) {
             if (handler == null) {
                 throw new IllegalArgumentException("handler can not be null");
             }
@@ -57,7 +83,7 @@ abstract class AbstractLogCategory implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public THIS handlers(final String... handlers) {
+        public final THIS handlers(String... handlers) {
             if (handlers == null) {
                 throw new IllegalArgumentException("handlers can not be null");
             }
@@ -68,7 +94,7 @@ abstract class AbstractLogCategory implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public THIS setUseParentHandler(final Boolean option) {
+        public final THIS setUseParentHandler(Boolean option) {
             useParentHandler = option;
             return (THIS) this;
         }
@@ -77,7 +103,7 @@ abstract class AbstractLogCategory implements OnlineCommand, OfflineCommand {
             this.handlers = new LinkedList<String>();
         }
 
-        public THIS filter(final String filter) {
+        public final THIS filter(String filter) {
             if (filter == null) {
                 throw new IllegalArgumentException("filter can not be null");
             }
@@ -86,6 +112,6 @@ abstract class AbstractLogCategory implements OnlineCommand, OfflineCommand {
             return (THIS) this;
         }
 
-        public abstract AbstractLogCategory build();
+        public abstract LogCategoryCommand build();
     }
 }

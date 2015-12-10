@@ -53,8 +53,8 @@ public class ChangePeriodicHandlerOnlineTest {
 
     @Test
     public void changeEverything() throws Exception {
-        AddPeriodicRotatingFileHandler addHandler =
-                new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+        LogHandlerCommand addHandler =
+                LogHandlerCommand.periodicRotatingFile().add(TEST_HANDLER_NAME, "server.log", ".yyyy")
                         .level(Level.FINEST)
                         .filter("match(\"filter*\")")
                         .setAutoFlush(false)
@@ -68,8 +68,8 @@ public class ChangePeriodicHandlerOnlineTest {
         assertTrue("periodic handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
 
-        ChangePeriodicHandler changeHandler =
-                new ChangePeriodicHandler.Builder(TEST_HANDLER_NAME, "new-server.log", ".yyyy")
+        LogHandlerCommand changeHandler =
+                LogHandlerCommand.periodicRotatingFile().change(TEST_HANDLER_NAME, "new-server.log", ".yyyy")
                         .level(Level.WARN)
                         .filter("match(\"new-filter*\")")
                         .setAutoFlush(true)
@@ -122,8 +122,8 @@ public class ChangePeriodicHandlerOnlineTest {
 
     @Test
     public void changeNothing() throws Exception {
-        AddPeriodicRotatingFileHandler addHandler =
-                new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
+        LogHandlerCommand addHandler =
+                LogHandlerCommand.periodicRotatingFile().add(TEST_HANDLER_NAME, "server.log", ".yyyy")
                         .level(Level.WARN)
                         .filter("match(\"new-filter*\")")
                         .setAutoFlush(true)
@@ -138,8 +138,9 @@ public class ChangePeriodicHandlerOnlineTest {
         assertTrue("periodic handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
 
-        ChangePeriodicHandler changeHandler = new ChangePeriodicHandler.Builder(TEST_HANDLER_NAME, null, null)
-                .build();
+        LogHandlerCommand changeHandler =
+                LogHandlerCommand.periodicRotatingFile().change(TEST_HANDLER_NAME, null, null)
+                        .build();
 
         client.apply(changeHandler);
 

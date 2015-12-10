@@ -51,7 +51,7 @@ public class RemoveHandlerOnlineTest {
 
     @Test
     public void removeConsole() throws Exception {
-        AddConsoleHandler addConsoleHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME)
+        LogHandlerCommand addConsoleHandler = LogHandlerCommand.console().add(TEST_HANDLER_NAME)
                 .level(Level.WARN)
                 .filter("match(\"new-filter*\")")
                 .setAutoFlush(true)
@@ -65,29 +65,30 @@ public class RemoveHandlerOnlineTest {
 
         assertTrue("console handler should be created", ops.exists(TEST_CONSOLE_HANDLER_ADDRESS));
 
-        RemoveHandler removeHandler = new RemoveHandler(HandlerType.CONSOLE, TEST_HANDLER_NAME);
+        LogHandlerCommand removeHandler = LogHandlerCommand.console().remove(TEST_HANDLER_NAME);
         client.apply(removeHandler);
         assertFalse("console handler should be deleted", ops.exists(TEST_CONSOLE_HANDLER_ADDRESS));
     }
 
     @Test
     public void removePeriodic() throws Exception {
-        AddPeriodicRotatingFileHandler addPeriodicRotatingFileHandler = new AddPeriodicRotatingFileHandler.Builder(TEST_HANDLER_NAME, "server.log", ".yyyy")
-                .level(Level.FINEST)
-                .filter("match(\"filter*\")")
-                .setAutoFlush(false)
-                .setEnabled(false)
-                .patternFormatter("pattern")
-                .setAppend(true)
-                .fileRelativeTo("jboss.server.log.dir")
-                .encoding(Charsets.UTF_8)
-                .build();
+        LogHandlerCommand addPeriodicRotatingFileHandler =
+                LogHandlerCommand.periodicRotatingFile().add(TEST_HANDLER_NAME, "server.log", ".yyyy")
+                        .level(Level.FINEST)
+                        .filter("match(\"filter*\")")
+                        .setAutoFlush(false)
+                        .setEnabled(false)
+                        .patternFormatter("pattern")
+                        .setAppend(true)
+                        .fileRelativeTo("jboss.server.log.dir")
+                        .encoding(Charsets.UTF_8)
+                        .build();
 
         client.apply(addPeriodicRotatingFileHandler);
 
         assertTrue("console handler should be created", ops.exists(TEST_PERIODIC_HANDLER_ADDRESS));
 
-        RemoveHandler removeHandler = new RemoveHandler(HandlerType.PERIODIC_ROTATING_FILE, TEST_HANDLER_NAME);
+        LogHandlerCommand removeHandler = LogHandlerCommand.periodicRotatingFile().remove(TEST_HANDLER_NAME);
         client.apply(removeHandler);
         assertFalse("periodic handler should be deleted", ops.exists(TEST_PERIODIC_HANDLER_ADDRESS));
     }

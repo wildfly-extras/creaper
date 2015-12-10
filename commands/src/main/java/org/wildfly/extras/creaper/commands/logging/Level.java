@@ -3,8 +3,8 @@ package org.wildfly.extras.creaper.commands.logging;
 public enum Level {
 
     ALL("ALL"),
-    FINEST("FINEST"), TRACE("TRACE"),
-    FINER("FINER"),
+    FINEST("FINEST"),
+    FINER("FINER"), TRACE("TRACE"),
     FINE("FINE"), DEBUG("DEBUG"),
     CONFIG("CONFIG"),
     INFO("INFO"),
@@ -15,7 +15,7 @@ public enum Level {
 
     private final String val;
 
-    private Level(final String val) {
+    private Level(String val) {
         this.val = val;
     }
 

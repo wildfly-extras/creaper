@@ -9,15 +9,15 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-public final class ChangePeriodicHandler extends AbstractPeriodicHandler {
+final class ChangePeriodicRotatingFileHandler extends AbstractPeriodicRotatingFileHandlerCommand {
 
-    private ChangePeriodicHandler(Builder builder) {
+    private ChangePeriodicRotatingFileHandler(Builder builder) {
         setBaseProperties(builder);
     }
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        GroovyXmlTransform transform = GroovyXmlTransform.of(ChangePeriodicHandler.class)
+        GroovyXmlTransform transform = GroovyXmlTransform.of(ChangePeriodicRotatingFileHandler.class)
                 .subtree("logging", Subtree.subsystem("logging"))
 
                 .parameter("name", name)
@@ -109,7 +109,7 @@ public final class ChangePeriodicHandler extends AbstractPeriodicHandler {
 
     }
 
-    public static final class Builder extends AbstractPeriodicHandler.Builder<Builder> {
+    public static final class Builder extends AbstractPeriodicRotatingFileHandlerCommand.Builder<Builder> {
 
         /**
          * if file and suffix is not needed to be changed, use null
@@ -119,9 +119,9 @@ public final class ChangePeriodicHandler extends AbstractPeriodicHandler {
         }
 
         @Override
-        public ChangePeriodicHandler build() {
+        public LogHandlerCommand build() {
             validate();
-            return new ChangePeriodicHandler(this);
+            return new ChangePeriodicRotatingFileHandler(this);
         }
     }
 }

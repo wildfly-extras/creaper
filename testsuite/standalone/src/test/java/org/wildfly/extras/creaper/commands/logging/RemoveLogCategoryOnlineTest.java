@@ -6,16 +6,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.core.online.operations.Address;
-import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -38,7 +35,7 @@ public class RemoveLogCategoryOnlineTest {
     }
 
     @After
-    public void cleanup() throws IOException, CliException, OperationException, TimeoutException, InterruptedException {
+    public void cleanup() throws Exception {
         try {
             ops.removeIfExists(TEST_LOGGER_ADDRESS);
             administration.reloadIfRequired();
@@ -49,7 +46,7 @@ public class RemoveLogCategoryOnlineTest {
 
     @Test
     public void addLogger() throws Exception {
-        AddLogCategory addLogCategory = new AddLogCategory.Builder(TEST_LOGGER_NAME)
+        LogCategoryCommand addLogCategory = LogCategoryCommand.add(TEST_LOGGER_NAME)
                 .level(Level.OFF)
                 .filter("match(\"filter\")")
                 .setUseParentHandler(true)
@@ -59,7 +56,7 @@ public class RemoveLogCategoryOnlineTest {
 
         assertTrue("logger should be created", ops.exists(TEST_LOGGER_ADDRESS));
 
-        RemoveLogCategory removeLogger = new RemoveLogCategory(TEST_LOGGER_NAME);
+        LogCategoryCommand removeLogger = LogCategoryCommand.remove(TEST_LOGGER_NAME);
         client.apply(removeLogger);
         assertFalse("logger should be deleted", ops.exists(TEST_LOGGER_ADDRESS));
     }

@@ -8,7 +8,7 @@ public enum Target {
 
     private final String val;
 
-    private Target(final String val) {
+    private Target(String val) {
         this.val = val;
     }
 

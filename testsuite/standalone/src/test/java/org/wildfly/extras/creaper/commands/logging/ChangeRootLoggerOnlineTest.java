@@ -40,7 +40,6 @@ public class ChangeRootLoggerOnlineTest {
     @After
     public void cleanup() throws IOException, CliException, OperationException, TimeoutException, InterruptedException {
         try {
-            ops.removeIfExists(TEST_ROOT_LOGGER_ADDRESS);
             administration.reloadIfRequired();
         } finally {
             client.close();

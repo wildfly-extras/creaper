@@ -6,7 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
@@ -21,12 +20,11 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
-public class AddConsoleHandlerOnlineTest {
-    private static final String TEST_HANDLER_NAME = "creaper-handler";
+public class ChangeConsoleLogHandlerOnlineTest {
+    private static final String TEST_HANDLER_NAME = "NEW";
     private static final Address TEST_HANDLER_ADDRESS =
             Address.subsystem("logging").and("console-handler", TEST_HANDLER_NAME);
     private OnlineManagementClient client;
@@ -51,8 +49,22 @@ public class AddConsoleHandlerOnlineTest {
     }
 
     @Test
-    public void addHandler() throws Exception {
-        AddConsoleHandler addConsoleHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME)
+    public void changeAll() throws Exception {
+        LogHandlerCommand addHandler = LogHandlerCommand.console().add(TEST_HANDLER_NAME)
+                .level(Level.FINEST)
+                .filter("match(\"filter*\")")
+                .setAutoFlush(false)
+                .setEnabled(false)
+                .patternFormatter("pattern")
+                .target(Target.CONSOLE)
+                .encoding(Charsets.UTF_8)
+                .build();
+
+        client.apply(addHandler);
+        assertTrue("handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+
+
+        LogHandlerCommand changeHandler = LogHandlerCommand.console().change(TEST_HANDLER_NAME)
                 .level(Level.WARN)
                 .filter("match(\"new-filter*\")")
                 .setAutoFlush(true)
@@ -62,9 +74,10 @@ public class AddConsoleHandlerOnlineTest {
                 .encoding(Charsets.ISO_8859_1)
                 .build();
 
-        client.apply(addConsoleHandler);
+        client.apply(changeHandler);
 
-        assertTrue("console handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+        assertTrue("handeler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+
 
         ModelNodeResult result = ops.readAttribute(TEST_HANDLER_ADDRESS, "level");
         result.assertSuccess();
@@ -88,100 +101,63 @@ public class AddConsoleHandlerOnlineTest {
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "encoding");
         result.assertSuccess();
-        assertEquals("pattern-formatter should be changed", Charsets.ISO_8859_1.displayName(), result.stringValue());
+        assertEquals("encoding should be changed", Charsets.ISO_8859_1.displayName(), result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "target");
         result.assertSuccess();
-        assertEquals("pattern-formatter should be changed", Target.STDOUT.value(), result.stringValue());
+        assertEquals("target should be changed", Target.STDOUT.value(), result.stringValue());
     }
 
     @Test
-    public void replaceExisting() throws Exception {
-        AddConsoleHandler addConsoleHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME)
+    public void changeNothing() throws Exception {
+        LogHandlerCommand addHandler = LogHandlerCommand.console().add(TEST_HANDLER_NAME)
+                .level(Level.WARN)
+                .filter("match(\"new-filter*\")")
                 .setAutoFlush(true)
                 .setEnabled(true)
-                .level(Level.OFF)
-                .filter("match(\"filter\")")
-                .encoding(Charsets.UTF_8)
-                .target(Target.CONSOLE)
-                .patternFormatter("aaa")
+                .patternFormatter("new-pattern")
+                .target(Target.STDOUT)
+                .encoding(Charsets.ISO_8859_1)
                 .build();
 
-        client.apply(addConsoleHandler);
+        client.apply(addHandler);
+        assertTrue("handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
-        assertTrue("console handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
 
-        addConsoleHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME)
-                .setAutoFlush(false)
-                .setEnabled(false)
-                .level(Level.ALL)
-                .filter("match(\"new-filter\")")
-                .encoding(Charsets.UTF_8)
-                .target(Target.CONSOLE)
-                .patternFormatter("bbb")
-                .setReplaceExisting(true)
+        LogHandlerCommand changeHandler = LogHandlerCommand.console().change(TEST_HANDLER_NAME)
                 .build();
 
-        client.apply(addConsoleHandler);
+        client.apply(changeHandler);
 
-        assertTrue("console handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+        assertTrue("handeler should be created", ops.exists(TEST_HANDLER_ADDRESS));
+
 
         ModelNodeResult result = ops.readAttribute(TEST_HANDLER_ADDRESS, "level");
         result.assertSuccess();
-        assertEquals("level should be changed", Level.ALL.value(), result.stringValue());
+        assertEquals("level should be changed", Level.WARN.value(), result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "filter-spec");
         result.assertSuccess();
-        assertEquals("filter-spec should be changed", "match(\"new-filter\")", result.stringValue());
+        assertEquals("filter-spec should not be changed", "match(\"new-filter*\")", result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "autoflush");
         result.assertSuccess();
-        assertFalse("autoflush should be changed", result.booleanValue());
+        assertTrue("autoflush should not be changed", result.booleanValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "enabled");
         result.assertSuccess();
-        assertFalse("enabled should be changed", result.booleanValue());
+        assertTrue("enabled should not be changed", result.booleanValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "formatter");
         result.assertSuccess();
-        assertEquals("pattern-formatter should be changed", "bbb", result.stringValue());
+        assertEquals("pattern-formatter should not be changed", "new-pattern", result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "encoding");
         result.assertSuccess();
-        assertEquals("pattern-formatter should not be changed", Charsets.UTF_8.displayName(), result.stringValue());
+        assertEquals("encoding should not be changed", Charsets.ISO_8859_1.displayName(), result.stringValue());
 
         result = ops.readAttribute(TEST_HANDLER_ADDRESS, "target");
         result.assertSuccess();
-        assertEquals("pattern-formatter should not be changed", Target.CONSOLE.value(), result.stringValue());
+        assertEquals("target should not be changed", Target.STDOUT.value(), result.stringValue());
     }
-
-    @Test(expected = CommandFailedException.class)
-    public void replaceExisting2() throws Exception {
-        AddConsoleHandler addConsoleHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME)
-                .setAutoFlush(true)
-                .setEnabled(true)
-                .level(Level.OFF)
-                .filter("match(\"filter\")")
-                .encoding(Charsets.UTF_8)
-                .target(Target.CONSOLE)
-                .patternFormatter("aaa")
-                .setReplaceExisting(true)
-                .build();
-
-        client.apply(addConsoleHandler);
-
-        addConsoleHandler = new AddConsoleHandler.Builder(TEST_HANDLER_NAME)
-                .setAutoFlush(false)
-                .setEnabled(false)
-                .level(Level.ALL)
-                .filter("match(\"new-filter\")")
-                .encoding(Charsets.UTF_8)
-                .target(Target.CONSOLE)
-                .patternFormatter("bbb")
-                .setReplaceExisting(false)
-                .build();
-
-        client.apply(addConsoleHandler);
-    }
-
 }
