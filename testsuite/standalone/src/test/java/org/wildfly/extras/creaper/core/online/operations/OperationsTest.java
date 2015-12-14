@@ -370,7 +370,10 @@ public class OperationsTest {
 
     @Test
     public void batch() throws IOException {
-        ModelNodeResult result = ops.batch(new Batch()
+        ModelNodeResult result = ops.batch(new Batch());
+        result.assertSuccess();
+
+        result = ops.batch(new Batch()
                 .add(Address.subsystem("infinispan").and("cache-container", "foo"),
                         Values.of("statistics-enabled", true))
                 .add(Address.subsystem("infinispan").and("cache-container", "bar"),

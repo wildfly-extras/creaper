@@ -169,6 +169,7 @@ public final class Batch implements SharedCommonOperations<Batch> {
         composite.get(Constants.OP).set(Constants.COMPOSITE);
         composite.get(Constants.OP_ADDR).setEmptyList();
         ModelNode steps = composite.get(Constants.STEPS);
+        steps.setEmptyList();
         for (ModelNode operation : operations) {
             steps.add(operation);
         }
