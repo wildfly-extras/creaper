@@ -12,7 +12,7 @@
 - the test suite now uses latest WildFly 10 pre-release (was blocked
   by wrong patching test)
 - fixed a failure when `Operations.batch` was passed an empty `Batch`
-- added `OnlineManagementClient.expectedFailures` to avoid exceptions
+- added `OnlineManagementClient.allowFailures` to avoid exceptions
   when operations are executed from commands and failures are expected
   (e.g. `Operations.exists` or `Operations.removeIfExists`)
 
