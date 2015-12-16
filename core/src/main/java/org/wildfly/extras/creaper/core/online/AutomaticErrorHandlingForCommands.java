@@ -10,6 +10,7 @@ import java.util.concurrent.TimeoutException;
 
 final class AutomaticErrorHandlingForCommands implements OnlineManagementClient {
     private final OnlineManagementClient delegate;
+    private boolean throwExceptionsOnOperationFailures = true;
 
     static OnlineManagementClient wrap(OnlineManagementClient client) {
         if (client instanceof AutomaticErrorHandlingForCommands) {
@@ -55,7 +56,7 @@ final class AutomaticErrorHandlingForCommands implements OnlineManagementClient 
     public ModelNodeResult execute(ModelNode operation) {
         try {
             ModelNodeResult result = delegate.execute(operation);
-            if (result.isFailed()) {
+            if (result.isFailed() && throwExceptionsOnOperationFailures) {
                 commandFailedWithMessage("Operation " + operation.asString() + " failed: " + result.asString());
             }
             return result;
@@ -71,7 +72,7 @@ final class AutomaticErrorHandlingForCommands implements OnlineManagementClient 
     public ModelNodeResult execute(Operation operation) {
         try {
             ModelNodeResult result = delegate.execute(operation);
-            if (result.isFailed()) {
+            if (result.isFailed() && throwExceptionsOnOperationFailures) {
                 commandFailedWithMessage("Operation " + operation.getOperation().asString() + " failed: "
                         + result.asString());
             }
@@ -88,7 +89,7 @@ final class AutomaticErrorHandlingForCommands implements OnlineManagementClient 
     public ModelNodeResult execute(String operation) {
         try {
             ModelNodeResult result = delegate.execute(operation);
-            if (result.isFailed()) {
+            if (result.isFailed() && throwExceptionsOnOperationFailures) {
                 commandFailedWithMessage("Operation " + operation + " failed: " + result.asString());
             }
             return result;
@@ -112,6 +113,20 @@ final class AutomaticErrorHandlingForCommands implements OnlineManagementClient 
     @Override
     public void reconnect(int timeoutInSeconds) throws TimeoutException, InterruptedException {
         delegate.reconnect(timeoutInSeconds);
+    }
+
+    @Override
+    public FailuresAllowedBlock allowFailures() throws IOException {
+        final boolean old = this.throwExceptionsOnOperationFailures;
+
+        this.throwExceptionsOnOperationFailures = false;
+
+        return new FailuresAllowedBlock() {
+            @Override
+            public void close() throws IOException {
+                AutomaticErrorHandlingForCommands.this.throwExceptionsOnOperationFailures = old;
+            }
+        };
     }
 
     @Override

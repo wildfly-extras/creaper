@@ -240,6 +240,13 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
     }
 
     @Override
+    public FailuresAllowedBlock allowFailures() throws IOException {
+        // no need to do anything here
+        // this must mainly be implemented in AutomaticErrorHandlingForCommands
+        return NoopCloseFailuresAllowedBlock.INSTANCE;
+    }
+
+    @Override
     public void close() throws IOException {
         client.close();
         cliContext.disconnectController();

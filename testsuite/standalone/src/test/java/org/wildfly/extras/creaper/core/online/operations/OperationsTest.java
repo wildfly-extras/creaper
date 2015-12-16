@@ -2,11 +2,14 @@ package org.wildfly.extras.creaper.core.online.operations;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.dmr.ModelNode;
+import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.ManagementVersion;
 import org.wildfly.extras.creaper.core.ManagementVersionPart;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
+import org.wildfly.extras.creaper.core.online.OnlineCommand;
+import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
@@ -390,6 +393,21 @@ public class OperationsTest {
 
     @Test
     public void exists() throws IOException, OperationException {
+        doExists(ops);
+    }
+
+    @Test
+    public void exists_inCommand() throws CommandFailedException {
+        client.apply(new OnlineCommand() {
+            @Override
+            public void apply(OnlineCommandContext ctx) throws Exception {
+                Operations ops = new Operations(ctx.client);
+                doExists(ops);
+            }
+        });
+    }
+
+    private void doExists(Operations ops) throws IOException, OperationException {
         assertTrue(ops.exists(Address.root()));
         assertTrue(ops.exists(Address.subsystem("infinispan")));
         assertTrue(ops.exists(Address.subsystem("infinispan").and("cache-container", "web")));
@@ -399,6 +417,21 @@ public class OperationsTest {
 
     @Test
     public void removeIfExists() throws IOException, OperationException {
+        doRemoveIfExists(ops);
+    }
+
+    @Test
+    public void removeIfExists_inCommand() throws CommandFailedException {
+        client.apply(new OnlineCommand() {
+            @Override
+            public void apply(OnlineCommandContext ctx) throws Exception {
+                Operations ops = new Operations(ctx.client);
+                doRemoveIfExists(ops);
+            }
+        });
+    }
+
+    private void doRemoveIfExists(Operations ops) throws IOException, OperationException {
         Address address = Address.subsystem("infinispan").and("cache-container", "xyz");
 
         boolean result = ops.removeIfExists(address);

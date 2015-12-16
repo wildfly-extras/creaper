@@ -86,6 +86,21 @@ public interface OnlineManagementClient extends Closeable {
     void reconnect(int timeoutInSeconds) throws TimeoutException, InterruptedException;
 
     /**
+     * <p><b>This method can typically be ignored</b>; it's only important when management operations on this client
+     * can be performed from inside an {@link OnlineCommand} and failures of these operations are expected.
+     * Specifically, inside a command, operation failures are automatically converted to exceptions (see
+     * {@link OnlineCommand}). However, in some situations, this is wrong, because you may expect the failure
+     * and act on it. In such situations, you want to use this method.</p>
+     *
+     * <p>This method starts a block of code in which management operations performed by this client are allowed
+     * to fail. Inside that block, operation failures are <i>not</i> converted to exceptions.
+     * The {@link FailuresAllowedBlock} must be {@code close}d to end this behavior. Nesting is supported
+     * (i.e., you can call {@code allowFailures} inside an failures-allowed block, but you must close
+     * the inner block before closing the outer block).</p>
+     */
+    FailuresAllowedBlock allowFailures() throws IOException;
+
+    /**
      * Closes the client and releases all the resources held. In contrast to the offline management client, which
      * doesn't manage any resources, it is <b>needed</b> here.
      * @throws IOException if an I/O error occurs

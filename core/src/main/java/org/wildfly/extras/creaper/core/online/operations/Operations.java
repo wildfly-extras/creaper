@@ -2,6 +2,7 @@ package org.wildfly.extras.creaper.core.online.operations;
 
 import org.jboss.dmr.ModelNode;
 import org.wildfly.extras.creaper.core.online.Constants;
+import org.wildfly.extras.creaper.core.online.FailuresAllowedBlock;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 
@@ -183,16 +184,21 @@ public final class Operations implements SharedCommonOperations<ModelNodeResult>
      * @throws OperationException if the underlying {@code read-resource} operation fails
      */
     public boolean exists(Address address) throws IOException, OperationException {
-        ModelNodeResult result = readResource(address);
-        if (result.isSuccess()) {
-            return result.hasDefinedValue(); // should always be true
-        }
+        FailuresAllowedBlock expectedFailures = client.allowFailures();
+        try {
+            ModelNodeResult result = readResource(address);
+            if (result.isSuccess()) {
+                return result.hasDefinedValue(); // should always be true
+            }
 
-        if (isResultUnknownOrNotFound(result)) {
-            return false;
-        }
+            if (isResultUnknownOrNotFound(result)) {
+                return false;
+            }
 
-        throw new OperationException("exists failed: " + result.asString());
+            throw new OperationException("exists failed: " + result.asString());
+        } finally {
+            expectedFailures.close();
+        }
     }
 
     /**
@@ -201,16 +207,21 @@ public final class Operations implements SharedCommonOperations<ModelNodeResult>
      * @throws OperationException if the underlying {@code remove} operation fails with something else than "not found"
      */
     public boolean removeIfExists(Address address) throws IOException, OperationException {
-        ModelNodeResult result = remove(address);
-        if (result.isSuccess()) {
-            return true;
-        }
+        FailuresAllowedBlock expectedFailures = client.allowFailures();
+        try {
+            ModelNodeResult result = remove(address);
+            if (result.isSuccess()) {
+                return true;
+            }
 
-        if (isResultUnknownOrNotFound(result)) {
-            return false;
-        }
+            if (isResultUnknownOrNotFound(result)) {
+                return false;
+            }
 
-        throw new OperationException("removeIfExists failed: " + result.asString());
+            throw new OperationException("removeIfExists failed: " + result.asString());
+        } finally {
+            expectedFailures.close();
+        }
     }
 
     private static boolean isResultUnknownOrNotFound(ModelNodeResult result) {

@@ -93,6 +93,12 @@ final class LazyOnlineManagementClient implements OnlineManagementClient {
     }
 
     @Override
+    public FailuresAllowedBlock allowFailures() throws IOException {
+        ensureInitialized();
+        return delegate.allowFailures();
+    }
+
+    @Override
     public void close() throws IOException {
         if (delegate != null) {
             delegate.close();
