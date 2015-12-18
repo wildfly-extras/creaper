@@ -19,6 +19,8 @@ final class DatasourceConstants {
     static final String MYSQL_EXCEPTION_SORTER = "org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter";
     static final String MYSQL_XA_DATASOURCE_CLASS = "com.mysql.jdbc.jdbc2.optional.MysqlXADataSource";
 
+    static final String MARIADB_XA_DATASOURCE_CLASS = "org.mariadb.jdbc.MySQLDataSource";
+
     static final String POSTGRES_PLUS_VALID_CONNECTION_CHECKER = POSTGRESQL_VALID_CONNECTION_CHECKER;
     static final String POSTGRES_PLUS_EXCEPTION_SORTER = POSTGRESQL_EXCEPTION_SORTER;
     static final String POSTGRES_PLUS_XA_DATASOURCE_CLASS = "com.edb.xa.PGXADataSource";

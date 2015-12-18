@@ -33,6 +33,7 @@ import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstant
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MYSQL_EXCEPTION_SORTER;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MYSQL_VALID_CONNECTION_CHECKER;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MYSQL_XA_DATASOURCE_CLASS;
+import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MARIADB_XA_DATASOURCE_CLASS;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.ORACLE_EXCEPTION_SORTER;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.ORACLE_STALE_CONNECTION_CHECKER;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.ORACLE_VALID_CONNECTION_CHECKER;
@@ -184,6 +185,32 @@ public class AddDataSourceForKnownDatabaseOnlineTest {
         assertXAAttribute("background-validation", true);
         assertXAAttributeExists("background-validation-millis");
         assertXAAttribute("xa-datasource-class", MYSQL_XA_DATASOURCE_CLASS);
+        assertTrue("The xa datasource property 'PortNumber' should exist",
+                ops.exists(TEST_XA_DATASOURCE_ADDRESS.and("xa-datasource-properties", "PortNumber")));
+    }
+
+
+    @Test
+    public void addMariaDbDataSource() throws CommandFailedException, IOException, OperationException {
+        createDatasource(new AddMariaDbDataSource.Builder(TEST_DATASOURCE_NAME));
+
+        assertTrue("The data source should be created", ops.exists(TEST_DATASOURCE_ADDRESS));
+        assertAttribute("valid-connection-checker-class-name", MYSQL_VALID_CONNECTION_CHECKER);
+        assertAttribute("exception-sorter-class-name", MYSQL_EXCEPTION_SORTER);
+        assertAttribute("background-validation", true);
+        assertAttributeExists("background-validation-millis");
+    }
+
+    @Test
+    public void addMariaDbXaDataSource() throws CommandFailedException, IOException, OperationException {
+        createXADatasource(new AddMariaDbXADataSource.Builder(TEST_DATASOURCE_NAME));
+
+        assertTrue("The data source should be created", ops.exists(TEST_XA_DATASOURCE_ADDRESS));
+        assertXAAttribute("valid-connection-checker-class-name", MYSQL_VALID_CONNECTION_CHECKER);
+        assertXAAttribute("exception-sorter-class-name", MYSQL_EXCEPTION_SORTER);
+        assertXAAttribute("background-validation", true);
+        assertXAAttributeExists("background-validation-millis");
+        assertXAAttribute("xa-datasource-class", MARIADB_XA_DATASOURCE_CLASS);
         assertTrue("The xa datasource property 'PortNumber' should exist",
                 ops.exists(TEST_XA_DATASOURCE_ADDRESS.and("xa-datasource-properties", "PortNumber")));
     }
