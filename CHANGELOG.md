@@ -15,6 +15,7 @@
 - added `OnlineManagementClient.allowFailures` to avoid exceptions
   when operations are executed from commands and failures are expected
   (e.g. `Operations.exists` or `Operations.removeIfExists`)
+- added `AddMariaDb[XA]DataSource`
 
 ## 0.9.2
 
@@ -46,7 +47,7 @@
 ## 0.8.2
 
 - added commands for messaging (both HornetQ and ActiveMQ Artemis)
-- fixed  `DomainAdministration.start|stopServer`
+- fixed `DomainAdministration.start|stopServer`
 
 ## 0.8.1
 
