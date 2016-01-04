@@ -83,6 +83,7 @@
         <version.org.apache.maven.plugins.maven-shade-plugin>2.3</version.org.apache.maven.plugins.maven-shade-plugin>
         <version.org.apache.maven.plugins.maven-source-plugin>2.4</version.org.apache.maven.plugins.maven-source-plugin>
         <version.org.apache.maven.plugins.maven-surefire-plugin>2.18.1</version.org.apache.maven.plugins.maven-surefire-plugin>
+        <version.org.bouncycastle>1.54</version.org.bouncycastle>
         <version.org.codehaus.groovy.groovy-everything>2.3.7</version.org.codehaus.groovy.groovy-everything>
         <version.org.codehaus.mojo.codenarc-maven-plugin>0.22-1</version.org.codehaus.mojo.codenarc-maven-plugin>
         <version.org.codehaus.mojo.findbugs-maven-plugin>2.5.5</version.org.codehaus.mojo.findbugs-maven-plugin>
@@ -187,6 +188,12 @@
                         <artifactId>hamcrest-core</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${version.org.bouncycastle}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.hamcrest</groupId>

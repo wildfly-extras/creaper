@@ -1,6 +1,8 @@
 package org.wildfly.extras.creaper.commands.undertow;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.ManagementVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
@@ -10,6 +12,7 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
+import org.wildfly.extras.creaper.security.KeyPairAndCertificate;
 import org.wildfly.extras.creaper.test.WildFlyTests;
 import org.junit.After;
 import org.junit.Before;
@@ -17,7 +20,10 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.KeyStore;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -31,9 +37,13 @@ import static org.junit.Assume.assumeTrue;
 @RunWith(Arquillian.class)
 public class AddUndertowListenerOnlineTest {
     private static final String TEST_LISTENER_NAME = "test-listener";
+    private static final String TEST_PASSWORD = "p4sSw0rD!";
 
     private static final Address DEFAULT_SERVER_ADDRESS = Address.subsystem("undertow")
             .and("server", UndertowConstants.DEFAULT_SERVER_NAME);
+
+    @Rule
+    public final TemporaryFolder tmp = new TemporaryFolder();
 
     private OnlineManagementClient client;
     private Operations ops;
@@ -69,8 +79,23 @@ public class AddUndertowListenerOnlineTest {
 
     @Test
     public void addHttpsConnector_commandSucceeds() throws Exception {
+        String alias = "creaper";
+        File keystoreFile = tmp.newFile();
+        KeyStore keyStore = KeyPairAndCertificate.generateSelfSigned("Creaper").toKeyStore(alias, TEST_PASSWORD);
+        keyStore.store(new FileOutputStream(keystoreFile), TEST_PASSWORD.toCharArray());
+
+        String realmName = "CreaperRealm";
+
+        client.apply(new AddHttpsSecurityRealm.Builder(realmName)
+                .keystorePath(keystoreFile.getAbsolutePath())
+                .keystorePassword(TEST_PASSWORD)
+                .alias(alias)
+                .truststorePath(keystoreFile.getAbsolutePath())
+                .truststorePassword(TEST_PASSWORD)
+                .build());
+
         client.apply(new AddUndertowListener.HttpsBuilder(TEST_LISTENER_NAME, "ajp")
-                .securityRealm("ApplicationRealm")
+                .securityRealm(realmName)
                 .build());
 
         assertTrue(ops.exists(DEFAULT_SERVER_ADDRESS.and("https-listener", TEST_LISTENER_NAME)));
@@ -81,6 +106,8 @@ public class AddUndertowListenerOnlineTest {
                 .forDefaultServer());
         admin.reloadIfRequired();
         assertFalse(ops.exists(DEFAULT_SERVER_ADDRESS.and("https-listener", TEST_LISTENER_NAME)));
+
+        client.apply(new RemoveHttpsSecurityRealm(realmName));
     }
 
     @Test

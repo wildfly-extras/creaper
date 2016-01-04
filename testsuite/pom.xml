@@ -25,8 +25,8 @@
         <version.wildfly9>9.0.2.Final</version.wildfly9>
         <version.wildfly9.core>1.0.2.Final</version.wildfly9.core>
         <version.wildfly9.arquillian>1.0.2.Final</version.wildfly9.arquillian>
-        <version.wildfly10>10.0.0.CR4</version.wildfly10>
-        <version.wildfly10.core>2.0.4.Final</version.wildfly10.core>
+        <version.wildfly10>10.0.0.CR5</version.wildfly10>
+        <version.wildfly10.core>2.0.5.Final</version.wildfly10.core>
         <version.wildfly10.arquillian>1.1.0.Alpha1</version.wildfly10.arquillian>
 
         <managementPort.as7>9999</managementPort.as7>
