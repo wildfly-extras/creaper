@@ -1,0 +1,127 @@
+package org.wildfly.extras.creaper.commands.logging;
+
+import org.jboss.dmr.ModelNode;
+import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
+import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
+import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
+import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
+import org.wildfly.extras.creaper.core.online.operations.Address;
+import org.wildfly.extras.creaper.core.online.operations.Batch;
+import org.wildfly.extras.creaper.core.online.operations.Operations;
+
+final class ChangePeriodicRotatingFileHandler extends AbstractPeriodicRotatingFileHandlerCommand {
+
+    private ChangePeriodicRotatingFileHandler(Builder builder) {
+        setBaseProperties(builder);
+    }
+
+    @Override
+    public void apply(OfflineCommandContext ctx) throws Exception {
+        GroovyXmlTransform transform = GroovyXmlTransform.of(ChangePeriodicRotatingFileHandler.class)
+                .subtree("logging", Subtree.subsystem("logging"))
+
+                .parameter("name", name)
+                .parameter("autoflush", autoflush == null ? null : String.valueOf(autoflush))
+                .parameter("enabled", enabled == null ? null : String.valueOf(enabled))
+                .parameter("append", append == null ? null : String.valueOf(append))
+                .parameter("filter", filter)
+                .parameter("encoding", encoding == null ? null : encoding.displayName())
+                .parameter("patternFormatter", patternFormatter)
+                .parameter("namedFormatter", namedFormatter)
+                .parameter("level", level == null ? null : level.value())
+                .parameter("filePath", file)
+                .parameter("fileRelativeTo", fileRelativeTo)
+                .parameter("suffix", suffix)
+
+                .build();
+
+        ctx.client.apply(transform);
+    }
+
+    @Override
+    public void apply(OnlineCommandContext ctx) throws Exception {
+        boolean isSomethingChanged = false;
+        Operations ops = new Operations(ctx.client);
+
+        Address handlerAddress = Address.subsystem("logging").and("periodic-rotating-file-handler", name);
+
+        if (!ops.exists(handlerAddress)) {
+            throw new IllegalStateException(String.format("periodic rotating file handler %s does not exist.", name));
+        }
+
+        Batch batch = new Batch();
+        if (autoflush != null) {
+            batch.writeAttribute(handlerAddress, "autoflush", autoflush);
+            isSomethingChanged = true;
+        }
+        if (enabled != null) {
+            batch.writeAttribute(handlerAddress, "enabled", enabled);
+            isSomethingChanged = true;
+        }
+        if (filter != null) {
+            batch.writeAttribute(handlerAddress, "filter-spec", filter);
+            isSomethingChanged = true;
+        }
+        if (encoding != null) {
+            batch.writeAttribute(handlerAddress, "encoding", encoding.displayName());
+            isSomethingChanged = true;
+        }
+        if (patternFormatter != null) {
+            batch.writeAttribute(handlerAddress, "formatter", patternFormatter);
+            isSomethingChanged = true;
+        }
+        if (namedFormatter != null) {
+            batch.writeAttribute(handlerAddress, "named-formatter", namedFormatter);
+            isSomethingChanged = true;
+        }
+        if (level != null) {
+            batch.writeAttribute(handlerAddress, "level", level.value());
+            isSomethingChanged = true;
+        }
+        if (append != null) {
+            batch.writeAttribute(handlerAddress, "append", append);
+            isSomethingChanged = true;
+        }
+        if (suffix != null) {
+            batch.writeAttribute(handlerAddress, "suffix", suffix);
+            isSomethingChanged = true;
+        }
+        if (file != null || fileRelativeTo != null) {
+            ModelNode node = new ModelNode();
+            ModelNode oldFileNode = ops.readAttribute(handlerAddress, "file").get("result");
+            isSomethingChanged = true;
+            if (file != null) {
+                node.get("path").set(this.file);
+            } else {
+                node.get("path").set(oldFileNode.get("path"));
+            }
+            if (fileRelativeTo != null) {
+                node.get("relative-to").set(fileRelativeTo);
+            } else if (oldFileNode.hasDefined("relative-to")) {
+                node.get("relative-to").set(oldFileNode.get("relative-to"));
+            }
+            batch.writeAttribute(handlerAddress, "file", node);
+        }
+
+        if (isSomethingChanged) {
+            ops.batch(batch);
+        }
+
+    }
+
+    public static final class Builder extends AbstractPeriodicRotatingFileHandlerCommand.Builder<Builder> {
+
+        /**
+         * if file and suffix is not needed to be changed, use null
+         */
+        public Builder(String name, String file, String suffix) {
+            super(name, file, suffix);
+        }
+
+        @Override
+        public LogHandlerCommand build() {
+            validate();
+            return new ChangePeriodicRotatingFileHandler(this);
+        }
+    }
+}
