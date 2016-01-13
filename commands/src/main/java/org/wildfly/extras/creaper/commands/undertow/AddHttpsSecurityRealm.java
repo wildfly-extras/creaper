@@ -141,7 +141,7 @@ public final class AddHttpsSecurityRealm implements OnlineCommand {
         }
 
         /**
-         * Defines the password to open the keystore.
+         * Defines the password to open the keystore. This is mandatory parameter which needs to be set.
          */
         public Builder keystorePassword(String keystorePassword) {
             this.keystorePassword = keystorePassword;
@@ -191,7 +191,7 @@ public final class AddHttpsSecurityRealm implements OnlineCommand {
         }
 
         /**
-         * Defines the password to open the truststore.
+         * Defines the password to open the truststore. It is mandatory parameter when also defining truststore
          */
         public Builder truststorePassword(String truststorePassword) {
             this.truststorePassword = truststorePassword;
@@ -200,6 +200,7 @@ public final class AddHttpsSecurityRealm implements OnlineCommand {
 
         /**
          * Defines the path of the trustore, will be ignored if the truststore provider is anything other than JKS.
+         * If not defined, truststore is not defined for the server.
          */
         public Builder truststorePath(String truststorePath) {
             this.truststorePath = truststorePath;
@@ -225,6 +226,12 @@ public final class AddHttpsSecurityRealm implements OnlineCommand {
         }
 
         public AddHttpsSecurityRealm build() {
+            if (keystorePassword == null) {
+                throw new IllegalArgumentException("keystorePassword is manadatory");
+            }
+            if (truststorePath != null && truststorePassword == null) {
+                throw new IllegalArgumentException("truststorePassword is manadatory when defining also truststore");
+            }
             return new AddHttpsSecurityRealm(this);
         }
     }
