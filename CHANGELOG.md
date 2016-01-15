@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.9.4 (not yet released)
+
 ## 0.9.3
 
 - added commands for the logging subsystem (see entrypoint class `Logging`)
