@@ -17,6 +17,7 @@
   (e.g. `Operations.exists` or `Operations.removeIfExists`)
 - added `AddMariaDb[XA]DataSource`
 - added commands for the logging subsystem (see entrypoint class `Logging`)
+- setting a truststore is no longer mandatory in `AddHttpsSecurityRealm`
 
 ## 0.9.2
 

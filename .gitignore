@@ -9,4 +9,5 @@ target
 .settings
 .recommenders
 .checkstyle
+# test artifacts
 *.log
