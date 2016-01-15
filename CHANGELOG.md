@@ -1,23 +1,23 @@
 # Changelog
 
-## 0.9.3 (not yet released)
+## 0.9.3
 
-- `ManagementProtocol.REMOTING` and `HTTP_REMOTE` renamed to `REMOTE`
-  and `HTTP_REMOTING`; the old names are still available, but deprecated
-  and scheduled for removal
-- fixed `Administration.reload` when the server is in `restart-required`
-- added a workaround for WFCORE-1082 to `AddModule`
-- the `Add[XA]DataSource` commands now reload the server if required
-  when `replaceExisting()` is used
-- the test suite now uses latest WildFly 10 pre-release (was blocked
-  by wrong patching test)
-- fixed a failure when `Operations.batch` was passed an empty `Batch`
+- added commands for the logging subsystem (see entrypoint class `Logging`)
+- added `AddMariaDb[XA]DataSource`
 - added `OnlineManagementClient.allowFailures` to avoid exceptions
   when operations are executed from commands and failures are expected
   (e.g. `Operations.exists` or `Operations.removeIfExists`)
-- added `AddMariaDb[XA]DataSource`
-- added commands for the logging subsystem (see entrypoint class `Logging`)
 - setting a truststore is no longer mandatory in `AddHttpsSecurityRealm`
+- the `Add[XA]DataSource` commands now reload the server if required
+  when `replaceExisting()` is used
+- fixed `Administration.reload` when the server is in `restart-required`
+- fixed a failure when `Operations.batch` was passed an empty `Batch`
+- added a workaround for WFCORE-1082 to `AddModule`
+- `ManagementProtocol.REMOTING` and `HTTP_REMOTE` renamed to `REMOTE`
+  and `HTTP_REMOTING`; the old names are still available, but deprecated
+  and scheduled for removal
+- the test suite now uses latest WildFly 10 pre-release (was blocked
+  by wrong patching test)
 
 ## 0.9.2
 
