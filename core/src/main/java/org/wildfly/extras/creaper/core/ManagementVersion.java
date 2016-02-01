@@ -43,8 +43,10 @@ public enum ManagementVersion {
     VERSION_2_2_0(2, 2, 0),
     /** WF 9.0.x.Final */
     VERSION_3_0_0(3, 0, 0),
-    /** WF 10.0.0.* (10.0.0.Final not released yet) */
+    /** WF 10.0.0.Final */
     VERSION_4_0_0(4, 0, 0),
+    /** WF 10.??? (currently, there's just a pull request that adds this) */
+    VERSION_4_1_0(4, 1, 0),
     ;
 
     private final int major;
