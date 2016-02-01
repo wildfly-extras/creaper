@@ -2,6 +2,12 @@
 
 ## 0.9.4 (not yet released)
 
+- added `RELEASE_PROCEDURE.md`
+- added more commands for messaging (both HornetQ and ActiveMQ Artemis)
+- management version 4.1.0 is now recognized
+- `OfflineOptions.default[Profile|Host]` are now `final`
+  (should always have been, but it's a breaking change technically)
+
 ## 0.9.3
 
 - added commands for the logging subsystem (see entrypoint class `Logging`)
