@@ -48,6 +48,10 @@ public final class Address {
         return Address.of(Constants.CORE_SERVICE, coreServiceName);
     }
 
+    public static Address deployment(String deploymentName) {
+        return Address.of(Constants.DEPLOYMENT, deploymentName);
+    }
+
     public static Address of(String key, String value) {
         return new Address(Collections.singletonList(new StringPair(key, value)));
     }
