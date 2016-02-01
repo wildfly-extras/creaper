@@ -93,6 +93,11 @@ public class OnlineManagementVersionTest {
         test(3, 0, 0, ManagementVersion.VERSION_3_0_0);
     }
 
+    @Test
+    public void discoverWF1000() throws IOException {
+        test(4, 0, 0, ManagementVersion.VERSION_4_0_0);
+    }
+
     @Test(expected = IOException.class)
     @SuppressWarnings("unchecked")
     public void error() throws IOException {

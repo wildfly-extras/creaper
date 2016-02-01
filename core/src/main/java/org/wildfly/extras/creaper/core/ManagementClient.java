@@ -11,7 +11,8 @@ import java.io.IOException;
  * Entrypoint of the entire Creaper library. Serves as a factory of both
  * {@link org.wildfly.extras.creaper.core.online.OnlineManagementClient online} and
  * {@link org.wildfly.extras.creaper.core.offline.OfflineManagementClient offline} management clients.
- * Note that the <b>entire</b> Creaper library is meant for <b>single-threaded</b> use and <b>no</b> thread-safety
+ * Note that creating a management client is generally fairly heavy-weight, so reusing a client is a good idea.
+ * Also note that the <b>entire</b> Creaper library is meant for <b>single-threaded</b> use and <b>no</b> thread-safety
  * guarantees are made!
  */
 public final class ManagementClient {

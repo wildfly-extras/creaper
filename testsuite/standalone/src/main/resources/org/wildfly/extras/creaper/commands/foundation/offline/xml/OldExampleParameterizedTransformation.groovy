@@ -1,4 +1,4 @@
-def root = new XmlSlurper().parse(file)
+def root = new XmlSlurper(false, false).parse(file)
 
 root.foo = {
     bar(param: parameter)

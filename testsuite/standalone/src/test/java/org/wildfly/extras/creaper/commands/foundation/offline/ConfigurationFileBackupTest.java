@@ -17,6 +17,9 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 public class ConfigurationFileBackupTest {
+    private static final String CFG_XML_1 = "<server xmlns='urn:jboss:domain:1.7'><foobar/></server>";
+    private static final String CFG_XML_2 = "<server xmlns='urn:jboss:domain:1.7'><bazquux/></server>";
+
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();
 
@@ -25,7 +28,7 @@ public class ConfigurationFileBackupTest {
     @Before
     public void setUpConfigurationFile() throws IOException {
         this.cfg = tmp.newFile("backupRestoreTest.xml");
-        Files.write("foobar", cfg, Charsets.UTF_8);
+        Files.write(CFG_XML_1, cfg, Charsets.UTF_8);
     }
 
     @Test(expected = CommandFailedException.class)
@@ -45,7 +48,7 @@ public class ConfigurationFileBackupTest {
         );
         ConfigurationFileBackup configurationFileBackup = new ConfigurationFileBackup();
 
-        assertEquals("foobar", Files.toString(cfg, Charsets.UTF_8));
+        assertEquals(CFG_XML_1, Files.toString(cfg, Charsets.UTF_8));
 
         try {
             client.apply(configurationFileBackup.backup());
@@ -62,16 +65,16 @@ public class ConfigurationFileBackupTest {
         );
         ConfigurationFileBackup configurationFileBackup = new ConfigurationFileBackup();
 
-        assertEquals("foobar", Files.toString(cfg, Charsets.UTF_8));
+        assertEquals(CFG_XML_1, Files.toString(cfg, Charsets.UTF_8));
 
         client.apply(configurationFileBackup.backup());
 
-        Files.write("bazquux", cfg, Charsets.UTF_8);
-        assertEquals("bazquux", Files.toString(cfg, Charsets.UTF_8));
+        Files.write(CFG_XML_2, cfg, Charsets.UTF_8);
+        assertEquals(CFG_XML_2, Files.toString(cfg, Charsets.UTF_8));
 
         client.apply(configurationFileBackup.restore());
 
-        assertEquals("foobar", Files.toString(cfg, Charsets.UTF_8));
+        assertEquals(CFG_XML_1, Files.toString(cfg, Charsets.UTF_8));
 
         client.apply(configurationFileBackup.restore()); // fail
     }
@@ -83,15 +86,15 @@ public class ConfigurationFileBackupTest {
         );
         ConfigurationFileBackup configurationFileBackup = new ConfigurationFileBackup();
 
-        assertEquals("foobar", Files.toString(cfg, Charsets.UTF_8));
+        assertEquals(CFG_XML_1, Files.toString(cfg, Charsets.UTF_8));
 
         client.apply(configurationFileBackup.backup());
 
-        Files.write("bazquux", cfg, Charsets.UTF_8);
-        assertEquals("bazquux", Files.toString(cfg, Charsets.UTF_8));
+        Files.write(CFG_XML_2, cfg, Charsets.UTF_8);
+        assertEquals(CFG_XML_2, Files.toString(cfg, Charsets.UTF_8));
 
         client.apply(configurationFileBackup.restore());
 
-        assertEquals("foobar", Files.toString(cfg, Charsets.UTF_8));
+        assertEquals(CFG_XML_1, Files.toString(cfg, Charsets.UTF_8));
     }
 }

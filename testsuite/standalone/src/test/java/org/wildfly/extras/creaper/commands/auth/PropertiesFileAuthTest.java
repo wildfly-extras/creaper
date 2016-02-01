@@ -36,10 +36,11 @@ public class PropertiesFileAuthTest {
 
     @Before
     public void setUp() throws IOException {
-        File configuration = tmp.newFolder("configuration");
-        new File(configuration, "standalone.xml").createNewFile();
-        usersProperties = new File(configuration, "mgmt-users.properties");
-        groupsProperties = new File(configuration, "mgmt-groups.properties");
+        File configurationDir = tmp.newFolder("configuration");
+        File configurationFile = new File(configurationDir, "standalone.xml");
+        Files.write("<server xmlns='urn:jboss:domain:1.7'/>", configurationFile, Charsets.UTF_8);
+        usersProperties = new File(configurationDir, "mgmt-users.properties");
+        groupsProperties = new File(configurationDir, "mgmt-groups.properties");
         Resources.copy(Resources.getResource(PropertiesFileAuthTest.class, "mgmt-users.properties"),
                 new FileOutputStream(usersProperties));
         Resources.copy(Resources.getResource(PropertiesFileAuthTest.class, "mgmt-groups.properties"),
