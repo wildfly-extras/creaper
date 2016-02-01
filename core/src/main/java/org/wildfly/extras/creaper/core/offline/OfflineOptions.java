@@ -15,8 +15,8 @@ public final class OfflineOptions {
     public final boolean isStandalone;
 
     public final boolean isDomain;
-    public String defaultProfile;
-    public String defaultHost;
+    public final String defaultProfile;
+    public final String defaultHost;
     /** @deprecated use {@code defaulProfile} instead, this will be removed before 1.0 */
     @Deprecated
     public final String domainProfile;
