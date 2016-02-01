@@ -243,6 +243,13 @@ as a `ModelNode`. Return value is `ModelNodeResult`, which you can use as
 a plain old `ModelNode` (it is a subclass, in fact), but it offers some nice
 utility methods for working with operation results.
 
+Using "local" CLI operations such as `batch`, `if` or `patch` is possible,
+using the `executeCli` method. This method, however, doesn't return a result.
+It can only signal success (by returning normally) or failure (by throwing
+an exception).
+
+    client.executeCli("patch apply .../path/to/patch.zip");
+
 In addition to performing plain old management operations, you can also perform
 higher-level management commands:
 
