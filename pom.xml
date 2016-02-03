@@ -4,7 +4,7 @@
 
     <groupId>org.wildfly.extras.creaper</groupId>
     <artifactId>creaper-parent</artifactId>
-    <version>0.9.4-SNAPSHOT</version>
+    <version>0.9.4</version>
     <packaging>pom</packaging>
 
     <name>Creaper: Parent</name>
@@ -38,7 +38,7 @@
         <connection>scm:git:git@github.com:wildfly-extras/creaper.git</connection>
         <developerConnection>scm:git:git@github.com:wildfly-extras/creaper.git</developerConnection>
         <url>https://github.com/wildfly-extras/creaper</url>
-        <tag>HEAD</tag>
+        <tag>v0.9.4</tag>
     </scm>
     <issueManagement>
         <system>GitHub</system>
