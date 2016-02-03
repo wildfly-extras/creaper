@@ -21,12 +21,17 @@ final class OfflineManagementClientImpl implements OfflineManagementClient {
         }
 
         this.options = options;
-        this.managementVersion = null; // TODO discover and expose as OfflineManagementClient.serverVersion()
+        this.managementVersion = OfflineManagementVersion.discover(configurationFile);
     }
 
     @Override
     public OfflineOptions options() {
         return options;
+    }
+
+    @Override
+    public ManagementVersion serverVersion() {
+        return managementVersion;
     }
 
     @Override

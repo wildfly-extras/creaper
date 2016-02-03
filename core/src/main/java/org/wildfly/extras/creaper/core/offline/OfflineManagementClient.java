@@ -1,6 +1,7 @@
 package org.wildfly.extras.creaper.core.offline;
 
 import org.wildfly.extras.creaper.core.CommandFailedException;
+import org.wildfly.extras.creaper.core.ManagementVersion;
 
 /**
  * A management client that works against a configuration file of a <i>stopped</i> application server. If the server
@@ -9,6 +10,9 @@ import org.wildfly.extras.creaper.core.CommandFailedException;
 public interface OfflineManagementClient {
     /** The {@link OfflineOptions} this client was created with. */
     OfflineOptions options();
+
+    /** The current version ({@link ManagementVersion}) of the server configuration file this client works with. */
+    ManagementVersion serverVersion();
 
     /**
      * Applies a set of {@code commands} sequentially. If any one of the commands fails, the rest of the commands

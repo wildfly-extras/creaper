@@ -45,7 +45,9 @@ Using the `as7` profile requires access to a Maven repository that, in addition
 to all other dependencies, also contains the respective AS7 distribution under
 these coordinates: `org.jboss.as:jboss-as-dist:${version.org.jboss.as.jboss-as-everything}`
 (see `pom.xml` for version number). The URL of the repository must be specified
-using a system property `maven.jboss.ga.repository.url` (again see `pom.xml`).
+using a system property `maven.jboss.ga.repository.url` (again see `pom.xml`):
+
+    mvn clean test -Pas7 -Dmaven.jboss.ga.repository.url=...
 
 To run a single test from the test suite, the following Maven invocation works:
 `mvn clean test -DfailIfNoTests=false -pl testsuite/standalone/ -Dtest=...`
