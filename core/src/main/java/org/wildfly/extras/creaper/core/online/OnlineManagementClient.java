@@ -4,6 +4,7 @@ import org.jboss.as.controller.client.Operation;
 import org.jboss.dmr.ModelNode;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -16,12 +17,16 @@ public interface OnlineManagementClient extends Closeable {
     /** The {@link OnlineOptions} this client was created with. */
     OnlineOptions options();
 
+    /** @deprecated use {@link #version()} instead, this will be removed before 1.0 */
+    @Deprecated
+    ManagementVersion serverVersion() throws IOException;
+
     /**
-     * The current version ({@link ManagementVersion}) of the server this client is connected to.
+     * The current version ({@link ServerVersion}) of the server this client is connected to.
      * @throws IOException if an I/O error occurs during the management operation (this can only happen
      * with {@link LazyOnlineManagementClient}; the eager client discovers the current version during initialization)
      */
-    ManagementVersion serverVersion() throws IOException;
+    ServerVersion version() throws IOException;
 
     /**
      * Applies a set of {@code commands} sequentially. If any one of the commands fails, the rest of the commands is

@@ -10,6 +10,7 @@ import org.jboss.dmr.ModelNode;
 import org.jboss.logging.Logger;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
 
     private ModelControllerClient client;
     private CommandContext cliContext;
-    private ManagementVersion managementVersion;
+    private ServerVersion version;
 
     private ThisIsWhereTheClientWasClosed closedAt; // != null <=> already closed
 
@@ -57,7 +58,7 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
         }
 
         try {
-            this.managementVersion = OnlineManagementVersion.discover(client);
+            this.version = OnlineServerVersion.discover(client);
             checkStandaloneVsDomain();
         } catch (IOException e) {
             try {
@@ -113,7 +114,12 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
 
     @Override
     public ManagementVersion serverVersion() {
-        return managementVersion;
+        return ManagementVersion.from(version);
+    }
+
+    @Override
+    public ServerVersion version() throws IOException {
+        return version;
     }
 
     @Override
@@ -126,7 +132,7 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
         checkClosed();
         try {
             OnlineManagementClient client = AutomaticErrorHandlingForCommands.wrap(this);
-            OnlineCommandContext ctx = new OnlineCommandContext(client, managementVersion);
+            OnlineCommandContext ctx = new OnlineCommandContext(client, version);
             for (OnlineCommand command : commands) {
                 log.infof("Applying command %s", command);
                 command.apply(ctx);

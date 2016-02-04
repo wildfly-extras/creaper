@@ -4,6 +4,7 @@ import org.jboss.as.controller.client.Operation;
 import org.jboss.dmr.ModelNode;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -32,6 +33,11 @@ final class AutomaticErrorHandlingForCommands implements OnlineManagementClient 
     @Override
     public ManagementVersion serverVersion() throws IOException {
         return delegate.serverVersion();
+    }
+
+    @Override
+    public ServerVersion version() throws IOException {
+        return delegate.version();
     }
 
     @Override

@@ -2,19 +2,19 @@ package org.wildfly.extras.creaper.core.online;
 
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.dmr.ModelNode;
-import org.wildfly.extras.creaper.core.ManagementVersion;
 import org.wildfly.extras.creaper.core.ManagementVersionPart;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.io.IOException;
 
-final class OnlineManagementVersion {
-    private OnlineManagementVersion() {} // avoid instantiation
+final class OnlineServerVersion {
+    private OnlineServerVersion() {} // avoid instantiation
 
     /**
      * Returns the management version of the server which the {@code client} is connected to.
      * @throws IOException if an I/O error occurs during any management operation
      */
-    static ManagementVersion discover(ModelControllerClient client) throws IOException {
+    static ServerVersion discover(ModelControllerClient client) throws IOException {
         ModelNode op = new ModelNode();
         op.get(Constants.OP).set(Constants.READ_RESOURCE_OPERATION);
         op.get(Constants.OP_ADDR).setEmptyList();
@@ -25,7 +25,7 @@ final class OnlineManagementVersion {
         result.assertSuccess();
 
         ModelNode resultValue = result.get(Constants.RESULT);
-        return ManagementVersion.from(
+        return ServerVersion.from(
                 readPart(resultValue, ManagementVersionPart.MAJOR),
                 readPart(resultValue, ManagementVersionPart.MINOR),
                 readPart(resultValue, ManagementVersionPart.MICRO)

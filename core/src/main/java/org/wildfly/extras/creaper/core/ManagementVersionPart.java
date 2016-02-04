@@ -11,7 +11,7 @@ import java.util.Locale;
  * <li>the {@code management-micro-version} attribute</li>
  * </ul>
  *
- * @see org.wildfly.extras.creaper.core.ManagementVersion
+ * @see ServerVersion
  */
 public enum ManagementVersionPart {
     MAJOR,

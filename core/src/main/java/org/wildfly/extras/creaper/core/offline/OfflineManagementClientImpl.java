@@ -2,7 +2,7 @@ package org.wildfly.extras.creaper.core.offline;
 
 import org.jboss.logging.Logger;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ final class OfflineManagementClientImpl implements OfflineManagementClient {
     private static final Logger log = Logger.getLogger(OfflineManagementClient.class);
 
     private final OfflineOptions options;
-    private final ManagementVersion managementVersion;
+    private final ServerVersion version;
 
     OfflineManagementClientImpl(OfflineOptions options) throws IOException {
         File configurationFile = options.configurationFile;
@@ -21,7 +21,7 @@ final class OfflineManagementClientImpl implements OfflineManagementClient {
         }
 
         this.options = options;
-        this.managementVersion = null; // TODO discover and expose as OfflineManagementClient.serverVersion()
+        this.version = null; // TODO discover and expose as OfflineManagementClient.version()
     }
 
     @Override
@@ -37,7 +37,7 @@ final class OfflineManagementClientImpl implements OfflineManagementClient {
     @Override
     public void apply(Iterable<OfflineCommand> commands) throws CommandFailedException {
         try {
-            OfflineCommandContext ctx = new OfflineCommandContext(this, managementVersion);
+            OfflineCommandContext ctx = new OfflineCommandContext(this, version);
             for (OfflineCommand command : commands) {
                 log.infof("Applying command %s", command);
                 command.apply(ctx);

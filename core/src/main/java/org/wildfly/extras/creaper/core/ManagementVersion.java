@@ -1,21 +1,7 @@
 package org.wildfly.extras.creaper.core;
 
-/**
- * <p>All existing versions of the application server management interface as the {@code {major, minor, micro}} triad.
- * </p>
- *
- * <p>Note that:</p>
- * <ul>
- * <li>AS 7.0.x didn't have {@code management-*-version} attributes in the management model at all</li>
- * <li>AS 7.1.x only had {@code management-{major,minor}-version} attributes in the management model</li>
- * <li>AS 7.2.x and later have {@code management-{major,minor,micro}-version} attributes in the management model</li>
- * </ul>
- *
- * <p>For converting version numbers obtained from the management interface to the triad format, missing
- * {@code management-*-version} attributes default to 0.</p>
- *
- * <p>See comments to the individual enum values for corresponding versions of the application server.</p>
- */
+/** @deprecated use {@link ServerVersion} instead, this will be removed before 1.0 */
+@Deprecated
 public enum ManagementVersion {
     /** AS 7.0.x.Final */
     VERSION_0_0_0(0, 0, 0),
@@ -45,7 +31,7 @@ public enum ManagementVersion {
     VERSION_3_0_0(3, 0, 0),
     /** WF 10.0.0.Final */
     VERSION_4_0_0(4, 0, 0),
-    /** WF 10.??? (currently, there's just a pull request that adds this) */
+    /** WF 10.??? (currently, there's no released version that contains this) */
     VERSION_4_1_0(4, 1, 0),
     ;
 
@@ -76,6 +62,18 @@ public enum ManagementVersion {
         throw new IllegalArgumentException("Unknown management version " + major + "." + minor + "." + micro);
     }
 
+    public static ManagementVersion from(ServerVersion serverVersion) {
+        for (ManagementVersion version : ManagementVersion.values()) {
+            if (serverVersion.major() == version.major
+                    && serverVersion.minor() == version.minor
+                    && serverVersion.micro() == version.micro) {
+                return version;
+            }
+        }
+
+        throw new IllegalArgumentException("Unknown management version " + serverVersion);
+    }
+
     // ---
 
     public boolean equalTo(ManagementVersion that) {
@@ -100,7 +98,6 @@ public enum ManagementVersion {
         return !lessThan(that);
     }
 
-    /** Both {@code min} and {@code max} are <i>inclusive</i>. */
     public boolean inRange(ManagementVersion min, ManagementVersion max) {
         return this.greaterThanOrEqualTo(min) && this.lessThanOrEqualTo(max);
     }

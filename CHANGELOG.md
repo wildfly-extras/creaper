@@ -6,6 +6,10 @@
 - upgraded Guava to 19.0
 - the test suite now uses the WildFly 10 final release
 - added commands for security realms
+- `ManagementVersion` renamed to `ServerVersion`,
+  `OnlineManagementClient.serverVersion()` renamed to `version()`,
+  `OnlineCommandContext.serverVersion` renamed to `version`;
+  the old names are still available, but deprecated and scheduled for removal
 
 ## 0.9.4
 
