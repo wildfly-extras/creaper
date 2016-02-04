@@ -4,7 +4,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
@@ -53,7 +53,7 @@ public class AddUndertowListenerOnlineTest {
     public void connect() throws IOException {
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
         assumeTrue("The test requires Undertow that supports HTTP/2 options on listener, which is available since WildFly 9",
-                client.serverVersion().greaterThanOrEqualTo(ManagementVersion.VERSION_3_0_0));
+                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_3_0_0));
         ops = new Operations(client);
         admin = new Administration(client);
     }

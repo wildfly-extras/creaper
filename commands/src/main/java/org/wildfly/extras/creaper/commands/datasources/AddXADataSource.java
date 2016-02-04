@@ -3,7 +3,7 @@ package org.wildfly.extras.creaper.commands.datasources;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -164,7 +164,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
 
     @Override
     public final void apply(OnlineCommandContext ctx) throws IOException, CommandFailedException {
-        modifyIfNeeded(ctx.serverVersion);
+        modifyIfNeeded(ctx.version);
 
         Operations ops = new Operations(ctx.client);
 
@@ -248,7 +248,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
             }
         }
 
-        if (enableAfterCreation && ctx.serverVersion.lessThan(ManagementVersion.VERSION_2_0_0)) {
+        if (enableAfterCreation && ctx.version.lessThan(ServerVersion.VERSION_2_0_0)) {
             // AS7 needs this to actually enable the datasource, because the "enabled" attribute in fact doesn't work
             //
             // for WildFly, the "enabled" attribute works fine and this must not be called (enabling twice is an error)
@@ -260,7 +260,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
 
     @Override
     public final void apply(OfflineCommandContext ctx) throws CommandFailedException {
-        modifyIfNeeded(ctx.serverVersion);
+        modifyIfNeeded(ctx.version);
 
         GroovyXmlTransform transform = GroovyXmlTransform.of(AddXADataSource.class)
                 .subtree("datasources", Subtree.subsystem("datasources"))
@@ -332,7 +332,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
         ctx.client.apply(transform);
     }
 
-    protected void modifyIfNeeded(ManagementVersion serverVersion) {
+    protected void modifyIfNeeded(ServerVersion serverVersion) {
         // designed for override
     }
 

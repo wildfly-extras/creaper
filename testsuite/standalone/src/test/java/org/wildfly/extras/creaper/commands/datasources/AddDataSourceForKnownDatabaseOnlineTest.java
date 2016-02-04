@@ -4,7 +4,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.as.controller.client.helpers.ClientConstants;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
@@ -94,7 +94,7 @@ public class AddDataSourceForKnownDatabaseOnlineTest {
 
         assertTrue("The data source should be created", ops.exists(TEST_DATASOURCE_ADDRESS));
         assertAttribute("valid-connection-checker-class-name", MSSQL_VALID_CONNECTION_CHECKER);
-        if (client.serverVersion().greaterThanOrEqualTo(ManagementVersion.VERSION_1_7_0)) {
+        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_1_7_0)) {
             assertAttribute("exception-sorter-class-name", MSSQL_EXCEPTION_SORTER);
         }
         assertAttribute("background-validation", true);

@@ -1,6 +1,6 @@
 package org.wildfly.extras.creaper.commands.datasources;
 
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.util.HashMap;
 
@@ -29,7 +29,7 @@ public final class AddPostgreSqlXADataSource extends AddXADataSource {
     }
 
     @Override
-    protected void modifyIfNeeded(ManagementVersion serverVersion) {
+    protected void modifyIfNeeded(ServerVersion serverVersion) {
         if (backgroundValidation == null) backgroundValidation = true;
         if (backgroundValidationMillis == null) backgroundValidationMillis = DEFAULT_BACKGROUND_VALIDATION_TIME;
         if (validConnectionCheckerClass == null) validConnectionCheckerClass = POSTGRESQL_VALID_CONNECTION_CHECKER;

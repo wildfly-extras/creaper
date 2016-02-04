@@ -1,6 +1,6 @@
 package org.wildfly.extras.creaper.commands.datasources;
 
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.util.HashMap;
 
@@ -31,7 +31,7 @@ public final class AddDb2XADataSource extends AddXADataSource {
     }
 
     @Override
-    protected void modifyIfNeeded(ManagementVersion serverVersion) {
+    protected void modifyIfNeeded(ServerVersion serverVersion) {
         backgroundValidation = true;
         backgroundValidationMillis = DEFAULT_BACKGROUND_VALIDATION_TIME;
         validConnectionCheckerClass = DB2_VALID_CONNECTION_CHECKER;

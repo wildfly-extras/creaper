@@ -17,7 +17,7 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -77,7 +77,7 @@ public class AddRemoveModuleTest {
     @Test
     public void addRemoveModuleTest() throws IOException, CommandFailedException, CliException, SAXException {
         String directoryName = "directory with spaces";
-        if (client.serverVersion().lessThan(ManagementVersion.VERSION_2_0_0)) {
+        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) {
             // AS7 doesn't accept paths with spaces
             directoryName = "directory_without_spaces";
         }

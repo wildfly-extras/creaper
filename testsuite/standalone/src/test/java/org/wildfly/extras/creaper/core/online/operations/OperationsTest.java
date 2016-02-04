@@ -4,8 +4,8 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.dmr.ModelNode;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ManagementVersion;
 import org.wildfly.extras.creaper.core.ManagementVersionPart;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -42,7 +42,7 @@ public class OperationsTest {
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
         ops = new Operations(client);
 
-        if (client.serverVersion().lessThan(ManagementVersion.VERSION_2_0_0)) { // AS7, JBoss Web
+        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) { // AS7, JBoss Web
             webSubsystem = "web";
             defaultHostAddress = Address.subsystem("web").and("virtual-server", "default-host");
             jspConfigurationAddress = Address.subsystem("web").and("configuration", "jsp-configuration");
@@ -66,7 +66,7 @@ public class OperationsTest {
     public void headers() throws Exception {
         // WildFly 8 doesn't require "reload" after removing a socket binding (why?)
         assumeFalse("This test can't work on WildFly 8 (but works on AS7 and WildFly >= 9)",
-                client.serverVersion().inRange(ManagementVersion.VERSION_2_0_0, ManagementVersion.VERSION_2_2_0));
+                client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
 
         Operations ops = new Operations(client);
         Administration admin = new Administration(client);
@@ -218,7 +218,7 @@ public class OperationsTest {
     public void readResource_recursive() throws IOException {
         ModelNodeResult result = ops.readResource(Address.subsystem(webSubsystem), ReadResourceOption.RECURSIVE);
         result.assertDefinedValue();
-        if (client.serverVersion().lessThan(ManagementVersion.VERSION_2_0_0)) {
+        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) {
             assertTrue(result.value().get("configuration", "jsp-configuration").hasDefined("development"));
         } else {
             assertTrue(result.value().get("servlet-container", "default", "setting", "jsp").hasDefined("development"));
@@ -230,7 +230,7 @@ public class OperationsTest {
         ModelNodeResult result = ops.readResource(Address.subsystem(webSubsystem),
                 ReadResourceOption.RECURSIVE, ReadResourceOption.NOT_INCLUDE_DEFAULTS);
         result.assertDefinedValue();
-        if (client.serverVersion().lessThan(ManagementVersion.VERSION_2_0_0)) {
+        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) {
             assertFalse(result.value().get("configuration", "jsp-configuration").hasDefined("development"));
         } else {
             assertFalse(result.value().get("servlet-container", "default", "setting", "jsp").hasDefined("development"));
@@ -241,7 +241,7 @@ public class OperationsTest {
     public void readResource_includeRuntime() throws IOException {
         // WildFly 8 doesn't have the "request-count" attribute in the "undertow" subsystem
         assumeFalse("This test can't work on WildFly 8 (but works on AS7 and WildFly >= 9)",
-                client.serverVersion().inRange(ManagementVersion.VERSION_2_0_0, ManagementVersion.VERSION_2_2_0));
+                client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
 
         ModelNodeResult result = ops.readResource(httpConnectorAddress, ReadResourceOption.INCLUDE_RUNTIME);
         result.assertDefinedValue();
@@ -252,7 +252,7 @@ public class OperationsTest {
     public void readResource_notIncludeRuntime() throws IOException {
         // WildFly 8 doesn't have the "request-count" attribute in the "undertow" subsystem
         assumeFalse("This test can't work on WildFly 8 (but works on AS7 and WildFly >= 9)",
-                client.serverVersion().inRange(ManagementVersion.VERSION_2_0_0, ManagementVersion.VERSION_2_2_0));
+                client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
 
         ModelNodeResult result = ops.readResource(httpConnectorAddress, ReadResourceOption.NOT_INCLUDE_RUNTIME);
         result.assertDefinedValue();
@@ -263,12 +263,12 @@ public class OperationsTest {
     public void readResource_recursive_includeRuntime() throws IOException {
         // WildFly 8 doesn't have the "request-count" attribute in the "undertow" subsystem
         assumeFalse("This test can't work on WildFly 8 (but works on AS7 and WildFly >= 9)",
-                client.serverVersion().inRange(ManagementVersion.VERSION_2_0_0, ManagementVersion.VERSION_2_2_0));
+                client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
 
         ModelNodeResult result = ops.readResource(Address.subsystem(webSubsystem), ReadResourceOption.INCLUDE_RUNTIME,
                 ReadResourceOption.RECURSIVE);
         result.assertDefinedValue();
-        if (client.serverVersion().lessThan(ManagementVersion.VERSION_2_0_0)) {
+        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) {
             assertTrue(result.value().get("connector", "http").hasDefined("requestCount"));
         } else {
             assertTrue(result.value().get("server", "default-server", "http-listener", "default").hasDefined("request-count"));

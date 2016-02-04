@@ -1,6 +1,6 @@
 package org.wildfly.extras.creaper.commands.datasources;
 
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.util.HashMap;
 
@@ -30,13 +30,14 @@ public final class AddMssqlXADataSource extends AddXADataSource {
     }
 
     @Override
-    protected void modifyIfNeeded(ManagementVersion serverVersion) {
+    protected void modifyIfNeeded(ServerVersion serverVersion) {
         if (backgroundValidation == null) backgroundValidation = true;
         if (backgroundValidationMillis == null) backgroundValidationMillis = DEFAULT_BACKGROUND_VALIDATION_TIME;
         if (validConnectionCheckerClass == null) validConnectionCheckerClass = MSSQL_VALID_CONNECTION_CHECKER;
-        if (exceptionSorterClass == null && serverVersion.greaterThan(ManagementVersion.VERSION_1_7_0))
+        if (exceptionSorterClass == null && serverVersion.greaterThan(ServerVersion.VERSION_1_7_0)) {
             // implementation of MS SQL exception sorter was not available in previous versions
             exceptionSorterClass = MSSQL_EXCEPTION_SORTER;
+        }
         if (sameRmOverride == null) sameRmOverride = true;
         if (xaDatasourceClass == null) xaDatasourceClass = MSSQL_XA_DATASOURCE_CLASS;
 

@@ -1,6 +1,6 @@
 package org.wildfly.extras.creaper.commands.datasources;
 
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.DB2_EXCEPTION_SORTER;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.DB2_STALE_CONNECTION_CHECKER;
@@ -22,7 +22,7 @@ public final class AddDb2DataSource extends AddDataSource {
     }
 
     @Override
-    protected void modifyIfNeeded(ManagementVersion serverVersion) {
+    protected void modifyIfNeeded(ServerVersion serverVersion) {
         if (backgroundValidation == null) backgroundValidation = true;
         if (backgroundValidationMillis == null) backgroundValidationMillis = DEFAULT_BACKGROUND_VALIDATION_TIME;
         if (validConnectionCheckerClass == null) validConnectionCheckerClass = DB2_VALID_CONNECTION_CHECKER;

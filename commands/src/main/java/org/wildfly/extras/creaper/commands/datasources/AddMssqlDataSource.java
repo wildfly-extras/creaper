@@ -1,6 +1,6 @@
 package org.wildfly.extras.creaper.commands.datasources;
 
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.DEFAULT_BACKGROUND_VALIDATION_TIME;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MSSQL_EXCEPTION_SORTER;
@@ -21,13 +21,14 @@ public final class AddMssqlDataSource extends AddDataSource {
     }
 
     @Override
-    protected void modifyIfNeeded(ManagementVersion serverVersion) {
+    protected void modifyIfNeeded(ServerVersion serverVersion) {
         if (backgroundValidation == null) backgroundValidation = true;
         if (backgroundValidationMillis == null) backgroundValidationMillis = DEFAULT_BACKGROUND_VALIDATION_TIME;
         if (validConnectionCheckerClass == null) validConnectionCheckerClass = MSSQL_VALID_CONNECTION_CHECKER;
-        if (exceptionSorterClass == null && serverVersion.greaterThanOrEqualTo(ManagementVersion.VERSION_1_7_0))
+        if (exceptionSorterClass == null && serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_1_7_0)) {
             // implementation of MS SQL exception sorter was not available in previous versions
             exceptionSorterClass = MSSQL_EXCEPTION_SORTER;
+        }
     }
 
     public static final class Builder extends AddDataSource.Builder<Builder> {

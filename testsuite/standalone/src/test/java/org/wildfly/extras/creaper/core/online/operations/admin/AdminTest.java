@@ -2,7 +2,7 @@ package org.wildfly.extras.creaper.core.online.operations.admin;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
@@ -46,7 +46,7 @@ public class AdminTest {
         assertFalse(admin.reloadIfRequired());
 
         Address jspConfigurationAddress;
-        if (client.serverVersion().lessThan(ManagementVersion.VERSION_2_0_0)) { // AS7, JBoss Web
+        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) { // AS7, JBoss Web
             jspConfigurationAddress = Address.subsystem("web").and("configuration", "jsp-configuration");
         } else { // WildFly, Undertow
             jspConfigurationAddress = Address.subsystem("undertow").and("servlet-container", "default").and("setting", "jsp");

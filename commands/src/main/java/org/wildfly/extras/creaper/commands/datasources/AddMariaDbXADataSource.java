@@ -1,13 +1,13 @@
 package org.wildfly.extras.creaper.commands.datasources;
 
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.util.HashMap;
 
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.DEFAULT_BACKGROUND_VALIDATION_TIME;
+import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MARIADB_XA_DATASOURCE_CLASS;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MYSQL_EXCEPTION_SORTER;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MYSQL_VALID_CONNECTION_CHECKER;
-import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MARIADB_XA_DATASOURCE_CLASS;
 /**
  * Creates a Maria DB XA datasource.
  *
@@ -27,7 +27,7 @@ public final class AddMariaDbXADataSource extends AddXADataSource {
     }
 
     @Override
-    protected void modifyIfNeeded(ManagementVersion serverVersion) {
+    protected void modifyIfNeeded(ServerVersion serverVersion) {
         if (backgroundValidation == null) backgroundValidation = true;
         if (backgroundValidationMillis == null) backgroundValidationMillis = DEFAULT_BACKGROUND_VALIDATION_TIME;
         if (validConnectionCheckerClass == null) validConnectionCheckerClass = MYSQL_VALID_CONNECTION_CHECKER;
