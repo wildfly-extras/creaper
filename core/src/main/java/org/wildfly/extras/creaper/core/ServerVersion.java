@@ -13,8 +13,21 @@ package org.wildfly.extras.creaper.core;
  * <li>AS 7.2.x and later have {@code management-{major,minor,micro}-version} attributes in the management model</li>
  * </ul>
  *
- * <p>For converting version numbers obtained from the management interface to the triad format, missing
- * {@code management-*-version} attributes must default to 0.</p>
+ * <p>For converting version numbers obtained from the management model to the triad format, missing
+ * {@code management-*-version} attributes default to 0.</p>
+ *
+ * <p>Also note that:</p>
+ * <ul>
+ * <li>AS 7.0.x used a schema version number of {@code 1.0} in XML configuration files</li>
+ * <li>AS 7.1.0 used a schema version number of {@code 1.1} in XML configuration files</li>
+ * <li>AS 7.1.1 used a schema version number of {@code 1.2} in XML configuration files</li>
+ * <li>EAP 6.0.x used a schema version number of {@code 1.3} in XML configuration files</li>
+ * <li>EAP 6.1.x and above have a schema version number in XML configuration files consistent
+ *     with the {@code management-*-version} attributes of the management model</li>
+ * </ul>
+ *
+ * <p>Using the rules above, the schema version numbers from the XML configuration files are normalized to match
+ * management version numbers as defined in this class.</p>
  *
  */
 public final class ServerVersion {

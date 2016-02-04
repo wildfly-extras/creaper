@@ -20,9 +20,9 @@ import java.io.IOException;
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 
 public class GroovyXmlTransformTest {
-    private static final String ORIGINAL = "<root><foo/></root>";
-    private static final String EXPECTED = "<root><bar/></root>";
-    private static final String EXPECTED_PARAMETERIZED = "<root><bar param=\"foobar\"/></root>";
+    private static final String ORIGINAL = "<server xmlns='urn:jboss:domain:1.7'><foo/></server>";
+    private static final String EXPECTED = "<server xmlns='urn:jboss:domain:1.7'><bar/></server>";
+    private static final String EXPECTED_PARAMETERIZED = "<server xmlns='urn:jboss:domain:1.7'><bar param=\"foobar\"/></server>";
 
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();

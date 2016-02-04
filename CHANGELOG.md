@@ -10,6 +10,11 @@
   `OnlineManagementClient.serverVersion()` renamed to `version()`,
   `OnlineCommandContext.serverVersion` renamed to `version`;
   the old names are still available, but deprecated and scheduled for removal
+- added `OfflineManagementClient.version()` and `OfflineCommandContext.version`
+  (server version discovery in offline finally implemented; this now requires
+  that all XML files used with OfflineManegementClient are AS7/WildFly server
+  configuration files, which is technically a breaking change, even though
+  it was always the intent and the number of affected users should be low)
 
 ## 0.9.4
 
