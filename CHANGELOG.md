@@ -3,6 +3,8 @@
 ## 0.9.5 (not yet released)
 
 - added commands for the security subsystem
+- upgraded Guava to 19.0
+- the test suite now uses the WildFly 10 final release
 
 ## 0.9.4
 
