@@ -12,7 +12,7 @@ import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
 /**
- * Offline variant is EAP-7 only!
+ * Offline variant only works in WildFly 10!
  */
 public final class ChangeBasicTransactionAttributes implements OnlineCommand, OfflineCommand {
 
@@ -54,9 +54,6 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
         objectStoreRelativeTo = builder.objectStoreRelativeTo;
     }
 
-    /**
-     * EAP7-only
-     */
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
         GroovyXmlTransform transform = GroovyXmlTransform.of(ChangeBasicTransactionAttributes.class)
