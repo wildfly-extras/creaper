@@ -5,6 +5,7 @@
 - added commands for the security subsystem
 - upgraded Guava to 19.0
 - the test suite now uses the WildFly 10 final release
+- added commands for security realms
 
 ## 0.9.4
 
