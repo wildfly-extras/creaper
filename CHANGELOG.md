@@ -1,12 +1,7 @@
 # Changelog
 
-## 0.9.5 (not yet released)
+## 0.9.5
 
-- added commands for the security subsystem
-- added commands for the transactions subsystem
-- upgraded Guava to 19.0
-- the test suite now uses the WildFly 10 final release
-- added commands for security realms
 - `ManagementVersion` renamed to `ServerVersion`,
   `OnlineManagementClient.serverVersion()` renamed to `version()` and
   `OnlineCommandContext.serverVersion` renamed to `version`;
@@ -18,9 +13,14 @@
   that all XML files used with OfflineManegementClient are AS7/WildFly server
   configuration files, which is technically a breaking change, even though
   it was always the intent and the number of affected users should be low)
-- management version 1.8.0 is now recognized
+- added commands for the security subsystem
+- added commands for security realms
+- added commands for the transactions subsystem
 - added commands for managing deployments
 - added `Address.deployment`
+- management version 1.8.0 is now recognized
+- upgraded Guava to 19.0
+- the test suite now uses the WildFly 10 final release
 
 ## 0.9.4
 
