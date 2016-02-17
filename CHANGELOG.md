@@ -19,7 +19,7 @@
 - added commands for managing deployments
 - added `Address.deployment`
 - management version 1.8.0 is now recognized
-- upgraded Guava to 19.0
+- upgraded Guava to 19.0, see https://github.com/google/guava/wiki/Release19
 - the test suite now uses the WildFly 10 final release
 
 ## 0.9.4
