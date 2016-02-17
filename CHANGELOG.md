@@ -3,6 +3,7 @@
 ## 0.9.5 (not yet released)
 
 - added commands for the security subsystem
+- added commands for the transactions subsystem
 - upgraded Guava to 19.0
 - the test suite now uses the WildFly 10 final release
 - added commands for security realms
@@ -18,6 +19,8 @@
   configuration files, which is technically a breaking change, even though
   it was always the intent and the number of affected users should be low)
 - management version 1.8.0 is now recognized
+- added commands for managing deployments
+- added `Address.deployment`
 
 ## 0.9.4
 
