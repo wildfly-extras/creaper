@@ -6,6 +6,10 @@ package org.wildfly.extras.creaper.core;
  * <p>The {@code static} constants represent all known versions of the application server management interface.
  * See comments to the individual values for corresponding versions of the application server.</p>
  *
+ * <p>The known versions are guaranteed to be canonical (i.e., they are singletons, unless reflection hackery is used).
+ * It is possible to compare them using {@code ==} and {@code !=}. For as-yet-unknown versions, no such guarantees
+ * are made.</p>
+ *
  * <p>Note that:</p>
  * <ul>
  * <li>AS 7.0.x didn't have {@code management-*-version} attributes in the management model at all</li>
@@ -64,7 +68,37 @@ public final class ServerVersion {
     /** WF 10.??? (currently, there's no released version that contains this) */
     public static final ServerVersion VERSION_4_1_0 = new ServerVersion(4, 1, 0);
 
+    private static final ServerVersion[] KNOWN_VERSIONS = {
+            VERSION_0_0_0,
+            VERSION_1_0_0,
+            VERSION_1_1_0,
+            VERSION_1_2_0,
+            VERSION_1_3_0,
+            VERSION_1_4_0,
+            VERSION_1_5_0,
+            VERSION_1_6_0,
+            VERSION_1_7_0,
+            VERSION_1_8_0,
+            VERSION_2_0_0,
+            VERSION_2_1_0,
+            VERSION_2_2_0,
+            VERSION_3_0_0,
+            VERSION_4_0_0,
+            VERSION_4_1_0,
+    };
+
+    /**
+     * Guarantees that the known versions are canonical (i.e., they are singletons, unless reflection hackery is used).
+     * It is possible to compare them using {@code ==} and {@code !=}. For as-yet-unknown versions, no such guarantees
+     * are made.
+     */
     public static ServerVersion from(int major, int minor, int micro) {
+        for (ServerVersion knownVersion : KNOWN_VERSIONS) {
+            if (knownVersion.major == major && knownVersion.minor == minor && knownVersion.micro == micro) {
+                return knownVersion;
+            }
+        }
+
         return new ServerVersion(major, minor, micro);
     }
 
