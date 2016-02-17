@@ -71,6 +71,7 @@ public class OnlineServerVersionTest {
     @Test
     public void discoverAS75x_EAP64x() throws IOException {
         test(1, 7, 0, ServerVersion.VERSION_1_7_0);
+        test(1, 8, 0, ServerVersion.VERSION_1_8_0);
     }
 
     @Test

@@ -49,6 +49,8 @@ public final class ServerVersion {
     public static final ServerVersion VERSION_1_6_0 = new ServerVersion(1, 6, 0);
     /** EAP 6.4.x */
     public static final ServerVersion VERSION_1_7_0 = new ServerVersion(1, 7, 0);
+    /** EAP 6.4.??? (currently, there's no released version that contains this) */
+    public static final ServerVersion VERSION_1_8_0 = new ServerVersion(1, 8, 0);
     /** WF 8.0.0.Final */
     public static final ServerVersion VERSION_2_0_0 = new ServerVersion(2, 0, 0);
     /** WF 8.1.0.Final */

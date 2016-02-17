@@ -15,6 +15,7 @@
   that all XML files used with OfflineManegementClient are AS7/WildFly server
   configuration files, which is technically a breaking change, even though
   it was always the intent and the number of affected users should be low)
+- management version 1.8.0 is now recognized
 
 ## 0.9.4
 

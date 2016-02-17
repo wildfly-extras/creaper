@@ -21,6 +21,8 @@ public enum ManagementVersion {
     VERSION_1_6_0(1, 6, 0),
     /** EAP 6.4.x */
     VERSION_1_7_0(1, 7, 0),
+    /** EAP 6.4.??? (currently, there's no released version that contains this) */
+    VERSION_1_8_0(1, 8, 0),
     /** WF 8.0.0.Final */
     VERSION_2_0_0(2, 0, 0),
     /** WF 8.1.0.Final */
