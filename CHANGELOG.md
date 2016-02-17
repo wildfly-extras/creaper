@@ -7,9 +7,11 @@
 - the test suite now uses the WildFly 10 final release
 - added commands for security realms
 - `ManagementVersion` renamed to `ServerVersion`,
-  `OnlineManagementClient.serverVersion()` renamed to `version()`,
+  `OnlineManagementClient.serverVersion()` renamed to `version()` and
   `OnlineCommandContext.serverVersion` renamed to `version`;
   the old names are still available, but deprecated and scheduled for removal
+  (this is a fix of a critical design flaw that required constant updates
+  to the `ManagementVersion` enum to be able to work with new server versions)
 - added `OfflineManagementClient.version()` and `OfflineCommandContext.version`
   (server version discovery in offline finally implemented; this now requires
   that all XML files used with OfflineManegementClient are AS7/WildFly server
