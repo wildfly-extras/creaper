@@ -12,7 +12,7 @@
   to the `ManagementVersion` enum to be able to work with new server versions)
 - added `OfflineManagementClient.version()` and `OfflineCommandContext.version`
   (server version discovery in offline finally implemented; this now requires
-  that all XML files used with OfflineManegementClient are AS7/WildFly server
+  that all XML files used with `OfflineManegementClient` are AS7/WildFly server
   configuration files, which is technically a breaking change, even though
   it was always the intent and the number of affected users should be low)
 - added commands for the security subsystem
