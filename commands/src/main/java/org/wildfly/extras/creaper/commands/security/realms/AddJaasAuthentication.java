@@ -46,6 +46,13 @@ public final class AddJaasAuthentication extends AbstractAddSecurityRealmSubElem
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
+        if (assignGroups != null) {
+            if (ctx.version.lessThan(ServerVersion.VERSION_1_7_0)
+                    || ctx.version.inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0)) {
+                throw new AssertionError("Option assign-groups is available since WildFly 9 or in EAP 6.4.x.");
+            }
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(AddJaasAuthentication.class)
                 .subtree("management", Subtree.management())
                 .parameter("atrSecurityRealmName", securityRealmName)

@@ -78,6 +78,11 @@ public final class AddLdapAuthentication extends AbstractAddSecurityRealmSubElem
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
+        if (usernameLoad != null) {
+            ctx.version.assertAtLeast(ServerVersion.VERSION_2_0_0,
+                    "Option username-load is available since WildFly 8");
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(AddLdapAuthentication.class)
                 .subtree("management", Subtree.management())
                 .parameter("atrSecurityRealmName", securityRealmName)

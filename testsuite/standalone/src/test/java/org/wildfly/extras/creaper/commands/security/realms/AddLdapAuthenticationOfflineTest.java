@@ -19,7 +19,7 @@ import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 public class AddLdapAuthenticationOfflineTest {
 
     private static final String REALM_SIMPLE = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\"/>\n"
@@ -28,7 +28,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_LDAP_USERNAME_ATTRIBUTE = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -43,7 +43,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_LDAP_ADVANCED_FILTER = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -58,7 +58,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_LDAP_USERNAME_ATTRIBUTE_REPLACED = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -73,7 +73,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_LDAP_USERNAME_ATTRIBUTE_FULL = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -89,7 +89,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_LDAP_ADVANCED_FILTER_FULL = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -105,7 +105,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_LDAP_CACHE_BY_ACCESS_TIME = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -122,7 +122,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_LDAP_CACHE_BY_SEARCH_TIME = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -139,7 +139,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_LOCAL = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -152,7 +152,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_LOCAL_EXPECTED = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -168,7 +168,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_PROPERTIES = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"
@@ -181,7 +181,7 @@ public class AddLdapAuthenticationOfflineTest {
             + "</server>";
 
     private static final String REALM_WITH_JAAS = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
+            + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
             + "            <security-realm name=\"creaperSecRealm\">\n"

@@ -77,6 +77,11 @@ public final class AddKerberosAuthentication extends AbstractAddSecurityRealmSub
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
+        if (ctx.version.lessThan(ServerVersion.VERSION_1_7_0)
+                || ctx.version.inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0)) {
+            throw new AssertionError("Kerberos authentication in security realm is available since WildFly 9 or in EAP 6.4.x.");
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(AddKerberosAuthentication.class)
                 .subtree("management", Subtree.management())
                 .parameter("atrSecurityRealmName", securityRealmName)
