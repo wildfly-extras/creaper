@@ -12,7 +12,7 @@ import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
 /**
- * Offline variant only works in WildFly 10!
+ * Offline variant only works for WildFly 10
  */
 public final class ChangeBasicTransactionAttributes implements OnlineCommand, OfflineCommand {
 
@@ -36,7 +36,7 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
     private final String objectStoreRelativeTo;
 
 
-    protected ChangeBasicTransactionAttributes(Builder builder) {
+    private ChangeBasicTransactionAttributes(Builder builder) {
         timeout = builder.timeout;
         enableTtsmStatus = builder.enableTsmStatus;
         journalStoreEnableAsyncIO = builder.journalStoreEnableAsyncIO;
@@ -56,6 +56,10 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
+        ctx.version.assertAtLeast(ServerVersion.VERSION_4_0_0,
+                "Offline command for configuring basic transaction attributes is meant to be used only for"
+                        + " WildFly 10");
+
         GroovyXmlTransform transform = GroovyXmlTransform.of(ChangeBasicTransactionAttributes.class)
                 .subtree("transactions", Subtree.subsystem("transactions"))
 
@@ -102,8 +106,11 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
         if (timeout != null) {
             batch.writeAttribute(transatcionsAddress, "default-timeout", timeout);
         }
+
+        // cli allows both enable-statistics and statistics-enabled for WildFly 8 and WildFly 9,
+        // statistics-enabled is in configuration files since WildFly 8
         if (statisticsEnabled != null) {
-            if (ctx.version.lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)) {
+            if (ctx.version.lessThan(ServerVersion.VERSION_2_0_0)) {
                 batch.writeAttribute(transatcionsAddress, "enable-statistics", statisticsEnabled);
             } else {
                 batch.writeAttribute(transatcionsAddress, "statistics-enabled", statisticsEnabled);
@@ -112,17 +119,21 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
         if (jts != null) {
             batch.writeAttribute(transatcionsAddress, "jts", jts);
         }
+
         if (useJournalStore != null) {
-            if (ctx.version.lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)) {
+            if (ctx.version.lessThan(ServerVersion.VERSION_4_0_0)) {
                 batch.writeAttribute(transatcionsAddress, "use-hornetq-store", useJournalStore);
             } else {
                 batch.writeAttribute(transatcionsAddress, "use-journal-store", useJournalStore);
 
             }
         }
-        if (journalStoreEnableAsyncIO != null
-                && ctx.version.greaterThan(ServerVersion.VERSION_3_0_0)) {
-            batch.writeAttribute(transatcionsAddress, "journal-store-enable-async-io", journalStoreEnableAsyncIO);
+        if (journalStoreEnableAsyncIO != null) {
+            if (ctx.version.lessThan(ServerVersion.VERSION_4_0_0)) {
+                batch.writeAttribute(transatcionsAddress, "hornetq-store-enable-async-io", journalStoreEnableAsyncIO);
+            } else {
+                batch.writeAttribute(transatcionsAddress, "journal-store-enable-async-io", journalStoreEnableAsyncIO);
+            }
         }
         if (processIdUuid != null || processIdSocketBinding != null) {
             if (processIdUuid != null) {
@@ -189,6 +200,9 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             return this;
         }
 
+        /**
+         * "hornetq-store-enable-async-io" will be used for AS7, WildFly 8 and WildFly 9
+         */
         public Builder journalStoreEnableAsyncIO(boolean val) {
             journalStoreEnableAsyncIO = val;
             return this;
@@ -212,6 +226,9 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             return this;
         }
 
+        /**
+         * "use-hornetq-store" will be used for AS7, WildFly 8 and WildFly 9
+         */
         public Builder useJournalStore(boolean val) {
             useJournalStore = val;
             return this;

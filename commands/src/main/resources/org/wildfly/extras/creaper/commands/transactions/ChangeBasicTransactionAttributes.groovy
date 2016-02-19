@@ -77,7 +77,6 @@ if (nn(jts)) {
 }
 
 if (nn(useJournalStore)) {
-
     journal = [:]
     if (nn(journalStoreEnableAsyncIO)) journal['enable-async-io'] = journalStoreEnableAsyncIO
 
@@ -85,6 +84,10 @@ if (nn(useJournalStore)) {
         transactions.'use-journal-store'.replaceNode {}
     }
     if (useJournalStore == "true") {
+        // jdbc-store is not supposed to be used along with use-journal-store
+        if (transactions.'jdbc-store'.size() != 0) {
+            transactions.'jdbc-store'.replaceNode {}
+        }
         if (transactions.'use-journal-store'.size() == 0) {
             transactions.appendNode {
                 'use-journal-store'(journal)

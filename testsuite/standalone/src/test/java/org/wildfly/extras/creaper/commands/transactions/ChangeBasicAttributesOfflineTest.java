@@ -28,6 +28,7 @@ public class ChangeBasicAttributesOfflineTest {
             + "                </process-id>\n"
             + "            </core-environment>\n"
             + "            <recovery-environment socket-binding=\"txn-recovery-environment\" status-socket-binding=\"txn-status-manager\"/>\n"
+            + "            <jdbc-store datasource-jndi-name=\"test\" />\n"
             + "        </subsystem>"
             + "    </profile>\n"
             + "</server>";

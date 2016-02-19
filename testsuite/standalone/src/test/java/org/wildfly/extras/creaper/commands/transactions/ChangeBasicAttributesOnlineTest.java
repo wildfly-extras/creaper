@@ -91,7 +91,7 @@ public class ChangeBasicAttributesOnlineTest {
         assertEquals("default timeout should be changed", 999, result.intValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
-                onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)
+                onlineClient.version().lessThan(ServerVersion.VERSION_2_0_0)
                         ? "enable-statistics" : "statistics-enabled");
         result.assertSuccess();
         assertTrue("statistics should be enabled", result.booleanValue());
@@ -101,16 +101,16 @@ public class ChangeBasicAttributesOnlineTest {
         assertTrue("jts should be enabled", result.booleanValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
-                onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)
+                onlineClient.version().lessThan(ServerVersion.VERSION_4_0_0)
                         ? "use-hornetq-store" : "use-journal-store");
         result.assertSuccess();
         assertTrue("journal store should be used", result.booleanValue());
 
-        if (onlineClient.version().greaterThan(ServerVersion.VERSION_3_0_0)) {
-            result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS, "journal-store-enable-async-io");
-            result.assertSuccess();
-            assertTrue("async io should be enabled", result.booleanValue());
-        }
+        result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
+                onlineClient.version().lessThan(ServerVersion.VERSION_4_0_0)
+                        ? "hornetq-store-enable-async-io" : "journal-store-enable-async-io");
+        result.assertSuccess();
+        assertTrue("async io should be enabled", result.booleanValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS, "process-id-uuid");
         result.assertSuccess();
@@ -169,7 +169,7 @@ public class ChangeBasicAttributesOnlineTest {
         assertEquals("default timeout should be changed", 999, result.intValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
-                onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)
+                onlineClient.version().lessThan(ServerVersion.VERSION_2_0_0)
                         ? "enable-statistics" : "statistics-enabled");
         result.assertSuccess();
         assertTrue("statistics should be enabled", result.booleanValue());
@@ -179,16 +179,16 @@ public class ChangeBasicAttributesOnlineTest {
         assertTrue("jts should be enabled", result.booleanValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
-                onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)
+                onlineClient.version().lessThan(ServerVersion.VERSION_4_0_0)
                         ? "use-hornetq-store" : "use-journal-store");
         result.assertSuccess();
         assertTrue("journal store should be used", result.booleanValue());
 
-        if (onlineClient.version().greaterThan(ServerVersion.VERSION_3_0_0)) {
-            result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS, "journal-store-enable-async-io");
-            result.assertSuccess();
-            assertTrue("async io should be enabled", result.booleanValue());
-        }
+        result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
+                onlineClient.version().lessThan(ServerVersion.VERSION_4_0_0)
+                        ? "hornetq-store-enable-async-io" : "journal-store-enable-async-io");
+        result.assertSuccess();
+        assertTrue("async io should be enabled", result.booleanValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS, "process-id-uuid");
         result.assertSuccess();
