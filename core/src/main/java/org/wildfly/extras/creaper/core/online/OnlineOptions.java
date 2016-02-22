@@ -31,10 +31,10 @@ public final class OnlineOptions {
     public final boolean isDomain;
     public String defaultProfile;
     public String defaultHost;
-    /** @deprecated use {@code defaulProfile} instead, this will be removed before 1.0 */
+    /** @deprecated use {@code defaultProfile} instead, this will be removed before 1.0 */
     @Deprecated
     public final String domainProfile;
-    /** @deprecated use {@code defaulhost} instead, this will be removed before 1.0 */
+    /** @deprecated use {@code defaultHost} instead, this will be removed before 1.0 */
     @Deprecated
     public final String domainHost;
 
@@ -127,24 +127,36 @@ public final class OnlineOptions {
             this.data = data;
         }
 
-        /** Apply profile configuration changes to the {@code profile}. Optional, can only be called once.  */
+        /**
+         * <p>Apply profile configuration changes to the {@code profile}. Optional, can only be called once.</p>
+         *
+         * <p>If set, operations on addresses {@code /subsystem=...} will be automatically performed against
+         * an address {@code /profile=.../subsystem=...}. If not set, an exception will be thrown when
+         * trying to execute an operation on address {@code /subsystem=...}.</p>
+         */
         public DomainOnlineOptions forProfile(String profile) {
             assert data.isDomain;
 
             if (data.defaultProfile != null) {
-                throw new IllegalStateException("Profile was already set (" + data.defaultProfile + ")");
+                throw new IllegalStateException("Default profile was already set (" + data.defaultProfile + ")");
             }
 
             data.defaultProfile = profile;
             return this;
         }
 
-        /** Apply host configuration changes to the {@code host}. Optional, can only be called once.  */
+        /**
+         * <p>Apply host configuration changes to the {@code host}. Optional, can only be called once.</p>
+         *
+         * <p>If set, operations on addresses {@code /core-service=...} will be automatically performed against
+         * an address {@code /host=.../core-service=...}. If not set, the operation will be performed against
+         * the original address.</p>
+         */
         public DomainOnlineOptions forHost(String host) {
             assert data.isDomain;
 
             if (data.defaultHost != null) {
-                throw new IllegalStateException("Host was already set (" + data.defaultHost + ")");
+                throw new IllegalStateException("Default host was already set (" + data.defaultHost + ")");
             }
 
             data.defaultHost = host;

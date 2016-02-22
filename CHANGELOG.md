@@ -3,6 +3,12 @@
 ## 0.9.6 (not yet released)
 
 - offline commands for security now check the configuration file version
+- `OfflineOptions.defaultHost` and `.forHost` make no sense because
+  an offline client always works with a single file, so they are now
+  deprecated and scheduled for removal
+- if `OnlineOptions.forHost` wasn't called and `OnlineOptions.defaultHost`
+  is therefore `null`, operations against addresses `/core-service=...`
+  are now performed as-is instead of throwing an exception
 
 ## 0.9.5
 

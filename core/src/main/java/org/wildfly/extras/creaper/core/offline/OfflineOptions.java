@@ -16,6 +16,8 @@ public final class OfflineOptions {
 
     public final boolean isDomain;
     public final String defaultProfile;
+    /** @deprecated always {@code null}, doesn't make sense for offline client; will be removed before 1.0 */
+    @Deprecated
     public final String defaultHost;
     /** @deprecated use {@code defaulProfile} instead, this will be removed before 1.0 */
     @Deprecated
@@ -32,9 +34,9 @@ public final class OfflineOptions {
 
         this.isDomain = data.isDomain;
         this.defaultProfile = data.defaultProfile;
-        this.defaultHost = data.defaultHost;
+        this.defaultHost = null;
         this.domainProfile = data.defaultProfile;
-        this.domainHost = data.defaultHost;
+        this.domainHost = null;
 
         this.configurationDirectory = data.configurationDirectory;
         this.configurationFile = data.configurationFile;
@@ -63,7 +65,6 @@ public final class OfflineOptions {
 
         private boolean isDomain;
         private String defaultProfile;
-        private String defaultHost;
 
         private File configurationDirectory;
         private File configurationFile;
@@ -102,15 +103,9 @@ public final class OfflineOptions {
             return this;
         }
 
-        /** Apply host configuration changes to the {@code host}. Optional, can only be called once.  */
+        /** @deprecated does nothing, doesn't make sense for offline client; will be removed before 1.0 */
+        @Deprecated
         public DomainOfflineOptions forHost(String host) {
-            assert data.isDomain;
-
-            if (data.defaultHost != null) {
-                throw new IllegalStateException("Host was already set (" + data.defaultHost + ")");
-            }
-
-            data.defaultHost = host;
             return this;
         }
 

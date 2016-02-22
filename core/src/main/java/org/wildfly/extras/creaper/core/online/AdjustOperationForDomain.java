@@ -14,12 +14,11 @@ import java.util.List;
  *
  * <p>Operations that are meant for standalone and are convertible for domain usage are:</p>
  * <ul>
- * <li>operations whose addresses start with {@code /subsystem=...} &ndash; {@code /profile=...} is prepended</li>
- * <li>operations whose addresses start with {@code /core-service=...} &ndash; {@code /host=...} is prepended</li>
+ * <li>operations whose addresses start with {@code /subsystem=...} &ndash; {@code /profile=...} is prepended;
+ *     if there is no default profile, an {@link IllegalArgumentException} is thrown</li>
+ * <li>operations whose addresses start with {@code /core-service=...} &ndash; {@code /host=...} is prepended;
+ *     if there is no default host, the operation is executed as-is (without any transformation)</li>
  * </ul>
- *
- * <p>If an operation is to be adjusted, but default profile/host is not known, an {@link IllegalArgumentException}
- * is thrown.</p>
  */
 final class AdjustOperationForDomain {
     private final OnlineOptions options;
@@ -69,8 +68,7 @@ final class AdjustOperationForDomain {
                 prependToAddress = new Property(Constants.PROFILE, new ModelNode(options.defaultProfile));
                 break;
             }
-            if (Constants.CORE_SERVICE.equals(property.getName())) {
-                checkHost(operation.asString());
+            if (Constants.CORE_SERVICE.equals(property.getName()) && options.defaultHost != null) {
                 prependToAddress = new Property(Constants.HOST, new ModelNode(options.defaultHost));
                 break;
             }
@@ -109,8 +107,7 @@ final class AdjustOperationForDomain {
             checkProfile(cliOperation);
             return "/profile=" + options.defaultProfile + cliOperation;
         }
-        if (cliOperation.startsWith("/core-service")) {
-            checkHost(cliOperation);
+        if (cliOperation.startsWith("/core-service") && options.defaultHost != null) {
             return "/host=" + options.defaultHost + cliOperation;
         }
 
@@ -120,12 +117,6 @@ final class AdjustOperationForDomain {
     private void checkProfile(String operation) {
         if (options.defaultProfile == null) {
             throw new IllegalArgumentException("No default profile, can't perform operation in domain: " + operation);
-        }
-    }
-
-    private void checkHost(String operation) {
-        if (options.defaultHost == null) {
-            throw new IllegalArgumentException("No default host, can't perform operation in domain: " + operation);
         }
     }
 }

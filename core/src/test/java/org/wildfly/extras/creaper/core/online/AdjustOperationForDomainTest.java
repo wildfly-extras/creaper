@@ -190,11 +190,11 @@ public class AdjustOperationForDomainTest {
         adjust.adjust("/subsystem=web:read-resource");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void unknownHost() {
         OnlineOptions options = OnlineOptions.domain().build().localDefault().build();
         AdjustOperationForDomain adjust = new AdjustOperationForDomain(options);
 
-        adjust.adjust("/core-service=management:read-resource");
+        assertEquals("/core-service=management:read-resource", adjust.adjust("/core-service=management:read-resource"));
     }
 }
