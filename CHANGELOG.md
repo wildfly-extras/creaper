@@ -2,6 +2,8 @@
 
 ## 0.9.6 (not yet released)
 
+- offline commands for security now check the configuration file version
+
 ## 0.9.5
 
 - `ManagementVersion` renamed to `ServerVersion`,
