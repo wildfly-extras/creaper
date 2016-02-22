@@ -17,32 +17,68 @@ final class FirstLevelXmlElementOrder {
         }
     };
 
-    private static final Ordering<Node> ORDERING = Ordering.explicit(
-            // this is a blend of "domain", "host" and "server" schemas that satisfies all ordering constraints
+    // see files [jboss-as|wildfly]-config_*.xsd
+
+    private static final Ordering<Node> DOMAIN_ORDERING = Ordering.explicit(
+            "extensions",
+            "system-properties",
+            "paths",
+            "management",
+            "profiles",
+            "interfaces",
+            "socket-binding-groups",
+            "deployments",
+            "deployment-overlays",
+            "server-groups",
+            "management-client-content"
+    ).onResultOf(GET_NODE_NAME);
+
+    private static final Ordering<Node> HOST_ORDERING = Ordering.explicit(
+            "extensions",
+            "system-properties",
+            "paths",
+            "vault",
+            "management",
+            "domain-controller",
+            "interfaces",
+            "jvms",
+            "servers",
+            "profile",
+            "socket-binding-group"
+    ).onResultOf(GET_NODE_NAME);
+
+    private static final Ordering<Node> SERVER_ORDERING = Ordering.explicit(
             "extensions",
             "system-properties",
             "paths",
             "vault",
             "management",
             "profile",
-            "domain-controller",
-            "profiles",
             "interfaces",
-            "socket-binding-groups",
             "socket-binding-group",
             "deployments",
-            "deployment-overlays",
-            "server-groups",
-            "jvms",
-            "servers",
-            "management-client-content"
+            "deployment-overlays"
     ).onResultOf(GET_NODE_NAME);
 
     static String fix(String xml) {
         try {
             Node root = new XmlParser(false, false).parseText(xml);
-            Collections.sort((List<Node>) root.children(), ORDERING);
+
+            Ordering<Node> ordering;
+            if ("domain".equals(root.name())) {
+                ordering = DOMAIN_ORDERING;
+            } else if ("host".equals(root.name())) {
+                ordering = HOST_ORDERING;
+            } else if ("server".equals(root.name())) {
+                ordering = SERVER_ORDERING;
+            } else {
+                throw new IllegalArgumentException("Unknown root element '" + root.name() + "'");
+            }
+
+            Collections.sort((List<Node>) root.children(), ordering);
             return XmlUtil.serialize(root);
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

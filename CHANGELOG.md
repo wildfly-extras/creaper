@@ -9,6 +9,7 @@
 - if `OnlineOptions.forHost` wasn't called and `OnlineOptions.defaultHost`
   is therefore `null`, operations against addresses `/core-service=...`
   are now performed as-is instead of throwing an exception
+- updated `GroovyXmlTransform` to understand new XML elements added in WildFly
 
 ## 0.9.5
 

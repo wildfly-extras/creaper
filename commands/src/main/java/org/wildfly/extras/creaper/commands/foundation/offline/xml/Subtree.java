@@ -59,12 +59,12 @@ public final class Subtree {
         return new Subtree(StaticSubtreeLocator.MANAGEMENT, SubtreeCreator.MANAGEMENT);
     }
 
-    // using default profile in domain
+    // using default profile in domain.xml
     public static Subtree profile() {
         return new Subtree(ProfileSubtreeLocator.INSTANCE, SubtreeCreator.PROFILE);
     }
 
-    // using default profile in domain
+    // using default profile in domain.xml
     public static Subtree subsystem(String subsystemName) {
         // can't create subsystem, don't know the version
         return new Subtree(new SubsystemSubtreeLocator(subsystemName), null);
@@ -74,7 +74,7 @@ public final class Subtree {
         return new Subtree(StaticSubtreeLocator.INTERFACES, SubtreeCreator.INTERFACES);
     }
 
-    // in domain, tries to guess a corect name based on the default profile
+    // in domain.xml, tries to guess a corect name based on the default profile
     public static Subtree socketBindingGroup() {
         return new Subtree(SocketBindingGroupSubtreeLocator.INSTANCE, SubtreeCreator.SOCKET_BINDING_GROUP);
     }
@@ -113,6 +113,37 @@ public final class Subtree {
 
     // ---
 
+    private enum Type {
+        DOMAIN("domain.xml"),
+        HOST("host.xml"),
+        SERVER("standalone.xml"),
+        ;
+
+        private final String description;
+
+        Type(String description) {
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return description;
+        }
+
+        public static Type of(GPathResult root) {
+            String rootElement = root.name();
+            if ("domain".equals(rootElement)) {
+                return Type.DOMAIN;
+            } else if ("host".equals(rootElement)) {
+                return Type.HOST;
+            } else if ("server".equals(rootElement)) {
+                return Type.SERVER;
+            } else {
+                throw new IllegalArgumentException("Unknown root node '" + rootElement + "'");
+            }
+        }
+    }
+
     private interface SubtreeLocator {
         GPathResult locate(GPathResult root, OfflineOptions options) throws Exception;
 
@@ -125,33 +156,34 @@ public final class Subtree {
     }
 
     private static final class StaticSubtreeLocator implements SubtreeLocator {
-        static final SubtreeLocator EXTENSIONS = new StaticSubtreeLocator("extensions", false);
-        static final SubtreeLocator SYSTEM_PROPERTIES = new StaticSubtreeLocator("system-properties", false);
-        static final SubtreeLocator PATHS = new StaticSubtreeLocator("paths", false);
-        static final SubtreeLocator MANAGEMENT = new StaticSubtreeLocator("management", false);
-        static final SubtreeLocator INTERFACES = new StaticSubtreeLocator("interfaces", false);
+        static final SubtreeLocator EXTENSIONS = new StaticSubtreeLocator("extensions", null);
+        static final SubtreeLocator SYSTEM_PROPERTIES = new StaticSubtreeLocator("system-properties", null);
+        static final SubtreeLocator PATHS = new StaticSubtreeLocator("paths", null);
+        static final SubtreeLocator MANAGEMENT = new StaticSubtreeLocator("management", null);
+        static final SubtreeLocator INTERFACES = new StaticSubtreeLocator("interfaces", null);
 
-        static final SubtreeLocator PROFILES = new StaticSubtreeLocator("profiles", true);
-        static final SubtreeLocator SOCKET_BINDING_GROUPS = new StaticSubtreeLocator("socket-binding-groups", true);
-        static final SubtreeLocator SERVER_GROUPS = new StaticSubtreeLocator("server-groups", true);
-        static final SubtreeLocator DOMAIN_CONTROLLER = new StaticSubtreeLocator("domain-controller", true);
-        static final SubtreeLocator JVMS = new StaticSubtreeLocator("jvms", true);
-        static final SubtreeLocator SERVERS = new StaticSubtreeLocator("servers", true);
+        static final SubtreeLocator PROFILES = new StaticSubtreeLocator("profiles", Type.DOMAIN);
+        static final SubtreeLocator SOCKET_BINDING_GROUPS = new StaticSubtreeLocator("socket-binding-groups",
+                Type.DOMAIN);
+        static final SubtreeLocator SERVER_GROUPS = new StaticSubtreeLocator("server-groups", Type.DOMAIN);
+        static final SubtreeLocator DOMAIN_CONTROLLER = new StaticSubtreeLocator("domain-controller", Type.HOST);
+        static final SubtreeLocator JVMS = new StaticSubtreeLocator("jvms", Type.HOST);
+        static final SubtreeLocator SERVERS = new StaticSubtreeLocator("servers", Type.HOST);
 
         private final String tagName; // only for a possible exception message
         private final Class scriptClass;
-        private final boolean domainOnly;
+        private final Type onlyForType;
 
-        StaticSubtreeLocator(String tagName, boolean domainOnly) {
+        StaticSubtreeLocator(String tagName, Type onlyForType) {
             String script = "root.\"" + tagName + "\"";
             this.tagName = tagName;
-            this.scriptClass = (GroovyHolder.GROOVY.parseClass(script));
-            this.domainOnly = domainOnly;
+            this.scriptClass = GroovyHolder.GROOVY.parseClass(script);
+            this.onlyForType = onlyForType;
         }
 
         public GPathResult locate(GPathResult root, OfflineOptions options) throws Exception {
-            if (domainOnly && !options.isDomain) {
-                throw new IllegalArgumentException("Locating '" + tagName + "' is only possible in domain");
+            if (onlyForType != null && onlyForType != Type.of(root)) {
+                throw new IllegalArgumentException("Locating '" + tagName + "' is only possible in '" + onlyForType + "'");
             }
             Script script = (Script) scriptClass.newInstance();
             script.setProperty("root", root);
@@ -162,16 +194,18 @@ public final class Subtree {
     private static final class ProfileSubtreeLocator implements SubtreeLocator {
         static final SubtreeLocator INSTANCE = new ProfileSubtreeLocator();
 
-        private static final Class STANDALONE_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profile");
+        private static final Class STANDALONE_OR_HOST_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profile");
         private static final Class DOMAIN_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profiles.profile.find { it.@name == defaultProfile }");
 
         @Override
         public GPathResult locate(GPathResult root, OfflineOptions options) throws Exception {
+            boolean domain = Type.of(root) == Type.DOMAIN;
+
             Script script = (Script) (
-                    options.isDomain ? DOMAIN_SCRIPT_CLASS.newInstance() : STANDALONE_SCRIPT_CLASS.newInstance()
+                    domain ? DOMAIN_SCRIPT_CLASS.newInstance() : STANDALONE_OR_HOST_SCRIPT_CLASS.newInstance()
             );
             script.setProperty("root", root);
-            if (options.isDomain) {
+            if (domain) {
                 script.setProperty("defaultProfile", options.defaultProfile);
             }
             return (GPathResult) script.run();
@@ -179,7 +213,7 @@ public final class Subtree {
     }
 
     private static final class SubsystemSubtreeLocator implements SubtreeLocator {
-        private static final Class STANDALONE_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profile.subsystem.find { it.@xmlns.toString().startsWith(\"urn:jboss:domain:${subsystemName}:\") }");
+        private static final Class STANDALONE_OR_HOST_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profile.subsystem.find { it.@xmlns.toString().startsWith(\"urn:jboss:domain:${subsystemName}:\") }");
         private static final Class DOMAIN_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profiles.profile.find { it.@name == defaultProfile }.subsystem.find { it.@xmlns.toString().startsWith(\"urn:jboss:domain:${subsystemName}:\") }");
 
         private final String subsystemName;
@@ -190,12 +224,14 @@ public final class Subtree {
 
         @Override
         public GPathResult locate(GPathResult root, OfflineOptions options) throws Exception {
+            boolean domain = Type.of(root) == Type.DOMAIN;
+
             Script script = (Script) (
-                    options.isDomain ? DOMAIN_SCRIPT_CLASS.newInstance() : STANDALONE_SCRIPT_CLASS.newInstance()
+                    domain ? DOMAIN_SCRIPT_CLASS.newInstance() : STANDALONE_OR_HOST_SCRIPT_CLASS.newInstance()
             );
             script.setProperty("root", root);
             script.setProperty("subsystemName", subsystemName);
-            if (options.isDomain) {
+            if (domain) {
                 script.setProperty("defaultProfile", options.defaultProfile);
             }
             return (GPathResult) script.run();
@@ -205,16 +241,18 @@ public final class Subtree {
     private static final class SocketBindingGroupSubtreeLocator implements SubtreeLocator {
         static final SubtreeLocator INSTANCE = new SocketBindingGroupSubtreeLocator();
 
-        private static final Class STANDALONE_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.\"socket-binding-group\"");
+        private static final Class STANDALONE_OR_HOST_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.\"socket-binding-group\"");
         private static final Class DOMAIN_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.\"socket-binding-groups\".\"socket-binding-group\".find { it.@name == \"${defaultSocketBindingGroup}\" }");
 
         @Override
         public GPathResult locate(GPathResult root, OfflineOptions options) throws Exception {
+            boolean domain = Type.of(root) == Type.DOMAIN;
+
             Script script = (Script) (
-                    options.isDomain ? DOMAIN_SCRIPT_CLASS.newInstance() : STANDALONE_SCRIPT_CLASS.newInstance()
+                    domain ? DOMAIN_SCRIPT_CLASS.newInstance() : STANDALONE_OR_HOST_SCRIPT_CLASS.newInstance()
             );
             script.setProperty("root", root);
-            if (options.isDomain) {
+            if (domain) {
                 String defaultSocketBindingGroup = options.defaultProfile + "-sockets";
                 if ("default".equals(options.defaultProfile)) {
                     defaultSocketBindingGroup = "standard-sockets";
@@ -285,7 +323,9 @@ public final class Subtree {
         }
 
         void addIfMissing(GPathResult root, OfflineOptions options) {
-            if (skipInDomain && options.isDomain) {
+            boolean domain = Type.of(root) == Type.DOMAIN;
+
+            if (skipInDomain && domain) {
                 return;
             }
 
