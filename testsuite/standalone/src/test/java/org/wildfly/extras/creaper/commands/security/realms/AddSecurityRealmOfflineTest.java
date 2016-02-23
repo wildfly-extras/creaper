@@ -38,7 +38,9 @@ public class AddSecurityRealmOfflineTest {
             + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
             + "    <management>\n"
             + "        <security-realms>\n"
-            + "            <security-realm name=\"creaperSecRealm\" map-groups-to-roles=\"true\"/>\n"
+            + "            <security-realm name=\"creaperSecRealm\">\n"
+            + "                <authorization map-groups-to-roles=\"true\"/>"
+            + "            </security-realm>\n"
             + "        </security-realms>\n"
             + "    </management>\n"
             + "</server>";

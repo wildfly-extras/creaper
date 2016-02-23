@@ -79,10 +79,10 @@ public final class AddPropertiesAuthentication extends AbstractAddSecurityRealmS
         @Override
         public AddPropertiesAuthentication build() {
             if (path == null) {
-                throw new IllegalArgumentException("Path of the security domain must be specified as non null value");
+                throw new IllegalArgumentException("Path of the property file must be specified as non null value");
             }
             if (path.isEmpty()) {
-                throw new IllegalArgumentException("Path of the security domain must not be empty value");
+                throw new IllegalArgumentException("Path of the property file must not be empty value");
             }
             return new AddPropertiesAuthentication(this);
         }
