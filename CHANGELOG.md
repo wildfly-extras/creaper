@@ -11,7 +11,7 @@
   are now performed as-is instead of throwing an exception
 - updated `GroovyXmlTransform` to understand new XML elements added in WildFly
 
-## 0.9.5
+## 0.9.5 [The Heptapod B Edition](https://en.wikipedia.org/wiki/Story_of_Your_Life) (2016-02-17)
 
 - `ManagementVersion` renamed to `ServerVersion`,
   `OnlineManagementClient.serverVersion()` renamed to `version()` and
@@ -33,7 +33,7 @@
 - upgraded Guava to 19.0, see https://github.com/google/guava/wiki/Release19
 - the test suite now uses the WildFly 10 final release
 
-## 0.9.4
+## 0.9.4 [The Rorschach Edition](https://en.wikipedia.org/wiki/Blindsight_\(Watts_novel\)) (2016-02-03)
 
 - management version 4.1.0 is now recognized
 - added more commands for messaging (both HornetQ and ActiveMQ Artemis)
@@ -41,7 +41,7 @@
   (should always have been, but it's a breaking change technically)
 - added `RELEASE_PROCEDURE.md`
 
-## 0.9.3
+## 0.9.3 [The Dilemma Prison Edition](https://en.wikipedia.org/wiki/The_Quantum_Thief) (2016-01-15)
 
 - added commands for the logging subsystem (see entrypoint class `Logging`)
 - added `AddMariaDb[XA]DataSource`
@@ -60,13 +60,13 @@
 - the test suite now uses latest WildFly 10 pre-release (was blocked
   by wrong patching test)
 
-## 0.9.2
+## 0.9.2 [The Sophotech Edition](https://en.wikipedia.org/wiki/The_Golden_Oecumene) (2015-12-04)
 
 - added command `AddSocketBinding`
 - added `ReadResourceOption.ATTRIBUTES_ONLY`
 - added `Add[XA]DataSource.managedConnectionPool`
 
-## 0.9.1
+## 0.9.1 [The Great Ship Edition](https://en.wikipedia.org/wiki/Marrow_\(novel\)) (2015-11-23)
 
 - added more commands for messaging (both HornetQ and ActiveMQ Artemis)
 - added commands for adding and removing modules
@@ -80,19 +80,19 @@
 - improved deprecations (all deprecated elements now have both
   the `@Deprecated` annotation and the `@deprecated` javadoc tag)
 
-## 0.9.0
+## 0.9.0 [The Demosthenes Edition](https://en.wikipedia.org/wiki/Ender's_Game) (2015-10-26)
 
 - first opensource release under the WildFly Extras umbrella
 - no changes since 0.8.2
 
 ---
 
-## 0.8.2
+## 0.8.2 [The Webster Edition](https://en.wikipedia.org/wiki/City_\(novel\)) (2015-09-25)
 
 - added commands for messaging (both HornetQ and ActiveMQ Artemis)
 - fixed `DomainAdministration.start|stopServer`
 
-## 0.8.1
+## 0.8.1 [The Grokking Edition](https://en.wikipedia.org/wiki/Stranger_in_a_Strange_Land) (2015-08-05)
 
 - `Online|OfflineCommand.apply` now declares `throws Exception`
   instead of the arbitrary set of exceptions declared previously
@@ -103,7 +103,7 @@
 - fixed `toString` in `ConfigurationFileBackup` commands
 - minor stylistic improvements
 
-## 0.8.0
+## 0.8.0 [The Hiro Protagonist Edition](https://en.wikipedia.org/wiki/Snow_Crash) (2015-07-30)
 
 - added commands for the Undertow subsystem
 - fixed commands for datasources so that they work on WildFly too
@@ -116,22 +116,22 @@
       (manual tests, slow tests, AS7-only or WildFly-only tests)
     - using Maven profiles to allow running against different server versions
 
-## 0.7.0
+## 0.7.0 [The Gömeršaül Edition](http://mycelium.argenite.org/) (2015-05-29)
 
 - added `Operations.headers()` and `SingleOperation.headers()`
 - added `Command`
 - the `connect` CLI operation must not be accepted
 
-## 0.6.2
+## 0.6.2 [The BuSab Edition](https://en.wikipedia.org/wiki/Bureau_of_Sabotage) (2015-05-19)
 
 - WildFly 10.0.0 version is now recognized (though .Final was not released yet)
 - added `OnlineOptions.serverType()`
 
-## 0.6.1
+## 0.6.1 [The Shabda-Oud Edition](http://en.wikipedia.org/wiki/Metabarons) (2015-05-06)
 
 - fixed ordering of autocreated XML elements
 
-## 0.6.0
+## 0.6.0 [The Shrike Edition](https://en.wikipedia.org/wiki/Hyperion_Cantos) (2015-04-24)
 
 - added a detailed Checkstyle ruleset (big change for contributors)
 - added a detailed CodeNarc ruleset for checking Groovy code
@@ -158,7 +158,7 @@
   the old names are still available, but deprecated and scheduled for removal
 - added `Values.fromMap`
 
-## 0.5.0
+## 0.5.0 [The Prime Radiant Edition](http://en.wikipedia.org/wiki/Psychohistory_\(fictional\)) (2015-04-01)
 
 - added the `Values` class as a replacement for the `Parameters` class,
   which is still available, but deprecated and scheduled for removal
@@ -166,7 +166,7 @@
 - added online command for removing a basic datasource
 - depends on Guava
 
-## 0.4.0
+## 0.4.0 [The Full of Stars Edition](https://en.wikipedia.org/wiki/2001:_A_Space_Odyssey_\(novel\)) (2015-02-23)
 
 - WildFly 9.0.0 version is now recognized (though .Final was not released yet)
 - added `GroovyXmlTransform` for Groovy-based unified standalone/domain
@@ -192,7 +192,7 @@
 - `OfflineOptions.domain[Profile|Host]` renamed to `default[Profile|Host]`;
   the old names are still available, but deprecated and scheduled for removal
 
-## 0.3.0
+## 0.3.0 [The Sonic Screwdriver Edition](https://en.wikipedia.org/wiki/Sonic_screwdriver) (2014-12-19)
 
 - building with Java 8 is now supported
 - WildFly 8.2.0.Final version is now recognized
@@ -234,7 +234,7 @@
 - constructors of the `*CommandContext` classes are no longer `public`;
   this is technically a breaking change, but shouldn't affect anyone
 
-## 0.2.0
+## 0.2.0 (2014-09-30)
 
 - removed `ManagementClient.wrap()`, replaced
   by `OnlineOptions.standalone|domain().wrap()`
@@ -243,11 +243,11 @@
 - removed dependency on `groovy-all`, which contains `groovy-nio` compiled
   with Java 7; replaced by depending on `groovy` and `groovy-xml`
 
-## 0.1.1
+## 0.1.1 (2014-09-24)
 
 - removed `localAS7` and `localWildFly` from `OnlineOptions`, replaced
   by `localDefault`
 
-## 0.1.0
+## 0.1.0 (2014-09-23)
 
 - initial release

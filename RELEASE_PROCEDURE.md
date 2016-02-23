@@ -11,8 +11,9 @@ This text assumes that the version number for a release is X.Y.Z.
    Up to this point, entries are typically added chronologically.
    This is not the best order for release.
 
-4. Update the heading of the latest changelog section. It should look like
-   `X.Y.Z` instead of `X.Y.Z (not yet released)`.
+4. Pick a code name and update the heading of the latest changelog section.
+   It should look like `X.Y.Z [Code Name](link) (YYYY-MM-DD)` instead of
+   `X.Y.Z (not yet released)`.
 
 5. Update the latest version number in `README.md`.
 
@@ -42,13 +43,13 @@ This text assumes that the version number for a release is X.Y.Z.
 
 15. Release the repository. Nexus will send another confirmation e-mail.
 
-16. Pick a code name and create a GitHub Release.
+16. Create a GitHub Release.
 
 17. Close the relevant GitHub Milestone.
 
-18. Send a release announcement.
-
-19. Add a new heading to the top of `CHANGELOG.md`.
+18. Add a new heading to the top of `CHANGELOG.md`.
     Its text should be: `X.Y.Z+1 (not yet released)`.
 
-20. `git commit -m "add next version number to changelog"`
+19. `git commit -m "add next version number to changelog"`
+
+20. Send a release announcement.
