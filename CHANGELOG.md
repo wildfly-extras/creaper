@@ -10,6 +10,7 @@
   is therefore `null`, operations against addresses `/core-service=...`
   are now performed as-is instead of throwing an exception
 - updated `GroovyXmlTransform` to understand new XML elements added in WildFly
+- fixes in commands for security realms
 
 ## 0.9.5 [The Heptapod B Edition](https://en.wikipedia.org/wiki/Story_of_Your_Life) (2016-02-17)
 
