@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.9.7 (not yet released)
+
 ## 0.9.6 [The Lindblad Ring Edition](https://en.wikipedia.org/wiki/Pushing_Ice) (2016-02-24)
 
 - if `OnlineOptions.forHost` wasn't called and `OnlineOptions.defaultHost`
