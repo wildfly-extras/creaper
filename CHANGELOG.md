@@ -1,15 +1,15 @@
 # Changelog
 
-## 0.9.6 (not yet released)
+## 0.9.6 [The Lindblad Ring Edition](https://en.wikipedia.org/wiki/Pushing_Ice) (2016-02-24)
 
-- offline commands for security now check the configuration file version
-- `OfflineOptions.defaultHost` and `.forHost` make no sense because
-  an offline client always works with a single file, so they are now
-  deprecated and scheduled for removal
 - if `OnlineOptions.forHost` wasn't called and `OnlineOptions.defaultHost`
   is therefore `null`, operations against addresses `/core-service=...`
   are now performed as-is instead of throwing an exception
+- `OfflineOptions.defaultHost` and `.forHost` make no sense because
+  an offline client always works with a single file, so they are now
+  deprecated and scheduled for removal
 - updated `GroovyXmlTransform` to understand new XML elements added in WildFly
+- offline commands for security now check the configuration file version
 - fixes in commands for security realms
 
 ## 0.9.5 [The Heptapod B Edition](https://en.wikipedia.org/wiki/Story_of_Your_Life) (2016-02-17)
