@@ -14,8 +14,10 @@ of the management functionalities:
 
 ## Install
 
-Creaper artifacts are available in the JBoss.org Maven repository. Configure it
-like this:
+Creaper artifacts are available in Maven Central. However, they are primarily
+released through the JBoss.org Maven repository and synchronization to Central
+can take some time. If you are eager, you can configure the JBoss.org Maven
+repository like this:
 
     <repositories>
         <repository>
