@@ -95,7 +95,7 @@
         <version.org.jboss.as.jboss-as-everything>7.5.0.Final-redhat-21</version.org.jboss.as.jboss-as-everything>
         <version.org.jboss.logging.jboss-logging>3.2.1.Final</version.org.jboss.logging.jboss-logging>
         <version.org.jboss.modules.jboss-modules>1.3.3.Final</version.org.jboss.modules.jboss-modules>
-        <version.org.jboss.shrinkwrap>1.2.2</version.org.jboss.shrinkwrap>
+        <version.org.jboss.shrinkwrap>1.2.3</version.org.jboss.shrinkwrap>
         <version.org.mockito.mockito-core>1.9.5</version.org.mockito.mockito-core>
         <version.xmlunit.xmlunit>1.6</version.xmlunit.xmlunit>
     </properties>
