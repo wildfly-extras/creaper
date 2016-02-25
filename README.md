@@ -40,9 +40,6 @@ Then, declare the dependencies like this:
 
 The latest and greatest released version is __`0.9.6`__.
 
-If you are in a non-Maven environment, you can build a Creaper uberjar
-that includes all the dependencies. Just run `mvn clean verify`.
-
 Creaper follows [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html)
 (aka _SemVer_) for versioning and also as a compatibility promise.
 

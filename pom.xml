@@ -31,7 +31,6 @@
         <module>commands</module>
         <module>core</module>
         <module>testsuite</module>
-        <module>uberjar</module>
     </modules>
 
     <scm>
@@ -116,11 +115,6 @@
             <dependency>
                 <groupId>org.wildfly.extras.creaper</groupId>
                 <artifactId>creaper-testsuite</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wildfly.extras.creaper</groupId>
-                <artifactId>creaper-uberjar</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

@@ -59,7 +59,6 @@ Running `mvn verify` will take much longer, because it will:
 
 - run static analysis (Checkstyle, CodeNarc and Findbugs)
 - generate source and javadoc JARs
-- build the uberjar
 
 When developing, `mvn test` is probably enough most of the time. Running
 `mvn verify` is good, but it makes sense to do it just before submitting
