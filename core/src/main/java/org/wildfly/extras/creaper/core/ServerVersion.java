@@ -32,7 +32,6 @@ package org.wildfly.extras.creaper.core;
  *
  * <p>Using the rules above, the schema version numbers from the XML configuration files are normalized to match
  * management version numbers as defined in this class.</p>
- *
  */
 public final class ServerVersion {
     /** AS 7.0.x.Final */
@@ -51,9 +50,9 @@ public final class ServerVersion {
     public static final ServerVersion VERSION_1_5_0 = new ServerVersion(1, 5, 0);
     /** EAP 6.3.x */
     public static final ServerVersion VERSION_1_6_0 = new ServerVersion(1, 6, 0);
-    /** EAP 6.4.x */
+    /** EAP 6.4.0 &ndash; EAP 6.4.6 */
     public static final ServerVersion VERSION_1_7_0 = new ServerVersion(1, 7, 0);
-    /** EAP 6.4.??? (currently, there's no released version that contains this) */
+    /** EAP 6.4.7 and above */
     public static final ServerVersion VERSION_1_8_0 = new ServerVersion(1, 8, 0);
     /** WF 8.0.0.Final */
     public static final ServerVersion VERSION_2_0_0 = new ServerVersion(2, 0, 0);
