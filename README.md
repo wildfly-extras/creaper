@@ -54,56 +54,30 @@ guarantees. That's not very usable, though. So here's a more detailed list:
   the new one
 - there are some deprecated APIs, they will be removed in 1.0.0
 
-### Transitive Dependencies
+### JBoss AS 7 / WildFly Client Libraries
 
-These are the dependencies that you will get transitively when you depend
-on Creaper:
+__You have to provide both `*-controller-client` and `*-cli` yourself.__
+If you want to use commands for patching, you also have to provide
+`wildfly-patching`.
 
-- `creaper-core`:
-    - `org.jboss.as:jboss-as-controller-client`
-    - `org.jboss.as:jboss-as-cli`
-    - `com.google.guava:guava`
-- `creaper-commands`:
-    - everything from `creaper-core`
-    - `org.codehaus.groovy:groovy`
-    - `org.codehaus.groovy:groovy-xml`
-    - `org.wildfly:wildfly-patching`
+For JBoss AS 7:
 
-If you need to bring your own version of some of these libraries (e.g. you want
-to use WildFly), you should use dependency exclusions.
-
-#### JBoss AS 7 / WildFly Client Libraries
-
+    <!-- 7.5.0.Final-redhat-21 is JBoss EAP 6.4.0 -->
     <dependency>
-        <groupId>org.wildfly.extras.creaper</groupId>
-        <artifactId>creaper-core</artifactId>
-        <version>${version.org.wildfly.extras.creaper}</version>
-        <exclusions>
-            <exclusion>
-                <groupId>org.jboss.as</groupId>
-                <artifactId>jboss-as-controller-client</artifactId>
-            </exclusion>
-            <exclusion>
-                <groupId>org.jboss.as</groupId>
-                <artifactId>jboss-as-cli</artifactId>
-            </exclusion>
-        </exclusions>
+        <groupId>org.jboss.as</groupId>
+        <artifactId>jboss-as-controller-client</artifactId>
+        <version>7.5.0.Final-redhat-21</version>
     </dependency>
     <dependency>
-        <groupId>org.wildfly.extras.creaper</groupId>
-        <artifactId>creaper-commands</artifactId>
-        <version>${version.org.wildfly.extras.creaper}</version>
-        <exclusions>
-            <exclusion>
-                <groupId>org.wildfly</groupId>
-                <artifactId>wildfly-patching</artifactId>
-            </exclusion>
-        </exclusions>
+        <groupId>org.jboss.as</groupId>
+        <artifactId>jboss-as-cli</artifactId>
+        <version>7.5.0.Final-redhat-21</version>
     </dependency>
-
-If you do this, you will have to provide both `*-controller-client`
-and `*-cli` yourself. And if you want to use patching, you also have to
-provide `wildfly-patching`.
+    <dependency>
+        <groupId>org.wildfly</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>7.5.0.Final-redhat-21</version>
+    </dependency>
 
 For WildFly 8:
 
@@ -159,26 +133,24 @@ For WildFly 10, which is based on WildFly Core 2:
         <version>2.0.5.Final</version>
     </dependency>
 
-#### Groovy Libraries
+### Transitive Dependencies
 
-    <dependency>
-        <groupId>org.wildfly.extras.creaper</groupId>
-        <artifactId>creaper-commands</artifactId>
-        <version>${version.org.wildfly.extras.creaper}</version>
-        <exclusions>
-            <exclusion>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy</artifactId>
-            </exclusion>
-            <exclusion>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-xml</artifactId>
-            </exclusion>
-        </exclusions>
-    </dependency>
+These are the dependencies that you will get transitively when you depend
+on Creaper:
 
-If you do this, you have to provide at least `groovy` and `groovy-xml`.
-Providing `groovy-all` will work too.
+- `creaper-core`:
+    - `com.google.guava:guava`
+    - `org.jboss.logging:jboss-logging`
+- `creaper-commands`:
+    - everything from `creaper-core`
+    - `org.codehaus.groovy:groovy`
+    - `org.codehaus.groovy:groovy-xml`
+
+If you need to bring your own version of some of these libraries, you should
+use dependency exclusions.
+
+Specifically for Groovy, Creaper only needs `groovy` and `groovy-xml`,
+but excluding them and providing `groovy-all` should work too.
 
 ## Use
 
