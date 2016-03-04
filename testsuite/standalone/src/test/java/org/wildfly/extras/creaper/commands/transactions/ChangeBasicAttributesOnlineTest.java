@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.foundation.offline.ConfigurationFileBackup;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
@@ -91,7 +91,7 @@ public class ChangeBasicAttributesOnlineTest {
         assertEquals("default timeout should be changed", 999, result.intValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
-                onlineClient.serverVersion().lessThanOrEqualTo(ManagementVersion.VERSION_3_0_0)
+                onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)
                         ? "enable-statistics" : "statistics-enabled");
         result.assertSuccess();
         assertTrue("statistics should be enabled", result.booleanValue());
@@ -101,12 +101,12 @@ public class ChangeBasicAttributesOnlineTest {
         assertTrue("jts should be enabled", result.booleanValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
-                onlineClient.serverVersion().lessThanOrEqualTo(ManagementVersion.VERSION_3_0_0)
+                onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)
                         ? "use-hornetq-store" : "use-journal-store");
         result.assertSuccess();
         assertTrue("journal store should be used", result.booleanValue());
 
-        if (onlineClient.serverVersion().greaterThan(ManagementVersion.VERSION_3_0_0)) {
+        if (onlineClient.version().greaterThan(ServerVersion.VERSION_3_0_0)) {
             result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS, "journal-store-enable-async-io");
             result.assertSuccess();
             assertTrue("async io should be enabled", result.booleanValue());
@@ -169,7 +169,7 @@ public class ChangeBasicAttributesOnlineTest {
         assertEquals("default timeout should be changed", 999, result.intValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
-                onlineClient.serverVersion().lessThanOrEqualTo(ManagementVersion.VERSION_3_0_0)
+                onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)
                         ? "enable-statistics" : "statistics-enabled");
         result.assertSuccess();
         assertTrue("statistics should be enabled", result.booleanValue());
@@ -179,12 +179,12 @@ public class ChangeBasicAttributesOnlineTest {
         assertTrue("jts should be enabled", result.booleanValue());
 
         result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS,
-                onlineClient.serverVersion().lessThanOrEqualTo(ManagementVersion.VERSION_3_0_0)
+                onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)
                         ? "use-hornetq-store" : "use-journal-store");
         result.assertSuccess();
         assertTrue("journal store should be used", result.booleanValue());
 
-        if (onlineClient.serverVersion().greaterThan(ManagementVersion.VERSION_3_0_0)) {
+        if (onlineClient.version().greaterThan(ServerVersion.VERSION_3_0_0)) {
             result = ops.readAttribute(TEST_TRANSACTIONS_ADDRESS, "journal-store-enable-async-io");
             result.assertSuccess();
             assertTrue("async io should be enabled", result.booleanValue());

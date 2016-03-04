@@ -2,7 +2,7 @@ package org.wildfly.extras.creaper.commands.transactions;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
-import org.wildfly.extras.creaper.core.ManagementVersion;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -103,7 +103,7 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             batch.writeAttribute(transatcionsAddress, "default-timeout", timeout);
         }
         if (statisticsEnabled != null) {
-            if (ctx.serverVersion.lessThanOrEqualTo(ManagementVersion.VERSION_3_0_0)) {
+            if (ctx.version.lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)) {
                 batch.writeAttribute(transatcionsAddress, "enable-statistics", statisticsEnabled);
             } else {
                 batch.writeAttribute(transatcionsAddress, "statistics-enabled", statisticsEnabled);
@@ -113,7 +113,7 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             batch.writeAttribute(transatcionsAddress, "jts", jts);
         }
         if (useJournalStore != null) {
-            if (ctx.serverVersion.lessThanOrEqualTo(ManagementVersion.VERSION_3_0_0)) {
+            if (ctx.version.lessThanOrEqualTo(ServerVersion.VERSION_3_0_0)) {
                 batch.writeAttribute(transatcionsAddress, "use-hornetq-store", useJournalStore);
             } else {
                 batch.writeAttribute(transatcionsAddress, "use-journal-store", useJournalStore);
@@ -121,7 +121,7 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             }
         }
         if (journalStoreEnableAsyncIO != null
-                && ctx.serverVersion.greaterThan(ManagementVersion.VERSION_3_0_0)) {
+                && ctx.version.greaterThan(ServerVersion.VERSION_3_0_0)) {
             batch.writeAttribute(transatcionsAddress, "journal-store-enable-async-io", journalStoreEnableAsyncIO);
         }
         if (processIdUuid != null || processIdSocketBinding != null) {
