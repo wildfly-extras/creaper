@@ -11,6 +11,8 @@ If older versions are still being developed, they have their own branches.
 
 All code contributions come in the form of pull requests. This is when code
 review happens. Using feature branches for pull requests is recommended.
+If changes are requested during code review, it is recommended to add those
+changes as new commits. Before merging, the commits will be squashed.
 
 When merging a pull request, tests and other checks (`checkstyle`, `codenarc`,
 `findbugs` etc.) are run. Running them locally before submitting a pull request
@@ -116,3 +118,8 @@ command is suitable for inclusion, refer to the following guidelines:
    has to enable explicitly (i.e., this _must_ be _opt-in_, never opt-out).
    The reason is that reload or restart is a fairly involed operation that
    the user should be aware of.
+6. _If the command only works for certain version(s) of the application
+  server, it must be documented._ Also, the command's `apply` method
+  should check the server version early on and throw an exception
+  in case of a mismatch. The exception should have a descriptive message.
+7. Commands should provide a short but descriptive `toString`.
