@@ -1,6 +1,26 @@
 # Changelog
 
-## 0.9.7 (not yet released)
+## 1.0.0 (not yet released)
+
+- upgraded Groovy to 2.4.6
+- removed the uberjar
+- made all the management client dependencies `<scope>provided</scope>`,
+  so that the user always has to provide a correct version
+- removed deprecated features
+
+### Migration from 0.x
+
+1. upgrade to 0.9.6; it should be 100% backwards compatible (except of
+   correcting some design issues), so that should be seamless
+2. if you use the uberjar, move to a proper dependency management scheme
+3. make sure you don't use any features that are deprecated
+   (use your IDE or the Java compiler to help with that); all the deprecated
+   elements have a javadoc with migration instructions
+4. make sure you provide management client dependencies yourself,
+   because you will no longer get them transitively (see `README.md`);
+   once you do that, you can remove the dependency exclusions
+   for `jboss-as-controller-client`, `jboss-as-cli` and `wildfly-patching`
+5. upgrade to 1.0.0
 
 ## 0.9.6 [The Lindblad Ring Edition](https://en.wikipedia.org/wiki/Pushing_Ice) (2016-02-24)
 
