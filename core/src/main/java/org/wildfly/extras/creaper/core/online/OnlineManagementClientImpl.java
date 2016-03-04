@@ -9,7 +9,6 @@ import org.jboss.as.controller.client.Operation;
 import org.jboss.dmr.ModelNode;
 import org.jboss.logging.Logger;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ManagementVersion;
 import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 
@@ -110,11 +109,6 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
     @Override
     public OnlineOptions options() {
         return options;
-    }
-
-    @Override
-    public ManagementVersion serverVersion() {
-        return ManagementVersion.from(version);
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.wildfly.extras.creaper.core.online;
 
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerType;
 
 import javax.net.ssl.SSLContext;
 import javax.security.auth.callback.Callback;
@@ -31,12 +30,6 @@ public final class OnlineOptions {
     public final boolean isDomain;
     public String defaultProfile;
     public String defaultHost;
-    /** @deprecated use {@code defaultProfile} instead, this will be removed before 1.0 */
-    @Deprecated
-    public final String domainProfile;
-    /** @deprecated use {@code defaultHost} instead, this will be removed before 1.0 */
-    @Deprecated
-    public final String domainHost;
 
     final String host;
     final int port;
@@ -67,8 +60,6 @@ public final class OnlineOptions {
         this.isDomain = data.isDomain;
         this.defaultProfile = data.defaultProfile;
         this.defaultHost = data.defaultHost;
-        this.domainProfile = data.defaultProfile;
-        this.domainHost = data.defaultHost;
         this.host = data.host;
         this.port = data.port;
         this.protocol = data.protocol;
@@ -301,18 +292,6 @@ public final class OnlineOptions {
 
             data.protocol = protocol;
             return this;
-        }
-
-        /** @deprecated use {@link #protocol(ManagementProtocol)} instead, this will be removed before 1.0 */
-        @Deprecated
-        public OptionalOnlineOptions serverType(ServerType serverType) {
-            if (serverType == null) {
-                throw new IllegalArgumentException("Server type must be set");
-            }
-
-            return protocol(serverType == ServerType.WILDFLY
-                    ? ManagementProtocol.HTTP_REMOTING
-                    : ManagementProtocol.REMOTE);
         }
 
         /** Build the final {@code OnlineOptions}. */

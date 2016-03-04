@@ -111,21 +111,6 @@ public final class ServerVersion {
         this.micro = micro;
     }
 
-    @Deprecated // only for ManagementVersion.from(ServerVersion)
-    int major() {
-        return major;
-    }
-
-    @Deprecated // only for ManagementVersion.from(ServerVersion)
-    int minor() {
-        return minor;
-    }
-
-    @Deprecated // only for ManagementVersion.from(ServerVersion)
-    int micro() {
-        return micro;
-    }
-
     @Override
     public String toString() {
         return major + "." + minor + "." + micro;

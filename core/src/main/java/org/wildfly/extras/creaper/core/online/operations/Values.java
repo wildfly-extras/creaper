@@ -125,12 +125,6 @@ public final class Values {
         return new Values(properties);
     }
 
-    /** @deprecated only for conversion from {@code Parameters}, remove when {@code Parameters} are removed */
-    @Deprecated
-    static Values from(List<Property> propertyList) {
-        return new Values(propertyList);
-    }
-
     private Values() {
         this.namedValues = Collections.emptyList();
     }

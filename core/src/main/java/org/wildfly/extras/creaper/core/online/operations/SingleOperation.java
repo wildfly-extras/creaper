@@ -130,13 +130,6 @@ public final class SingleOperation implements SharedCommonOperations<SingleOpera
         return new DeferredOperation(builder.add(address));
     }
 
-    /** @deprecated use {@link #add(Address, Values)} instead, this will be removed before 1.0 */
-    @Deprecated
-    @Override
-    public DeferredOperation add(Address address, Parameters parameters) {
-        return add(address, parameters.toValues());
-    }
-
     @Override
     public DeferredOperation add(Address address, Values parameters) {
         return new DeferredOperation(builder.add(address, parameters));
@@ -150,13 +143,6 @@ public final class SingleOperation implements SharedCommonOperations<SingleOpera
     @Override
     public DeferredOperation invoke(String operationName, Address address) {
         return new DeferredOperation(builder.invoke(operationName, address));
-    }
-
-    /** @deprecated use {@link #invoke(String, Address, Values)} instead, this will be removed before 1.0 */
-    @Deprecated
-    @Override
-    public DeferredOperation invoke(String operationName, Address address, Parameters parameters) {
-        return invoke(operationName, address, parameters.toValues());
     }
 
     @Override

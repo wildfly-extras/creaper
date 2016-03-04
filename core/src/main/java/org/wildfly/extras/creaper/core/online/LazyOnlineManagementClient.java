@@ -4,7 +4,6 @@ import org.jboss.as.controller.client.Operation;
 import org.jboss.dmr.ModelNode;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ManagementVersion;
 import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.io.IOException;
@@ -32,12 +31,6 @@ final class LazyOnlineManagementClient implements OnlineManagementClient {
     @Override
     public OnlineOptions options() {
         return options;
-    }
-
-    @Override
-    public ManagementVersion serverVersion() throws IOException {
-        ensureInitialized();
-        return delegate.serverVersion();
     }
 
     @Override

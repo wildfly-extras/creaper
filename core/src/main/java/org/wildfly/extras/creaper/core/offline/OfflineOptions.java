@@ -16,15 +16,6 @@ public final class OfflineOptions {
 
     public final boolean isDomain;
     public final String defaultProfile;
-    /** @deprecated always {@code null}, doesn't make sense for offline client; will be removed before 1.0 */
-    @Deprecated
-    public final String defaultHost;
-    /** @deprecated use {@code defaulProfile} instead, this will be removed before 1.0 */
-    @Deprecated
-    public final String domainProfile;
-    /** @deprecated use {@code defaulhost} instead, this will be removed before 1.0 */
-    @Deprecated
-    public final String domainHost;
 
     private final File configurationDirectory; // can be null if configurationFile is specified directly
     public final File configurationFile;
@@ -34,9 +25,6 @@ public final class OfflineOptions {
 
         this.isDomain = data.isDomain;
         this.defaultProfile = data.defaultProfile;
-        this.defaultHost = null;
-        this.domainProfile = data.defaultProfile;
-        this.domainHost = null;
 
         this.configurationDirectory = data.configurationDirectory;
         this.configurationFile = data.configurationFile;
@@ -100,12 +88,6 @@ public final class OfflineOptions {
             }
 
             data.defaultProfile = profile;
-            return this;
-        }
-
-        /** @deprecated does nothing, doesn't make sense for offline client; will be removed before 1.0 */
-        @Deprecated
-        public DomainOfflineOptions forHost(String host) {
             return this;
         }
 

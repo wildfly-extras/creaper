@@ -3,7 +3,6 @@ package org.wildfly.extras.creaper.core.online;
 import org.jboss.as.controller.client.Operation;
 import org.jboss.dmr.ModelNode;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ManagementVersion;
 import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.io.Closeable;
@@ -16,10 +15,6 @@ import java.util.concurrent.TimeoutException;
 public interface OnlineManagementClient extends Closeable {
     /** The {@link OnlineOptions} this client was created with. */
     OnlineOptions options();
-
-    /** @deprecated use {@link #version()} instead, this will be removed before 1.0 */
-    @Deprecated
-    ManagementVersion serverVersion() throws IOException;
 
     /**
      * The current version ({@link ServerVersion}) of the server this client is connected to.

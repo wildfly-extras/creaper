@@ -591,7 +591,7 @@ public class GroovyXmlTransformDomainTest {
         Files.write(originalXml, cfg, Charsets.UTF_8);
 
         OfflineManagementClient client = ManagementClient.offline(
-                OfflineOptions.domain().forHost("master").forProfile("default").build().configurationFile(cfg).build());
+                OfflineOptions.domain().forProfile("default").build().configurationFile(cfg).build());
 
         assertXmlIdentical(originalXml, Files.toString(cfg, Charsets.UTF_8));
         client.apply(transformationCommand.newInstance());
