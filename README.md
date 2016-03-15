@@ -40,19 +40,10 @@ Then, declare the dependencies like this:
         <version>${version.org.wildfly.extras.creaper}</version>
     </dependency>
 
-The latest and greatest released version is __`0.9.6`__.
+The latest and greatest released version is __`1.0.0`__.
 
 Creaper follows [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html)
 (aka _SemVer_) for versioning and also as a compatibility promise.
-
-Given that Creaper is now in the `0.*` version, there are no compatibility
-guarantees. That's not very usable, though. So here's a more detailed list:
-
-- core: all the core APIs are considered stable
-- online: all the online APIs are considered stable
-- offline: the old API for XML transformation will be removed, you should use
-  the new one
-- there are some deprecated APIs, they will be removed in 1.0.0
 
 ### JBoss AS 7 / WildFly Client Libraries
 
@@ -284,7 +275,6 @@ server looks like this:
     ManagementClient.offline(OfflineOptions
             .domain()
             .forProfile("default")
-            .forHost("master")
             .build()
             .rootDirectory(new File("/tmp/jboss-eap-6.3"))
             .configurationFile("standalone.xml")

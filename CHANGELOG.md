@@ -1,12 +1,12 @@
 # Changelog
 
-## 1.0.0 (not yet released)
+## 1.0.0 [The Ez|Ra Edition](https://en.wikipedia.org/wiki/Embassytown) (2016-03-15)
 
-- upgraded Groovy to 2.4.6
-- removed the uberjar
+- removed deprecated features
 - made all the management client dependencies `<scope>provided</scope>`,
   so that the user always has to provide a correct version
-- removed deprecated features
+- removed the uberjar
+- upgraded Groovy to 2.4.6
 
 ### Migration from 0.x
 
