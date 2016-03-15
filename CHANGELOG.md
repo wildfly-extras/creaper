@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.0.1 (not yet released)
+
 ## 1.0.0 [The Ez|Ra Edition](https://en.wikipedia.org/wiki/Embassytown) (2016-03-15)
 
 - removed deprecated features
