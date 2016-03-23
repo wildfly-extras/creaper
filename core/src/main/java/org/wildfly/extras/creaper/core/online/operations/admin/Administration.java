@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.core.online.operations.admin;
 
-import org.jboss.logging.Logger;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 
 import java.io.IOException;
@@ -23,8 +22,6 @@ import java.util.concurrent.TimeoutException;
  * {@code OnlineManagementClient} is valid, this class is usable.</p>
  */
 public class Administration {
-    private static final Logger log = Logger.getLogger(OnlineManagementClient.class);
-
     static final int DEFAULT_TIMEOUT = 60; // seconds
 
     private final AdministrationOperations ops;
@@ -50,20 +47,14 @@ public class Administration {
     public final boolean isReloadRequired() {
         try {
             return ops.isReloadRequired();
-        } catch (Exception e) {
-            log.error("Unexpected exception during 'isReloadRequired'", e);
+        } catch (IOException e) {
             throw sneakyThrow(e);
         }
     }
 
     /** Reloads the server. In domain, reloads the entire host. */
     public final void reload() throws IOException, InterruptedException, TimeoutException {
-        try {
-            ops.reload();
-        } catch (Exception e) {
-            log.error("Unexpected exception during 'reload'", e);
-            throw sneakyThrow(e);
-        }
+        ops.reload();
     }
 
     /**
@@ -71,12 +62,7 @@ public class Administration {
      * @return if the server was in fact reloaded; in domain, if the host was reloaded
      */
     public final boolean reloadIfRequired() throws IOException, InterruptedException, TimeoutException {
-        try {
-            return ops.reloadIfRequired();
-        } catch (Exception e) {
-            log.error("Unexpected exception during 'reloadIfRequired'", e);
-            throw sneakyThrow(e);
-        }
+        return ops.reloadIfRequired();
     }
 
     // ---
@@ -88,20 +74,14 @@ public class Administration {
     public final boolean isRestartRequired() {
         try {
             return ops.isRestartRequired();
-        } catch (Exception e) {
-            log.error("Unexpected exception during 'isRestartRequired", e);
+        } catch (IOException e) {
             throw sneakyThrow(e);
         }
     }
 
     /** Restarts the server. In domain, restarts the entire host. */
     public final void restart() throws IOException, InterruptedException, TimeoutException {
-        try {
-            ops.restart();
-        } catch (Exception e) {
-            log.error("Unexpected exception during 'restart'", e);
-            throw sneakyThrow(e);
-        }
+        ops.restart();
     }
 
     /**
@@ -109,12 +89,7 @@ public class Administration {
      * @return if the server was in fact restarted; in domain, if the host was restarted
      */
     public final boolean restartIfRequired() throws IOException, InterruptedException, TimeoutException {
-        try {
-            return ops.restartIfRequired();
-        } catch (Exception e) {
-            log.error("Unexpected exception during 'restartIfRequired'", e);
-            throw sneakyThrow(e);
-        }
+        return ops.restartIfRequired();
     }
 
     // ---
@@ -126,19 +101,21 @@ public class Administration {
     public final void waitUntilRunning() {
         try {
             ops.waitUntilRunning();
-        } catch (Exception e) {
-            log.error("Unexpected exception during 'waitUntilRunning'", e);
+        } catch (InterruptedException e) {
+            throw sneakyThrow(e);
+        } catch (IOException e) {
+            throw sneakyThrow(e);
+        } catch (TimeoutException e) {
             throw sneakyThrow(e);
         }
     }
 
     // ---
 
-    // this is only for debugging, as there is apparently a situation in which reload (and possibly
-    // all the other methods) throws an unexpected exception that can be suppressed by another exception
-    // thrown from a finally block
+    // this remained after a piece of debugging code and it's only maintained because some of the methods above
+    // forgot to declare checked exceptions properly
     //
-    // once this problem is resolved, the debugging code here should be reconsidered
+    // this should be resolved properly in next major version
 
     private static RuntimeException sneakyThrow(Throwable t) {
         Administration.<RuntimeException>sneakyThrow0(t);
