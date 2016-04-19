@@ -30,6 +30,7 @@ final class FirstLevelXmlElementOrder {
             "deployments",
             "deployment-overlays",
             "server-groups",
+            "host-excludes",
             "management-client-content"
     ).onResultOf(GET_NODE_NAME);
 

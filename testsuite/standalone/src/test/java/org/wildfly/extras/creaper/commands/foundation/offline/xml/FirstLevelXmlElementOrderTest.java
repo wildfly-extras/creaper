@@ -20,6 +20,7 @@ public class FirstLevelXmlElementOrderTest {
             + "    <interfaces/>\n"
             + "    <socket-binding-groups/>\n"
             + "    <server-groups/>\n"
+            + "    <host-excludes/>\n"
             + "</domain>";
 
     private static final String HOST_XML = ""
