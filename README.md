@@ -51,7 +51,15 @@ __You have to provide both `*-controller-client` and `*-cli` yourself.__
 If you want to use commands for patching, you also have to provide
 `wildfly-patching`.
 
-For JBoss AS 7:
+Other dependencies might be required if you're using "local" CLI operations,
+such as `jms-queue add ...` on WildFly 10 (it was a built-in operation
+in previous WildFly versions, but was moved to a separate module due to
+messaging changes). These dependencies are not listed here, because there
+are no commands in Creaper that use them.
+
+#### JBoss AS 7
+
+Dependencies for `creaper-core`:
 
     <!-- 7.5.0.Final-redhat-21 is JBoss EAP 6.4.0 -->
     <dependency>
@@ -64,13 +72,18 @@ For JBoss AS 7:
         <artifactId>jboss-as-cli</artifactId>
         <version>7.5.0.Final-redhat-21</version>
     </dependency>
+
+Dependencies for `creaper-commands`:
+
     <dependency>
         <groupId>org.wildfly</groupId>
         <artifactId>wildfly-patching</artifactId>
         <version>7.5.0.Final-redhat-21</version>
     </dependency>
 
-For WildFly 8:
+#### WildFly 8
+
+Dependencies for `creaper-core`:
 
     <dependency>
         <groupId>org.wildfly</groupId>
@@ -82,13 +95,18 @@ For WildFly 8:
         <artifactId>wildfly-cli</artifactId>
         <version>8.2.1.Final</version>
     </dependency>
+
+Dependencies for `creaper-commands`:
+
     <dependency>
         <groupId>org.wildfly</groupId>
         <artifactId>wildfly-patching</artifactId>
         <version>8.2.1.Final</version>
     </dependency>
 
-For WildFly 9, which is based on WildFly Core 1:
+#### WildFly 9 (based on WildFly Core 1)
+
+Dependencies for `creaper-core`:
 
     <dependency>
         <groupId>org.wildfly.core</groupId>
@@ -100,28 +118,44 @@ For WildFly 9, which is based on WildFly Core 1:
         <artifactId>wildfly-cli</artifactId>
         <version>1.0.2.Final</version>
     </dependency>
+
+Dependencies for `creaper-commands`:
+
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-patching</artifactId>
         <version>1.0.2.Final</version>
     </dependency>
 
-For WildFly 10, which is based on WildFly Core 2:
+#### WildFly 10 (based on WildFly Core 2)
+
+Dependencies for `creaper-core`:
 
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-controller-client</artifactId>
-        <version>2.0.5.Final</version>
+        <version>2.1.0.Final</version>
     </dependency>
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-cli</artifactId>
-        <version>2.0.5.Final</version>
+        <version>2.1.0.Final</version>
     </dependency>
+
+    <!-- probably a bug in wildfly-cli dependencies -->
+    <!-- not required if the dependency on wildfly-patching below is also added ->
+    <dependency>
+        <groupId>org.jboss.logmanager</groupId>
+        <artifactId>jboss-logmanager</artifactId>
+        <version>2.0.3.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-patching</artifactId>
-        <version>2.0.5.Final</version>
+        <version>2.1.0.Final</version>
     </dependency>
 
 ### Transitive Dependencies
@@ -140,8 +174,9 @@ on Creaper:
 If you need to bring your own version of some of these libraries, you should
 use dependency exclusions.
 
-Specifically for Groovy, Creaper only needs `groovy` and `groovy-xml`,
-but excluding them and providing `groovy-all` should work too.
+Specifically for Groovy: this is only needed for offline management
+(i.e, XML configuration files manipulation). Creaper only needs `groovy` and
+`groovy-xml`, but excluding them and providing `groovy-all` should work too.
 
 ## Use
 
