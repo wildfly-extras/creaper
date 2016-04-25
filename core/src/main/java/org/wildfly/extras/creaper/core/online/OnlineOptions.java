@@ -1,6 +1,7 @@
 package org.wildfly.extras.creaper.core.online;
 
 import org.jboss.as.controller.client.ModelControllerClient;
+import org.jboss.dmr.ModelNode;
 import org.wildfly.extras.creaper.core.ManagementClient;
 
 import javax.net.ssl.SSLContext;
@@ -15,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * This basically follows the builder pattern, but ensures on the type level that everything that must be set is
@@ -35,6 +37,7 @@ public final class OnlineOptions {
     final int port;
     private final ManagementProtocol protocol; // this can be "null" for unspecified protocol
     private final int connectionTimeout;
+    private final int bootTimeout;
 
     private final String username;
     private final String password;
@@ -64,6 +67,7 @@ public final class OnlineOptions {
         this.port = data.port;
         this.protocol = data.protocol;
         this.connectionTimeout = data.connectionTimeout;
+        this.bootTimeout = data.bootTimeout;
         this.username = data.username;
         this.password = data.password;
         this.localAuthDisabled = data.localAuthDisabled;
@@ -88,6 +92,7 @@ public final class OnlineOptions {
 
         private ManagementProtocol protocol; // often not set at all
         private int connectionTimeout;
+        private int bootTimeout = 10000;
 
         private String username;
         private String password;
@@ -252,13 +257,29 @@ public final class OnlineOptions {
             return this;
         }
 
-        /** Timeout to enforce when connecting to the server. Optional, must be {@code > 0}. */
-        public OptionalOnlineOptions connectionTimeout(int connectionTimeout) {
-            if (connectionTimeout <= 0) {
+        /**
+         * Timeout to use when connecting to the server. Optional, must be {@code > 0}.
+         * By default, no timeout is used.
+         */
+        public OptionalOnlineOptions connectionTimeout(int timeoutInMillis) {
+            if (timeoutInMillis <= 0) {
                 throw new IllegalArgumentException("Connection timeout must be > 0");
             }
 
-            data.connectionTimeout = connectionTimeout;
+            data.connectionTimeout = timeoutInMillis;
+            return this;
+        }
+
+        /**
+         * Timeout to use when waiting for the server to boot. Optional. A value {@code <= 0} means "no timeout".
+         * By default, a value of {@code 10000} is used (i.e., a 10 seconds timeout).
+         */
+        public OptionalOnlineOptions bootTimeout(int timeoutInMillis) {
+            if (timeoutInMillis <= 0) {
+                timeoutInMillis = 0;
+            }
+
+            data.bootTimeout = timeoutInMillis;
             return this;
         }
 
@@ -336,6 +357,8 @@ public final class OnlineOptions {
             saslOptions = Collections.singletonMap("SASL_DISALLOWED_MECHANISMS", "JBOSS-LOCAL-USER");
         }
 
+        ModelControllerClient modelControllerClient;
+
         // the variant with the "protocol" parameter exists since WildFly 8, and if it is available, it is preferred
         // to the protocol-less variant available in JBoss AS 7, because we want to choose the protocol dynamically
         //
@@ -357,7 +380,7 @@ public final class OnlineOptions {
                 protocolName = protocol.protocolName();
             }
 
-            return (ModelControllerClient) createMethod.invoke(null, // static method
+            modelControllerClient = (ModelControllerClient) createMethod.invoke(null, // static method
                     protocolName, host, port, callbackHandler, null, connectionTimeout, saslOptions);
         } catch (NoSuchMethodException e) {
             if (protocol == ManagementProtocol.HTTP_REMOTING) {
@@ -366,8 +389,8 @@ public final class OnlineOptions {
                         + CREAPER_WILDFLY + "' system property was set), but client libraries are AS7-only");
             }
 
-            return ModelControllerClient.Factory.create(host, port, callbackHandler, null, connectionTimeout,
-                    saslOptions);
+            modelControllerClient = ModelControllerClient.Factory.create(host, port,
+                    callbackHandler, null, connectionTimeout, saslOptions);
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof IOException) {
                 throw (IOException) e.getCause();
@@ -375,6 +398,60 @@ public final class OnlineOptions {
             throw new IOException(e);
         } catch (IllegalAccessException e) {
             throw new IOException(e);
+        }
+
+        try {
+            connectAndWaitUntilServerBoots(modelControllerClient, bootTimeout);
+        } catch (Exception e) {
+            modelControllerClient.close();
+
+            if (e instanceof IOException) {
+                throw (IOException) e;
+            } else if (e instanceof IllegalStateException) {
+                throw (IllegalStateException) e;
+            } else {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        return modelControllerClient;
+    }
+
+    private static void connectAndWaitUntilServerBoots(ModelControllerClient client, int timeoutInMillis)
+            throws IOException, InterruptedException, TimeoutException {
+        ModelNode op = new ModelNode();
+        op.get(Constants.OP).set(Constants.WHOAMI);
+        op.get(Constants.OP_ADDR).setEmptyList();
+
+        long endTime = System.currentTimeMillis() + timeoutInMillis;
+        while (System.currentTimeMillis() < endTime) {
+            ModelNodeResult result = new ModelNodeResult(client.execute(op));
+
+            if (result.isSuccess()) {
+                return;
+            }
+
+            boolean stillBooting = false;
+
+            String failureDescription = result.get(Constants.FAILURE_DESCRIPTION).asString();
+            for (String code : Constants.RESULT_CODES_FOR_BOOT_IN_PROGRESS) {
+                if (failureDescription.startsWith(code)) {
+                    stillBooting = true;
+                    break;
+                }
+            }
+
+            if (stillBooting) {
+                Thread.sleep(100);
+            } else {
+                // shouldn't happen
+                throw new IllegalStateException("Unknown server state: " + failureDescription);
+            }
+        }
+
+        ModelNodeResult result = new ModelNodeResult(client.execute(op));
+        if (!result.isSuccess()) {
+            throw new TimeoutException("Waiting for server to boot timed out");
         }
     }
 

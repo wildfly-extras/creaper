@@ -26,7 +26,9 @@ public final class ManagementClient {
      * (e.g. there's no server listening on host:port)
      * @throws IllegalStateException if the client is connected to a domain controller even if the {@code options}
      * say that it should be a standalone server, or if the client is connected to a standalone server even if
-     * the {@code options} say that it should be a domain controller
+     * the {@code options} say that it should be a domain controller, or if the client connects to a server
+     * that is still booting and the boot process doesn't finish in time (see
+     * {@link OnlineOptions.OptionalOnlineOptions#bootTimeout(int) OnlineOptions.bootTimeout}).
      */
     public static OnlineManagementClient online(OnlineOptions options) throws IOException {
         return OnlineClientFactory.instance.create(options);

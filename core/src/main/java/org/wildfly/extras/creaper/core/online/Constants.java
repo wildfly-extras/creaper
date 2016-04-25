@@ -44,4 +44,8 @@ public final class Constants extends ClientConstants {
             "JBAS014807", "WFLYCTL0216", // management resource not found
             "JBAS014883", "WFLYCTL0030"  // no resource definition is registered for address
     ));
+
+    public static final List<String> RESULT_CODES_FOR_BOOT_IN_PROGRESS = Collections.unmodifiableList(Arrays.asList(
+            "JBAS013493", "WFLYCTL0379"
+    ));
 }
