@@ -1,12 +1,14 @@
 # Changelog
 
+## 1.1.1 (not yet released)
+
 ## 1.1.0 [The Wintermute Edition](https://en.wikipedia.org/wiki/Neuromancer) (2016-04-25)
 
 - added `OnlineOptions.bootTimeout`
 - added commands for authorization in security realms
-- added commands for configuring JDBC in the transactions subsystem
+- added commands for configuring JDBC in the `transactions` subsystem
 - updated `GroovyXmlTransform` to understand new XML element `<host-excludes>`
-- removed debugging code in the Administration class
+- removed debugging code in the `Administration` class
 
 ## 1.0.0 [The Ez|Ra Edition](https://en.wikipedia.org/wiki/Embassytown) (2016-03-15)
 
