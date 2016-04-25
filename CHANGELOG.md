@@ -4,6 +4,9 @@
 
 - updated `GroovyXmlTransform` to understand new XML element `<host-excludes>`
 - added `OnlineOptions.bootTimeout`
+- added commands for configuring JDBC in the transactions subsystem
+- added commands for authorization in security realms
+- removed debugging code in the Administration class
 
 ## 1.0.0 [The Ez|Ra Edition](https://en.wikipedia.org/wiki/Embassytown) (2016-03-15)
 
