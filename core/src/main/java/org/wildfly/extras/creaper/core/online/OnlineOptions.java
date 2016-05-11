@@ -92,7 +92,7 @@ public final class OnlineOptions {
 
         private ManagementProtocol protocol; // often not set at all
         private int connectionTimeout;
-        private int bootTimeout = 10000;
+        private int bootTimeout;
 
         private String username;
         private String password;
@@ -106,6 +106,7 @@ public final class OnlineOptions {
     public static ConnectionOnlineOptions standalone() {
         Data data = new Data();
         data.isStandalone = true;
+        data.bootTimeout = 20000;
         return new ConnectionOnlineOptions(data);
     }
 
@@ -113,6 +114,7 @@ public final class OnlineOptions {
     public static DomainOnlineOptions domain() {
         Data data = new Data();
         data.isDomain = true;
+        data.bootTimeout = 120000;
         return new DomainOnlineOptions(data);
     }
 
@@ -258,7 +260,7 @@ public final class OnlineOptions {
         }
 
         /**
-         * Timeout to use when connecting to the server. Optional, must be {@code > 0}.
+         * Timeout to use when connecting to the server. In milliseconds. Optional, must be {@code > 0}.
          * By default, no timeout is used.
          */
         public OptionalOnlineOptions connectionTimeout(int timeoutInMillis) {
@@ -271,8 +273,9 @@ public final class OnlineOptions {
         }
 
         /**
-         * Timeout to use when waiting for the server to boot. Optional. A value {@code <= 0} means "no timeout".
-         * By default, a value of {@code 10000} is used (i.e., a 10 seconds timeout).
+         * Timeout to use when waiting for the server to boot. In milliseconds. Optional. A value {@code <= 0}
+         * means "no timeout". By default, a value of {@code 20000} (20 seconds) is used for a standalone server
+         * and a value of {@code 120000} (2 minutes) is used for managed domain.
          */
         public OptionalOnlineOptions bootTimeout(int timeoutInMillis) {
             if (timeoutInMillis <= 0) {
