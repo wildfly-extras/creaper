@@ -260,8 +260,13 @@ public final class OnlineOptions {
         }
 
         /**
-         * Timeout to use when connecting to the server. In milliseconds. Optional, must be {@code > 0}.
-         * By default, no timeout is used.
+         * <p>Timeout to use when connecting to the server. In milliseconds. Optional, must be {@code > 0}.
+         * By default, no timeout is used.</p>
+         *
+         * <p>This has two meanings. First, it's the maximum wait time used when connections to the server
+         * are being refused. This can happen when the server process has just been started and the management
+         * endpoint is not yet available. Second, it's the connection timeout passed
+         * to {@link ModelControllerClient.Factory}.</p>
          */
         public OptionalOnlineOptions connectionTimeout(int timeoutInMillis) {
             if (timeoutInMillis <= 0) {
@@ -404,7 +409,7 @@ public final class OnlineOptions {
         }
 
         try {
-            connectAndWaitUntilServerBoots(modelControllerClient, bootTimeout);
+            connectAndWaitUntilServerBoots(modelControllerClient, connectionTimeout, bootTimeout);
         } catch (Exception e) {
             modelControllerClient.close();
 
@@ -420,13 +425,25 @@ public final class OnlineOptions {
         return modelControllerClient;
     }
 
-    private static void connectAndWaitUntilServerBoots(ModelControllerClient client, int timeoutInMillis)
+    private static void connectAndWaitUntilServerBoots(ModelControllerClient client, int connectionTimeoutInMillis,
+                                                       int bootTimeoutInMillis)
             throws IOException, InterruptedException, TimeoutException {
         ModelNode op = new ModelNode();
         op.get(Constants.OP).set(Constants.WHOAMI);
         op.get(Constants.OP_ADDR).setEmptyList();
 
-        long endTime = System.currentTimeMillis() + timeoutInMillis;
+        long endTime = System.currentTimeMillis() + connectionTimeoutInMillis;
+        while (System.currentTimeMillis() < endTime) {
+            try {
+                client.execute(op);
+                break;
+            } catch (IOException e) {
+                // server is probably not up yet, keep waiting
+                Thread.sleep(100);
+            }
+        }
+
+        endTime = System.currentTimeMillis() + bootTimeoutInMillis;
         while (System.currentTimeMillis() < endTime) {
             ModelNodeResult result = new ModelNodeResult(client.execute(op));
 
