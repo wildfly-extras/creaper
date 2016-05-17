@@ -16,5 +16,7 @@ interface AdministrationOperations {
 
     boolean restartIfRequired() throws IOException, InterruptedException, TimeoutException;
 
+    void shutdown() throws IOException;
+
     void waitUntilRunning() throws InterruptedException, TimeoutException, IOException;
 }

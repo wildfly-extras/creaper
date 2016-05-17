@@ -93,8 +93,8 @@ public final class DomainAdministration extends Administration {
      * @return {@code true} when server was successfully started, {@code false} otherwise
      */
     public boolean startServer(String host, String server) throws IOException {
-        ModelNodeResult result = ops.invoke("start", Address.host(host).and(Constants.SERVER_CONFIG, server),
-                Values.of("blocking", true));
+        ModelNodeResult result = ops.invoke(Constants.START, Address.host(host).and(Constants.SERVER_CONFIG, server),
+                Values.of(Constants.BLOCKING, true));
         result.assertDefinedValue();
         return result.isSuccess();
     }
@@ -185,6 +185,44 @@ public final class DomainAdministration extends Administration {
         }
 
         domainOps.waitUntilServersAreRunning(host, servers, needsToReconnect);
+    }
+
+    // ---
+
+    /** Shuts down given {@code host}. This is a variant of {@link Administration#shutdown()}. */
+    public void shutdown(String host) throws IOException, InterruptedException, TimeoutException {
+        domainOps.shutdown(host);
+    }
+
+    /** @see #shutdownAllServers(String) */
+    public void shutdownAllServers() throws InterruptedException, IOException, TimeoutException {
+        shutdownAllServers(client.options().defaultHost);
+    }
+
+    /**
+     * Shuts down all the servers on given {@code host}. As opposed to {@link Administration#shutdown()}, this doesn't
+     * shut down the entire host, just the servers.
+     */
+    public void shutdownAllServers(String host) throws InterruptedException, TimeoutException, IOException {
+        shutdownServers(host, allRunningServers(host));
+    }
+
+    /** @see #shutdownServer(String, String) */
+    public void shutdownServer(String server) throws InterruptedException, TimeoutException, IOException {
+        shutdownServer(client.options().defaultHost, server);
+    }
+
+    /** Shuts down given {@code server} on given {@code host}. */
+    public void shutdownServer(String host, String server) throws InterruptedException, TimeoutException, IOException {
+        shutdownServers(host, Collections.singletonList(server));
+    }
+
+    void shutdownServers(String host, List<String> servers) throws IOException, InterruptedException, TimeoutException {
+        Batch batch = new Batch();
+        for (String server : servers) {
+            batch.invoke(Constants.STOP, Address.host(host).and(Constants.SERVER_CONFIG, server));
+        }
+        ops.batch(batch);
     }
 
     // ---

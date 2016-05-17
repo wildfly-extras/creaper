@@ -94,6 +94,13 @@ public class Administration {
 
     // ---
 
+    /** Shuts down the server. In domain, shuts down the entire host. */
+    public final void shutdown() throws IOException {
+        ops.shutdown();
+    }
+
+    // ---
+
     /**
      * Waits until the server is {@code running}. In domain, only waits for the host controller,
      * not for individual servers.

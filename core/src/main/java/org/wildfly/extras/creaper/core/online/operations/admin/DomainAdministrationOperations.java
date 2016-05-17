@@ -63,6 +63,15 @@ final class DomainAdministrationOperations implements AdministrationOperations {
     }
 
     @Override
+    public void shutdown() throws IOException {
+        shutdown(client.options().defaultHost);
+    }
+
+    void shutdown(String host) throws IOException {
+        ops.invoke(Constants.SHUTDOWN, Address.host(host));
+    }
+
+    @Override
     public void waitUntilRunning() throws InterruptedException, TimeoutException, IOException {
         waitUntilServersAreRunning(client.options().defaultHost, null, true);
     }

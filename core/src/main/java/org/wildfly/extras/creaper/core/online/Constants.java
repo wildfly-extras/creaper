@@ -15,6 +15,7 @@ public final class Constants extends ClientConstants {
 
     public static final String ALLOW_RESOURCE_SERVICE_RESTART = "allow-resource-service-restart";
     public static final String ATTRIBUTES_ONLY = "attributes-only";
+    public static final String BLOCKING = "blocking";
     public static final String COMPOSITE = "composite";
     public static final String CORE_SERVICE = "core-service";
     public static final String DOMAIN_FAILURE_DESCRIPTION = "domain-failure-description";
@@ -33,7 +34,9 @@ public final class Constants extends ClientConstants {
     public static final String SERVER_GROUPS = "server-groups";
     public static final String SERVER_STATE = "server-state";
     public static final String SHUTDOWN = "shutdown";
+    public static final String START = "start";
     public static final String STEPS = "steps";
+    public static final String STOP = "stop";
     public static final String WHOAMI = "whoami";
 
     public static final List<String> RESULT_CODES_FOR_UNKNOWN_OR_NOT_FOUND = Collections.unmodifiableList(Arrays.asList(

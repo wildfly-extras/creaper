@@ -55,6 +55,11 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
     }
 
     @Override
+    public void shutdown() throws IOException {
+        ops.invoke(Constants.SHUTDOWN, Address.root());
+    }
+
+    @Override
     public void waitUntilRunning() throws InterruptedException, TimeoutException, IOException {
         waitUntilServerIsRunning(true);
     }
