@@ -1,9 +1,11 @@
 package org.wildfly.extras.creaper.core.online;
 
-import org.jboss.as.controller.client.ModelControllerClient;
-import org.jboss.dmr.ModelNode;
-import org.wildfly.extras.creaper.core.ManagementClient;
-
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.TimeoutException;
 import javax.net.ssl.SSLContext;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -11,12 +13,9 @@ import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.sasl.RealmCallback;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.TimeoutException;
+import org.jboss.as.controller.client.ModelControllerClient;
+import org.jboss.dmr.ModelNode;
+import org.wildfly.extras.creaper.core.ManagementClient;
 
 /**
  * This basically follows the builder pattern, but ensures on the type level that everything that must be set is
@@ -44,19 +43,31 @@ public final class OnlineOptions {
 
     private final boolean localAuthDisabled;
 
+    private final SslOptions sslOptions;
+
     private final ModelControllerClient wrappedModelControllerClient;
     final boolean isWrappedClient; // see OnlineManagementClientImpl.reconnect
 
     private OnlineOptions(Data data) {
         if (data.protocol == null && System.getProperty(CREAPER_WILDFLY) != null) {
-            data.protocol = ManagementProtocol.HTTP_REMOTING;
+            if (data.sslOptions == null) {
+                data.protocol = ManagementProtocol.HTTP_REMOTING;
+            } else {
+                data.protocol = ManagementProtocol.HTTPS_REMOTING;
+            }
             // if the protocol wasn't set manually and the system property isn't set,
             // it _doesn't_ mean that it's "remote"! see also OptionalOnlineOptions.protocol below
         }
 
         if (data.localDefault) {
             data.host = "localhost";
-            data.port = data.protocol == ManagementProtocol.HTTP_REMOTING ? 9990 : 9999;
+            if (data.protocol == ManagementProtocol.HTTP_REMOTING) {
+                data.port = 9990;
+            } else if (data.protocol == ManagementProtocol.HTTPS_REMOTING) {
+                data.port = 9993;
+            } else {
+                data.port = 9999;
+            }
         }
 
         this.isStandalone = data.isStandalone;
@@ -71,6 +82,7 @@ public final class OnlineOptions {
         this.username = data.username;
         this.password = data.password;
         this.localAuthDisabled = data.localAuthDisabled;
+        this.sslOptions = data.sslOptions;
         this.wrappedModelControllerClient = data.wrappedModelControllerClient;
         this.isWrappedClient = data.wrappedModelControllerClient != null;
     }
@@ -98,6 +110,8 @@ public final class OnlineOptions {
         private String password;
 
         private boolean localAuthDisabled;
+
+        private SslOptions sslOptions;
 
         private ModelControllerClient wrappedModelControllerClient;
     }
@@ -177,8 +191,9 @@ public final class OnlineOptions {
         /**
          * <p>Connect to {@code localhost} and use the default management port of the application server.
          * This is {@code 9999} by default (JBoss AS 7), and if the system property {@code creaper.wildfly} is defined,
-         * it changes to 9990 (WildFly). This makes it easy to run the same code against both AS7 and WildFly
-         * only by defining a single system property.</p>
+         * it changes to 9990 or (if {@link OptionalOnlineOptions#ssl(SslOptions) ssl} is used) to 9993 (WildFly).
+         * This makes it easy to run the same code against both AS7 and WildFly only by defining a single system
+         * property.</p>
          *
          * <p>Alternatively, the {@link OptionalOnlineOptions#protocol(ManagementProtocol) protocol()} method
          * can be used, which takes precedence over the methods described above. When it is called, the default port
@@ -259,6 +274,12 @@ public final class OnlineOptions {
             return this;
         }
 
+        /** SSL/TLS connection settings. Optional. */
+        public OptionalOnlineOptions ssl(SslOptions sslOptions) {
+            data.sslOptions = sslOptions;
+            return this;
+        }
+
         /**
          * <p>Timeout to use when connecting to the server. In milliseconds. Optional. A value {@code <= 0}
          * means "no timeout". By default, no timeout is used.</p>
@@ -298,11 +319,11 @@ public final class OnlineOptions {
          * is used.</p>
          *
          * <p>AS7 uses a native remoting protocol, called {@code remote}. WildFly uses the remoting protocol wrapped
-         * in HTTP (using the HTTP upgrade mechanism), called {@code http-remoting}. When the client libraries
-         * on classpath match the server version, they should choose the correct protocol automatically, so in this
-         * situation, this method is not required. However, when using a single set of client libraries for all server
-         * versions (which is possible, because the client libraries should be backward compatible), this method must
-         * be used to specify the type of the server.</p>
+         * in HTTP (using the HTTP upgrade mechanism), called {@code http-remoting}, or uses its secured version
+         * called {@code https-remoting}. When the client libraries on classpath match the server version, they should
+         * choose the correct protocol automatically, so in this situation, this method is not required. However, when
+         * using a single set of client libraries for all server versions (which is possible, because the client
+         * libraries should be backward compatible), this method must be used to specify the type of the server.</p>
          *
          * <p>The server port is only affected by this method when
          * {@link ConnectionOnlineOptions#localDefault() localDefault} is used. When server port is specified directly
@@ -338,6 +359,7 @@ public final class OnlineOptions {
 
         CallbackHandler callbackHandler = null;
         Map<String, String> saslOptions = null;
+        SSLContext sslContext = null;
 
         if (username != null) {
             callbackHandler = new CallbackHandler() {
@@ -365,6 +387,10 @@ public final class OnlineOptions {
             saslOptions = Collections.singletonMap("SASL_DISALLOWED_MECHANISMS", "JBOSS-LOCAL-USER");
         }
 
+        if (sslOptions != null) {
+            sslContext = sslOptions.createSslContext();
+        }
+
         ModelControllerClient modelControllerClient;
 
         // the variant with the "protocol" parameter exists since WildFly 8, and if it is available, it is preferred
@@ -389,16 +415,16 @@ public final class OnlineOptions {
             }
 
             modelControllerClient = (ModelControllerClient) createMethod.invoke(null, // static method
-                    protocolName, host, port, callbackHandler, null, connectionTimeout, saslOptions);
+                    protocolName, host, port, callbackHandler, sslContext, connectionTimeout, saslOptions);
         } catch (NoSuchMethodException e) {
-            if (protocol == ManagementProtocol.HTTP_REMOTING) {
+            if (protocol == ManagementProtocol.HTTP_REMOTING || protocol == ManagementProtocol.HTTPS_REMOTING) {
                 // user asks for WildFly, but the client library is from AS7, this can't work
-                throw new IllegalStateException("The server should be WildFly (either ManagementProtocol.HTTP_REMOTING was used or the '"
+                throw new IllegalStateException("The server should be WildFly (either ManagementProtocol.HTTP(S)_REMOTING was used or the '"
                         + CREAPER_WILDFLY + "' system property was set), but client libraries are AS7-only");
             }
 
             modelControllerClient = ModelControllerClient.Factory.create(host, port,
-                    callbackHandler, null, connectionTimeout, saslOptions);
+                    callbackHandler, sslContext, connectionTimeout, saslOptions);
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof IOException) {
                 throw (IOException) e.getCause();

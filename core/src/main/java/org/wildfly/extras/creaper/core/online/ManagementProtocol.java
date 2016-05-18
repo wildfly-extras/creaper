@@ -5,6 +5,8 @@ public enum ManagementProtocol {
     REMOTE("remote"),
     /** Used in WildFly. Default port 9990. */
     HTTP_REMOTING("http-remoting"),
+    /** Used in WildFly. Default port 9993. */
+    HTTPS_REMOTING("https-remoting"),
     ;
 
     private final String protocolName;

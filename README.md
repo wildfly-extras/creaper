@@ -285,7 +285,9 @@ an exception.)
 
 Alternatively, you can define a system property `creaper.wildfly` (its value
 is ignored, the system property just needs to be defined). This switches
-the default protocol to `http-remoting` and the default port to `9990`.
+the default protocol to `http-remoting` and the default port to `9990`
+(in case SSL is configured, this switches the default protocol to
+`https-remoting` and the default port to `9993`).
 
 This way, you can run the same code against JBoss AS 7 and WildFly without
 the need to rewrite or recompile anything. Just define a system property, and

@@ -196,7 +196,7 @@
                             <configuration>
                                 <groups>org.wildfly.extras.creaper.test.ManualTests AND NOT ${tests.ignoredCategory}</groups>
                                 <systemPropertyVariables>
-                                    <arquillian.launch>jboss-manual</arquillian.launch>
+                                    <arquillian.launch>jboss-manual-group</arquillian.launch>
                                     <management.port>${applicationServer.managementPort}</management.port>
                                 </systemPropertyVariables>
                                 <argLine>${tests.specialJvmArgs}</argLine>

@@ -14,15 +14,30 @@
         </configuration>
     </container>
 
-    <container qualifier="jboss-manual" mode="manual">
-        <configuration>
-            <property name="jbossHome">${basedir}/target/jboss-as</property>
-            <property name="serverConfig">standalone.xml</property>
-            <property name="managementAddress">127.0.0.1</property>
-            <property name="managementPort">${management.port}</property>
+    <group qualifier="jboss-manual-group">
+        <container qualifier="jboss-manual" mode="manual">
+            <configuration>
+                <property name="jbossHome">${basedir}/target/jboss-as</property>
+                <property name="serverConfig">standalone.xml</property>
+                <property name="managementAddress">127.0.0.1</property>
+                <property name="managementPort">${management.port}</property>
 
-            <property name="waitForPorts">${management.port}</property>
-            <property name="waitForPortsTimeoutInSeconds">8</property>
-        </configuration>
-    </container>
+                <property name="waitForPorts">${management.port}</property>
+                <property name="waitForPortsTimeoutInSeconds">8</property>
+            </configuration>
+        </container>
+
+        <container qualifier="jboss-manual-with-remote-mgmt-protocol" mode="manual">
+            <configuration>
+                <property name="jbossHome">${basedir}/target/jboss-as</property>
+                <property name="serverConfig">standalone.xml</property>
+                <property name="managementAddress">127.0.0.1</property>
+                <property name="managementPort">${management.port}</property>
+                <property name="managementProtocol">remote</property>
+
+                <property name="waitForPorts">${management.port}</property>
+                <property name="waitForPortsTimeoutInSeconds">8</property>
+            </configuration>
+        </container>
+    </group>
 </arquillian>

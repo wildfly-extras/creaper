@@ -1,9 +1,11 @@
 package org.wildfly.extras.creaper.security;
 
-import org.bouncycastle.x509.X509V3CertificateGenerator;
-
-import javax.security.auth.x500.X500Principal;
+import com.google.common.io.ByteSink;
+import com.google.common.io.Closeables;
+import com.google.common.io.Files;
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
@@ -15,6 +17,9 @@ import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Date;
+import javax.security.auth.x500.X500Principal;
+import org.bouncycastle.x509.X509V3CertificateGenerator;
+import org.wildfly.extras.creaper.core.online.KeyStoreType;
 
 /**
  * <b>Only for tests!</b> Contains a cryptographic key pair and a certificate for it.
@@ -62,9 +67,58 @@ public final class KeyPairAndCertificate {
      * The entry will contain the private key and the certificate.
      */
     public KeyStore toKeyStore(String entryAlias, String entryPassword) throws GeneralSecurityException, IOException {
-        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        KeyStore keyStore = KeyStore.getInstance(KeyStoreType.DEFAULT_TYPE.typeName());
         keyStore.load(null);
         keyStore.setKeyEntry(entryAlias, privateKey, entryPassword.toCharArray(), new Certificate[]{certificate});
         return keyStore;
+    }
+
+    /**
+     * Creates a new truststore that will contain a single entry with given {@code entryAlias}.
+     * The entry will contain the certificate.
+     */
+    public KeyStore toTrustStore(String entryAlias) throws GeneralSecurityException, IOException {
+        KeyStore keyStore = KeyStore.getInstance(KeyStoreType.DEFAULT_TYPE.typeName());
+        keyStore.load(null);
+        keyStore.setCertificateEntry(entryAlias, certificate);
+        return keyStore;
+    }
+
+    /**
+     * Creates a new keystore that will contain a single entry with given {@code entryAlias} and {@code entryPassword}
+     * and stores it to a temporary file. The entry will contain the private key and the certificate.
+     */
+    public File toTmpKeyStoreFile(String entryAlias, String password) throws IOException, GeneralSecurityException {
+        KeyStore keyStore = toKeyStore(entryAlias, password);
+        File keyStoreFile = File.createTempFile("key-" + entryAlias, ".keystore", new File("target"));
+        ByteSink keyStoreSink = Files.asByteSink(keyStoreFile);
+        OutputStream keyStoreStream = keyStoreSink.openStream();
+
+        try {
+            keyStore.store(keyStoreStream, password.toCharArray());
+        } finally {
+            Closeables.close(keyStoreStream, true);
+        }
+
+        return keyStoreFile;
+    }
+
+    /**
+     * Creates a new truststore that will contain a single entry with given {@code entryAlias} and stores it
+     * to a temporary file. The entry will contain the certificate.
+     */
+    public File toTmpTrustStoreFile(String entryAlias, String password) throws IOException, GeneralSecurityException {
+        KeyStore trustStore = toTrustStore(entryAlias);
+        File trustStoreFile = File.createTempFile("trust-" + entryAlias, ".truststore", new File("target"));
+        ByteSink trustStoreSink = Files.asByteSink(trustStoreFile);
+        OutputStream trustStoreStream = trustStoreSink.openStream();
+
+        try {
+            trustStore.store(trustStoreStream, password.toCharArray());
+        } finally {
+            Closeables.close(trustStoreStream, true);
+        }
+
+        return trustStoreFile;
     }
 }
