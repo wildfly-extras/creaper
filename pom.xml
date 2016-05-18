@@ -390,6 +390,10 @@
                             <version>${version.org.apache.maven.plugins.maven-surefire-plugin}</version>
                         </dependency>
                     </dependencies>
+                    <configuration>
+                        <!-- the default value of "true" is a real pain in multi-module projects -->
+                        <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
