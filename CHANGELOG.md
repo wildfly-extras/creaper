@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.2.1 (not yet released)
+
 ## 1.2.0 [The Avernus Edition](https://en.wikipedia.org/wiki/Helliconia) (2016-05-18)
 
 - improved waiting for server: `OnlineOptions.connectionTimeout`

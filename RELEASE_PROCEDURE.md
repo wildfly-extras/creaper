@@ -45,7 +45,7 @@ This text assumes that the version number for a release is X.Y.Z.
 
 16. Create a GitHub Release.
 
-17. Close the relevant GitHub Milestone.
+17. Close the relevant GitHub Milestone. Optionally create a new Milestone.
 
 18. Add a new heading to the top of `CHANGELOG.md`.
     Its text should be: `X.Y.Z+1 (not yet released)`.
