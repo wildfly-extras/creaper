@@ -1,12 +1,12 @@
 # Changelog
 
-## 1.1.1 (not yet released)
+## 1.2.0 [The Avernus Edition](https://en.wikipedia.org/wiki/Helliconia) (2016-05-18)
 
+- improved waiting for server: `OnlineOptions.connectionTimeout`
+  is now also used when connecting to the server fails
 - changed default boot timeout: 20 seconds for standalone server
   and 2 minutes for managed domain
 - added `CliScript`
-- improved waiting for server: `OnlineOptions.connectionTimeout`
-  is now also used when connecting to the server fails
 - added `Address.extension`
 - added `Administration.shutdown` and `DomainAdministration.shutdown*`
 
