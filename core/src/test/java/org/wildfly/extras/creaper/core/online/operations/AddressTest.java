@@ -68,8 +68,8 @@ public class AddressTest {
     }
 
     @Test
-    public void subsystemAddress() {
-        Address singleElementAddress = Address.subsystem("foo");
+    public void extensionAddress() {
+        Address singleElementAddress = Address.extension("org.jboss.as.logging");
         ModelNode modelNode = singleElementAddress.toModelNode();
 
         assertTrue(modelNode.isDefined());
@@ -79,11 +79,11 @@ public class AddressTest {
 
         ModelNode firstElement = modelNode.get(0);
         assertEquals(ModelType.PROPERTY, firstElement.getType());
-        assertEquals(Constants.SUBSYSTEM, firstElement.asProperty().getName());
+        assertEquals(Constants.EXTENSION, firstElement.asProperty().getName());
         assertEquals(ModelType.STRING, firstElement.asProperty().getValue().getType());
-        assertEquals("foo", firstElement.asProperty().getValue().asString());
+        assertEquals("org.jboss.as.logging", firstElement.asProperty().getValue().asString());
 
-        assertEquals("/subsystem=foo", singleElementAddress.toString());
+        assertEquals("/extension=org.jboss.as.logging", singleElementAddress.toString());
     }
 
     @Test
@@ -103,5 +103,62 @@ public class AddressTest {
         assertEquals("master", firstElement.asProperty().getValue().asString());
 
         assertEquals("/host=master", singleElementAddress.toString());
+    }
+
+    @Test
+    public void subsystemAddress() {
+        Address singleElementAddress = Address.subsystem("foo");
+        ModelNode modelNode = singleElementAddress.toModelNode();
+
+        assertTrue(modelNode.isDefined());
+        assertEquals(ModelType.LIST, modelNode.getType());
+        assertTrue(modelNode.hasDefined(0));
+        assertFalse(modelNode.hasDefined(1));
+
+        ModelNode firstElement = modelNode.get(0);
+        assertEquals(ModelType.PROPERTY, firstElement.getType());
+        assertEquals(Constants.SUBSYSTEM, firstElement.asProperty().getName());
+        assertEquals(ModelType.STRING, firstElement.asProperty().getValue().getType());
+        assertEquals("foo", firstElement.asProperty().getValue().asString());
+
+        assertEquals("/subsystem=foo", singleElementAddress.toString());
+    }
+
+    @Test
+    public void coreServiceAddress() {
+        Address singleElementAddress = Address.coreService("management");
+        ModelNode modelNode = singleElementAddress.toModelNode();
+
+        assertTrue(modelNode.isDefined());
+        assertEquals(ModelType.LIST, modelNode.getType());
+        assertTrue(modelNode.hasDefined(0));
+        assertFalse(modelNode.hasDefined(1));
+
+        ModelNode firstElement = modelNode.get(0);
+        assertEquals(ModelType.PROPERTY, firstElement.getType());
+        assertEquals(Constants.CORE_SERVICE, firstElement.asProperty().getName());
+        assertEquals(ModelType.STRING, firstElement.asProperty().getValue().getType());
+        assertEquals("management", firstElement.asProperty().getValue().asString());
+
+        assertEquals("/core-service=management", singleElementAddress.toString());
+    }
+
+    @Test
+    public void deploymentAddress() {
+        Address singleElementAddress = Address.deployment("simple.war");
+        ModelNode modelNode = singleElementAddress.toModelNode();
+
+        assertTrue(modelNode.isDefined());
+        assertEquals(ModelType.LIST, modelNode.getType());
+        assertTrue(modelNode.hasDefined(0));
+        assertFalse(modelNode.hasDefined(1));
+
+        ModelNode firstElement = modelNode.get(0);
+        assertEquals(ModelType.PROPERTY, firstElement.getType());
+        assertEquals(Constants.DEPLOYMENT, firstElement.asProperty().getName());
+        assertEquals(ModelType.STRING, firstElement.asProperty().getValue().getType());
+        assertEquals("simple.war", firstElement.asProperty().getValue().asString());
+
+        assertEquals("/deployment=simple.war", singleElementAddress.toString());
     }
 }

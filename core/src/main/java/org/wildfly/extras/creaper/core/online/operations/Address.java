@@ -36,6 +36,10 @@ public final class Address {
         return new Address(Collections.<StringPair>emptyList());
     }
 
+    public static Address extension(String extension) {
+        return Address.of(Constants.EXTENSION, extension);
+    }
+
     public static Address host(String host) {
         return Address.of(Constants.HOST, host);
     }

@@ -7,6 +7,7 @@
 - added `CliScript`
 - improved waiting for server: `OnlineOptions.connectionTimeout`
   is now also used when connecting to the server fails
+- added `Address.extension`
 
 ## 1.1.0 [The Wintermute Edition](https://en.wikipedia.org/wiki/Neuromancer) (2016-04-25)
 
