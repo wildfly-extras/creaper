@@ -260,8 +260,8 @@ public final class OnlineOptions {
         }
 
         /**
-         * <p>Timeout to use when connecting to the server. In milliseconds. Optional, must be {@code > 0}.
-         * By default, no timeout is used.</p>
+         * <p>Timeout to use when connecting to the server. In milliseconds. Optional. A value {@code <= 0}
+         * means "no timeout". By default, no timeout is used.</p>
          *
          * <p>This has two meanings. First, it's the maximum wait time used when connections to the server
          * are being refused. This can happen when the server process has just been started and the management
@@ -270,7 +270,7 @@ public final class OnlineOptions {
          */
         public OptionalOnlineOptions connectionTimeout(int timeoutInMillis) {
             if (timeoutInMillis <= 0) {
-                throw new IllegalArgumentException("Connection timeout must be > 0");
+                timeoutInMillis = 0;
             }
 
             data.connectionTimeout = timeoutInMillis;
