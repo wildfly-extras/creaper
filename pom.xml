@@ -70,6 +70,7 @@
         <version.com.puppycrawl.tools.checkstyle>6.1.1</version.com.puppycrawl.tools.checkstyle>
         <version.junit.junit>4.12</version.junit.junit>
 
+        <version.org.apache.httpcomponents.httpclient>4.5.2</version.org.apache.httpcomponents.httpclient>
         <version.org.apache.maven.plugins.maven-antrun-plugin>1.8</version.org.apache.maven.plugins.maven-antrun-plugin>
         <version.org.apache.maven.plugins.maven-checkstyle-plugin>2.15</version.org.apache.maven.plugins.maven-checkstyle-plugin>
         <version.org.apache.maven.plugins.maven-clean-plugin>3.0.0</version.org.apache.maven.plugins.maven-clean-plugin>
@@ -125,6 +126,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${version.com.google.guava.guava}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <scope>provided</scope>
+                <version>${version.org.apache.httpcomponents.httpclient}</version>
             </dependency>
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>

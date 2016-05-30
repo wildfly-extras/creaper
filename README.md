@@ -297,6 +297,12 @@ Note that it would actually be possible to implement handling
 of the `creaper.wildfly` system property completely outside of Creaper just
 in terms of the `protocol` method.
 
+#### HTTP transport
+
+If you want to use HTTP transport for executing operation (`.protocol(ManagementProtocol.HTTP)`),
+you need to provide Apache HttpComponents Client 4 by yourself. Please notice that `reload` operation through HTTP
+transport may fail with WildFly 10.0.0.
+
 ### Offline
 
 The API closely resembles the online counterpart. "Connecting" to an offline

@@ -61,7 +61,7 @@ public final class OnlineOptions {
 
         if (data.localDefault) {
             data.host = "localhost";
-            if (data.protocol == ManagementProtocol.HTTP_REMOTING) {
+            if (data.protocol == ManagementProtocol.HTTP_REMOTING || data.protocol == ManagementProtocol.HTTP) {
                 data.port = 9990;
             } else if (data.protocol == ManagementProtocol.HTTPS_REMOTING) {
                 data.port = 9993;
@@ -392,6 +392,24 @@ public final class OnlineOptions {
         }
 
         ModelControllerClient modelControllerClient;
+
+        if (protocol == ManagementProtocol.HTTP) {
+            modelControllerClient = new HttpModelControllerClient(host, port, username, password, connectionTimeout);
+            try {
+                connectAndWaitUntilServerBoots(modelControllerClient, connectionTimeout, bootTimeout);
+            } catch (Exception e) {
+                modelControllerClient.close();
+
+                if (e instanceof IOException) {
+                    throw (IOException) e;
+                } else if (e instanceof IllegalStateException) {
+                    throw (IllegalStateException) e;
+                } else {
+                    throw new IllegalStateException(e);
+                }
+            }
+            return modelControllerClient;
+        }
 
         // the variant with the "protocol" parameter exists since WildFly 8, and if it is available, it is preferred
         // to the protocol-less variant available in JBoss AS 7, because we want to choose the protocol dynamically
