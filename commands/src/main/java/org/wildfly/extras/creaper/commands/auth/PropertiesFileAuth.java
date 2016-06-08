@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 /**
  * <p>Provides a set of offline commands to manipulate authentication and authorization {@code .properties} files.</p>
  *
- * <p>The generic factory methods ({@link #inConfigurationDirectory(String)} or {@link #of(java.io.File)}}) return
+ * <p>The generic factory methods ({@link #inConfigurationDirectory(String)} or {@link #of(java.io.File)}) return
  * an instance of this class, so that methods for working with users and methods for working with user mappings
  * are both available.</p>
  *
