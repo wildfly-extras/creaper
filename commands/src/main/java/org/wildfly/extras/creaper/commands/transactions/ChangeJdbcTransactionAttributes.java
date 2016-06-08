@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.transactions;
 
-
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
 import org.wildfly.extras.creaper.core.ServerVersion;

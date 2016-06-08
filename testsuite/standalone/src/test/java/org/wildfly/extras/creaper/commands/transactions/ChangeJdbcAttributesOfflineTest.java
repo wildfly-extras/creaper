@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.transactions;
 
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import org.custommonkey.xmlunit.XMLUnit;

@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.logging;
 
-
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 

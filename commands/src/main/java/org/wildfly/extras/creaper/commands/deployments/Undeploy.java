@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.deployments;
 
-
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 

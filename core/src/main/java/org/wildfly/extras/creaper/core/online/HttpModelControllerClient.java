@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.core.online;
 
-
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
