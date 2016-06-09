@@ -54,11 +54,11 @@ public class SslOnlineManagementClientTest extends OnlineManagementClientTest {
     private static File serverTrustStoreFile;
     private static File clientKeyStoreFile;
     private static File clientTrustStoreFile;
-    private static SslOptions sslOptions;
+    protected static SslOptions sslOptions;
 
 
     @ArquillianResource
-    private ContainerController controller;
+    protected ContainerController controller;
 
 
     @BeforeClass
@@ -115,7 +115,7 @@ public class SslOnlineManagementClientTest extends OnlineManagementClientTest {
 
 
     private static void prepareKeyAndTrustStoreFiles() throws GeneralSecurityException, IOException {
-        final KeyPairAndCertificate serverKeyPair = KeyPairAndCertificate.generateSelfSigned("test-creaper-server");
+        final KeyPairAndCertificate serverKeyPair = KeyPairAndCertificate.generateSelfSigned("localhost");
         serverKeyStoreFile = serverKeyPair.toTmpKeyStoreFile(SERVER_KEY_ALIAS, SERVER_KEY_PASSWORD);
         clientTrustStoreFile = serverKeyPair.toTmpTrustStoreFile(SERVER_CERTIFICATE_ALIAS, SERVER_CERTIFICATE_PASSWORD);
 

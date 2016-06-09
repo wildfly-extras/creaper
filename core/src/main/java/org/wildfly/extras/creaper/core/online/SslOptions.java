@@ -39,6 +39,7 @@ public final class SslOptions {
     final ByteSource trustStoreSource;
     final String trustStorePassword;
     final KeyStoreType trustStoreType;
+    final boolean hostnameVerification;
 
 
     private SslOptions(Builder builder) {
@@ -53,6 +54,7 @@ public final class SslOptions {
         this.trustStoreSource = builder.trustStoreSource;
         this.trustStorePassword = builder.trustStorePassword;
         this.trustStoreType = builder.trustStoreType != null ? builder.trustStoreType : KeyStoreType.DEFAULT_TYPE;
+        this.hostnameVerification = builder.hostnameVerification;
     }
 
 
@@ -68,6 +70,7 @@ public final class SslOptions {
         private ByteSource trustStoreSource;
         private String trustStorePassword;
         private KeyStoreType trustStoreType;
+        private boolean hostnameVerification = true;
 
         /** Changes SSL/TLS protocol used for connection. Optional. {@link SslProtocol#TLS TLS} is used by default. */
         public Builder protocol(SslProtocol protocol) {
@@ -171,6 +174,17 @@ public final class SslOptions {
          */
         public Builder trustStoreType(KeyStoreType trustStoreType) {
             this.trustStoreType = trustStoreType;
+            return this;
+        }
+
+        /**
+         * Errors during hostname verification will be ignored.
+         * Hostname verification is an HTTPS concept, so this method only makes sense when using
+         * {@link ManagementProtocol#HTTPS}. There's no such thing as hostname verification with the native management
+         * protocols.
+         */
+        public Builder turnOffHostnameVerification() {
+            this.hostnameVerification = false;
             return this;
         }
 

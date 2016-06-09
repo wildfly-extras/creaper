@@ -13,6 +13,8 @@ import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -43,15 +45,11 @@ final class HttpModelControllerClient implements ModelControllerClient {
 
     private final String url;
     private final RequestConfig requestConfig;
+    private final Registry<ConnectionSocketFactory> registry;
     private final CloseableHttpClient client;
 
-    HttpModelControllerClient(String host, int port, String username, String password) throws IOException {
-        this(host, port, username, password, NO_TIMEOUT);
-    }
-
-    HttpModelControllerClient(String host, int port, String username, String password, int timeoutMillis)
-            throws IOException {
-        url = "http://" + host + ":" + port + "/management";
+    HttpModelControllerClient(String host, int port, String username, String password, int timeoutMillis,
+                              SslOptions ssl) throws IOException {
         // timeout configuration
         RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
         if (timeoutMillis != NO_TIMEOUT) {
@@ -60,10 +58,24 @@ final class HttpModelControllerClient implements ModelControllerClient {
                     .setSocketTimeout(timeoutMillis);
         }
         requestConfig = requestConfigBuilder.build();
-        // registry of factories
-        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                .build();
+
+        RegistryBuilder<ConnectionSocketFactory> registryBuilder = RegistryBuilder.<ConnectionSocketFactory>create();
+        if (ssl != null) {
+            url = "https://" + host + ":" + port + "/management";
+            SSLConnectionSocketFactory sslConnectionSocketFactory;
+            if (ssl.hostnameVerification) {
+                sslConnectionSocketFactory = new SSLConnectionSocketFactory(ssl.createSslContext());
+            } else {
+                sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+                        ssl.createSslContext(), NoopHostnameVerifier.INSTANCE);
+            }
+            registryBuilder.register("https", sslConnectionSocketFactory);
+        } else {
+            url = "http://" + host + ":" + port + "/management";
+            registryBuilder.register("http", PlainConnectionSocketFactory.getSocketFactory());
+        }
+        registry = registryBuilder.build();
+
         BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         if (username != null && password != null) {
             credentialsProvider.setCredentials(
@@ -163,6 +175,7 @@ final class HttpModelControllerClient implements ModelControllerClient {
     private String getManagementRealm(String url) throws IOException {
         // we need client without credentials
         CloseableHttpClient defaultHttpClient = HttpClients.custom()
+                .setConnectionManager(new PoolingHttpClientConnectionManager(registry))
                 .setDefaultRequestConfig(requestConfig)
                 .build();
 

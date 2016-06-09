@@ -65,6 +65,8 @@ public final class OnlineOptions {
                 data.port = 9990;
             } else if (data.protocol == ManagementProtocol.HTTPS_REMOTING) {
                 data.port = 9993;
+            } else if (data.protocol == ManagementProtocol.HTTPS) {
+                data.port = System.getProperty(CREAPER_WILDFLY) != null ? 9993 : 9443;
             } else {
                 data.port = 9999;
             }
@@ -85,6 +87,11 @@ public final class OnlineOptions {
         this.sslOptions = data.sslOptions;
         this.wrappedModelControllerClient = data.wrappedModelControllerClient;
         this.isWrappedClient = data.wrappedModelControllerClient != null;
+
+        if ((protocol == ManagementProtocol.HTTPS || protocol == ManagementProtocol.HTTPS_REMOTING)
+                && sslOptions == null) {
+            throw new IllegalArgumentException("SSL must be configured when HTTPS or HTTPS_REMOTING protocol is used!");
+        }
     }
 
     /**
@@ -393,8 +400,9 @@ public final class OnlineOptions {
 
         ModelControllerClient modelControllerClient;
 
-        if (protocol == ManagementProtocol.HTTP) {
-            modelControllerClient = new HttpModelControllerClient(host, port, username, password, connectionTimeout);
+        if (protocol == ManagementProtocol.HTTP || protocol == ManagementProtocol.HTTPS) {
+            modelControllerClient = new HttpModelControllerClient(host, port, username, password, connectionTimeout,
+                    sslOptions);
             try {
                 connectAndWaitUntilServerBoots(modelControllerClient, connectionTimeout, bootTimeout);
             } catch (Exception e) {

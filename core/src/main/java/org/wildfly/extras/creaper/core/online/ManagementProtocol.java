@@ -15,6 +15,12 @@ public enum ManagementProtocol {
      * Default port 9990.
      */
     HTTP("http"),
+    /**
+     * {@code HTTPS} imposes the same limitations as {@link #HTTP}.
+     * <b>Default port is 9443 (AS7)</b> and can be set to <b>9993 (WildFly)</b> by setting the system property
+     * {@code creaper.wildfly} or by configuring the port explicitly.
+     */
+    HTTPS("https"),
     ;
 
     private final String protocolName;
