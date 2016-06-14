@@ -70,7 +70,7 @@ public final class AddHttpsSecurityRealm implements OnlineCommand {
                         .andOptional("keystore-relative-to", keystoreRelativeTo)
                         .andOptional("protocol", protocol)
         );
-        if (truststorePath != null) {
+        if (truststorePassword != null) {
             batch.add(securityRealmAddress.and("authentication", "truststore"), Values.empty()
                     .and("keystore-password", truststorePassword)
                     .andOptional("keystore-path", truststorePath)
