@@ -181,26 +181,37 @@ final class HttpModelControllerClient implements ModelControllerClient {
 
         HttpPost post = new HttpPost(url);
         post.addHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+        // this is not necessary, but without this server produce parse error exception when authentication is disabled
+        // which may confuse user
+        post.setEntity(new StringEntity("[]"));
 
         CloseableHttpResponse response = null;
+        String content;
         try {
             response = defaultHttpClient.execute(post);
-            response.close();
+            content = EntityUtils.toString(response.getEntity());
         } finally {
+            if (response != null) {
+                response.close();
+            }
             defaultHttpClient.close();
         }
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+            throw new IllegalStateException(String.format("Failed to obtain management realm name. Server responded %d instead of %d. Isn't server authentication turned off while username and password set? Content: %s",
+                    HttpStatus.SC_INTERNAL_SERVER_ERROR, HttpStatus.SC_UNAUTHORIZED, content));
+        }
         if (response.getStatusLine().getStatusCode() != HttpStatus.SC_UNAUTHORIZED) {
-            throw new IllegalStateException(String.format("Server responded with %d instead of %d after first request.",
-                    response.getStatusLine().getStatusCode(), HttpStatus.SC_UNAUTHORIZED));
+            throw new IllegalStateException(String.format("Failed to obtain management realm name. Server responded %d instead of %d. Content: %s",
+                    response.getStatusLine().getStatusCode(), HttpStatus.SC_UNAUTHORIZED, content));
         }
         if (!response.containsHeader(HttpHeaders.WWW_AUTHENTICATE)) {
-            throw new IllegalStateException("Missing WWW-Authenticate header in server response after first request.");
+            throw new IllegalStateException("Failed to obtain management realm name. Missing WWW-Authenticate header in server response.");
         }
         for (HeaderElement el : response.getHeaders(HttpHeaders.WWW_AUTHENTICATE)[0].getElements()) {
             if (el.getName().equals("Digest realm")) {
                 return el.getValue();
             }
         }
-        throw new IllegalStateException("Digest realm not found in WWW-Authenticate header.");
+        throw new IllegalStateException("Failed to obtain management realm name. Digest realm not found in WWW-Authenticate header.");
     }
 }
