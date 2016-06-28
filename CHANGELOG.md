@@ -3,6 +3,12 @@
 ## 1.2.1 (not yet released)
 
 - the `OnlineOptions.connectionTimeout` method now accepts values `<= 0`
+- added support for configuring SSL (`OnlineOptions.ssl`)
+- added support for HTTP/HTTPS transport (`ManagementProtocol.HTTP[S]`)
+- fixed `AddHttpsSecurityRealm` for cases when truststore path is not required
+- added commands for security realm SSL configuration
+- added `RemoveSocketBinding`
+- added commands for audit logging
 
 ## 1.2.0 [The Avernus Edition](https://en.wikipedia.org/wiki/Helliconia) (2016-05-18)
 
