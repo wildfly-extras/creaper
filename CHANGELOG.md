@@ -1,14 +1,14 @@
 # Changelog
 
-## 1.2.1 (not yet released)
+## 1.3.0 [The Kugelblitz Edition](https://en.wikipedia.org/wiki/Heechee) (2016-06-28)
 
-- the `OnlineOptions.connectionTimeout` method now accepts values `<= 0`
-- added support for configuring SSL (`OnlineOptions.ssl`)
 - added support for HTTP/HTTPS transport (`ManagementProtocol.HTTP[S]`)
-- fixed `AddHttpsSecurityRealm` for cases when truststore path is not required
+- added support for configuring SSL (`OnlineOptions.ssl`)
+- added commands for audit logging
 - added commands for security realm SSL configuration
 - added `RemoveSocketBinding`
-- added commands for audit logging
+- fixed `AddHttpsSecurityRealm` for cases when truststore path is not required
+- the `OnlineOptions.connectionTimeout` method now accepts values `<= 0`
 
 ## 1.2.0 [The Avernus Edition](https://en.wikipedia.org/wiki/Helliconia) (2016-05-18)
 
