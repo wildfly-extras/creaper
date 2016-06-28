@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.3.1 (not yet released)
+
 ## 1.3.0 [The Kugelblitz Edition](https://en.wikipedia.org/wiki/Heechee) (2016-06-28)
 
 - added support for HTTP/HTTPS transport (`ManagementProtocol.HTTP[S]`)
