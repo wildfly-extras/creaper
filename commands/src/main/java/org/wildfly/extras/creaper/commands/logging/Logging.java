@@ -44,6 +44,18 @@ public final class Logging {
         public RemoveLogger remove(String category) {
             return new RemoveLogger(category);
         }
+
+        /**
+         * <p>
+         * Setting the logger category when ensuring if exists.<br>
+         * For existing it replaces the log level, for non-existing
+         * it creates new category with provided level.
+         * <p>
+         * This method is equivalent to <code>add(String category).replaceExisting()</code>
+         */
+        public AddLogger.Builder define(String category) {
+            return add(category).replaceExisting();
+        }
     }
 
     public static final class LogHandler {
