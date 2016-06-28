@@ -28,8 +28,8 @@ Creaper uses Maven for build. Some build dependencies are only present in
 the JBoss.org Maven repository, so it's recommended to
 [configure Maven to use the JBoss Repository](https://developer.jboss.org/wiki/MavenGettingStarted-Developers).
 
-For testing, the Surefire plugin is used and the tests that need a running
-application server use Arquillian. This means that it's enough to run
+For testing, the Surefire Maven plugin is used and the tests that need
+a running application server use Arquillian. This means that it's enough to run
 `mvn test` to execute all the tests. There are some tests that take a long
 time to execute, so these are not executed by default. To execute them,
 activate the `slow-tests` profile by running `mvn test -Pslow-tests`.
@@ -52,8 +52,8 @@ using a system property `maven.jboss.ga.repository.url` (again see `pom.xml`):
     mvn clean test -Pas7 -Dmaven.jboss.ga.repository.url=...
 
 To run a single test from the test suite, the following Maven invocation works:
-`mvn clean test -DfailIfNoTests=false -pl testsuite/standalone/ -Dtest=...`
-(possibly with a profile activation `-Pwildfly8`). See
+`mvn clean test -pl testsuite/standalone/ -Dtest=...` (possibly with a profile
+activation `-Pwildfly8`). See
 [Surefire documentation](http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html)
 for more details about `-Dtest`.
 
@@ -107,7 +107,7 @@ command is suitable for inclusion, refer to the following guidelines:
    seldom used functionality. However, the ability to do corner cases
    shouldn't obscure the ability to do common cases. As an example, see
    the commands for datasources.
-4. _Providing both online and offline implementation is highly desirable,
+4. _Providing both online and offline implementation is desirable,
    but not strictly mandatory._ Sometimes, either online or offline
    implementation doesn't even make sense.
 5. _Commands shouldn't perform server reload/restart themselves, unless

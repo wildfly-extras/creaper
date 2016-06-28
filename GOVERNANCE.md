@@ -19,7 +19,7 @@ will then publish the roadmap in GitHub Issues.
 
 The best way for you to suggest requirements for a future release is to enter
 a feature request in GitHub Issues. Lobbying for features using the `+1`
-comments in GitHub Issues is a great way to express interest as well.
+(:+1:) markers in GitHub Issues is a great way to express interest as well.
 Although, contributing is the single most expedient way to get a capability
 into a particular release.
 
