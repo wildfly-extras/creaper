@@ -60,7 +60,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <maven.jboss.ga.repository.url>http://maven.repository.redhat.com/techpreview/all</maven.jboss.ga.repository.url>
+        <maven.jboss.ga.repository.url>https://maven.repository.redhat.com/ga/</maven.jboss.ga.repository.url>
 
         <version.java>1.6</version.java>
 
