@@ -50,7 +50,7 @@ import java.util.Map;
  * Values.of("foo", "bar").and("baz", "quux")
  * </pre>
  *
- * <p>And creating a named value list of {@code foo=[bar, baz, quux], answer=42, a=&#123;b=>c, d=>e&#125;}
+ * <p>And creating a named value list of {@code foo=[bar, baz, quux], answer=42, a={b=>c, d=>e}}
  * looks like this:</p>
  *
  * <pre>
@@ -60,56 +60,56 @@ import java.util.Map;
  * </pre>
  */
 public final class Values {
-    static final Values NONE = new Values();
+    private static final Values EMPTY = new Values();
 
     private final List<Property> namedValues;
 
     public static Values empty() {
-        return new Values();
+        return EMPTY;
     }
 
     public static Values of(String name, boolean value) {
-        return new Values().and(name, value);
+        return EMPTY.and(name, value);
     }
 
     public static Values of(String name, int value) {
-        return new Values().and(name, value);
+        return EMPTY.and(name, value);
     }
 
     public static Values of(String name, long value) {
-        return new Values().and(name, value);
+        return EMPTY.and(name, value);
     }
 
     public static Values of(String name, String value) {
-        return new Values().and(name, value);
+        return EMPTY.and(name, value);
     }
 
     public static Values of(String name, ModelNode value) {
-        return new Values().and(name, value);
+        return EMPTY.and(name, value);
     }
 
     public static Values ofList(String name, boolean... value) {
-        return new Values().andList(name, value);
+        return EMPTY.andList(name, value);
     }
 
     public static Values ofList(String name, int... value) {
-        return new Values().andList(name, value);
+        return EMPTY.andList(name, value);
     }
 
     public static Values ofList(String name, long... value) {
-        return new Values().andList(name, value);
+        return EMPTY.andList(name, value);
     }
 
     public static Values ofList(String name, String... value) {
-        return new Values().andList(name, value);
+        return EMPTY.andList(name, value);
     }
 
     public static Values ofList(String name, ModelNode... value) {
-        return new Values().andList(name, value);
+        return EMPTY.andList(name, value);
     }
 
     public static Values ofObject(String name, Values object) {
-        return new Values().andObject(name, object);
+        return EMPTY.andObject(name, object);
     }
 
     /** @return {@code null} if {@code map} is {@code null} or empty; a filled {@code Values} object otherwise */

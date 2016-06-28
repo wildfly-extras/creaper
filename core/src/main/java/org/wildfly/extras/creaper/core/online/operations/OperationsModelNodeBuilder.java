@@ -169,7 +169,7 @@ final class OperationsModelNodeBuilder implements SharedCommonOperations<ModelNo
 
     @Override
     public ModelNode add(Address address) {
-        return add(address, Values.NONE);
+        return add(address, Values.empty());
     }
 
     @Override
@@ -191,7 +191,7 @@ final class OperationsModelNodeBuilder implements SharedCommonOperations<ModelNo
 
     @Override
     public ModelNode invoke(String operationName, Address address) {
-        return invoke(operationName, address, Values.NONE);
+        return invoke(operationName, address, Values.empty());
     }
 
     @Override
