@@ -46,12 +46,8 @@ public final class Logging {
         }
 
         /**
-         * <p>
-         * Setting the logger category when ensuring if exists.<br>
-         * For existing it replaces the log level, for non-existing
-         * it creates new category with provided level.
-         * <p>
-         * This method is equivalent to <code>add(String category).replaceExisting()</code>
+         * Ensures that a logger for given category exists. This is essentially
+         * equivalent to {@code add(category).replaceExisting()}.
          */
         public AddLogger.Builder define(String category) {
             return add(category).replaceExisting();
