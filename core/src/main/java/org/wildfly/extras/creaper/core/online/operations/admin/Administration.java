@@ -52,13 +52,14 @@ public class Administration {
         }
     }
 
-    /** Reloads the server. In domain, reloads the entire host. */
+    /** Reloads the server. In domain, reloads the entire host, which includes restarting all its servers. */
     public final void reload() throws IOException, InterruptedException, TimeoutException {
         ops.reload();
     }
 
     /**
      * Reloads the server if required. In domain, reloads the entire host if at least one server requires reload.
+     * Reloading the host includes restarting all its servers.
      * @return if the server was in fact reloaded; in domain, if the host was reloaded
      */
     public final boolean reloadIfRequired() throws IOException, InterruptedException, TimeoutException {

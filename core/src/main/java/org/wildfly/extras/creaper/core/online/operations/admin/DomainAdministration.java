@@ -109,12 +109,18 @@ public final class DomainAdministration extends Administration {
         return domainOps.isRestartOperationRequired(host, RestartOperation.RELOAD);
     }
 
-    /** Reloads given {@code host}. This is a variant of {@link Administration#reload()}. */
+    /**
+     * Reloads given {@code host}, which includes restarting all its servers.
+     * This is a variant of {@link Administration#reload()}.
+     */
     public void reload(String host) throws IOException, InterruptedException, TimeoutException {
         domainOps.performRestartOperation(host, RestartOperation.RELOAD);
     }
 
-    /** Reloads given {@code host} if required. This is a variant of {@link Administration#reloadIfRequired()}. */
+    /**
+     * Reloads given {@code host} if required. Reloading the host includes restarting all its servers.
+     * This is a variant of {@link Administration#reloadIfRequired()}.
+     */
     public boolean reloadIfRequired(String host) throws IOException, InterruptedException, TimeoutException {
         if (domainOps.isRestartOperationRequired(host, RestartOperation.RELOAD)) {
             reload(host);
