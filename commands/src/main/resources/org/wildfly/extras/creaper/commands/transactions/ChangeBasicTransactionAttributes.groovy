@@ -1,13 +1,19 @@
+import org.wildfly.extras.creaper.core.ServerVersion
+
+// attributes names by version
+statisticsEnabledAttrName = serverVersion.lessThan(ServerVersion.VERSION_2_0_0) ? 'enable-statistics' : 'statistics-enabled'
+useJournalStoreAttrName = serverVersion.lessThan(ServerVersion.VERSION_4_0_0) ? 'use-hornetq-store' : 'use-journal-store'
+
 if (nn(nodeIdentifier)) {
-    transactions.'core-environment'.'@node-identifier' = nodeIdentifier
+    transactions.'core-environment'.'@node-identifier' = nodeIdentifier as String
 }
 
 if (nn(enableTsmStatus, timeout, statisticsEnabled)) {
 
     coordinator = [:]
-    if (nn(enableTsmStatus)) coordinator['enable-tsm-status'] = enableTsmStatus
-    if (nn(timeout)) coordinator['default-timeout'] = timeout
-    if (nn(statisticsEnabled)) coordinator['statistics-enabled'] = statisticsEnabled
+    if (nn(enableTsmStatus)) coordinator['enable-tsm-status'] = enableTsmStatus as String
+    if (nn(timeout)) coordinator['default-timeout'] = timeout as String
+    if (nn(statisticsEnabled)) coordinator[statisticsEnabledAttrName] = statisticsEnabled as String
 
     if (transactions.'coordinator-environment'.size() == 0) {
         transactions.appendNode {
@@ -15,13 +21,13 @@ if (nn(enableTsmStatus, timeout, statisticsEnabled)) {
         }
     }
     if (nn(enableTsmStatus)) {
-        transactions.'coordinator-environment'.'@enable-tsm-status' = enableTsmStatus
+        transactions.'coordinator-environment'.'@enable-tsm-status' = enableTsmStatus as String
     }
     if (nn(timeout)) {
-        transactions.'coordinator-environment'.'@default-timeout' = timeout
+        transactions.'coordinator-environment'.'@default-timeout' = timeout as String
     }
     if (nn(statisticsEnabled)) {
-        transactions.'coordinator-environment'.'@statistics-enabled' = statisticsEnabled
+        transactions.'coordinator-environment'."@${statisticsEnabledAttrName}" = statisticsEnabled as String
     }
 }
 
@@ -42,20 +48,20 @@ if (nn(processIdSocketBinding)) {
 }
 
 if (nn(socketBinding)) {
-    transactions.'recovery-environment'.'@socket-binding' = socketBinding
+    transactions.'recovery-environment'.'@socket-binding' = socketBinding as String
 }
 
 if (nn(statusSocketBinding)) {
-    transactions.'recovery-environment'.'@status-socket-binding' = statusSocketBinding
+    transactions.'recovery-environment'.'@status-socket-binding' = statusSocketBinding as String
 }
 
 if (nn(recoveryListener)) {
-    transactions.'recovery-environment'.'@recovery-listener' = recoveryListener
+    transactions.'recovery-environment'.'@recovery-listener' = recoveryListener as String
 }
 
 if (nn(objectStorePath)) {
     objectStore = ['path': objectStorePath]
-    if (nn(objectStoreRelativeTo)) objectStore['relative-to'] = objectStoreRelativeTo
+    if (nn(objectStoreRelativeTo)) objectStore['relative-to'] = objectStoreRelativeTo as String
 
     if (transactions.'object-store'.size() == 0) {
         transactions.appendNode {
@@ -63,37 +69,37 @@ if (nn(objectStorePath)) {
         }
     } else {
         transactions.'object-store'.'@path' = objectStorePath
-        if (nn(objectStoreRelativeTo)) transactions.'object-store'.'@relative-to' = objectStoreRelativeTo
+        if (nn(objectStoreRelativeTo)) transactions.'object-store'.'@relative-to' = objectStoreRelativeTo as String
     }
 }
 
 if (nn(jts)) {
-    if (jts == "true" && transactions.jts.size() == 0) {
+    if (jts && transactions.jts.size() == 0) {
         transactions.appendNode { 'jts'() }
     }
-    if (jts == "false" && transactions.jts.size() > 0) {
+    if (!jts && transactions.jts.size() > 0) {
         transactions.jts.replaceNode {}
     }
 }
 
 if (nn(useJournalStore)) {
     journal = [:]
-    if (nn(journalStoreEnableAsyncIO)) journal['enable-async-io'] = journalStoreEnableAsyncIO
+    if (nn(journalStoreEnableAsyncIO)) journal['enable-async-io'] = journalStoreEnableAsyncIO as String
 
-    if (useJournalStore == "false" && transactions.'use-journal-store'.size() > 0) {
-        transactions.'use-journal-store'.replaceNode {}
+    if (!useJournalStore && transactions[useJournalStoreAttrName].size() > 0) {
+        transactions[useJournalStoreAttrName].replaceNode {}
     }
-    if (useJournalStore == "true") {
+    if (useJournalStore) {
         // jdbc-store is not supposed to be used along with use-journal-store
         if (transactions.'jdbc-store'.size() != 0) {
             transactions.'jdbc-store'.replaceNode {}
         }
-        if (transactions.'use-journal-store'.size() == 0) {
+        if (transactions[useJournalStoreAttrName].size() == 0) {
             transactions.appendNode {
-                'use-journal-store'(journal)
+                "${useJournalStoreAttrName}"(journal)
             }
         } else if (nn(journalStoreEnableAsyncIO)) {
-            transactions.'use-journal-store'.'@enable-async-io' = journalStoreEnableAsyncIO
+            transactions[useJournalStoreAttrName].'@enable-async-io' = journalStoreEnableAsyncIO as String
         }
 
     }

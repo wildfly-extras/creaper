@@ -11,9 +11,6 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-/**
- * Offline variant only works for WildFly 10
- */
 public final class ChangeBasicTransactionAttributes implements OnlineCommand, OfflineCommand {
 
     private final Integer timeout;
@@ -56,33 +53,30 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        ctx.version.assertAtLeast(ServerVersion.VERSION_4_0_0,
-                "Offline command for configuring basic transaction attributes is meant to be used only for"
-                        + " WildFly 10");
 
         GroovyXmlTransform transform = GroovyXmlTransform.of(ChangeBasicTransactionAttributes.class)
                 .subtree("transactions", Subtree.subsystem("transactions"))
 
                 .parameter("nodeIdentifier", nodeIdentifier)
-                .parameter("timeout", timeout == null ? null : String.valueOf(timeout))
-                .parameter("enableTsmStatus", enableTtsmStatus == null ? null : String.valueOf(enableTtsmStatus))
-                .parameter("jts", jts == null ? null : String.valueOf(jts))
-                .parameter("statisticsEnabled", statisticsEnabled == null ? null : String.valueOf(statisticsEnabled))
-                .parameter("useJournalStore", useJournalStore == null ? null : String.valueOf(useJournalStore))
-                .parameter("journalStoreEnableAsyncIO",
-                        journalStoreEnableAsyncIO == null ? null : String.valueOf(journalStoreEnableAsyncIO))
+                .parameter("timeout", timeout)
+                .parameter("enableTsmStatus", enableTtsmStatus)
+                .parameter("jts", jts)
+                .parameter("statisticsEnabled", statisticsEnabled)
+                .parameter("useJournalStore", useJournalStore)
+                .parameter("journalStoreEnableAsyncIO", journalStoreEnableAsyncIO)
 
-                .parameter("processIdUuid", processIdUuid == null ? null : String.valueOf(processIdUuid))
+                .parameter("processIdUuid", processIdUuid)
                 .parameter("processIdSocketBinding", processIdSocketBinding)
-                .parameter("processIdSocketMaxPorts",
-                        processIdSocketMaxPorts == null ? null : String.valueOf(processIdSocketMaxPorts))
+                .parameter("processIdSocketMaxPorts", processIdSocketMaxPorts)
 
                 .parameter("socketBinding", socketBinding)
                 .parameter("statusSocketBinding", statusSocketBinding)
-                .parameter("recoveryListener", recoveryListener == null ? null : String.valueOf(recoveryListener))
+                .parameter("recoveryListener", recoveryListener)
 
                 .parameter("objectStorePath", objectStorePath)
                 .parameter("objectStoreRelativeTo", objectStoreRelativeTo)
+
+                .parameter("serverVersion", ctx.version)
 
                 .build();
 

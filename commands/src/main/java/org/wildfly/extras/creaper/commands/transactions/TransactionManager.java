@@ -16,7 +16,7 @@ public final class TransactionManager {
 
     /**
      * If changing something is not needed, do not set it (it won't be changed)
-     * JDBC options are available only for WildFly 8 and higher in transaction subsystem.
+     * JDBC options are available for EAP 6.2.0 and higher in transaction subsystem.
      */
     public static ChangeJdbcTransactionAttributes.Builder jdbc() {
         return new ChangeJdbcTransactionAttributes.Builder();

@@ -12,7 +12,7 @@ import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
 /**
- * JDBC options are available only for WildFly 8 and higher in transaction subsystem.
+ * JDBC options are available for EAP 6.2.0 and higher in transaction subsystem.
  */
 public final class ChangeJdbcTransactionAttributes implements OfflineCommand, OnlineCommand {
 
@@ -38,8 +38,8 @@ public final class ChangeJdbcTransactionAttributes implements OfflineCommand, On
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        ctx.version.assertAtLeast(ServerVersion.VERSION_2_0_0,
-                "JDBC options are available only for WildFly 8 and higher");
+        ctx.version.assertAtLeast(ServerVersion.VERSION_1_5_0,
+                "JDBC options are available for EAP 6.2.0 and higher");
 
         GroovyXmlTransform transform = GroovyXmlTransform.of(ChangeJdbcTransactionAttributes.class)
                 .subtree("transactions", Subtree.subsystem("transactions"))
@@ -64,8 +64,8 @@ public final class ChangeJdbcTransactionAttributes implements OfflineCommand, On
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        ctx.version.assertAtLeast(ServerVersion.VERSION_2_0_0,
-                "JDBC options are available only for WildFly 8 and higher");
+        ctx.version.assertAtLeast(ServerVersion.VERSION_1_5_0,
+                "JDBC options are available for EAP 6.2.0 and higher");
 
         Batch batch = new Batch();
         Operations ops = new Operations(ctx.client);
