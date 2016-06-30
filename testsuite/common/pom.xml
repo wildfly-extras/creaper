@@ -25,6 +25,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.jboss.shrinkwrap</groupId>
             <artifactId>shrinkwrap-api</artifactId>
             <scope>compile</scope>

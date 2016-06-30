@@ -1,5 +1,6 @@
 package org.wildfly.extras.creaper.core.online.operations.admin;
 
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -197,7 +198,7 @@ public final class DomainAdministration extends Administration {
 
     /** Shuts down given {@code host}. This is a variant of {@link Administration#shutdown()}. */
     public void shutdown(String host) throws IOException, InterruptedException, TimeoutException {
-        domainOps.shutdown(host);
+        domainOps.shutdown(host, 0);
     }
 
     /** @see #shutdownAllServers(String) */
@@ -227,6 +228,68 @@ public final class DomainAdministration extends Administration {
         Batch batch = new Batch();
         for (String server : servers) {
             batch.invoke(Constants.STOP, Address.host(host).and(Constants.SERVER_CONFIG, server));
+        }
+        ops.batch(batch);
+    }
+
+    /**
+     * Shuts down given {@code host} gracefully. This is a variant of {@link Administration#shutdownGracefully(int)}.
+     *
+     * @param timeoutInSeconds if {@code == 0}, then the server will shutdown immediately without waiting
+     * for the active requests to finish; if {@code <= 0}, then the server will wait indefinitely for the active
+     * requests to finish
+     */
+    public void shutdownGracefully(String host, int timeoutInSeconds) throws IOException, InterruptedException,
+            TimeoutException {
+        client.version().assertAtLeast(ServerVersion.VERSION_3_0_0, "Graceful shutdown is only supported since WildFly 9");
+        domainOps.shutdown(host, timeoutInSeconds);
+    }
+
+    /** @see #shutdownAllServers(String) */
+    public void shutdownAllServersGracefully(int timeoutInSeconds) throws InterruptedException, IOException,
+            TimeoutException {
+        shutdownAllServersGracefully(client.options().defaultHost, timeoutInSeconds);
+    }
+
+    /**
+     * Shuts down all the servers on given {@code host} gracefully. As opposed to
+     * {@link Administration#shutdownGracefully(int)}, this doesn't shut down the entire host, just the servers.
+     *
+     * @param timeoutInSeconds if {@code == 0}, then the server will shutdown immediately without waiting
+     * for the active requests to finish; if {@code <= 0}, then the server will wait indefinitely for the active
+     * requests to finish
+     */
+    public void shutdownAllServersGracefully(String host, int timeoutInSeconds) throws InterruptedException,
+            TimeoutException, IOException {
+        shutdownServersGracefully(host, allRunningServers(host), timeoutInSeconds);
+    }
+
+    /** @see #shutdownServer(String, String) */
+    public void shutdownServerGracefully(String server, int timeoutInSeconds) throws InterruptedException,
+            TimeoutException, IOException {
+        shutdownServerGracefully(client.options().defaultHost, server, timeoutInSeconds);
+    }
+
+    /**
+     * Shuts down given {@code server} on given {@code host} gracefully.
+     *
+     * @param timeoutInSeconds if {@code == 0}, then the server will shutdown immediately without waiting
+     * for the active requests to finish; if {@code <= 0}, then the server will wait indefinitely for the active
+     * requests to finish
+     */
+    public void shutdownServerGracefully(String host, String server, int timeoutInSeconds)
+            throws InterruptedException, TimeoutException, IOException {
+        shutdownServersGracefully(host, Collections.singletonList(server), timeoutInSeconds);
+    }
+
+    void shutdownServersGracefully(String host, List<String> servers, int timeoutInSeconds) throws IOException,
+            InterruptedException, TimeoutException {
+        client.version().assertAtLeast(ServerVersion.VERSION_3_0_0, "Graceful shutdown is only supported since WildFly 9");
+
+        Batch batch = new Batch();
+        for (String server : servers) {
+            batch.invoke(Constants.STOP, Address.host(host).and(Constants.SERVER_CONFIG, server),
+                    Values.of(Constants.TIMEOUT, timeoutInSeconds));
         }
         ops.batch(batch);
     }

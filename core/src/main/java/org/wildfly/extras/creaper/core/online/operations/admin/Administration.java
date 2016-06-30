@@ -1,5 +1,6 @@
 package org.wildfly.extras.creaper.core.online.operations.admin;
 
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeoutException;
 public class Administration {
     static final int DEFAULT_TIMEOUT = 60; // seconds
 
+    private final OnlineManagementClient client;
     private final AdministrationOperations ops;
 
     public Administration(OnlineManagementClient client) {
@@ -31,6 +33,7 @@ public class Administration {
     }
 
     public Administration(OnlineManagementClient client, int timeoutInSeconds) {
+        this.client = client;
         if (client.options().isDomain) {
             this.ops = new DomainAdministrationOperations(client, timeoutInSeconds);
         } else {
@@ -97,7 +100,21 @@ public class Administration {
 
     /** Shuts down the server. In domain, shuts down the entire host. */
     public final void shutdown() throws IOException {
-        ops.shutdown();
+        ops.shutdown(0);
+    }
+
+    /**
+     * Shuts down the server gracefully. That is, the server will wait up to {@code timeoutInSeconds} for all active
+     * requests to finish. In domain, all servers on the host are shut down gracefully and then the host itself
+     * is shut down (there's no such thing as graceful shutdown of a host controller).
+     *
+     * @param timeoutInSeconds if {@code == 0}, then the server will shutdown immediately without waiting
+     * for the active requests to finish; if {@code <= 0}, then the server will wait indefinitely for the active
+     * requests to finish
+     */
+    public final void shutdownGracefully(int timeoutInSeconds) throws IOException {
+        client.version().assertAtLeast(ServerVersion.VERSION_3_0_0, "Graceful shutdown is only supported since WildFly 9");
+        ops.shutdown(timeoutInSeconds);
     }
 
     // ---

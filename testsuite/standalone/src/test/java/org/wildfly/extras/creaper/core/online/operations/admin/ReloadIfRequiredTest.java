@@ -21,7 +21,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
-public class AdminTest {
+public class ReloadIfRequiredTest {
     private OnlineManagementClient client;
     private Operations ops;
     private Administration admin;

@@ -6,6 +6,7 @@ import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
+import org.wildfly.extras.creaper.core.online.operations.Values;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,12 +64,23 @@ final class DomainAdministrationOperations implements AdministrationOperations {
     }
 
     @Override
-    public void shutdown() throws IOException {
-        shutdown(client.options().defaultHost);
+    public void shutdown(int timeoutInSeconds) throws IOException {
+        shutdown(client.options().defaultHost, timeoutInSeconds);
     }
 
-    void shutdown(String host) throws IOException {
-        ops.invoke(Constants.SHUTDOWN, Address.host(host));
+    void shutdown(String host, int timeoutInSeconds) throws IOException {
+        if (timeoutInSeconds == 0) {
+            // older versions don't understand the "timeout" parameter
+            ops.invoke(Constants.SHUTDOWN, Address.host(host));
+        } else {
+            Batch batch = new Batch();
+            for (String server : allRunningServers(host)) {
+                batch.invoke(Constants.STOP, Address.host(host).and(Constants.SERVER_CONFIG, server),
+                        Values.of(Constants.TIMEOUT, timeoutInSeconds));
+            }
+            batch.invoke(Constants.SHUTDOWN, Address.host(host));
+            ops.batch(batch);
+        }
     }
 
     @Override

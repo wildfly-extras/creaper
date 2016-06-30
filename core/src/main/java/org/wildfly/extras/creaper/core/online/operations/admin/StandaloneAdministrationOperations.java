@@ -5,6 +5,7 @@ import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
+import org.wildfly.extras.creaper.core.online.operations.Values;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -55,8 +56,13 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
     }
 
     @Override
-    public void shutdown() throws IOException {
-        ops.invoke(Constants.SHUTDOWN, Address.root());
+    public void shutdown(int timeoutInSeconds) throws IOException {
+        if (timeoutInSeconds == 0) {
+            // older versions don't understand the "timeout" parameter
+            ops.invoke(Constants.SHUTDOWN, Address.root());
+        } else {
+            ops.invoke(Constants.SHUTDOWN, Address.root(), Values.of(Constants.TIMEOUT, timeoutInSeconds));
+        }
     }
 
     @Override

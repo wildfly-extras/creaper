@@ -37,6 +37,7 @@ public final class Constants extends ClientConstants {
     public static final String START = "start";
     public static final String STEPS = "steps";
     public static final String STOP = "stop";
+    public static final String TIMEOUT = "timeout";
     public static final String WHOAMI = "whoami";
 
     public static final List<String> RESULT_CODES_FOR_UNKNOWN_OR_NOT_FOUND = Collections.unmodifiableList(Arrays.asList(
