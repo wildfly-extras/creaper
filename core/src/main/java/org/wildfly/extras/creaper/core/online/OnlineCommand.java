@@ -19,4 +19,16 @@ public interface OnlineCommand extends Command {
 
     /** Commands should provide a short description that is useful for logging purposes. */
     String toString();
+
+    OnlineCommand NOOP = new OnlineCommand() {
+        @Override
+        public void apply(OnlineCommandContext ctx) throws Exception {
+            // noop
+        }
+
+        @Override
+        public String toString() {
+            return "noop";
+        }
+    };
 }

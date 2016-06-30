@@ -16,4 +16,16 @@ public interface OfflineCommand extends Command {
 
     /** Commands should provide a short description that is useful for logging purposes. */
     String toString();
+
+    OfflineCommand NOOP = new OfflineCommand() {
+        @Override
+        public void apply(OfflineCommandContext ctx) throws Exception {
+            // noop
+        }
+
+        @Override
+        public String toString() {
+            return "noop";
+        }
+    };
 }
