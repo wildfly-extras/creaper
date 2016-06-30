@@ -25,6 +25,8 @@ final class DomainAdministrationOperations implements AdministrationOperations {
         this.timeoutInSeconds = timeoutInSeconds;
     }
 
+    // ---
+
     @Override
     public boolean isReloadRequired() throws IOException {
         return isRestartOperationRequired(client.options().defaultHost, RestartOperation.RELOAD);
@@ -44,6 +46,8 @@ final class DomainAdministrationOperations implements AdministrationOperations {
         return false;
     }
 
+    // ---
+
     @Override
     public boolean isRestartRequired() throws IOException {
         return isRestartOperationRequired(client.options().defaultHost, RestartOperation.RESTART);
@@ -62,6 +66,8 @@ final class DomainAdministrationOperations implements AdministrationOperations {
         }
         return false;
     }
+
+    // ---
 
     @Override
     public void shutdown(int timeoutInSeconds) throws IOException {
@@ -83,10 +89,14 @@ final class DomainAdministrationOperations implements AdministrationOperations {
         }
     }
 
+    // ---
+
     @Override
     public void waitUntilRunning() throws InterruptedException, TimeoutException, IOException {
         waitUntilServersAreRunning(client.options().defaultHost, null, true);
     }
+
+    // ---
 
     void performRestartOperation(String host, RestartOperation restartOperation) throws IOException, TimeoutException,
             InterruptedException {

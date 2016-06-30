@@ -10,13 +10,19 @@ interface AdministrationOperations {
 
     boolean reloadIfRequired() throws IOException, InterruptedException, TimeoutException;
 
+    // ---
+
     boolean isRestartRequired() throws IOException;
 
     void restart() throws IOException, InterruptedException, TimeoutException;
 
     boolean restartIfRequired() throws IOException, InterruptedException, TimeoutException;
 
+    // ---
+
     void shutdown(int timeoutInSeconds) throws IOException;
+
+    // ---
 
     void waitUntilRunning() throws InterruptedException, TimeoutException, IOException;
 }

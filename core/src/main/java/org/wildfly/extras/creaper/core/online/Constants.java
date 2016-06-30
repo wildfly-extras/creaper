@@ -23,6 +23,7 @@ public final class Constants extends ClientConstants {
     public static final String HOST_STATE = "host-state";
     public static final String INCLUDE_DEFAULTS = "include-defaults";
     public static final String INTERFACE = "interface";
+    public static final String PLATFORM_MBEAN = "platform-mbean";
     public static final String PROCESS_STATE = "process-state";
     public static final String PROFILE = "profile";
     public static final String READ_CHILDREN_TYPES = "read-children-types";
@@ -38,6 +39,9 @@ public final class Constants extends ClientConstants {
     public static final String STEPS = "steps";
     public static final String STOP = "stop";
     public static final String TIMEOUT = "timeout";
+    public static final String USE_CURRENT_DOMAIN_CONFIG = "use-current-domain-config";
+    public static final String USE_CURRENT_HOST_CONFIG = "use-current-host-config";
+    public static final String USE_CURRENT_SERVER_CONFIG = "use-current-server-config";
     public static final String WHOAMI = "whoami";
 
     public static final List<String> RESULT_CODES_FOR_UNKNOWN_OR_NOT_FOUND = Collections.unmodifiableList(Arrays.asList(

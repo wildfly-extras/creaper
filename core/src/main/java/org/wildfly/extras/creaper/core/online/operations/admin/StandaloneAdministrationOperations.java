@@ -22,6 +22,8 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
         this.timeoutInSeconds = timeoutInSeconds;
     }
 
+    // ---
+
     public boolean isReloadRequired() throws IOException {
         return isRestartOperationRequired(RestartOperation.RELOAD);
     }
@@ -37,6 +39,8 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
         }
         return false;
     }
+
+    // ---
 
     @Override
     public boolean isRestartRequired() throws IOException {
@@ -55,6 +59,8 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
         return false;
     }
 
+    // ---
+
     @Override
     public void shutdown(int timeoutInSeconds) throws IOException {
         if (timeoutInSeconds == 0) {
@@ -65,12 +71,16 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
         }
     }
 
+    // ---
+
     @Override
     public void waitUntilRunning() throws InterruptedException, TimeoutException, IOException {
         waitUntilServerIsRunning(true);
     }
 
-    private void performRestartOperation(RestartOperation restartOperation) throws IOException, InterruptedException,
+    // ---
+
+    void performRestartOperation(RestartOperation restartOperation) throws IOException, InterruptedException,
             TimeoutException {
         boolean needsToReconnect = false;
         try {
