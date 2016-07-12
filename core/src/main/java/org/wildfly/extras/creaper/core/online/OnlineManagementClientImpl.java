@@ -59,14 +59,18 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
         try {
             this.version = OnlineServerVersion.discover(client);
             checkStandaloneVsDomain();
-        } catch (IOException e) {
+        } catch (Exception e) {
             try {
                 client.close();
                 cliContext.disconnectController();
             } catch (IOException ignored) {
                 // so that it doesn't suppress the original exception
             }
-            throw e;
+            if (e instanceof IOException) {
+                throw (IOException) e;
+            } else {
+                throw (RuntimeException) e;
+            }
         }
     }
 
