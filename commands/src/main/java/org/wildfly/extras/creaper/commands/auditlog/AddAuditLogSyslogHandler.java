@@ -3,6 +3,7 @@ package org.wildfly.extras.creaper.commands.auditlog;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
 import org.wildfly.extras.creaper.core.CommandFailedException;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -103,6 +104,13 @@ public final class AddAuditLogSyslogHandler implements OnlineCommand, OfflineCom
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
+        if (reconnectTimeout != null) {
+            if (ctx.version.lessThan(ServerVersion.VERSION_1_7_0)
+                    || ctx.version.inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0)) {
+                throw new AssertionError("Option reconnect-timeout is available since WildFly 9 or in EAP 6.4.x.");
+            }
+        }
+
         Operations ops = new Operations(ctx.client);
 
         Address handlerAddress = Address.coreService("management")
@@ -280,7 +288,7 @@ public final class AddAuditLogSyslogHandler implements OnlineCommand, OfflineCom
     public static final class TcpBuilder extends AbstractBuilder<TcpBuilder> {
 
         private MessageTransferType messageTransfer;
-        private int reconnectTimeout;
+        private Integer reconnectTimeout;
 
         public TcpBuilder(String name) {
             super(name);
@@ -291,6 +299,7 @@ public final class AddAuditLogSyslogHandler implements OnlineCommand, OfflineCom
             return this;
         }
 
+        /** This is only supported for EAP 6.4.x or WildFly 9.0.0 and above. */
         public TcpBuilder reconnectTimeout(int reconnectTimeout) {
             this.reconnectTimeout = reconnectTimeout;
             return this;
@@ -311,7 +320,7 @@ public final class AddAuditLogSyslogHandler implements OnlineCommand, OfflineCom
     public static final class TlsBuilder extends AbstractBuilder<TlsBuilder> {
 
         private MessageTransferType messageTransfer;
-        private int reconnectTimeout;
+        private Integer reconnectTimeout;
         private String keyPassword;
         private String keystorePassword;
         private String keystorePath;
@@ -327,6 +336,7 @@ public final class AddAuditLogSyslogHandler implements OnlineCommand, OfflineCom
             return this;
         }
 
+        /** This is only supported for EAP 6.4.x or WildFly 9.0.0 and above. */
         public TlsBuilder reconnectTimeout(int reconnectTimeout) {
             this.reconnectTimeout = reconnectTimeout;
             return this;
