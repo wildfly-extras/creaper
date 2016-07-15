@@ -2,6 +2,19 @@
 
 ## 1.3.1 (not yet released)
 
+- added `Logging.logger().define`
+- improved the `Values` class to avoid useless allocations
+- improved javadoc of [Domain]Administration.reload\*
+- improved the `Change*TransactionAttributes` offline commands
+  to support older application server versions
+- added `Online/OfflineCommand.NOOP`
+- added `Administration.shutdownGracefully`
+- fixed resource leak in `OnlineManagementClient` when the client connects
+  to a server which is running in different operating mode than expected
+- added `ReloadToOriginal`
+- fixed handling of the `reconnect-timeout` attribute
+  in `AddAuditLogSyslogHandler`
+
 ## 1.3.0 [The Kugelblitz Edition](https://en.wikipedia.org/wiki/Heechee) (2016-06-28)
 
 - added support for HTTP/HTTPS transport (`ManagementProtocol.HTTP[S]`)
