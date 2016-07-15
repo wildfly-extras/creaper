@@ -1,19 +1,19 @@
 # Changelog
 
-## 1.3.1 (not yet released)
+## 1.4.0 [The D && !D Edition](https://en.wikipedia.org/wiki/Luminous_\(story_collection\)) (2016-07-15)
 
+- added `Administration.shutdownGracefully`
+- added `ReloadToOriginal`
 - added `Logging.logger().define`
-- improved the `Values` class to avoid useless allocations
-- improved javadoc of [Domain]Administration.reload\*
+- added `Online/OfflineCommand.NOOP`
 - improved the `Change*TransactionAttributes` offline commands
   to support older application server versions
-- added `Online/OfflineCommand.NOOP`
-- added `Administration.shutdownGracefully`
-- fixed resource leak in `OnlineManagementClient` when the client connects
-  to a server which is running in different operating mode than expected
-- added `ReloadToOriginal`
 - fixed handling of the `reconnect-timeout` attribute
   in `AddAuditLogSyslogHandler`
+- fixed resource leak in `OnlineManagementClient` when the client connects
+  to a server which is running in different operating mode than expected
+- improved javadoc of [Domain]Administration.reload\*
+- improved the `Values` class to avoid useless allocations
 
 ## 1.3.0 [The Kugelblitz Edition](https://en.wikipedia.org/wiki/Heechee) (2016-06-28)
 
