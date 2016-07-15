@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.4.1 (not yet released)
+
 ## 1.4.0 [The D && !D Edition](https://en.wikipedia.org/wiki/Luminous_\(story_collection\)) (2016-07-15)
 
 - added `Administration.shutdownGracefully`
