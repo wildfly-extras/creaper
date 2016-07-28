@@ -2,6 +2,8 @@
 
 ## 1.4.1 (not yet released)
 
+- management versions 4.2.0 and 5.0.0 are now recognized
+
 ## 1.4.0 [The D && !D Edition](https://en.wikipedia.org/wiki/Luminous_\(story_collection\)) (2016-07-15)
 
 - added `Administration.shutdownGracefully`

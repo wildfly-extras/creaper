@@ -64,8 +64,12 @@ public final class ServerVersion {
     public static final ServerVersion VERSION_3_0_0 = new ServerVersion(3, 0, 0);
     /** WF 10.0.0.Final */
     public static final ServerVersion VERSION_4_0_0 = new ServerVersion(4, 0, 0);
-    /** WF 10.??? (currently, there's no released version that contains this) */
+    /** EAP 7.0.x */
     public static final ServerVersion VERSION_4_1_0 = new ServerVersion(4, 1, 0);
+    /** WF ??? (currently, there's no released version that contains this) */
+    public static final ServerVersion VERSION_4_2_0 = new ServerVersion(4, 2, 0);
+    /** WF ??? (currently, there's no released version that contains this) */
+    public static final ServerVersion VERSION_5_0_0 = new ServerVersion(5, 0, 0);
 
     private static final ServerVersion[] KNOWN_VERSIONS = {
             VERSION_0_0_0,
@@ -84,6 +88,8 @@ public final class ServerVersion {
             VERSION_3_0_0,
             VERSION_4_0_0,
             VERSION_4_1_0,
+            VERSION_4_2_0,
+            VERSION_5_0_0,
     };
 
     /**
