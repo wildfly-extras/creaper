@@ -146,6 +146,20 @@ public class ModelNodeResult extends ModelNode {
         return value().asLong(defaultValue);
     }
 
+    public final double doubleValue() {
+        if (!hasDefinedValue()) {
+            throw new IllegalArgumentException();
+        }
+        return value().asDouble();
+    }
+
+    public final double doubleValue(double defaultValue) {
+        if (!hasDefinedValue()) {
+            return defaultValue;
+        }
+        return value().asDouble();
+    }
+
     public final String stringValue() {
         if (!hasDefinedValue()) {
             throw new IllegalArgumentException();
@@ -202,6 +216,20 @@ public class ModelNodeResult extends ModelNode {
     public final List<Long> longListValue(List<Long> defaultValue) {
         return hasDefinedValue() ? longListValue() : defaultValue;
     }
+
+    public final List<Double> doubleListValue() {
+        List<ModelNode> listValue = listValue();
+        List<Double> result = new ArrayList<Double>(listValue.size());
+        for (ModelNode value : listValue) {
+            result.add(value.asDouble());
+        }
+        return Collections.unmodifiableList(result);
+    }
+
+    public final List<Double> doubleListValue(List<Double> defaultValue) {
+        return hasDefinedValue() ? doubleListValue() : defaultValue;
+    }
+
 
     public final List<String> stringListValue() {
         List<ModelNode> listValue = listValue();

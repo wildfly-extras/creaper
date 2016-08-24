@@ -1,26 +1,28 @@
 package org.wildfly.extras.creaper.core.online;
 
+import com.google.common.primitives.Doubles;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Collections;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.BATCH_RESULT;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.DEFINED_RESULT_BOOLEAN;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.DEFINED_RESULT_LIST_BOOLEAN;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.DEFINED_RESULT_LIST_NUMBER;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.DEFINED_RESULT_NUMBER;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.FAILED;
+import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.NOT_DEFINED_RESULT;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.RELOAD_REQUIRED;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.RESTART_REQUIRED;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.RESTART_REQUIRED_IN_DOMAIN;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.SUCCESS;
-import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.NOT_DEFINED_RESULT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class ModelNodeResultTest {
     private static final String ADDITIONAL_ASSERTION_MESSAGE = "Additional assertion message";
@@ -132,9 +134,11 @@ public class ModelNodeResultTest {
         result = new ModelNodeResult(DEFINED_RESULT_NUMBER);
         assertEquals(13, result.intValue());
         assertEquals(13L, result.longValue());
+        assertEquals(13.0, result.doubleValue(), 0.00000001);
         assertEquals("13", result.stringValue());
         assertEquals(13, result.intValue(42));
         assertEquals(13L, result.longValue(42L));
+        assertEquals(13.0, result.doubleValue(23.8), 0.00000001);
         assertEquals("13", result.stringValue("42"));
     }
 
@@ -147,9 +151,12 @@ public class ModelNodeResultTest {
         result = new ModelNodeResult(DEFINED_RESULT_LIST_NUMBER);
         assertEquals(Collections.singletonList(13), result.intListValue());
         assertEquals(Collections.singletonList(13L), result.longListValue());
+        assertArrayEquals(new double[] {13.0}, Doubles.toArray(result.doubleListValue()), 0.000001);
         assertEquals(Collections.singletonList("13"), result.stringListValue());
         assertEquals(Collections.singletonList(13), result.intListValue(Collections.singletonList(42)));
         assertEquals(Collections.singletonList(13L), result.longListValue(Collections.singletonList(42L)));
+        assertArrayEquals(new double[] {13.0},
+                Doubles.toArray(result.doubleListValue(Collections.singletonList(42.0))), 0.000001);
         assertEquals(Collections.singletonList("13"), result.stringListValue(Collections.singletonList("42")));
     }
 
@@ -193,6 +200,11 @@ public class ModelNodeResultTest {
         } catch (IllegalArgumentException ignored) {
         }
         try {
+            result.doubleValue();
+            fail();
+        } catch (IllegalArgumentException ignored) {
+        }
+        try {
             result.stringListValue();
             fail();
         } catch (IllegalArgumentException ignored) {
@@ -201,14 +213,18 @@ public class ModelNodeResultTest {
         assertEquals(true, result.booleanValue(true));
         assertEquals(42, result.intValue(42));
         assertEquals(42L, result.longValue(42L));
+        assertEquals(1.667, result.doubleValue(1.667), 0.000001);
         assertEquals("42", result.stringValue("42"));
         assertEquals(Collections.<Boolean>emptyList(), result.booleanListValue(Collections.<Boolean>emptyList()));
         assertEquals(Collections.<Integer>emptyList(), result.intListValue(Collections.<Integer>emptyList()));
         assertEquals(Collections.<Long>emptyList(), result.longListValue(Collections.<Long>emptyList()));
+        assertEquals(Collections.<Double>emptyList(), result.doubleListValue(Collections.<Double>emptyList()));
         assertEquals(Collections.<String>emptyList(), result.stringListValue(Collections.<String>emptyList()));
         assertEquals(Collections.singletonList(true), result.booleanListValue(Collections.singletonList(true)));
         assertEquals(Collections.singletonList(42), result.intListValue(Collections.singletonList(42)));
         assertEquals(Collections.singletonList(42L), result.longListValue(Collections.singletonList(42L)));
+        assertArrayEquals(new double[] {42.0},
+                Doubles.toArray(result.doubleListValue(Collections.singletonList(42.0))), 0.000001);
         assertEquals(Collections.singletonList("42"), result.stringListValue(Collections.singletonList("42")));
     }
 

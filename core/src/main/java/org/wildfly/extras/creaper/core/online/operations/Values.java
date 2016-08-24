@@ -1,6 +1,7 @@
 package org.wildfly.extras.creaper.core.online.operations;
 
 import com.google.common.primitives.Booleans;
+import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import org.jboss.dmr.ModelNode;
@@ -80,6 +81,10 @@ public final class Values {
         return EMPTY.and(name, value);
     }
 
+    public static Values of(String name, double value) {
+        return EMPTY.and(name, value);
+    }
+
     public static Values of(String name, String value) {
         return EMPTY.and(name, value);
     }
@@ -97,6 +102,10 @@ public final class Values {
     }
 
     public static Values ofList(String name, long... value) {
+        return EMPTY.andList(name, value);
+    }
+
+    public static Values ofList(String name, double... value) {
         return EMPTY.andList(name, value);
     }
 
@@ -151,6 +160,12 @@ public final class Values {
         return new Values(newList);
     }
 
+    public Values and(String name, double value) {
+        List<Property> newList = new ArrayList<Property>(namedValues);
+        newList.add(new Property(name, new ModelNode(value)));
+        return new Values(newList);
+    }
+
     public Values and(String name, String value) {
         List<Property> newList = new ArrayList<Property>(namedValues);
         newList.add(new Property(name, new ModelNode(value)));
@@ -174,6 +189,11 @@ public final class Values {
     }
 
     public Values andOptional(String name, Long value) {
+        if (value == null) return this;
+        return and(name, value);
+    }
+
+    public Values andOptional(String name, Double value) {
         if (value == null) return this;
         return and(name, value);
     }
@@ -221,6 +241,17 @@ public final class Values {
         return new Values(newList);
     }
 
+    public Values andList(String name, double... value) {
+        ModelNode listValue = new ModelNode().setEmptyList();
+        for (double singleValue : value) {
+            listValue.add(singleValue);
+        }
+
+        List<Property> newList = new ArrayList<Property>(namedValues);
+        newList.add(new Property(name, listValue));
+        return new Values(newList);
+    }
+
     public Values andList(String name, String... value) {
         ModelNode listValue = new ModelNode().setEmptyList();
         for (String singleValue : value) {
@@ -245,7 +276,8 @@ public final class Values {
 
     /**
      * @param clazz type of elements in the {@code value} list; must be one of {@code Boolean.class},
-     * {@code Integer.class}, {@code Long.class}, {@code String.class} or {@code ModelNode.class}
+     * {@code Integer.class}, {@code Long.class}, {@code Double.class}, {@code String.class}
+     * or {@code ModelNode.class}
      * @throws IllegalArgumentException if {@code clazz} is not one of the known types
      * @throws ClassCastException if some elements of the {@code value} list are not of type {@code clazz}
      * @throws ArrayStoreException if some elements of the {@code value} list are not of type {@code clazz}
@@ -258,12 +290,15 @@ public final class Values {
             return andList(name, Ints.toArray((List<Integer>) value));
         } else if (clazz == Long.class) {
             return andList(name, Longs.toArray((List<Long>) value));
+        } else if (clazz == Double.class) {
+            return andList(name, Doubles.toArray((List<Double>) value));
         } else if (clazz == String.class) {
             return andList(name, value.toArray(new String[value.size()]));
-        } else if (clazz == ModelNode.class) {
+        }  else if (clazz == ModelNode.class) {
             return andList(name, value.toArray(new ModelNode[value.size()]));
         } else {
-            throw new IllegalArgumentException("Only List<Boolean>, List<Integer>, List<Long>, List<String> and List<ModelNode> are supported");
+            throw new IllegalArgumentException("Only List<Boolean>, List<Integer>, List<Long>, List<Double>, "
+                    + "List<String> and List<ModelNode> are supported");
         }
     }
 
