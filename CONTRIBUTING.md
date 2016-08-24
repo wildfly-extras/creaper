@@ -27,6 +27,9 @@ significantly, this can of course be reconsidered.
 Creaper uses Maven for build. Some build dependencies are only present in
 the JBoss.org Maven repository, so it's recommended to
 [configure Maven to use the JBoss Repository](https://developer.jboss.org/wiki/MavenGettingStarted-Developers).
+You can use custom `settings.xml` where the repository is configured already.
+The file is located in the project root directory and can be activated by
+providing `-s` Maven parameter (`mvn -s settings.xml ...`).
 
 For testing, the Surefire Maven plugin is used and the tests that need
 a running application server use Arquillian. This means that it's enough to run

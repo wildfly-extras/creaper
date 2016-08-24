@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Creaper uses Maven for build. Some build dependencies are only present in
+the JBoss.org Maven repository, we enable it here.
+
+Usage:
+     mvn -s settings.xml [Your_Goals_And_Other_Options]
+-->
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <profiles>
+        <profile>
+            <id>jboss-repo</id>
+            <repositories>
+                <repository>
+                    <id>jboss-public</id>
+                    <url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>jboss-repo</activeProfile>
+    </activeProfiles>
+</settings>
