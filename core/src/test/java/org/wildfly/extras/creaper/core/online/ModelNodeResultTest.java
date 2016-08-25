@@ -5,6 +5,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Collections;
 
+import com.google.common.primitives.Doubles;
+
+import static org.junit.Assert.assertArrayEquals;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.BATCH_RESULT;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.DEFINED_RESULT_BOOLEAN;
 import static org.wildfly.extras.creaper.core.online.ModelNodeConstants.DEFINED_RESULT_LIST_BOOLEAN;
@@ -136,6 +139,7 @@ public class ModelNodeResultTest {
         assertEquals(13, result.intValue(42));
         assertEquals(13L, result.longValue(42L));
         assertEquals("13", result.stringValue("42"));
+        assertEquals(13.0, result.doubleValue(23.8), 0.00000001);
     }
 
     @Test
@@ -151,6 +155,8 @@ public class ModelNodeResultTest {
         assertEquals(Collections.singletonList(13), result.intListValue(Collections.singletonList(42)));
         assertEquals(Collections.singletonList(13L), result.longListValue(Collections.singletonList(42L)));
         assertEquals(Collections.singletonList("13"), result.stringListValue(Collections.singletonList("42")));
+        assertArrayEquals(new double[] {13.0},
+                Doubles.toArray(result.doubleListValue(Collections.singletonList(42.0))), 0.000001);
     }
 
     @Test
@@ -197,11 +203,17 @@ public class ModelNodeResultTest {
             fail();
         } catch (IllegalArgumentException ignored) {
         }
+        try {
+            result.doubleValue();
+            fail();
+        } catch (IllegalArgumentException ignored) {
+        }
 
         assertEquals(true, result.booleanValue(true));
         assertEquals(42, result.intValue(42));
         assertEquals(42L, result.longValue(42L));
         assertEquals("42", result.stringValue("42"));
+        assertEquals(1.667, result.doubleValue(1.667), 0.000001);
         assertEquals(Collections.<Boolean>emptyList(), result.booleanListValue(Collections.<Boolean>emptyList()));
         assertEquals(Collections.<Integer>emptyList(), result.intListValue(Collections.<Integer>emptyList()));
         assertEquals(Collections.<Long>emptyList(), result.longListValue(Collections.<Long>emptyList()));
@@ -210,6 +222,8 @@ public class ModelNodeResultTest {
         assertEquals(Collections.singletonList(42), result.intListValue(Collections.singletonList(42)));
         assertEquals(Collections.singletonList(42L), result.longListValue(Collections.singletonList(42L)));
         assertEquals(Collections.singletonList("42"), result.stringListValue(Collections.singletonList("42")));
+        assertArrayEquals(new double[] {42.0},
+                Doubles.toArray(result.doubleListValue(Collections.singletonList(42.0))), 0.000001);
     }
 
     @Test
