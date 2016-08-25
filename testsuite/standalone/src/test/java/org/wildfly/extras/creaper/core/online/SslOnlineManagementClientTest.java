@@ -1,10 +1,6 @@
 package org.wildfly.extras.creaper.core.online;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import org.jboss.arquillian.container.test.api.ContainerController;
-import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
@@ -24,6 +20,10 @@ import org.wildfly.extras.creaper.security.KeyPairAndCertificate;
 import org.wildfly.extras.creaper.test.ManualTests;
 import org.wildfly.extras.creaper.test.WildFlyTests;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 /**
  * This test <b>needs</b> a manually-controlled Arquillian container.
  *
@@ -32,7 +32,6 @@ import org.wildfly.extras.creaper.test.WildFlyTests;
  *
  * @see org.wildfly.extras.creaper.core.online.operations.admin.ReloadWhenRestartRequiredTest
  */
-@RunAsClient
 @Category({ManualTests.class, WildFlyTests.class})
 public class SslOnlineManagementClientTest extends OnlineManagementClientTest {
 

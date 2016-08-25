@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.deployments;
 
-import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -32,7 +31,6 @@ import java.util.concurrent.TimeoutException;
  * This class tests deploy and undeploy commands in standalone mode.
  */
 @RunWith(Arquillian.class)
-@RunAsClient
 public class DeployUndeployCmdTest {
 
     private static final String DEPLOYMENT_NAME = "test-deployment.war";
