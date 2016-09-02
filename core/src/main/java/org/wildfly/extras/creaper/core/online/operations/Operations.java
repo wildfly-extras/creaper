@@ -1,12 +1,14 @@
 package org.wildfly.extras.creaper.core.online.operations;
 
 import org.jboss.dmr.ModelNode;
+import org.jboss.dmr.Property;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.FailuresAllowedBlock;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * <p>A convenience for commonly performed management operations. The intent is to have a statically typed API
@@ -210,17 +212,31 @@ public final class Operations implements SharedCommonOperations<ModelNodeResult>
         }
     }
 
-    private static boolean isResultUnknownOrNotFound(ModelNodeResult result) {
+    // package-private for testing
+    static boolean isResultUnknownOrNotFound(ModelNodeResult result) {
         result.assertFailed();
 
         ModelNode failureDescription = result.get(Constants.FAILURE_DESCRIPTION);
-        if (failureDescription.hasDefined(Constants.DOMAIN_FAILURE_DESCRIPTION)) {
-            failureDescription = failureDescription.get(Constants.DOMAIN_FAILURE_DESCRIPTION);
-        }
+        if (failureDescription.hasDefined(Constants.HOST_FAILURE_DESCRIPTIONS)) {
+            List<Property> hostFailures = failureDescription.get(Constants.HOST_FAILURE_DESCRIPTIONS).asPropertyList();
+            for (Property hostFailure : hostFailures) {
+                if (isFailureDesriptionUnknownOrNotFound(hostFailure.getValue().asString())) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            if (failureDescription.hasDefined(Constants.DOMAIN_FAILURE_DESCRIPTION)) {
+                failureDescription = failureDescription.get(Constants.DOMAIN_FAILURE_DESCRIPTION);
+            }
 
-        String failureDescriptionString = failureDescription.asString();
+            return isFailureDesriptionUnknownOrNotFound(failureDescription.asString());
+        }
+    }
+
+    private static boolean isFailureDesriptionUnknownOrNotFound(String failureDescription) {
         for (String code : Constants.RESULT_CODES_FOR_UNKNOWN_OR_NOT_FOUND) {
-            if (failureDescriptionString.startsWith(code)) {
+            if (failureDescription.startsWith(code)) {
                 return true;
             }
         }
