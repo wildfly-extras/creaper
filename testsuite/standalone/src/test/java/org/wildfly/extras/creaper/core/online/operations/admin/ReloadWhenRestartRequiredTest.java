@@ -47,11 +47,13 @@ public class ReloadWhenRestartRequiredTest {
     @Test
     @InSequence(2)
     public void bringTheServerToRestartRequiredAndThenReload() throws Exception {
-        ops.writeAttribute(Address.subsystem("transactions"), "jts", true);
+        boolean jts = ops.readAttribute(Address.subsystem("transactions"), "jts").booleanValue();
+
+        ops.writeAttribute(Address.subsystem("transactions"), "jts", !jts);
         assertTrue(admin.isRestartRequired());
         assertFalse(admin.isReloadRequired());
 
-        ops.writeAttribute(Address.subsystem("transactions"), "jts", false);
+        ops.writeAttribute(Address.subsystem("transactions"), "jts", jts);
         assertTrue(admin.isRestartRequired());
         assertFalse(admin.isReloadRequired());
 
