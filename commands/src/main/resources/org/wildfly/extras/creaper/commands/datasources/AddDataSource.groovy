@@ -112,9 +112,10 @@ if (existingDs && !replaceExisting) {
 }
 
 /**
- * Checking if parameter is not null.
- * We can't use if(object) ... as object could be null or false
- * and we need to differentiate such states
+ * Checking if parameter is not null.<br>
+ * We can't use if(object) ... as object could be null or false and we need to differentiate such states.
+ *
+ * @return if instance of passed array is null then returns false, when any from array of instances is not-null then returns true
  */
 def nn(Object... object) {
     if (object == null) return false
