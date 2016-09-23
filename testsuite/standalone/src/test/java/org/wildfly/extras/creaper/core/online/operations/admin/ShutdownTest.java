@@ -14,8 +14,11 @@ import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.test.ManualTests;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @Category(ManualTests.class)
 @RunWith(Arquillian.class)
@@ -41,7 +44,7 @@ public class ShutdownTest {
         admin.shutdown();
         serverShutdown();
 
-        assertFalse(controller.isStarted(ManualTests.ARQUILLIAN_CONTAINER));
+        assertServerNotRunning();
     }
 
     @Test
@@ -64,8 +67,7 @@ public class ShutdownTest {
         admin.shutdownGracefully(5);
         serverShutdown();
 
-        assertFalse(controller.isStarted(ManualTests.ARQUILLIAN_CONTAINER));
-
+        assertServerNotRunning();
     }
 
     @Test
@@ -87,7 +89,7 @@ public class ShutdownTest {
         admin.shutdownGracefully(0);
         serverShutdown();
 
-        assertFalse(controller.isStarted(ManualTests.ARQUILLIAN_CONTAINER));
+        assertServerNotRunning();
     }
 
     @Test
@@ -106,9 +108,25 @@ public class ShutdownTest {
     private void serverShutdown() throws Exception {
         // server shutdown takes a couple of millis, we have to wait for it
         // TODO how could Creaper wait for the server to shut down? polling the mgmt port?
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         // this only lets Arquillian know that the server is gone (see FakeServerKillProcessor)
         controller.kill(ManualTests.ARQUILLIAN_CONTAINER);
+    }
+
+    private void assertServerNotRunning() throws Exception {
+        assertFalse(controller.isStarted(ManualTests.ARQUILLIAN_CONTAINER));
+
+        OnlineManagementClient client = null;
+        try {
+            client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
+            fail("server is still running");
+        } catch (IOException ignored) {
+            // expected
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
     }
 }
