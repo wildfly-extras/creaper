@@ -48,9 +48,12 @@ def newJdbcStore = {
 if (transactions.'jdbc-store'.size() == 0) {
     if (useJdbcStore == "true") {
         // jdbc-store node does not exists and should be created (new-one)
-        // use-journal-store is not supposed to be used along with jdbc-store
+        // use-journal-store/use-hornetq-store is not supposed to be used along with jdbc-store
         if (transactions.'use-journal-store'.size() != 0) {
             transactions.'use-journal-store'.replaceNode {}
+        }
+        if (transactions.'use-hornetq-store'.size() != 0) {
+            transactions.'use-hornetq-store'.replaceNode {}
         }
         transactions.appendNode newJdbcStore
     }

@@ -13,6 +13,11 @@ import org.wildfly.extras.creaper.core.online.operations.Operations;
 
 /**
  * JDBC options are available for EAP 6.2.0 and higher in transaction subsystem.
+ *
+ * <p>Please note that <b>WildFly 9 has a bug</b>: if the journal store is enabled, it isn't automatically disabled
+ * when enabling the JDBC store. Moreover, disabling the journal store properly requires server restart,
+ * which is why this command doesn't do that under the hood. All other versions (WildFly 8 and previous,
+ * WildFly 10 and later) are fine.</p>
  */
 public final class ChangeJdbcTransactionAttributes implements OfflineCommand, OnlineCommand {
 
@@ -100,7 +105,12 @@ public final class ChangeJdbcTransactionAttributes implements OfflineCommand, On
     }
 
     /**
-     * JDBC options are available only for WildFly 8 and higher in transaction subsystem.
+     * JDBC options are available for EAP 6.2.0 and higher in transaction subsystem.
+     *
+     * <p>Please note that <b>WildFly 9 has a bug</b>: if the journal store is enabled, it isn't automatically disabled
+     * when enabling the JDBC store. Moreover, disabling the journal store properly requires server restart,
+     * which is why this command doesn't do that under the hood. All other versions (WildFly 8 and previous,
+     * WildFly 10 and later) are fine.</p>
      */
     public static final class Builder {
 
@@ -160,11 +170,9 @@ public final class ChangeJdbcTransactionAttributes implements OfflineCommand, On
         }
 
         private void validate() {
-            if (useJdbcStore != null && useJdbcStore && storeDatasource != null && storeDatasource.equals("")) {
-                throw new IllegalArgumentException(""
-                        + "JDBC store datasource must be presented along with enabled using JDBC store");
+            if (useJdbcStore != null && useJdbcStore && (storeDatasource == null || storeDatasource.isEmpty())) {
+                throw new IllegalArgumentException("if JDBC store is enabled, datasource must be defined");
             }
         }
-
     }
 }
