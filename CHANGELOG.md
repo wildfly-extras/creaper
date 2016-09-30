@@ -1,16 +1,16 @@
 # Changelog
 
-## 1.4.1 (not yet released)
+## 1.5.0 [The Emiko Edition](https://en.wikipedia.org/wiki/The_Windup_Girl) (2016-09-30)
 
+- added commands for the `infinispan` subsystem
+- added commands for the ORB subsystem (`jacorb` / `iiop-openjdk`)
+- improved commands for the `transactions` subsystem
+- added support for `double` values to `Values` and `ModelNodeResult`
+- fixed `Operations.removeIfExists` in case of a missing host resource
 - management versions 4.2.0 and 5.0.0 are now recognized
+- improved reliability of some tests
 - added Travis CI to the project
 - added `settings.xml` to the project
-- added support for `double` values to `Values` and `ModelNodeResult`
-- added commands for the `infinispan` subsystem
-- fixed `Operations.removeIfExists` in case of a missing host resource
-- improved reliability of some tests
-- improved commands for the `transactions` subsystem
-- added commands for the ORB subsystem (`jacorb` / `iiop-openjdk`)
 
 ## 1.4.0 [The D && !D Edition](https://en.wikipedia.org/wiki/Luminous_\(story_collection\)) (2016-07-15)
 
