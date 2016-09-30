@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.5.1 (not yet released)
+
 ## 1.5.0 [The Emiko Edition](https://en.wikipedia.org/wiki/The_Windup_Girl) (2016-09-30)
 
 - added commands for the `infinispan` subsystem
