@@ -3,6 +3,14 @@
 ## 1.4.1 (not yet released)
 
 - management versions 4.2.0 and 5.0.0 are now recognized
+- added Travis CI to the project
+- added `settings.xml` to the project
+- added support for `double` values to `Values` and `ModelNodeResult`
+- added commands for the `infinispan` subsystem
+- fixed `Operations.removeIfExists` in case of a missing host resource
+- improved reliability of some tests
+- improved commands for the `transactions` subsystem
+- added commands for the ORB subsystem (`jacorb` / `iiop-openjdk`)
 
 ## 1.4.0 [The D && !D Edition](https://en.wikipedia.org/wiki/Luminous_\(story_collection\)) (2016-07-15)
 
