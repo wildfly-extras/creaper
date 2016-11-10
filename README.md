@@ -142,7 +142,7 @@ Dependencies for `creaper-core`:
         <version>2.1.0.Final</version>
     </dependency>
 
-    <!-- probably a bug in wildfly-cli dependencies -->
+    <!-- see https://issues.jboss.org/browse/WFCORE-1580 -->
     <!-- not required if the dependency on wildfly-patching below is also added ->
     <dependency>
         <groupId>org.jboss.logmanager</groupId>
