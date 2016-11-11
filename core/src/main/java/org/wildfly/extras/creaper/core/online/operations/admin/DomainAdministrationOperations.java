@@ -29,17 +29,17 @@ final class DomainAdministrationOperations implements AdministrationOperations {
 
     @Override
     public boolean isReloadRequired() throws IOException {
-        return isRestartOperationRequired(client.options().defaultHost, RestartOperation.RELOAD);
+        return isRestartOperationRequired(client.options().defaultHost, CommonRestartOperation.RELOAD);
     }
 
     @Override
     public void reload() throws IOException, InterruptedException, TimeoutException {
-        performRestartOperation(client.options().defaultHost, RestartOperation.RELOAD);
+        performRestartOperation(client.options().defaultHost, CommonRestartOperation.RELOAD);
     }
 
     @Override
     public boolean reloadIfRequired() throws IOException, InterruptedException, TimeoutException {
-        if (isRestartOperationRequired(client.options().defaultHost, RestartOperation.RELOAD)) {
+        if (isRestartOperationRequired(client.options().defaultHost, CommonRestartOperation.RELOAD)) {
             reload();
             return true;
         }
@@ -50,17 +50,17 @@ final class DomainAdministrationOperations implements AdministrationOperations {
 
     @Override
     public boolean isRestartRequired() throws IOException {
-        return isRestartOperationRequired(client.options().defaultHost, RestartOperation.RESTART);
+        return isRestartOperationRequired(client.options().defaultHost, CommonRestartOperation.RESTART);
     }
 
     @Override
     public void restart() throws IOException, InterruptedException, TimeoutException {
-        performRestartOperation(client.options().defaultHost, RestartOperation.RESTART);
+        performRestartOperation(client.options().defaultHost, CommonRestartOperation.RESTART);
     }
 
     @Override
     public boolean restartIfRequired() throws IOException, InterruptedException, TimeoutException {
-        if (isRestartOperationRequired(client.options().defaultHost, RestartOperation.RESTART)) {
+        if (isRestartOperationRequired(client.options().defaultHost, CommonRestartOperation.RESTART)) {
             restart();
             return true;
         }
@@ -113,7 +113,7 @@ final class DomainAdministrationOperations implements AdministrationOperations {
         waitUntilServersAreRunning(host, allServers, needsToReconnect);
     }
 
-    boolean isRestartOperationRequired(String host, RestartOperation restartOperation) throws IOException {
+    boolean isRestartOperationRequired(String host, CommonRestartOperation restartOperation) throws IOException {
         List<String> allServers = allRunningServers(host);
 
         Batch batch = new Batch();
