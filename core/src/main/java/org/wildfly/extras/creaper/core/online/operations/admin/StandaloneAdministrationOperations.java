@@ -25,15 +25,15 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
     // ---
 
     public boolean isReloadRequired() throws IOException {
-        return isRestartOperationRequired(RestartOperation.RELOAD);
+        return isRestartOperationRequired(CommonRestartOperation.RELOAD);
     }
 
     public void reload() throws IOException, InterruptedException, TimeoutException {
-        performRestartOperation(RestartOperation.RELOAD);
+        performRestartOperation(CommonRestartOperation.RELOAD);
     }
 
     public boolean reloadIfRequired() throws IOException, InterruptedException, TimeoutException {
-        if (isRestartOperationRequired(RestartOperation.RELOAD)) {
+        if (isRestartOperationRequired(CommonRestartOperation.RELOAD)) {
             reload();
             return true;
         }
@@ -44,15 +44,15 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
 
     @Override
     public boolean isRestartRequired() throws IOException {
-        return isRestartOperationRequired(RestartOperation.RESTART);
+        return isRestartOperationRequired(CommonRestartOperation.RESTART);
     }
 
     public void restart() throws IOException, InterruptedException, TimeoutException {
-        performRestartOperation(RestartOperation.RESTART);
+        performRestartOperation(CommonRestartOperation.RESTART);
     }
 
     public boolean restartIfRequired() throws IOException, InterruptedException, TimeoutException {
-        if (isRestartOperationRequired(RestartOperation.RESTART)) {
+        if (isRestartOperationRequired(CommonRestartOperation.RESTART)) {
             restart();
             return true;
         }
@@ -93,7 +93,7 @@ final class StandaloneAdministrationOperations implements AdministrationOperatio
         waitUntilServerIsRunning(needsToReconnect);
     }
 
-    private boolean isRestartOperationRequired(RestartOperation restartOperation) throws IOException {
+    private boolean isRestartOperationRequired(CommonRestartOperation restartOperation) throws IOException {
         return restartOperation.isRequired(ops.readAttribute(Address.root(), Constants.SERVER_STATE), false);
     }
 

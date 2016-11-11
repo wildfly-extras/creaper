@@ -6,6 +6,7 @@ import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
+import org.wildfly.extras.creaper.core.online.operations.Values;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -46,7 +47,7 @@ public final class ReloadToOriginal {
     // - the checkReloadToOriginalMakesSense method is ready
     // - the perform method is almost ready, need to add a call to DomainAdministrationOperations
     // - need to add a perform(String host) method variant that would be specific to managed domain
-    // - need to change RestartOperation.RELOAD_TO_ORIGINAL -- I currently don't know how exactly,
+    // - need to change ReloadToOriginalRestartOperation -- I currently don't know how exactly,
     //   and a bigger refactoring will likely be required
 
     /**
@@ -106,6 +107,14 @@ public final class ReloadToOriginal {
         checkReloadToOriginalMakesSense(client, null);
 
         new StandaloneAdministrationOperations(client, timeoutInSeconds)
-                .performRestartOperation(RestartOperation.RELOAD_TO_ORIGINAL);
+                .performRestartOperation(new ReloadToOriginalRestartOperation());
+    }
+
+    private static final class ReloadToOriginalRestartOperation implements RestartOperation {
+        @Override
+        public ModelNodeResult perform(Operations ops, Address address) throws IOException {
+            // only works for standalone servers
+            return ops.invoke(Constants.RELOAD, address, Values.of(Constants.USE_CURRENT_SERVER_CONFIG, false));
+        }
     }
 }

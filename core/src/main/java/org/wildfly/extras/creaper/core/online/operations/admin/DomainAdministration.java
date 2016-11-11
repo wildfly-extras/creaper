@@ -107,7 +107,7 @@ public final class DomainAdministration extends Administration {
      * requires reload). This is a variant of {@link Administration#isReloadRequired()}.
      */
     public boolean isReloadRequired(String host) throws IOException {
-        return domainOps.isRestartOperationRequired(host, RestartOperation.RELOAD);
+        return domainOps.isRestartOperationRequired(host, CommonRestartOperation.RELOAD);
     }
 
     /**
@@ -115,7 +115,7 @@ public final class DomainAdministration extends Administration {
      * This is a variant of {@link Administration#reload()}.
      */
     public void reload(String host) throws IOException, InterruptedException, TimeoutException {
-        domainOps.performRestartOperation(host, RestartOperation.RELOAD);
+        domainOps.performRestartOperation(host, CommonRestartOperation.RELOAD);
     }
 
     /**
@@ -123,7 +123,7 @@ public final class DomainAdministration extends Administration {
      * This is a variant of {@link Administration#reloadIfRequired()}.
      */
     public boolean reloadIfRequired(String host) throws IOException, InterruptedException, TimeoutException {
-        if (domainOps.isRestartOperationRequired(host, RestartOperation.RELOAD)) {
+        if (domainOps.isRestartOperationRequired(host, CommonRestartOperation.RELOAD)) {
             reload(host);
             return true;
         }
@@ -137,17 +137,17 @@ public final class DomainAdministration extends Administration {
      * requires restart). This is a variant of {@link Administration#isRestartRequired()}.
      */
     public boolean isRestartRequired(String host) throws IOException {
-        return domainOps.isRestartOperationRequired(host, RestartOperation.RESTART);
+        return domainOps.isRestartOperationRequired(host, CommonRestartOperation.RESTART);
     }
 
     /** Restarts given {@code host}. This is a variant of {@link Administration#restart()}. */
     public void restart(String host) throws IOException, InterruptedException, TimeoutException {
-        domainOps.performRestartOperation(host, RestartOperation.RESTART);
+        domainOps.performRestartOperation(host, CommonRestartOperation.RESTART);
     }
 
     /** Restarts given {@code host} if required. This is a variant of {@link Administration#restartIfRequired()}. */
     public boolean restartIfRequired(String host) throws IOException, InterruptedException, TimeoutException {
-        if (domainOps.isRestartOperationRequired(host, RestartOperation.RESTART)) {
+        if (domainOps.isRestartOperationRequired(host, CommonRestartOperation.RESTART)) {
             restart(host);
             return true;
         }
