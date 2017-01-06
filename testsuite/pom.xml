@@ -25,13 +25,13 @@
         <version.wildfly9>9.0.2.Final</version.wildfly9>
         <version.wildfly9.core>1.0.2.Final</version.wildfly9.core>
         <version.wildfly9.arquillian>1.0.2.Final</version.wildfly9.arquillian>
-        <version.wildfly10>10.0.0.Final</version.wildfly10>
-        <version.wildfly10.core>2.0.10.Final</version.wildfly10.core>
-        <version.wildfly10.arquillian>1.1.0.Alpha1</version.wildfly10.arquillian>
+        <version.wildfly10>10.1.0.Final</version.wildfly10>
+        <version.wildfly10.core>2.2.0.Final</version.wildfly10.core>
+        <version.wildfly10.arquillian>1.1.0.Final</version.wildfly10.arquillian>
         <!-- doesn't exist yet; update when there's a public release of WildFly 11 -->
         <version.wildfly11>11.0.0.Alpha1</version.wildfly11>
-        <version.wildfly11.core>3.0.0.Alpha10</version.wildfly11.core>
-        <version.wildfly11.arquillian>2.0.0.Final</version.wildfly11.arquillian>
+        <version.wildfly11.core>3.0.0.Alpha17</version.wildfly11.core>
+        <version.wildfly11.arquillian>2.0.2.Final</version.wildfly11.arquillian>
 
         <managementPort.as7>9999</managementPort.as7>
         <managementPort.wildfly>9990</managementPort.wildfly>

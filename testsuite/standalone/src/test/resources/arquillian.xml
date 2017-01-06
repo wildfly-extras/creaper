@@ -5,7 +5,7 @@
     <container qualifier="jboss" default="true">
         <configuration>
             <property name="jbossHome">${basedir}/target/jboss-as</property>
-            <property name="serverConfig">standalone-full.xml</property>
+            <property name="serverConfig">standalone-full-ha.xml</property>
             <property name="managementAddress">127.0.0.1</property>
             <property name="managementPort">${management.port}</property>
 

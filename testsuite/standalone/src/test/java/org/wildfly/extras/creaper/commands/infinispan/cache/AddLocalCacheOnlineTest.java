@@ -58,7 +58,7 @@ public class AddLocalCacheOnlineTest {
     @Test
     public void addCacheWithMoreArgs() throws CommandFailedException, IOException {
         String jndiName = "java:/MyAwesomeCache";
-        String module = "org.jboss.awesome";
+        String module = "org.hibernate.infinispan";
         AddLocalCache cmd = new AddLocalCache.Builder(TEST_CACHE_NAME)
                 .cacheContainer("hibernate")
                 .statisticsEnabled(false)
