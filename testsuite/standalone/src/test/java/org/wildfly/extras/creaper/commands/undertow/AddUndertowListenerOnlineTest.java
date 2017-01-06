@@ -1,41 +1,37 @@
 package org.wildfly.extras.creaper.commands.undertow;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.wildfly.extras.creaper.commands.socketbindings.AddSocketBinding;
+import org.wildfly.extras.creaper.commands.socketbindings.RemoveSocketBinding;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.ServerVersion;
-import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.core.online.operations.Address;
-import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 import org.wildfly.extras.creaper.security.KeyPairAndCertificate;
 import org.wildfly.extras.creaper.test.WildFlyTests;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.KeyStore;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
-/**
- * This test uses the {@code ajp} socket binding for all listener types, because there's no listener configured
- * by default that uses it (unlike {@code http}).
- */
 @Category(WildFlyTests.class)
 @RunWith(Arquillian.class)
 public class AddUndertowListenerOnlineTest {
+    private static final String TEST_SOCKET_BINDING = "creaper-test";
     private static final String TEST_LISTENER_NAME = "test-listener";
     private static final String TEST_PASSWORD = "p4sSw0rD!";
 
@@ -50,22 +46,28 @@ public class AddUndertowListenerOnlineTest {
     private Administration admin;
 
     @Before
-    public void connect() throws IOException {
+    public void connect() throws Exception {
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
         assumeTrue("The test requires Undertow that supports HTTP/2 options on listener, which is available since WildFly 9",
                 client.version().greaterThanOrEqualTo(ServerVersion.VERSION_3_0_0));
         ops = new Operations(client);
         admin = new Administration(client);
+
+        client.apply(new AddSocketBinding.Builder(TEST_SOCKET_BINDING).port(12345).build());
+        admin.reloadIfRequired();
     }
 
     @After
-    public void close() throws IOException, CliException, OperationException {
+    public void close() throws Exception {
+        client.apply(new RemoveSocketBinding(TEST_SOCKET_BINDING));
+        admin.reloadIfRequired();
+
         client.close();
     }
 
     @Test
     public void addHttpConnector_commandSucceeds() throws Exception {
-        client.apply(new AddUndertowListener.HttpBuilder(TEST_LISTENER_NAME, "ajp").build());
+        client.apply(new AddUndertowListener.HttpBuilder(TEST_LISTENER_NAME, TEST_SOCKET_BINDING).build());
 
         assertTrue(ops.exists(DEFAULT_SERVER_ADDRESS.and("http-listener", TEST_LISTENER_NAME)));
         ops.readAttribute(DEFAULT_SERVER_ADDRESS.and("http-listener", TEST_LISTENER_NAME), "socket-binding")
@@ -94,7 +96,7 @@ public class AddUndertowListenerOnlineTest {
                 .truststorePassword(TEST_PASSWORD)
                 .build());
 
-        client.apply(new AddUndertowListener.HttpsBuilder(TEST_LISTENER_NAME, "ajp")
+        client.apply(new AddUndertowListener.HttpsBuilder(TEST_LISTENER_NAME, TEST_SOCKET_BINDING)
                 .securityRealm(realmName)
                 .build());
 
@@ -134,7 +136,7 @@ public class AddUndertowListenerOnlineTest {
 
     @Test
     public void addAjpConnector_commandSucceeds() throws Exception {
-        client.apply(new AddUndertowListener.AjpBuilder(TEST_LISTENER_NAME, "ajp").build());
+        client.apply(new AddUndertowListener.AjpBuilder(TEST_LISTENER_NAME, TEST_SOCKET_BINDING).build());
 
         assertTrue(ops.exists(DEFAULT_SERVER_ADDRESS.and("ajp-listener", TEST_LISTENER_NAME)));
         ops.readAttribute(DEFAULT_SERVER_ADDRESS.and("ajp-listener", TEST_LISTENER_NAME), "socket-binding")
