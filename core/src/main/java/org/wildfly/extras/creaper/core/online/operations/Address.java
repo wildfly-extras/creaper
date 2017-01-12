@@ -9,7 +9,8 @@ import java.util.List;
 
 /**
  * <p>An address in the management tree. It is a sequence of string pairs ({@code key=value}), possibly empty. This
- * class is immutable and its only public API consists of various ways of <i>creating</i> an address.</p>
+ * class is immutable and its only public API consists of various ways of <i>creating</i> an address and method for
+ * retrieving last pair value (which is useful as the last value usually represents the final element name).</p>
  *
  * <p>There are some factory methods for obtaining an initial address:</p>
  * <ul>
@@ -77,6 +78,18 @@ public final class Address {
             result.add(pair.key, pair.value);
         }
         return result;
+    }
+
+    /**
+     * @return value of the last pair in the string sequence or null in case it is only root address.
+     */
+    public String getLastPairValue() {
+        if (address.isEmpty()) {
+            return null;
+        } else {
+            StringPair last = address.get(address.size() - 1);
+            return last.value;
+        }
     }
 
     @Override

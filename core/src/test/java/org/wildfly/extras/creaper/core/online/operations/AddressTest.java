@@ -2,11 +2,12 @@ package org.wildfly.extras.creaper.core.online.operations;
 
 import org.jboss.dmr.ModelNode;
 import org.jboss.dmr.ModelType;
-import org.wildfly.extras.creaper.core.online.Constants;
 import org.junit.Test;
+import org.wildfly.extras.creaper.core.online.Constants;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class AddressTest {
@@ -20,6 +21,7 @@ public class AddressTest {
         assertFalse(modelNode.hasDefined(0));
 
         assertEquals("/", emptyAddress.toString());
+        assertNull(emptyAddress.getLastPairValue());
     }
 
     @Test
@@ -39,6 +41,7 @@ public class AddressTest {
         assertEquals("b", firstElement.asProperty().getValue().asString());
 
         assertEquals("/a=b", singleElementAddress.toString());
+        assertEquals("b", singleElementAddress.getLastPairValue());
     }
 
     @Test
@@ -65,6 +68,7 @@ public class AddressTest {
         assertEquals("d", secondElement.asProperty().getValue().asString());
 
         assertEquals("/a=b/c=d", twoElementsAddress.toString());
+        assertEquals("d", twoElementsAddress.getLastPairValue());
     }
 
     @Test
@@ -84,6 +88,7 @@ public class AddressTest {
         assertEquals("org.jboss.as.logging", firstElement.asProperty().getValue().asString());
 
         assertEquals("/extension=org.jboss.as.logging", singleElementAddress.toString());
+        assertEquals("org.jboss.as.logging", singleElementAddress.getLastPairValue());
     }
 
     @Test
@@ -103,6 +108,7 @@ public class AddressTest {
         assertEquals("master", firstElement.asProperty().getValue().asString());
 
         assertEquals("/host=master", singleElementAddress.toString());
+        assertEquals("master", singleElementAddress.getLastPairValue());
     }
 
     @Test
@@ -122,6 +128,7 @@ public class AddressTest {
         assertEquals("foo", firstElement.asProperty().getValue().asString());
 
         assertEquals("/subsystem=foo", singleElementAddress.toString());
+        assertEquals("foo", singleElementAddress.getLastPairValue());
     }
 
     @Test
@@ -141,6 +148,7 @@ public class AddressTest {
         assertEquals("management", firstElement.asProperty().getValue().asString());
 
         assertEquals("/core-service=management", singleElementAddress.toString());
+        assertEquals("management", singleElementAddress.getLastPairValue());
     }
 
     @Test
@@ -160,5 +168,6 @@ public class AddressTest {
         assertEquals("simple.war", firstElement.asProperty().getValue().asString());
 
         assertEquals("/deployment=simple.war", singleElementAddress.toString());
+        assertEquals("simple.war", singleElementAddress.getLastPairValue());
     }
 }
