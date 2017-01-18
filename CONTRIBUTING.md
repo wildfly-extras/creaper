@@ -98,8 +98,11 @@ The `commands` module contains a set of often-used implementations
 of management commands. If you want to decide whether your management
 command is suitable for inclusion, refer to the following guidelines:
 
-1. _It should be high-level._ A command that sets a single attribute
-   of a single management resource is most probably not very useful.
+1. _It should be high-level._ If the only description of a command
+   reads "sets this single attribute of that single management resource",
+   then it's most probably not very useful. If the description reads
+   "enables foo", then it's quite likely to be useful, even if it
+   internally only changes a single attribute of a single management resource.
 2. _It should provide very common functionality._ Commands that are
    only seldom used should be kept separately. For example: adding
    a message queue -- absolutely yes, configuring a colocated HA topology
@@ -122,7 +125,7 @@ command is suitable for inclusion, refer to the following guidelines:
    The reason is that reload or restart is a fairly involed operation that
    the user should be aware of.
 6. _If the command only works for certain version(s) of the application
-  server, it must be documented._ Also, the command's `apply` method
-  should check the server version early on and throw an exception
-  in case of a mismatch. The exception should have a descriptive message.
+   server, it must be documented._ Also, the command's `apply` method
+   should check the server version early on and throw an exception
+   in case of a mismatch. The exception should have a descriptive message.
 7. Commands should provide a short but descriptive `toString`.
