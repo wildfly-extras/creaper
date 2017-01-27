@@ -2,6 +2,7 @@ package org.wildfly.extras.creaper.commands.security.realms;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -24,6 +25,8 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
     private final String keystoreProvider;
     private final String keystoreRelativeTo;
     private final String protocol;
+    private final String generateSelfSignedCertHost;
+
 
     public AddSslServerIdentity(Builder builder) {
         super(builder);
@@ -36,6 +39,7 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
         this.keystoreProvider = builder.keystoreProvider;
         this.keystoreRelativeTo = builder.keystoreRelativeTo;
         this.protocol = builder.protocol;
+        this.generateSelfSignedCertHost = builder.generateSelfSignedCertHost;
     }
 
     @Override
@@ -53,6 +57,9 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
                 .parameter("keystoreRelativeTo", keystoreRelativeTo)
                 .parameter("protocol", protocol)
                 .parameter("replaceExisting", replaceExisting)
+                .parameter("generateSelfSignedCertHost",
+                        ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_4_2_0)
+                                ? generateSelfSignedCertHost : null)
                 .build());
     }
 
@@ -70,7 +77,7 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
             new Administration(ctx.client).reloadIfRequired();
         }
 
-        ops.add(securityRealmAddress.and("server-identity", "ssl"), Values.empty()
+        Values params = Values.empty()
                 .andOptional("alias", alias)
                 .andListOptional(String.class, "enabled-cipher-suites", enabledCipherSuites)
                 .andListOptional(String.class, "enabled-protocols", enabledProtocols)
@@ -79,7 +86,13 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
                 .andOptional("keystore-path", keystorePath)
                 .andOptional("keystore-provider", keystoreProvider)
                 .andOptional("keystore-relative-to", keystoreRelativeTo)
-                .andOptional("protocol", protocol));
+                .andOptional("protocol", protocol);
+
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_4_2_0)) {
+            params = params.andOptional("generate-self-signed-certificate-host", generateSelfSignedCertHost);
+        }
+
+        ops.add(securityRealmAddress.and("server-identity", "ssl"), params);
     }
 
 
@@ -94,6 +107,7 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
         private String keystoreProvider;
         private String keystoreRelativeTo;
         private String protocol;
+        private String generateSelfSignedCertHost;
 
         public Builder(String securityRealmName) {
             super(securityRealmName);
@@ -180,6 +194,20 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
          */
         public Builder protocol(String protocol) {
             this.protocol = protocol;
+            return this;
+        }
+
+        /**
+         * <p>
+         *     If set, there shall be generated self signed certificate for the specified host name.
+         *     It will be generated only if there doesn't exist the defined keystore.
+         * </p>
+         * <p>
+         *     This option is available since WildFly 10.1 => for older versions it is ignored
+         * </p>
+         */
+        public Builder generateSelfSignedCertHost(String generateSelfSignedCertHost) {
+            this.generateSelfSignedCertHost = generateSelfSignedCertHost;
             return this;
         }
 
