@@ -16,6 +16,7 @@ if (keystorePath != null) keystoreAttrs['path'] = keystorePath
 if (keystoreProvider != null) keystoreAttrs['provider'] = keystoreProvider
 if (keystoreRelativeTo != null) keystoreAttrs['relative-to'] = keystoreRelativeTo
 if (protocol != null) keystoreAttrs['protocol'] = protocol
+if (generateSelfSignedCertHost) keystoreAttrs['generate-self-signed-certificate-host'] = generateSelfSignedCertHost
 
 def sslDefinition = {
     'ssl' {

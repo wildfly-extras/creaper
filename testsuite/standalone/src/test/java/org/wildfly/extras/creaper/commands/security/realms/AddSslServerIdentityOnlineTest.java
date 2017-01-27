@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -61,12 +62,21 @@ public class AddSslServerIdentityOnlineTest {
                 .keystoreRelativeTo("jboss.server.config.dir")
                 .cipherSuitesToEnable("DEFAULT", "ALL")
                 .protocolsToEnable("SSL", "TLS")
+                .generateSelfSignedCertHost("localhost") // should be ignored for older versions than WildFly 10.1
                 .build());
         assertTrue("Server identity should be created", ops.exists(TEST_SSL_IDENTITY_ADDRESS));
         ModelNodeResult result = ops.readAttribute(TEST_SSL_IDENTITY_ADDRESS, "keystore-password");
         result.assertSuccess();
         assertEquals("Password should be set properly.",
                 KEYSTORE_AND_KEY_PASSWORD, result.stringValue());
+        // check that generate-self-signed-certificate-host is defined properly, as this attribute is available
+        // only for WildFly 10.1 and newer, do the check only for valid servers.
+        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_4_2_0)) {
+            ModelNodeResult generateSelfSignedCertHost = ops.readAttribute(TEST_SSL_IDENTITY_ADDRESS,
+                    "generate-self-signed-certificate-host");
+            generateSelfSignedCertHost.assertDefinedValue();
+            assertEquals("localhost", generateSelfSignedCertHost.stringValue());
+        }
     }
 
     @Test(expected = CommandFailedException.class)
