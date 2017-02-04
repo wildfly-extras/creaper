@@ -213,8 +213,10 @@ public final class Subtree {
     }
 
     private static final class SubsystemSubtreeLocator implements SubtreeLocator {
-        private static final Class STANDALONE_OR_HOST_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profile.subsystem.find { it.@xmlns.toString().startsWith(\"urn:jboss:domain:${subsystemName}:\") }");
-        private static final Class DOMAIN_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profiles.profile.find { it.@name == defaultProfile }.subsystem.find { it.@xmlns.toString().startsWith(\"urn:jboss:domain:${subsystemName}:\") }");
+        private static final Class STANDALONE_OR_HOST_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profile.subsystem.find { it.@xmlns.toString()"
+                + ".startsWith(\"urn:jboss:domain:${subsystemName}:\") || it.@xmlns.toString().startsWith(\"urn:wildfly:${subsystemName}:\")} ");
+        private static final Class DOMAIN_SCRIPT_CLASS = GroovyHolder.GROOVY.parseClass("root.profiles.profile.find { it.@name == defaultProfile }.subsystem"
+                + ".find { it.@xmlns.toString().startsWith(\"urn:jboss:domain:${subsystemName}:\") || it.@xmlns.toString().startsWith(\"urn:wildfly:${subsystemName}:\") }");
 
         private final String subsystemName;
 
