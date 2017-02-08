@@ -1,5 +1,11 @@
 package org.wildfly.extras.creaper.core.online;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import org.jboss.as.cli.CliInitializationException;
 import org.jboss.as.cli.CommandContext;
 import org.jboss.as.cli.CommandFormatException;
@@ -11,12 +17,6 @@ import org.jboss.logging.Logger;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 final class OnlineManagementClientImpl implements OnlineManagementClient {
     private static final Logger log = Logger.getLogger(OnlineManagementClient.class);
@@ -150,6 +150,7 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
         checkClosed();
         operation = adjustOperationForDomain.adjust(operation);
         log.debugf("Executing operation %s", ModelNodeOperationToCliString.convert(operation));
+        log.tracef("JSON format:\n%s", operation.toJSONString(false));
         ModelNode result = client.execute(operation);
         return new ModelNodeResult(result);
     }
@@ -159,6 +160,7 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
         checkClosed();
         operation = adjustOperationForDomain.adjust(operation);
         log.debugf("Executing operation %s", ModelNodeOperationToCliString.convert(operation.getOperation()));
+        log.tracef("JSON format:%n%s", operation.getOperation().toJSONString(false));
         ModelNode result = client.execute(operation);
         return new ModelNodeResult(result);
     }
