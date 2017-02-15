@@ -150,7 +150,7 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
         checkClosed();
         operation = adjustOperationForDomain.adjust(operation);
         log.debugf("Executing operation %s", ModelNodeOperationToCliString.convert(operation));
-        log.tracef("JSON format:\n%s", operation.toJSONString(false));
+        log.tracef("JSON format:%n%s", operation.toJSONString(false));
         ModelNode result = client.execute(operation);
         return new ModelNodeResult(result);
     }
