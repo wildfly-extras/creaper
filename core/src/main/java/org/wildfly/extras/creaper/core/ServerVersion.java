@@ -68,7 +68,7 @@ public final class ServerVersion {
     public static final ServerVersion VERSION_4_1_0 = new ServerVersion(4, 1, 0);
     /** WF 10.1.0.Final */
     public static final ServerVersion VERSION_4_2_0 = new ServerVersion(4, 2, 0);
-    /** WF ??? (currently, there's no released version that contains this) */
+    /** WF 11 (not yet final) */
     public static final ServerVersion VERSION_5_0_0 = new ServerVersion(5, 0, 0);
 
     private static final ServerVersion[] KNOWN_VERSIONS = {
