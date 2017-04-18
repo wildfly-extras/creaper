@@ -93,7 +93,7 @@ public final class GroovyXmlTransform implements OfflineCommand {
         GroovyCodeSource codeSource;
         try {
             codeSource = new GroovyCodeSource(url);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new CommandFailedException(e);
         }
 

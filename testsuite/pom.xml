@@ -28,9 +28,8 @@
         <version.wildfly10>10.1.0.Final</version.wildfly10>
         <version.wildfly10.core>2.2.0.Final</version.wildfly10.core>
         <version.wildfly10.arquillian>1.1.0.Final</version.wildfly10.arquillian>
-        <!-- doesn't exist yet; update when there's a public release of WildFly 11 -->
         <version.wildfly11>11.0.0.Alpha1</version.wildfly11>
-        <version.wildfly11.core>3.0.0.Alpha17</version.wildfly11.core>
+        <version.wildfly11.core>3.0.0.Beta11</version.wildfly11.core>
         <version.wildfly11.arquillian>2.0.2.Final</version.wildfly11.arquillian>
 
         <managementPort.as7>9999</managementPort.as7>
@@ -78,7 +77,7 @@
         <wildfly11.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly11.arquillianContainer.artifactId>
         <wildfly11.arquillianContainer.version>${version.wildfly11.arquillian}</wildfly11.arquillianContainer.version>
 
-        <!-- defined in profiles "as7", "wildfly8", "wildfly9" and "wildfly10" below -->
+        <!-- defined in profiles "as7", "wildfly8", "wildfly9", "wildfly10" and "wildfly11" below -->
         <applicationServer.groupId>MUST-BE-DEFINED</applicationServer.groupId>
         <applicationServer.artifactId>MUST-BE-DEFINED</applicationServer.artifactId>
         <applicationServer.version>MUST-BE-DEFINED</applicationServer.version>
@@ -121,12 +120,24 @@
             <scope>test</scope>
             <exclusions>
                 <exclusion>
+                    <groupId>org.jboss.remoting</groupId>
+                    <artifactId>jboss-remoting</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.jboss.remoting3</groupId>
                     <artifactId>jboss-remoting</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.jboss.remotingjmx</groupId>
                     <artifactId>remoting-jmx</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.xnio</groupId>
+                    <artifactId>xnio-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.xnio</groupId>
+                    <artifactId>xnio-nio</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -447,7 +458,6 @@
             </dependencies>
         </profile>
         <profile>
-            <!-- Wildfly 11 doesn't exist yet; update when there's a public release of WildFly 11 -->
             <id>wildfly11</id>
             <activation>
                 <activeByDefault>false</activeByDefault>

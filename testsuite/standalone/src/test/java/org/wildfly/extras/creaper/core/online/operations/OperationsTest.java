@@ -2,6 +2,10 @@ package org.wildfly.extras.creaper.core.online.operations;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.dmr.ModelNode;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.ManagementVersionPart;
@@ -13,10 +17,6 @@ import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +30,7 @@ import static org.junit.Assume.assumeFalse;
 public class OperationsTest {
     private OnlineManagementClient client;
     private Operations ops;
+    private Administration admin;
 
     private String webSubsystem;
     private Address defaultHostAddress;
@@ -41,6 +42,7 @@ public class OperationsTest {
     public void connect() throws IOException {
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
         ops = new Operations(client);
+        admin = new Administration(client);
 
         if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) { // AS7, JBoss Web
             webSubsystem = "web";
@@ -67,9 +69,6 @@ public class OperationsTest {
         // WildFly 8 doesn't require "reload" after removing a socket binding (why?)
         assumeFalse("This test can't work on WildFly 8 (but works on AS7 and WildFly >= 9)",
                 client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
-
-        Operations ops = new Operations(client);
-        Administration admin = new Administration(client);
 
         String socketBindingName = "creaper-test-socket-binding";
         Address socketBindingAddress = Address.of("socket-binding-group", "standard-sockets")
@@ -290,25 +289,28 @@ public class OperationsTest {
     }
 
     @Test
-    public void addRemove_noParameters() throws IOException {
+    public void addRemove_noParameters() throws Exception {
         Address address = Address.subsystem("infinispan").and("cache-container", "foo");
 
         ModelNodeResult result = ops.add(address);
         result.assertSuccess();
+        admin.reloadIfRequired();
 
         result = ops.readAttribute(address, "statistics-enabled", ReadAttributeOption.NOT_INCLUDE_DEFAULTS);
         result.assertNotDefinedValue();
 
         result = ops.remove(address);
         result.assertSuccess();
+        admin.reloadIfRequired();
     }
 
     @Test
-    public void addRemove_withParameter() throws IOException {
+    public void addRemove_withParameter() throws Exception {
         Address address = Address.subsystem("infinispan").and("cache-container", "foo");
 
         ModelNodeResult result = ops.add(address, Values.of("statistics-enabled", true));
         result.assertSuccess();
+        admin.reloadIfRequired();
 
         result = ops.readAttribute(address, "statistics-enabled", ReadAttributeOption.NOT_INCLUDE_DEFAULTS);
         result.assertDefinedValue();
@@ -316,14 +318,16 @@ public class OperationsTest {
 
         result = ops.remove(address);
         result.assertSuccess();
+        admin.reloadIfRequired();
     }
 
     @Test
-    public void addRemove_withListParameter() throws IOException {
+    public void addRemove_withListParameter() throws Exception {
         Address address = Address.subsystem("infinispan").and("cache-container", "foo");
 
         ModelNodeResult result = ops.add(address, Values.ofList("aliases", "bar", "baz"));
         result.assertSuccess();
+        admin.reloadIfRequired();
 
         result = ops.readAttribute(address, "aliases");
         result.assertDefinedValue();
@@ -332,15 +336,17 @@ public class OperationsTest {
 
         result = ops.remove(address);
         result.assertSuccess();
+        admin.reloadIfRequired();
     }
 
     @Test
-    public void addRemove_withMultipleParameters() throws IOException {
+    public void addRemove_withMultipleParameters() throws Exception {
         Address address = Address.subsystem("infinispan").and("cache-container", "foo");
 
         ModelNodeResult result = ops.add(address, Values.of("statistics-enabled", true)
                 .andList("aliases", "bar", "baz"));
         result.assertSuccess();
+        admin.reloadIfRequired();
 
         result = ops.readAttribute(address, "statistics-enabled", ReadAttributeOption.NOT_INCLUDE_DEFAULTS);
         result.assertDefinedValue();
@@ -353,6 +359,7 @@ public class OperationsTest {
 
         result = ops.remove(address);
         result.assertSuccess();
+        admin.reloadIfRequired();
     }
 
     @Test
@@ -372,7 +379,7 @@ public class OperationsTest {
     // ---
 
     @Test
-    public void batch() throws IOException {
+    public void batch() throws Exception {
         ModelNodeResult result = ops.batch(new Batch());
         result.assertSuccess();
 
@@ -383,12 +390,14 @@ public class OperationsTest {
                         Values.of("statistics-enabled", true))
         );
         result.assertSuccess();
+        admin.reloadIfRequired();
 
         result = ops.batch(new Batch()
                 .remove(Address.subsystem("infinispan").and("cache-container", "foo"))
                 .remove(Address.subsystem("infinispan").and("cache-container", "bar"))
         );
         result.assertSuccess();
+        admin.reloadIfRequired();
     }
 
     @Test
