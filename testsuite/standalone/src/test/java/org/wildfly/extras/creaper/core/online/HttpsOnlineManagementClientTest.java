@@ -16,6 +16,8 @@ import org.wildfly.extras.creaper.test.ManualTests;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.Assume.assumeFalse;
+
 public class HttpsOnlineManagementClientTest extends SslOnlineManagementClientTest {
     private static final String USERNAME = "testuser";
     private static final String PASSWORD = "testpass";
@@ -38,6 +40,9 @@ public class HttpsOnlineManagementClientTest extends SslOnlineManagementClientTe
     @Before
     @Override
     public void connect() throws IOException {
+        // WildFly 11.0.0.Alpha1 has issues
+        assumeFalse(offlineClient.version().greaterThanOrEqualTo(ServerVersion.VERSION_5_0_0));
+
         if (this.controller.isStarted(ManualTests.ARQUILLIAN_CONTAINER_MGMT_PROTOCOL_REMOTE)) {
             client = ManagementClient.online(OnlineOptions
                     .standalone()

@@ -14,6 +14,7 @@ import org.wildfly.extras.creaper.commands.management.AddHttpsManagementSecurity
 import org.wildfly.extras.creaper.commands.management.AddNativeManagementInterface;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
 import org.wildfly.extras.creaper.security.KeyPairAndCertificate;
@@ -23,6 +24,8 @@ import org.wildfly.extras.creaper.test.WildFlyTests;
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+
+import static org.junit.Assume.assumeFalse;
 
 /**
  * This test <b>needs</b> a manually-controlled Arquillian container.
@@ -89,6 +92,9 @@ public class SslOnlineManagementClientTest extends OnlineManagementClientTest {
     @Before
     @Override
     public void connect() throws IOException {
+        // WildFly 11.0.0.Alpha1 has issues
+        assumeFalse(offlineClient.version().greaterThanOrEqualTo(ServerVersion.VERSION_5_0_0));
+
         if (this.controller.isStarted(ManualTests.ARQUILLIAN_CONTAINER_MGMT_PROTOCOL_REMOTE)) {
             client = ManagementClient.online(OnlineOptions.standalone().localDefault().ssl(sslOptions).build());
         }
