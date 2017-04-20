@@ -142,6 +142,33 @@ public final class ServerVersion {
 
     // ---
 
+    /**
+     * Returns a range of server versions, from {@code this} up to {@code other}. The lower bound
+     * is <i>inclusive</i>, the upper bound is <i>exclusive</i>. It must be that {@code this <= other}.
+     * If {@code this == other}, it <i>is</i> included in the range.
+     */
+    public ServerVersionRange upTo(ServerVersion other) {
+        if (this.greaterThan(other)) {
+            throw new IllegalArgumentException(this + " must be less than or equal to " + other);
+        }
+
+        return new ServerVersionRange(this, true, other, false);
+    }
+
+    /**
+     * Returns a range of server versions, from {@code this} up to and including {@code other}. Both the lower bound
+     * and upper bound are <i>inclusive</i>. It must be that {@code this <= other}.
+     */
+    public ServerVersionRange upToAndIncluding(ServerVersion other) {
+        if (this.greaterThan(other)) {
+            throw new IllegalArgumentException(this + " must be less than or equal to " + other);
+        }
+
+        return new ServerVersionRange(this, true, other, true);
+    }
+
+    // ---
+
     public boolean equalTo(ServerVersion that) {
         return this.major == that.major && this.minor == that.minor && this.micro == that.micro;
     }
@@ -164,9 +191,18 @@ public final class ServerVersion {
         return !lessThan(that);
     }
 
-    /** Both {@code min} and {@code max} are <i>inclusive</i>. */
+    /**
+     * Both {@code min} and {@code max} are <i>inclusive</i>.
+     *
+     * @deprecated use {@link #inRange(ServerVersionRange)}
+     */
+    @Deprecated
     public boolean inRange(ServerVersion min, ServerVersion max) {
         return this.greaterThanOrEqualTo(min) && this.lessThanOrEqualTo(max);
+    }
+
+    public boolean inRange(ServerVersionRange range) {
+        return range.contains(this);
     }
 
     public void assertAtLeast(ServerVersion minimum) {
