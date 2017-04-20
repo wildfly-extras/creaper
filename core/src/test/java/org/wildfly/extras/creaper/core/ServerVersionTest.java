@@ -115,6 +115,29 @@ public class ServerVersionTest {
     }
 
     @Test
+    public void inRange() {
+        ServerVersion v100 = ServerVersion.from(1, 0, 0);
+        ServerVersion v120 = ServerVersion.from(1, 2, 0);
+        ServerVersion v130 = ServerVersion.from(1, 3, 0);
+        ServerVersion v200 = ServerVersion.from(2, 0, 0);
+
+        assertTrue(v120.inRange(v100, v200));
+        assertTrue(v120.inRange(v120, v200));
+        assertTrue(v120.inRange(v100, v120));
+        assertFalse(v120.inRange(v130, v200));
+
+        assertTrue(v120.inRange(v100.upTo(v200)));
+        assertTrue(v120.inRange(v120.upTo(v200)));
+        assertFalse(v120.inRange(v100.upTo(v120)));
+        assertFalse(v120.inRange(v130.upTo(v200)));
+
+        assertTrue(v120.inRange(v100.upToAndIncluding(v200)));
+        assertTrue(v120.inRange(v120.upToAndIncluding(v200)));
+        assertTrue(v120.inRange(v100.upToAndIncluding(v120)));
+        assertFalse(v120.inRange(v130.upToAndIncluding(v200)));
+    }
+
+    @Test
     public void assertAtLeast() {
         ServerVersion.from(0, 0, 0).assertAtLeast(ServerVersion.from(0, 0, 0));
         ServerVersion.from(1, 0, 0).assertAtLeast(ServerVersion.from(1, 0, 0));
