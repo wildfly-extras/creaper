@@ -71,7 +71,7 @@ public class ChangeRootLoggerOnlineTest {
                 ops.readAttribute(TEST_ROOT_LOGGER_ADDRESS, "filter-spec").stringValue());
 
         changeRootLogger = Logging.rootLogger().change()
-                .handlers("CONSOLE")
+                .handlers("FILE")
                 .build();
         client.apply(changeRootLogger);
 

@@ -57,7 +57,7 @@ public class ChangeLoggerOnlineTest {
 
         ChangeLogger changeLogger = Logging.logger().change(TEST_LOGGER_NAME)
                 .filter("match(\"filter\")")
-                .handlers("CONSOLE", "FILE")
+                .handlers("FILE")
                 .level(LogLevel.DEBUG)
                 .useParentHandler(true)
                 .build();
@@ -79,14 +79,14 @@ public class ChangeLoggerOnlineTest {
 
         result = ops.readAttribute(TEST_LOGGER_ADDRESS, "handlers");
         result.assertSuccess();
-        assertEquals("enabled should be changed", 2, result.stringListValue().size());
+        assertEquals("enabled should be changed", 1, result.stringListValue().size());
     }
 
     @Test
     public void changeNothing() throws Exception {
         AddLogger addLogger = Logging.logger().add(TEST_LOGGER_NAME)
                 .filter("match(\"filter\")")
-                .handlers("CONSOLE", "FILE")
+                .handlers("FILE")
                 .level(LogLevel.DEBUG)
                 .useParentHandler(true)
                 .build();
@@ -114,6 +114,6 @@ public class ChangeLoggerOnlineTest {
 
         result = ops.readAttribute(TEST_LOGGER_ADDRESS, "handlers");
         result.assertSuccess();
-        assertEquals("enabled should not be changed", 2, result.stringListValue().size());
+        assertEquals("enabled should not be changed", 1, result.stringListValue().size());
     }
 }
