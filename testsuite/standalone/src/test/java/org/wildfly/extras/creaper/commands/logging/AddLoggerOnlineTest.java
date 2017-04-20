@@ -22,8 +22,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Arquillian.class)
 public class AddLoggerOnlineTest {
     private static final String TEST_LOGGER_NAME = "creaper-logger";
-    private static final String TEST_HANDLER_NAME_1 = "CONSOLE";
-    private static final String TEST_HANDLER_NAME_2 = "FILE";
+    private static final String TEST_HANDLER_NAME_1 = "FILE";
     private static final Address TEST_LOGGER_ADDRESS = Address.subsystem("logging").and("logger", TEST_LOGGER_NAME);
 
     private OnlineManagementClient client;
@@ -52,7 +51,7 @@ public class AddLoggerOnlineTest {
         AddLogger addLogger = Logging.logger().add(TEST_LOGGER_NAME)
                 .level(LogLevel.OFF)
                 .filter("match(\"filter\")")
-                .handlers(TEST_HANDLER_NAME_1, TEST_HANDLER_NAME_2)
+                .handlers(TEST_HANDLER_NAME_1)
                 .useParentHandler(true)
                 .build();
 
