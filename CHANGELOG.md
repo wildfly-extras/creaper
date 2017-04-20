@@ -1,24 +1,24 @@
 # Changelog
 
-## 1.5.1 (not yet released)
+## 1.6.0 [The Wildfire Edition](https://en.wikipedia.org/wiki/The_Andromeda_Strain) (2017-04-20)
 
-- added `ReloadToSnapshot`
-- added `SnapshotBackup`
-- added commands for resource adapter manipulation
-- dependency upgrades
-- added `Address.getLastPairValue`
-- added `AddSslServerIdentity.generateSelfSignedCertHost`
-- fixed `Subtree` to also understand `urn:wildfly:*` XML namespaces
-- updated `OnlineManagementClient` to log executed operations
-  in JSON format on the TRACE logging level
-- updated `RemoveCache` to automatically add
-  the `allow-resource-service-restart` header when required
 - added support for WildFly 11 now that 11.0.0.Alpha1 is released
+- added commands for resource adapter manipulation
+- added `SnapshotBackup`
+- added `ReloadToSnapshot`
+- added `AddSslServerIdentity.generateSelfSignedCertHost`
+- added `Address.getLastPairValue`
 - added better support for `ServerVersion` ranges: `ServerVersion.upTo`,
   `ServerVersion.upToAndIncluding`
   and `ServerVersion.inRange(ServerVersionRange)`; the old method
   `ServerVersion.inRange(ServerVersion, ServerVersion)` is now deprecated
   and scheduled for removal
+- fixed `Subtree` to also understand `urn:wildfly:*` XML namespaces
+- updated `OnlineManagementClient` to log executed operations
+  in JSON format on the TRACE logging level
+- updated `RemoveCache` to automatically add
+  the `allow-resource-service-restart` header when required
+- dependency upgrades
 
 ## 1.5.0 [The Emiko Edition](https://en.wikipedia.org/wiki/The_Windup_Girl) (2016-09-30)
 
