@@ -22,7 +22,9 @@ This text assumes that the version number for a release is X.Y.Z.
 7. Your workspace should now be pristine. Check with `git status`.
 
 8. Make sure that your `JAVA_HOME` points to Java 6.
-   Check with `$JAVA_HOME/bin/java -version`.
+   Check with `$JAVA_HOME/bin/java -version`. Also make sure that
+   your Maven version is 3.2.5 (which supports Java 6).
+   Check with `mvn --version`.
 
 9. `mvn release:prepare -Pas7 -Dmaven.jboss.ga.repository.url=...`
 
