@@ -34,19 +34,19 @@ public final class ReloadToSnapshot {
     }
 
     /**
-     * Reload the server to a snapshot. In managed domain, reloads the default host.
+     * Reload the server to a snapshot. In managed domain, reloads the default host to a domain.xml snapshot.
      */
     public void perform() throws InterruptedException, TimeoutException, IOException {
         if (client.options().isStandalone) {
             new StandaloneAdministrationOperations(client, timeoutInSeconds)
-                    .performRestartOperation(new ReloadToSnapshotRestartOperation(snapshot));
+                    .performRestartOperation(new ReloadToStandaloneSnapshotRestartOperation(snapshot));
         } else {
             perform(client.options().defaultHost);
         }
     }
 
     /**
-     * Reload given {@code host} to a snapshot. This method only makes sense in managed domain.
+     * Reload given {@code host} to a domain.xml snapshot. This method only makes sense in managed domain.
      */
     public void perform(String host) throws InterruptedException, TimeoutException, IOException {
         if (!client.options().isDomain) {
@@ -55,19 +55,32 @@ public final class ReloadToSnapshot {
         }
 
         new DomainAdministrationOperations(client, timeoutInSeconds)
-                .performRestartOperation(host, new ReloadToSnapshotRestartOperation(snapshot));
+                .performRestartOperation(host, new ReloadToDomainSnapshotRestartOperation(snapshot));
     }
 
-    private static final class ReloadToSnapshotRestartOperation implements RestartOperation {
+    private static final class ReloadToStandaloneSnapshotRestartOperation implements RestartOperation {
         private final String snapshot;
 
-        ReloadToSnapshotRestartOperation(String snapshot) {
+        ReloadToStandaloneSnapshotRestartOperation(String snapshot) {
             this.snapshot = snapshot;
         }
 
         @Override
         public ModelNodeResult perform(Operations ops, Address address) throws IOException {
             return ops.invoke(Constants.RELOAD, address, Values.of(Constants.SERVER_CONFIG, snapshot));
+        }
+    }
+
+    private static final class ReloadToDomainSnapshotRestartOperation implements RestartOperation {
+        private final String snapshot;
+
+        ReloadToDomainSnapshotRestartOperation(String snapshot) {
+            this.snapshot = snapshot;
+        }
+
+        @Override
+        public ModelNodeResult perform(Operations ops, Address address) throws IOException {
+            return ops.invoke(Constants.RELOAD, address, Values.of(Constants.DOMAIN_CONFIG, snapshot));
         }
     }
 }
