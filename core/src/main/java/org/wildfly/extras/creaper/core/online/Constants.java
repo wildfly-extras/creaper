@@ -18,6 +18,7 @@ public final class Constants extends ClientConstants {
     public static final String BLOCKING = "blocking";
     public static final String COMPOSITE = "composite";
     public static final String CORE_SERVICE = "core-service";
+    public static final String DOMAIN_CONFIG = "domain-config";
     public static final String DOMAIN_FAILURE_DESCRIPTION = "domain-failure-description";
     public static final String FAILED = "failed";
     public static final String HOST_FAILURE_DESCRIPTIONS = "host-failure-descriptions";
