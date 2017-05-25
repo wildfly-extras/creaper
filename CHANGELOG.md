@@ -2,6 +2,8 @@
 
 ## 1.6.1 (not yet released)
 
+- fixed `ReloadToSnapshot` for managed domain
+
 ## 1.6.0 [The Wildfire Edition](https://en.wikipedia.org/wiki/The_Andromeda_Strain) (2017-04-20)
 
 - added support for WildFly 11 now that 11.0.0.Alpha1 is released
