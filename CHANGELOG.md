@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.6.2 (not yet released)
+
 ## 1.6.1 [The Cheela Edition](https://en.wikipedia.org/wiki/Dragon%27s_Egg) (2017-05-25)
 
 - fixed `ReloadToSnapshot` for managed domain
