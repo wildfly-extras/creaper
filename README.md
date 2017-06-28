@@ -12,6 +12,23 @@ of the management functionalities:
 - [Core Management Concepts](https://docs.jboss.org/author/display/WFLY10/Core+management+concepts)
 - [Management API Reference](https://docs.jboss.org/author/display/WFLY10/Management+API+reference)
 
+## Structure
+Creaper consists of several artifacts (modules), where the most significant are core, commands and testsuite:
+
+### Creaper-core
+It is the most important part which contains all the APIs and abstraction for doing management operations 
+in a user friendly fashion.
+
+### Creaper-commands
+It enhances creaper-core by providing implementations of commonly used commands. The goal is to host in this 
+project only the commonly used commands. For commands which are not so commonly used, they should be written in 
+separate projects as extensions of the creaper and maintained there.
+
+### Creaper-testsuite
+Contains integration tests for the operations, commands and other functionalities provided by creaper, which are
+executed against different versions of JBoss AS 7/WildFly making sure that Creaper remains rock solid piece of code :-)
+
+
 ## Install
 
 Creaper artifacts are available in Maven Central. However, they are primarily
