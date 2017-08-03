@@ -16,10 +16,12 @@ import java.util.List;
  * <ul>
  * <li>{@code Address.root()} &ndash; empty address, corresponding to the root of the management tree ({@code /})
  * </li>
- * <li>{@code Address.profile("foo")} &ndash; address of profile {@code foo} in managed domain ({@code /profile=foo})</li>
+ * <li>{@code Address.extension("foo")} &ndash; address of extension {@code foo} ({@code /extension=foo})</li>
+ * <li>{@code Address.profile("foo")} &ndash; address of profile {@code foo} ({@code /profile=foo})</li>
  * <li>{@code Address.host("foo")} &ndash; address of host {@code foo} in managed domain ({@code /host=foo})</li>
  * <li>{@code Address.subsystem("foo")} &ndash; address of subsystem {@code foo} ({@code /subsystem=foo})</li>
  * <li>{@code Address.coreService("foo")} &ndash; address of core service {@code foo} ({@code /core-service=foo})</li>
+ * <li>{@code Address.deployment("foo")} &ndash; address of deployment {@code foo} ({@code /deployment=foo})</li>
  * <li>{@code Address.of("foo", "bar")} &ndash; address of {@code /foo=bar}</li>
  * </ul>
  *
