@@ -92,6 +92,26 @@ public class AddressTest {
     }
 
     @Test
+    public void profileAddress() {
+        Address singleElementAddress = Address.profile("default");
+        ModelNode modelNode = singleElementAddress.toModelNode();
+
+        assertTrue(modelNode.isDefined());
+        assertEquals(ModelType.LIST, modelNode.getType());
+        assertTrue(modelNode.hasDefined(0));
+        assertFalse(modelNode.hasDefined(1));
+
+        ModelNode firstElement = modelNode.get(0);
+        assertEquals(ModelType.PROPERTY, firstElement.getType());
+        assertEquals(Constants.PROFILE, firstElement.asProperty().getName());
+        assertEquals(ModelType.STRING, firstElement.asProperty().getValue().getType());
+        assertEquals("default", firstElement.asProperty().getValue().asString());
+
+        assertEquals("/profile=default", singleElementAddress.toString());
+        assertEquals("default", singleElementAddress.getLastPairValue());
+    }
+
+    @Test
     public void hostAddress() {
         Address singleElementAddress = Address.host("master");
         ModelNode modelNode = singleElementAddress.toModelNode();
