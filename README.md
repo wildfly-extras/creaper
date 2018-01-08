@@ -177,19 +177,17 @@ Dependencies for `creaper-commands`:
 
 #### WildFly 11 (based on WildFly Core 3)
 
-_Note that WildFly 11 is not yet final!_
-
 Dependencies for `creaper-core`:
 
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-controller-client</artifactId>
-        <version>3.0.0.Beta11</version>
+        <version>3.0.8.Final</version>
     </dependency>
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-cli</artifactId>
-        <version>3.0.0.Beta11</version>
+        <version>3.0.8.Final</version>
     </dependency>
 
 Dependencies for `creaper-commands`:
@@ -197,7 +195,7 @@ Dependencies for `creaper-commands`:
     <dependency>
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-patching</artifactId>
-        <version>3.0.0.Beta11</version>
+        <version>3.0.8.Final</version>
     </dependency>
 
 ### Transitive Dependencies
