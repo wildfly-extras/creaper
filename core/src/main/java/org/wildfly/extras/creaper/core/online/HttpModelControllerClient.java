@@ -28,14 +28,22 @@ import org.jboss.as.controller.client.OperationMessageHandler;
 import org.jboss.as.controller.client.OperationResponse;
 import org.jboss.dmr.ModelNode;
 import org.jboss.threads.AsyncFuture;
+import org.jboss.threads.AsyncFutureTask;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Controller provides execution of {@link ModelNode} or {@link Operation} over HTTP.
- * Asynchronous execution is not provided. Controller does not inform about any progress, therefore, there is no point
- * in using {@link OperationMessageHandler}.
+ * Controller does not inform about any progress, therefore, there is no point in using {@link OperationMessageHandler}.
  * If an error occurs (server does not respond 401 or header does not contain WWW-Authenticate field after
  * first request) {@code IllegalStateException is thrown} (if username and password is provided)
  * Execution on {@link Operation} is allowed with <b>no attachments</b>.
@@ -47,10 +55,13 @@ final class HttpModelControllerClient implements ModelControllerClient {
     private final RequestConfig requestConfig;
     private final Registry<ConnectionSocketFactory> registry;
     private final CloseableHttpClient client;
+    private final int timeout;
+    private ExecutorService executorService;
 
     HttpModelControllerClient(String host, int port, String username, String password, int timeoutMillis,
                               SslOptions ssl) throws IOException {
         // timeout configuration
+        this.timeout = timeoutMillis;
         RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
         if (timeoutMillis != NO_TIMEOUT) {
             requestConfigBuilder
@@ -124,33 +135,43 @@ final class HttpModelControllerClient implements ModelControllerClient {
         return OperationResponse.Factory.createSimple(execute(operation));
     }
 
-    /**
-     * <b>Not supported!</b>
-     */
     @Override
     public AsyncFuture<ModelNode> executeAsync(ModelNode modelNode, OperationMessageHandler handler) {
-        throw new UnsupportedOperationException("Asynchronous execution is not supported by " + getClass().getName());
+        ExecutorService executor = obtainExecutorService();
+        Future<ModelNode> submit = executor.submit(new ModelNodeFromModelNodeCallable(modelNode));
+        ModelNode result = getFutureResult(submit);
+        return new HttpModelControllerClientAsyncFutureTask(executor, result);
     }
 
-    /**
-     * <b>Not supported!</b>
-     */
     @Override
     public AsyncFuture<ModelNode> executeAsync(Operation operation, OperationMessageHandler handler) {
-        throw new UnsupportedOperationException("Asynchronous execution is not supported by " + getClass().getName());
+        ExecutorService executor = obtainExecutorService();
+        Future<ModelNode> submit = executor.submit(new ModelNodeFromOperationCallable(operation));
+        ModelNode result = getFutureResult(submit);
+        return new HttpModelControllerClientAsyncFutureTask(executor, result);
     }
 
-    /**
-     * <b>Not supported!</b>
-     */
     @Override
     public AsyncFuture<OperationResponse> executeOperationAsync(Operation operation, OperationMessageHandler handler) {
-        throw new UnsupportedOperationException("Asynchronous execution is not supported by " + getClass().getName());
+        ExecutorService executor = obtainExecutorService();
+        Future<OperationResponse> submit = executor.submit(new OperationResponseFromOperationCallable(operation));
+        OperationResponse result = getFutureResult(submit);
+        return new HttpModelControllerClientAsyncFutureTask(executor, result);
     }
 
     @Override
     public void close() throws IOException {
         client.close();
+        if (executorService != null) {
+            executorService.shutdown();
+        }
+    }
+
+    private ExecutorService obtainExecutorService() {
+        if (executorService == null) {
+            executorService = Executors.newCachedThreadPool();
+        }
+        return executorService;
     }
 
     private ModelNode parseResponse(CloseableHttpResponse response) throws IOException {
@@ -213,5 +234,74 @@ final class HttpModelControllerClient implements ModelControllerClient {
             }
         }
         throw new IllegalStateException("Failed to obtain management realm name. Digest realm not found in WWW-Authenticate header.");
+    }
+
+    private <T> T getFutureResult(Future<T> submit) {
+        T get = null;
+        try {
+            if (timeout == NO_TIMEOUT) {
+                get = submit.get();
+            } else {
+                get = submit.get(timeout, TimeUnit.MILLISECONDS);
+            }
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        } catch (ExecutionException ex) {
+            throw new RuntimeException(ex);
+        } catch (TimeoutException ex) {
+            throw new RuntimeException(ex);
+        }
+        return get;
+    }
+
+    private static class HttpModelControllerClientAsyncFutureTask<T> extends AsyncFutureTask<T> {
+
+        public HttpModelControllerClientAsyncFutureTask(Executor executor, T result) {
+            super(executor);
+            super.setResult(result);
+        }
+
+    }
+
+    private class ModelNodeFromModelNodeCallable implements Callable<ModelNode> {
+
+        private final ModelNode modelNode;
+
+        public ModelNodeFromModelNodeCallable(ModelNode modelNode) {
+            this.modelNode = modelNode;
+        }
+
+        @Override
+        public ModelNode call() throws Exception {
+            return execute(modelNode);
+        }
+    }
+
+    private class ModelNodeFromOperationCallable implements Callable<ModelNode> {
+
+        private final Operation operation;
+
+        public ModelNodeFromOperationCallable(Operation operation) {
+            this.operation = operation;
+        }
+
+        @Override
+        public ModelNode call() throws Exception {
+            return execute(operation);
+        }
+    }
+
+    private class OperationResponseFromOperationCallable implements Callable<OperationResponse> {
+
+        private final Operation operation;
+
+        public OperationResponseFromOperationCallable(Operation operation) {
+            this.operation = operation;
+        }
+
+        @Override
+        public OperationResponse call() throws Exception {
+            return executeOperation(operation, null);
+        }
     }
 }

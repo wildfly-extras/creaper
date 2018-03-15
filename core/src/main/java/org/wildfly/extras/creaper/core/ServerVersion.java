@@ -68,8 +68,10 @@ public final class ServerVersion {
     public static final ServerVersion VERSION_4_1_0 = new ServerVersion(4, 1, 0);
     /** WF 10.1.0.Final */
     public static final ServerVersion VERSION_4_2_0 = new ServerVersion(4, 2, 0);
-    /** WF 11 (not yet final) */
+    /** WF 11.0.0.Final */
     public static final ServerVersion VERSION_5_0_0 = new ServerVersion(5, 0, 0);
+    /** WF 12.0.0.Final */
+    public static final ServerVersion VERSION_6_0_0 = new ServerVersion(6, 0, 0);
 
     private static final ServerVersion[] KNOWN_VERSIONS = {
             VERSION_0_0_0,
@@ -90,6 +92,7 @@ public final class ServerVersion {
             VERSION_4_1_0,
             VERSION_4_2_0,
             VERSION_5_0_0,
+            VERSION_6_0_0,
     };
 
     /**
