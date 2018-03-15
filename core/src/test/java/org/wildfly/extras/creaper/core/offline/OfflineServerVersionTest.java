@@ -43,9 +43,12 @@ public class OfflineServerVersionTest {
     private static final String EAP6_LOGGING = "1.5";
     private static final String EAP6_EE = "1.2";
 
-    private static final String EAP7_ROOT = "4.0";
+    private static final String EAP70_ROOT = "4.0";
+    private static final String EAP71_ROOT = "5.0";
     private static final String EAP7_LOGGING = "3.0";
     private static final String EAP7_EE = "4.0";
+
+    private static final String WFLY12_ROOT = "6.0";
 
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();
@@ -81,8 +84,18 @@ public class OfflineServerVersionTest {
     }
 
     @Test
-    public void discoverStandaloneXml_eap7() throws IOException {
-        test(ServerVersion.VERSION_4_0_0, STANDALONE_XML, EAP7_ROOT, EAP7_LOGGING, EAP7_EE);
+    public void discoverStandaloneXml_eap70() throws IOException {
+        test(ServerVersion.VERSION_4_0_0, STANDALONE_XML, EAP70_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
+    public void discoverStandaloneXml_eap71() throws IOException {
+        test(ServerVersion.VERSION_5_0_0, STANDALONE_XML, EAP71_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
+    public void discoverStandaloneXml_wfly12() throws IOException {
+        test(ServerVersion.VERSION_6_0_0, STANDALONE_XML, WFLY12_ROOT, EAP7_LOGGING, EAP7_EE);
     }
 
     @Test
@@ -91,8 +104,18 @@ public class OfflineServerVersionTest {
     }
 
     @Test
-    public void discoverHostXml_eap7() throws IOException {
-        test(ServerVersion.VERSION_4_0_0, HOST_XML, EAP7_ROOT, EAP7_LOGGING, EAP7_EE);
+    public void discoverHostXml_eap70() throws IOException {
+        test(ServerVersion.VERSION_4_0_0, HOST_XML, EAP70_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
+    public void discoverHostXml_eap71() throws IOException {
+        test(ServerVersion.VERSION_5_0_0, HOST_XML, EAP71_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
+    public void discoverHostXml_wfly12() throws IOException {
+        test(ServerVersion.VERSION_6_0_0, HOST_XML, WFLY12_ROOT, EAP7_LOGGING, EAP7_EE);
     }
 
     @Test
@@ -101,8 +124,18 @@ public class OfflineServerVersionTest {
     }
 
     @Test
-    public void discoverDomainXml_eap7() throws IOException {
-        test(ServerVersion.VERSION_4_0_0, DOMAIN_XML, EAP7_ROOT, EAP7_LOGGING, EAP7_EE);
+    public void discoverDomainXml_eap70() throws IOException {
+        test(ServerVersion.VERSION_4_0_0, DOMAIN_XML, EAP70_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
+    public void discoverDomainXml_eap71() throws IOException {
+        test(ServerVersion.VERSION_5_0_0, DOMAIN_XML, EAP71_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
+    public void discoverDomainXml_wfly12() throws IOException {
+        test(ServerVersion.VERSION_6_0_0, DOMAIN_XML, WFLY12_ROOT, EAP7_LOGGING, EAP7_EE);
     }
 
     private void test(ServerVersion expected, String xmlPattern,

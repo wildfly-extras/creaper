@@ -28,9 +28,12 @@
         <version.wildfly10>10.1.0.Final</version.wildfly10>
         <version.wildfly10.core>2.2.0.Final</version.wildfly10.core>
         <version.wildfly10.arquillian>1.1.0.Final</version.wildfly10.arquillian>
-        <version.wildfly11>11.0.0.Alpha1</version.wildfly11>
-        <version.wildfly11.core>3.0.0.Beta11</version.wildfly11.core>
-        <version.wildfly11.arquillian>2.0.2.Final</version.wildfly11.arquillian>
+        <version.wildfly11>11.0.0.Final</version.wildfly11>
+        <version.wildfly11.core>3.0.8.Final</version.wildfly11.core>
+        <version.wildfly11.arquillian>2.1.0.Final</version.wildfly11.arquillian>
+        <version.wildfly12>12.0.0.Final</version.wildfly12>
+        <version.wildfly12.core>4.0.0.Final</version.wildfly12.core>
+        <version.wildfly12.arquillian>2.1.0.Final</version.wildfly12.arquillian>
 
         <managementPort.as7>9999</managementPort.as7>
         <managementPort.wildfly>9990</managementPort.wildfly>
@@ -76,8 +79,15 @@
         <wildfly11.arquillianContainer.groupId>org.wildfly.arquillian</wildfly11.arquillianContainer.groupId>
         <wildfly11.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly11.arquillianContainer.artifactId>
         <wildfly11.arquillianContainer.version>${version.wildfly11.arquillian}</wildfly11.arquillianContainer.version>
+        
+        <wildfly12.applicationServer.groupId>org.wildfly</wildfly12.applicationServer.groupId>
+        <wildfly12.applicationServer.artifactId>wildfly-dist</wildfly12.applicationServer.artifactId>
+        <wildfly12.applicationServer.version>${version.wildfly12}</wildfly12.applicationServer.version>
+        <wildfly12.arquillianContainer.groupId>org.wildfly.arquillian</wildfly12.arquillianContainer.groupId>
+        <wildfly12.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly12.arquillianContainer.artifactId>
+        <wildfly12.arquillianContainer.version>${version.wildfly12.arquillian}</wildfly12.arquillianContainer.version>
 
-        <!-- defined in profiles "as7", "wildfly8", "wildfly9", "wildfly10" and "wildfly11" below -->
+        <!-- defined in profiles "as7", "wildfly8", "wildfly9", "wildfly10", "wildfly11" and "wildfly12" below -->
         <applicationServer.groupId>MUST-BE-DEFINED</applicationServer.groupId>
         <applicationServer.artifactId>MUST-BE-DEFINED</applicationServer.artifactId>
         <applicationServer.version>MUST-BE-DEFINED</applicationServer.version>
@@ -410,9 +420,6 @@
         </profile>
         <profile>
             <id>wildfly10</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
 
             <properties>
                 <version.java>1.8</version.java>
@@ -459,9 +466,6 @@
         </profile>
         <profile>
             <id>wildfly11</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
 
             <properties>
                 <version.java>1.8</version.java>
@@ -503,6 +507,56 @@
                     <groupId>org.wildfly.core</groupId>
                     <artifactId>wildfly-patching</artifactId>
                     <version>${version.wildfly11.core}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        
+        <profile>
+            <id>wildfly12</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <properties>
+                <version.java>1.8</version.java>
+
+                <applicationServer.groupId>${wildfly12.applicationServer.groupId}</applicationServer.groupId>
+                <applicationServer.artifactId>${wildfly12.applicationServer.artifactId}</applicationServer.artifactId>
+                <applicationServer.version>${wildfly12.applicationServer.version}</applicationServer.version>
+                <applicationServer.managementPort>${managementPort.wildfly}</applicationServer.managementPort>
+
+                <arquillianContainer.groupId>${wildfly12.arquillianContainer.groupId}</arquillianContainer.groupId>
+                <arquillianContainer.artifactId>${wildfly12.arquillianContainer.artifactId}</arquillianContainer.artifactId>
+                <arquillianContainer.version>${wildfly12.arquillianContainer.version}</arquillianContainer.version>
+
+                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
+                <tests.specialJvmArgs>${specialJvmArgs.wildfly}</tests.specialJvmArgs>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-core</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-commands</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-controller-client</artifactId>
+                    <version>${version.wildfly12.core}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-cli</artifactId>
+                    <version>${version.wildfly12.core}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-patching</artifactId>
+                    <version>${version.wildfly12.core}</version>
                 </dependency>
             </dependencies>
         </profile>

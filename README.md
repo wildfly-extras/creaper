@@ -160,7 +160,7 @@ Dependencies for `creaper-core`:
     </dependency>
 
     <!-- see https://issues.jboss.org/browse/WFCORE-1580 -->
-    <!-- not required if the dependency on wildfly-patching below is also added ->
+    <!-- not required if the dependency on wildfly-patching below is also added -->
     <dependency>
         <groupId>org.jboss.logmanager</groupId>
         <artifactId>jboss-logmanager</artifactId>
@@ -196,6 +196,29 @@ Dependencies for `creaper-commands`:
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-patching</artifactId>
         <version>3.0.8.Final</version>
+    </dependency>
+
+#### WildFly 12 (based on WildFly Core 4)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>4.0.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>4.0.0.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>4.0.0.Final</version>
     </dependency>
 
 ### Transitive Dependencies
