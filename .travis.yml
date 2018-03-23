@@ -7,4 +7,9 @@ jdk:
 
 install: echo LOL
 
-script: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true
+env:
+  - RUN_TESTS=**.elytron.**.*
+  - RUN_TESTS=\!**.elytron.**.*
+
+script: 
+  - mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=$RUN_TESTS
