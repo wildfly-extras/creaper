@@ -70,10 +70,23 @@ public class JournalStoreVsJdbcStoreOnlineTest {
         result = ops.readAttribute(TRANSACTIONS_ADDRESS, "use-jdbc-store");
         result.assertSuccess();
         assertFalse(result.booleanValue());
+
+        onlineClient.apply(TransactionManager.basicAttributes().useJournalStore(false).build());
+
+        result = ops.readAttribute(TRANSACTIONS_ADDRESS, journalStoreAttribute());
+        result.assertSuccess();
+        assertFalse(result.booleanValue());
     }
 
     @Test
     @InSequence(3)
+    public void reloadServer() throws CommandFailedException, IOException {
+        controller.stop(ManualTests.ARQUILLIAN_CONTAINER);
+        controller.start(ManualTests.ARQUILLIAN_CONTAINER);
+    }
+
+    @Test
+    @InSequence(4)
     public void enableJdbcStore() throws Exception {
         assumeTrue(onlineClient.version().greaterThanOrEqualTo(ServerVersion.VERSION_1_5_0));
         assumeFalse(onlineClient.version().equals(ServerVersion.VERSION_3_0_0));
@@ -90,7 +103,7 @@ public class JournalStoreVsJdbcStoreOnlineTest {
     }
 
     @Test
-    @InSequence(4)
+    @InSequence(5)
     public void stopServer() throws CommandFailedException, IOException {
         controller.stop(ManualTests.ARQUILLIAN_CONTAINER);
         offlineClient.apply(CONFIGURATION_BACKUP.restore());
@@ -100,3 +113,4 @@ public class JournalStoreVsJdbcStoreOnlineTest {
         return onlineClient.version().lessThan(ServerVersion.VERSION_4_0_0) ? "use-hornetq-store" : "use-journal-store";
     }
 }
+
