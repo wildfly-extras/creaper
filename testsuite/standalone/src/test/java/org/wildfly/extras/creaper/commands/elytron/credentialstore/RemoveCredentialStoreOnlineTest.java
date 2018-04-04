@@ -4,9 +4,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.elytron.AbstractElytronOnlineTest;
 import org.wildfly.extras.creaper.commands.elytron.CredentialRef;
@@ -20,6 +23,9 @@ public class RemoveCredentialStoreOnlineTest extends AbstractElytronOnlineTest {
     private static final Address TEST_CREDENTIAL_STORE_ADDRESS = SUBSYSTEM_ADDRESS
             .and("credential-store", TEST_CREDENTIAL_STORE_NAME);
 
+    @ClassRule
+    public static TemporaryFolder tmp = new TemporaryFolder();
+
     @After
     public void cleanup() throws Exception {
         ops.removeIfExists(TEST_CREDENTIAL_STORE_ADDRESS);
@@ -30,6 +36,7 @@ public class RemoveCredentialStoreOnlineTest extends AbstractElytronOnlineTest {
     public void removeCredentialStore() throws Exception {
         AddCredentialStore addCredentialStore = new AddCredentialStore.Builder(TEST_CREDENTIAL_STORE_NAME)
                 .create(true)
+                .location(tmp.getRoot().getAbsolutePath() + File.pathSeparator + "someLocationFile")
                 .credentialReference(new CredentialRef.CredentialRefBuilder()
                         .clearText("somePassword")
                         .build())
