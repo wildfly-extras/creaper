@@ -1,4 +1,4 @@
-package org.wildfly.extras.creaper.commands.elytron.mapper;
+package org.wildfly.extras.creaper.commands.elytron.permissionset;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,28 +12,26 @@ import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 
-public final class AddConstantPermissionMapper implements OnlineCommand {
+public final class AddPermissionSet implements OnlineCommand {
 
     private final String name;
     private final List<Permission> permissions;
-    private final List<String> permissionSets;
     private final boolean replaceExisting;
 
-    private AddConstantPermissionMapper(Builder builder) {
+    private AddPermissionSet(Builder builder) {
         this.name = builder.name;
         this.permissions = builder.permissions;
-        this.permissionSets = builder.permissionSets;
         this.replaceExisting = builder.replaceExisting;
     }
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        if (ctx.version.lessThan(ServerVersion.VERSION_5_0_0)) {
-            throw new AssertionError("Elytron is available since WildFly 11.");
+        if (ctx.version.lessThan(ServerVersion.VERSION_7_0_0)) {
+            throw new AssertionError("Elytron permission-set is available since WildFly 13.");
         }
 
         Operations ops = new Operations(ctx.client);
-        Address mapperAddress = Address.subsystem("elytron").and("constant-permission-mapper", name);
+        Address mapperAddress = Address.subsystem("elytron").and("permission-set", name);
         if (replaceExisting) {
             ops.removeIfExists(mapperAddress);
             new Administration(ctx.client).reloadIfRequired();
@@ -43,71 +41,47 @@ public final class AddConstantPermissionMapper implements OnlineCommand {
         if (permissions != null && !permissions.isEmpty()) {
             permissionsNodeList = new ArrayList<ModelNode>();
             for (Permission permission : permissions) {
-                ModelNode node = new ModelNode();
-                node.add("class-name", permission.getClassName());
-                addOptionalToModelNode(node, "module", permission.getModule());
-                addOptionalToModelNode(node, "target-name", permission.getTargetName());
-                addOptionalToModelNode(node, "action", permission.getAction());
-                node = node.asObject();
-                permissionsNodeList.add(node);
-            }
-        }
-
-        List<ModelNode> permissionSetsNodeList = null;
-        if (permissionSets != null && !permissionSets.isEmpty()) {
-            if (ctx.version.lessThan(ServerVersion.VERSION_7_0_0)) {
-                throw new AssertionError("permission-set is available since WildFly 13.");
-            }
-            permissionSetsNodeList = new ArrayList<ModelNode>();
-            for (String permissionSet : permissionSets) {
-                ModelNode permissionSetNode = new ModelNode()
-                        .add("permission-set", permissionSet);
-                permissionSetNode = permissionSetNode.asObject();
-                permissionSetsNodeList.add(permissionSetNode);
+                ModelNode permissionNode = new ModelNode()
+                        .add("class-name", permission.getClassName());
+                if (permission.getAction() != null && !permission.getAction().isEmpty()) {
+                    permissionNode.add("action", permission.getAction());
+                }
+                if (permission.getModule() != null && !permission.getModule().isEmpty()) {
+                    permissionNode.add("module", permission.getModule());
+                }
+                if (permission.getTargetName() != null && !permission.getTargetName().isEmpty()) {
+                    permissionNode.add("target-name", permission.getTargetName());
+                }
+                permissionNode = permissionNode.asObject();
+                permissionsNodeList.add(permissionNode);
             }
         }
 
         ops.add(mapperAddress, Values.empty()
-                .andListOptional(ModelNode.class, "permissions", permissionsNodeList)
-                .andListOptional(ModelNode.class, "permission-sets", permissionSetsNodeList));
-    }
-
-    private void addOptionalToModelNode(ModelNode node, String name, String value) {
-        if (value != null && !value.isEmpty()) {
-            node.add(name, value);
-        }
+                .andListOptional(ModelNode.class, "permissions", permissionsNodeList));
     }
 
     public static final class Builder {
 
         private final String name;
-        private List<Permission> permissions = new ArrayList<Permission>();
-        private List<String> permissionSets = new ArrayList<String>();
+        private final List<Permission> permissions = new ArrayList<Permission>();
         private boolean replaceExisting;
 
         public Builder(String name) {
             if (name == null) {
-                throw new IllegalArgumentException("Name of the constant-permission-mapper must be specified as non null value");
+                throw new IllegalArgumentException("Name of the simple-permission-mapper must be specified as non null value");
             }
             if (name.isEmpty()) {
-                throw new IllegalArgumentException("Name of the constant-permission-mapper must not be empty value");
+                throw new IllegalArgumentException("Name of the simple-permission-mapper must not be empty value");
             }
             this.name = name;
         }
 
         public Builder addPermissions(Permission... permissions) {
             if (permissions == null) {
-                throw new IllegalArgumentException("Permissions added to permission-mapping of constant-permission-mapper must not be null");
+                throw new IllegalArgumentException("Permissions added to permission-mapping of simple-permission-mapper must not be null");
             }
             Collections.addAll(this.permissions, permissions);
-            return this;
-        }
-
-        public Builder addPermissionSets(String... permissionSets) {
-            if (permissionSets == null) {
-                throw new IllegalArgumentException("Permission sets added to permission-mapping of constant-permission-mapper must not be null");
-            }
-            Collections.addAll(this.permissionSets, permissionSets);
             return this;
         }
 
@@ -116,11 +90,8 @@ public final class AddConstantPermissionMapper implements OnlineCommand {
             return this;
         }
 
-        public AddConstantPermissionMapper build() {
-            if (!permissions.isEmpty() && !permissionSets.isEmpty()) {
-                throw new IllegalArgumentException("Only one of permissions and permission-sets can be used.");
-            }
-            return new AddConstantPermissionMapper(this);
+        public AddPermissionSet build() {
+            return new AddPermissionSet(this);
         }
     }
 
@@ -190,6 +161,4 @@ public final class AddConstantPermissionMapper implements OnlineCommand {
             return new Permission(this);
         }
     }
-
-
 }

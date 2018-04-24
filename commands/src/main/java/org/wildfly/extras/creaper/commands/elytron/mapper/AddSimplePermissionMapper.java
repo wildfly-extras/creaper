@@ -61,23 +61,38 @@ public final class AddSimplePermissionMapper implements OnlineCommand {
                     }
                     configNode.add("principals", principalsList);
                 }
-                ModelNode permissionsModelNodeList = new ModelNode().setEmptyList();
-                for (Permission permission : mapping.getPermissions()) {
-                    ModelNode permissionNode = new ModelNode()
-                            .add("class-name", permission.getClassName());
-                    if (permission.getAction() != null && !permission.getAction().isEmpty()) {
-                        permissionNode.add("action", permission.getAction());
+                if (mapping.getPermissions() != null && !mapping.getPermissions().isEmpty()) {
+                    ModelNode permissionsModelNodeList = new ModelNode().setEmptyList();
+                    for (Permission permission : mapping.getPermissions()) {
+                        ModelNode permissionNode = new ModelNode()
+                                .add("class-name", permission.getClassName());
+                        if (permission.getAction() != null && !permission.getAction().isEmpty()) {
+                            permissionNode.add("action", permission.getAction());
+                        }
+                        if (permission.getModule() != null && !permission.getModule().isEmpty()) {
+                            permissionNode.add("module", permission.getModule());
+                        }
+                        if (permission.getTargetName() != null && !permission.getTargetName().isEmpty()) {
+                            permissionNode.add("target-name", permission.getTargetName());
+                        }
+                        permissionNode = permissionNode.asObject();
+                        permissionsModelNodeList.add(permissionNode);
                     }
-                    if (permission.getModule() != null && !permission.getModule().isEmpty()) {
-                        permissionNode.add("module", permission.getModule());
-                    }
-                    if (permission.getTargetName() != null && !permission.getTargetName().isEmpty()) {
-                        permissionNode.add("target-name", permission.getTargetName());
-                    }
-                    permissionNode = permissionNode.asObject();
-                    permissionsModelNodeList.add(permissionNode);
+                    configNode.add("permissions", permissionsModelNodeList);
                 }
-                configNode.add("permissions", permissionsModelNodeList);
+                if (mapping.getPermissionSets() != null && !mapping.getPermissionSets().isEmpty()) {
+                    if (ctx.version.lessThan(ServerVersion.VERSION_7_0_0)) {
+                        throw new AssertionError("permission-set is available since WildFly 13.");
+                    }
+                    ModelNode permissionSetModelNodeList = new ModelNode().setEmptyList();
+                    for (String permissionSet : mapping.getPermissionSets()) {
+                        ModelNode permissionSetNode = new ModelNode()
+                                .add("permission-set", permissionSet);
+                        permissionSetNode = permissionSetNode.asObject();
+                        permissionSetModelNodeList.add(permissionSetNode);
+                    }
+                    configNode.add("permission-sets", permissionSetModelNodeList);
+                }
                 configNode = configNode.asObject();
                 permissionMappingsModelNodeList.add(configNode);
             }
@@ -138,12 +153,14 @@ public final class AddSimplePermissionMapper implements OnlineCommand {
         private final List<String> roles;
         private final List<String> principals;
         private final List<Permission> permissions;
+        private final List<String> permissionSets;
 
         private PermissionMapping(PermissionMappingBuilder builder) {
             this.matchAll = builder.matchAll;
             this.roles = builder.roles;
             this.principals = builder.principals;
             this.permissions = builder.permissions;
+            this.permissionSets = builder.permissionSets;
         }
 
         public Boolean getMatchAll() {
@@ -162,6 +179,10 @@ public final class AddSimplePermissionMapper implements OnlineCommand {
             return permissions;
         }
 
+        public List<String> getPermissionSets() {
+            return permissionSets;
+        }
+
     }
 
     public static final class PermissionMappingBuilder {
@@ -170,6 +191,7 @@ public final class AddSimplePermissionMapper implements OnlineCommand {
         private List<String> roles = new ArrayList<String>();
         private List<String> principals = new ArrayList<String>();
         private List<Permission> permissions = new ArrayList<Permission>();
+        private List<String> permissionSets = new ArrayList<String>();
 
         public PermissionMappingBuilder matchAll(Boolean matchAll) {
             this.matchAll = matchAll;
@@ -200,12 +222,23 @@ public final class AddSimplePermissionMapper implements OnlineCommand {
             return this;
         }
 
+        public PermissionMappingBuilder addPermissionSets(String... permissionSets) {
+            if (permissionSets == null) {
+                throw new IllegalArgumentException("Permission sets added to permission-mapping of simple-permission-mapper must not be null");
+            }
+            Collections.addAll(this.permissionSets, permissionSets);
+            return this;
+        }
+
         public PermissionMapping build() {
             if (matchAll != null && !principals.isEmpty()) {
                 throw new IllegalArgumentException("Only one of principal and match-all can be used.");
             }
             if (matchAll != null && !roles.isEmpty()) {
                 throw new IllegalArgumentException("Only one of roles and match-all can be used.");
+            }
+            if (!permissions.isEmpty() && !permissionSets.isEmpty()) {
+                throw new IllegalArgumentException("Only one of permissions and permission-sets can be used.");
             }
             return new PermissionMapping(this);
         }

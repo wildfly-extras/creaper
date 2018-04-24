@@ -8,10 +8,12 @@ import java.io.IOException;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.elytron.AbstractElytronOnlineTest;
 import org.wildfly.extras.creaper.core.CommandFailedException;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 
@@ -24,6 +26,9 @@ public class AddSimplePermissionMapperOnlineTest extends AbstractElytronOnlineTe
     private static final String TEST_SIMPLE_PERMISSION_MAPPER_NAME2 = "CreaperTestSimplePermissionMapper2";
     private static final Address TEST_SIMPLE_PERMISSION_MAPPER_ADDRESS2 = SUBSYSTEM_ADDRESS
             .and("simple-permission-mapper", TEST_SIMPLE_PERMISSION_MAPPER_NAME2);
+
+    private static final String PREDEFINED_PERMISSION_SET1 = "default-permissions";
+    private static final String PREDEFINED_PERMISSION_SET2 = "login-permission";
 
     @After
     public void cleanup() throws Exception {
@@ -160,6 +165,40 @@ public class AddSimplePermissionMapperOnlineTest extends AbstractElytronOnlineTe
                 "changeRoleMapperPermissionName");
     }
 
+    @Test
+    public void addFullSimplePermissionMapper_permissionSets() throws Exception {
+        Assume.assumeTrue("permission-set is available since WildFly 13.",
+                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_7_0_0));
+        AddSimplePermissionMapper addSimplePermissionMapper
+                = new AddSimplePermissionMapper.Builder(TEST_SIMPLE_PERMISSION_MAPPER_NAME)
+                .mappingMode(AddSimplePermissionMapper.MappingMode.OR)
+                .addPermissionMappings(new AddSimplePermissionMapper.PermissionMappingBuilder()
+                        .addPermissionSets(PREDEFINED_PERMISSION_SET1, PREDEFINED_PERMISSION_SET2)
+                        .matchAll(true)
+                        .build(),
+                        new AddSimplePermissionMapper.PermissionMappingBuilder()
+                        .addPermissionSets(PREDEFINED_PERMISSION_SET1)
+                        .matchAll(false)
+                        .build())
+                .build();
+
+        client.apply(addSimplePermissionMapper);
+
+        assertTrue("Simple permission mapper should be created", ops.exists(TEST_SIMPLE_PERMISSION_MAPPER_ADDRESS));
+
+        checkSimplePermissionMapperAttribute("mapping-mode", "or");
+
+        checkSimplePermissionMapperAttribute("permission-mappings[0].match-all", "true");
+        checkSimplePermissionMapperAttribute("permission-mappings[0].permission-sets[0].permission-set",
+                PREDEFINED_PERMISSION_SET1);
+        checkSimplePermissionMapperAttribute("permission-mappings[0].permission-sets[1].permission-set",
+                PREDEFINED_PERMISSION_SET2);
+
+        checkSimplePermissionMapperAttributeIsUndefined("permission-mappings[1].match-all");
+        checkSimplePermissionMapperAttribute("permission-mappings[1].permission-sets[0].permission-set",
+                PREDEFINED_PERMISSION_SET1);
+    }
+
     @Test(expected = CommandFailedException.class)
     public void addExistSimplePermissionMapperNotAllowed() throws Exception {
         AddSimplePermissionMapper addSimplePermissionMapper
@@ -282,6 +321,19 @@ public class AddSimplePermissionMapperOnlineTest extends AbstractElytronOnlineTe
                         .build())
                 .build();
         fail("Creating command with both roles and match-all should throw exception");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addSimplePermissionMapper_permissionsPermissionSet() throws Exception {
+        new AddSimplePermissionMapper.Builder(TEST_SIMPLE_PERMISSION_MAPPER_NAME)
+                .addPermissionMappings(new AddSimplePermissionMapper.PermissionMappingBuilder()
+                        .addPermissions(new AddSimplePermissionMapper.PermissionBuilder()
+                                .className("org.wildfly.security.auth.permission.LoginPermission")
+                                .build())
+                        .addPermissionSets(PREDEFINED_PERMISSION_SET1)
+                        .build())
+                .build();
+        fail("Creating command with both permissions and permission-sets should throw exception");
     }
 
     private void checkSimplePermissionMapperAttribute(String attribute, String expectedValue) throws IOException {
