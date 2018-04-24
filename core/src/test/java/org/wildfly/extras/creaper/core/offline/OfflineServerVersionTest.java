@@ -49,6 +49,7 @@ public class OfflineServerVersionTest {
     private static final String EAP7_EE = "4.0";
 
     private static final String WFLY12_ROOT = "6.0";
+    private static final String WFLY13_ROOT = "7.0";
 
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();
@@ -99,6 +100,11 @@ public class OfflineServerVersionTest {
     }
 
     @Test
+    public void discoverStandaloneXml_wfly13() throws IOException {
+        test(ServerVersion.VERSION_7_0_0, STANDALONE_XML, WFLY13_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
     public void discoverHostXml_eap6() throws IOException {
         test(ServerVersion.VERSION_1_7_0, HOST_XML, EAP6_ROOT, EAP6_LOGGING, EAP6_EE);
     }
@@ -119,6 +125,11 @@ public class OfflineServerVersionTest {
     }
 
     @Test
+    public void discoverHostXml_wfly13() throws IOException {
+        test(ServerVersion.VERSION_7_0_0, HOST_XML, WFLY13_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
     public void discoverDomainXml_eap6() throws IOException {
         test(ServerVersion.VERSION_1_7_0, DOMAIN_XML, EAP6_ROOT, EAP6_LOGGING, EAP6_EE);
     }
@@ -136,6 +147,11 @@ public class OfflineServerVersionTest {
     @Test
     public void discoverDomainXml_wfly12() throws IOException {
         test(ServerVersion.VERSION_6_0_0, DOMAIN_XML, WFLY12_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
+    public void discoverDomainXml_wfly13() throws IOException {
+        test(ServerVersion.VERSION_7_0_0, DOMAIN_XML, WFLY13_ROOT, EAP7_LOGGING, EAP7_EE);
     }
 
     private void test(ServerVersion expected, String xmlPattern,
