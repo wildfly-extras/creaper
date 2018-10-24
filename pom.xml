@@ -87,7 +87,6 @@
         <version.org.apache.maven.plugins.maven-surefire-plugin>2.22.1</version.org.apache.maven.plugins.maven-surefire-plugin>
         <version.org.bouncycastle>1.60</version.org.bouncycastle>
         <version.org.codehaus.groovy.groovy-everything>2.5.3</version.org.codehaus.groovy.groovy-everything>
-        <version.org.codehaus.mojo.codenarc-maven-plugin>0.22-1</version.org.codehaus.mojo.codenarc-maven-plugin>
         <version.org.codehaus.mojo.findbugs-maven-plugin>2.5.5</version.org.codehaus.mojo.findbugs-maven-plugin>
         <version.org.codehaus.mojo.findbugs-maven-plugin_java8>3.0.4</version.org.codehaus.mojo.findbugs-maven-plugin_java8>
         <version.org.hamcrest.hamcrest-core>1.3</version.org.hamcrest.hamcrest-core>
@@ -411,27 +410,6 @@
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>codenarc-maven-plugin</artifactId>
-                    <version>${version.org.codehaus.mojo.codenarc-maven-plugin}</version>
-                    <configuration>
-                        <sourceDirectory>${project.basedir}/src</sourceDirectory>
-                        <rulesetfiles>file:codenarc.xml</rulesetfiles>
-                        <maxPriority1Violations>0</maxPriority1Violations>
-                        <maxPriority2Violations>0</maxPriority2Violations>
-                        <maxPriority3Violations>0</maxPriority3Violations>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>codenarc</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>codenarc</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
                     <version>${version.org.codehaus.mojo.findbugs-maven-plugin}</version>
                     <executions>
@@ -458,10 +436,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>codenarc-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
