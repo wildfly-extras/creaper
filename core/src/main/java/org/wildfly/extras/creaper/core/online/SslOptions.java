@@ -4,6 +4,8 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.Closeables;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -259,6 +261,7 @@ public final class SslOptions {
         return trustManagerFactory.getTrustManagers();
     }
 
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF") // spotbugs doesn't know guava's @Nullable
     private KeyStore createKeyStore() {
         final KeyStore keyStore = createStore(this.keyStoreType);
         InputStream keyStoreStream = null;
@@ -325,6 +328,7 @@ public final class SslOptions {
         return replacementKeyStore;
     }
 
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF") // spotbugs doesn't know guava's @Nullable
     private KeyStore createTrustStore() {
         final KeyStore trustStore = createStore(this.trustStoreType);
         InputStream trustStoreStream = null;
