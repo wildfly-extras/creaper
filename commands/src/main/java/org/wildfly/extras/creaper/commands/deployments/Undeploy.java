@@ -40,7 +40,7 @@ public final class Undeploy implements OnlineCommand {
         }
 
         /**
-         * Defines that the content should be left in the deployment repository => only undeployed without removing it.
+         * Defines that the content should be left in the deployment repository =&gt; only undeployed without removing it.
          */
         public Builder keepContent() {
             this.keepContent = true;

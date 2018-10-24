@@ -22,7 +22,7 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.ENA
 
 /**
  * Command which takes care about deploying specified deployment under specified deployment name.
- * <p/>
+ * <br>
  * In case of domain it is deployed by default to all server groups
  */
 public final class Deploy implements OnlineCommand {

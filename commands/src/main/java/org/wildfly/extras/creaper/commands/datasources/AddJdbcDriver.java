@@ -69,8 +69,7 @@ public final class AddJdbcDriver implements OnlineCommand, OfflineCommand {
     /**
      * Builder for configuration attributes of a JDBC driver in the {@code datasources} susbystem.
      *
-     * @see <a href="http://wildscribe.github.io/JBoss EAP/6.2.0/subsystem/datasources/jdbc-driver/">
-     *        http://wildscribe.github.io/JBoss EAP/6.2.0/subsystem/datasources/jdbc-driver/</a>
+     * @see <a href="http://wildscribe.github.io/JBoss%20EAP/6.2.0/subsystem/datasources/jdbc-driver/">http://wildscribe.github.io/JBoss EAP/6.2.0/subsystem/datasources/jdbc-driver/</a>
      */
     public static final class Builder {
         private String driverName;

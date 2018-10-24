@@ -203,7 +203,7 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
          *     It will be generated only if there doesn't exist the defined keystore.
          * </p>
          * <p>
-         *     This option is available since WildFly 10.1 => for older versions it is ignored
+         *     This option is available since WildFly 10.1 =&gt; for older versions it is ignored
          * </p>
          */
         public Builder generateSelfSignedCertHost(String generateSelfSignedCertHost) {

@@ -18,7 +18,7 @@ import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstant
  *     <li>{@code DatabaseName}</li>
  * </ul>
  *
- * <p>Applies defaults from testing JBoss EAP 7.<br/>
+ * <p>Applies defaults from testing JBoss EAP 7.<br>
  * Note: classes for connection checker and exception sorter are the same as for MySQL datasource</p>
  */
 public final class AddMariaDbXADataSource extends AddXADataSource {

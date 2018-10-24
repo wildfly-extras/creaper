@@ -26,7 +26,7 @@ import java.util.List;
  *
  * <pre>
  * module add --name=name --slot=slot --resources=jars
- *            --resource-delimiter=char --dependencies=modules --properties=properties</p>
+ *            --resource-delimiter=char --dependencies=modules --properties=properties
  * </pre>
  */
 public class AddModule implements OnlineCommand {
