@@ -186,13 +186,13 @@ public final class AddMechanismProviderFilteringSaslServerFactory implements Onl
 
     }
 
-    public static enum VersionComparison {
+    public enum VersionComparison {
 
         GREATER_THAN("greater-than"), LESS_THAN("less-than");
 
         private final String versionComparisonName;
 
-        private VersionComparison(String versionComparisonName) {
+        VersionComparison(String versionComparisonName) {
             this.versionComparisonName = versionComparisonName;
         }
 

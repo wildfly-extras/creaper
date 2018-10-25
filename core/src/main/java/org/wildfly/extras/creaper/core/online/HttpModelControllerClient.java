@@ -256,7 +256,7 @@ final class HttpModelControllerClient implements ModelControllerClient {
 
     private static class HttpModelControllerClientAsyncFutureTask<T> extends AsyncFutureTask<T> {
 
-        public HttpModelControllerClientAsyncFutureTask(Executor executor, T result) {
+        HttpModelControllerClientAsyncFutureTask(Executor executor, T result) {
             super(executor);
             super.setResult(result);
         }
@@ -267,7 +267,7 @@ final class HttpModelControllerClient implements ModelControllerClient {
 
         private final ModelNode modelNode;
 
-        public ModelNodeFromModelNodeCallable(ModelNode modelNode) {
+        ModelNodeFromModelNodeCallable(ModelNode modelNode) {
             this.modelNode = modelNode;
         }
 
@@ -281,7 +281,7 @@ final class HttpModelControllerClient implements ModelControllerClient {
 
         private final Operation operation;
 
-        public ModelNodeFromOperationCallable(Operation operation) {
+        ModelNodeFromOperationCallable(Operation operation) {
             this.operation = operation;
         }
 
@@ -295,7 +295,7 @@ final class HttpModelControllerClient implements ModelControllerClient {
 
         private final Operation operation;
 
-        public OperationResponseFromOperationCallable(Operation operation) {
+        OperationResponseFromOperationCallable(Operation operation) {
             this.operation = operation;
         }
 

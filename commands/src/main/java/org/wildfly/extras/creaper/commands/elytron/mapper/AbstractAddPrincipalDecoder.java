@@ -23,7 +23,7 @@ abstract class AbstractAddPrincipalDecoder implements OnlineCommand {
         protected final List<String> principalDecoders = new ArrayList<String>();
         private boolean replaceExisting;
 
-        public Builder(String name) {
+        Builder(String name) {
             if (name == null) {
                 throw new IllegalArgumentException("Name of the aggregate-principal-decoder must be specified as non null value");
             }

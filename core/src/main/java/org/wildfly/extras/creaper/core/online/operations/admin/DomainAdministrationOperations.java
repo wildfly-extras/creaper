@@ -19,7 +19,7 @@ final class DomainAdministrationOperations implements AdministrationOperations {
     private final Operations ops;
     private final int timeoutInSeconds;
 
-    public DomainAdministrationOperations(OnlineManagementClient client, int timeoutInSeconds) {
+    DomainAdministrationOperations(OnlineManagementClient client, int timeoutInSeconds) {
         this.client = client;
         this.ops = new Operations(client);
         this.timeoutInSeconds = timeoutInSeconds;

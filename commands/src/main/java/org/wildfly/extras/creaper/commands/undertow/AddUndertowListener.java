@@ -234,7 +234,7 @@ public final class AddUndertowListener implements OnlineCommand {
          * Creates builder for listener with specified name {@code listenerName} for specified undertow server
          * {@code serverName} using specified socket binding {@code socketBinding}
          */
-        public UndertowListenerBuilder(String listenerName, String serverName, String socketBinding) {
+        UndertowListenerBuilder(String listenerName, String serverName, String socketBinding) {
             if (listenerName == null) {
                 throw new IllegalArgumentException("Name of the listener must be specified as non null value");
             }
@@ -254,7 +254,7 @@ public final class AddUndertowListener implements OnlineCommand {
          * Creates builder for listener with specified name {@code listenerName} for default undertow server
          * using specified socket binding {@code socketBinding}
          */
-        public UndertowListenerBuilder(String listenerName, String socketBinding) {
+        UndertowListenerBuilder(String listenerName, String socketBinding) {
             if (listenerName == null) {
                 throw new IllegalArgumentException("Name of the listener must be specified as non null value");
             }

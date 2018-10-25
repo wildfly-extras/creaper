@@ -16,7 +16,7 @@ abstract class AbstractConsoleLogHandlerCommand implements OnlineCommand, Offlin
     protected final LogLevel level;
     protected final ConsoleTarget target;
 
-    protected AbstractConsoleLogHandlerCommand(Builder builder) {
+    AbstractConsoleLogHandlerCommand(Builder builder) {
         this.name = builder.name;
         this.autoflush = builder.autoflush;
         this.enabled = builder.enabled;
@@ -39,7 +39,7 @@ abstract class AbstractConsoleLogHandlerCommand implements OnlineCommand, Offlin
         protected LogLevel level;
         protected ConsoleTarget target;
 
-        public Builder(String name) {
+        Builder(String name) {
             if (name == null) {
                 throw new IllegalArgumentException("Name can not be null.");
             }

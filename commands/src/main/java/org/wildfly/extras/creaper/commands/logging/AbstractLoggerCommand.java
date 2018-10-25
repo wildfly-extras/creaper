@@ -14,7 +14,7 @@ abstract class AbstractLoggerCommand implements OnlineCommand, OfflineCommand {
     protected final Boolean useParentHandler;
     protected final String filter;
 
-    protected AbstractLoggerCommand(Builder builder) {
+    AbstractLoggerCommand(Builder builder) {
         this.category = builder.category;
         this.level = builder.level;
         this.handlers = builder.handlers;
@@ -29,7 +29,7 @@ abstract class AbstractLoggerCommand implements OnlineCommand, OfflineCommand {
         protected Boolean useParentHandler;
         protected String filter;
 
-        public Builder(String category) {
+        Builder(String category) {
             if (category == null || category.equals("")) {
                 throw new IllegalArgumentException("category can not be null nor empty string");
             }
