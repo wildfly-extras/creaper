@@ -279,7 +279,9 @@ public final class SslOptions {
         } catch (CertificateException ex) {
             throw new IllegalStateException("Failed to load keystore.", ex);
         } finally {
-            Closeables.closeQuietly(keyStoreStream);
+            if (keyStoreStream != null) {
+                Closeables.closeQuietly(keyStoreStream);
+            }
         }
 
         return keyStore;
@@ -345,7 +347,9 @@ public final class SslOptions {
         } catch (CertificateException ex) {
             throw new IllegalStateException("Failed to load truststore.", ex);
         } finally {
-            Closeables.closeQuietly(trustStoreStream);
+            if (trustStoreStream != null) {
+                Closeables.closeQuietly(trustStoreStream);
+            }
         }
 
         return trustStore;

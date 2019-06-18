@@ -66,7 +66,7 @@
 
         <!-- All versions. Keep in alphabetical order. Name format: version.${groupId}.${artifactIdOrWildcard}. -->
         <version.com.google.code.cookcc>0.3.3</version.com.google.code.cookcc>
-        <version.com.google.guava.guava>20.0</version.com.google.guava.guava>
+        <version.com.google.guava.guava>28.0-jre</version.com.google.guava.guava>
         <version.com.puppycrawl.tools.checkstyle>6.1.1</version.com.puppycrawl.tools.checkstyle>
         <version.junit.junit>4.12</version.junit.junit>
 
@@ -84,7 +84,7 @@
         <version.org.apache.maven.plugins.maven-shade-plugin>3.0.0</version.org.apache.maven.plugins.maven-shade-plugin>
         <version.org.apache.maven.plugins.maven-source-plugin>3.0.1</version.org.apache.maven.plugins.maven-source-plugin>
         <version.org.apache.maven.plugins.maven-surefire-plugin>2.19.1</version.org.apache.maven.plugins.maven-surefire-plugin>
-        <version.org.bouncycastle>1.55</version.org.bouncycastle>
+        <version.org.bouncycastle>1.62</version.org.bouncycastle>
         <version.org.codehaus.groovy.groovy-everything>2.4.10</version.org.codehaus.groovy.groovy-everything>
         <version.org.codehaus.mojo.codenarc-maven-plugin>0.22-1</version.org.codehaus.mojo.codenarc-maven-plugin>
         <version.org.codehaus.mojo.findbugs-maven-plugin>2.5.5</version.org.codehaus.mojo.findbugs-maven-plugin>
