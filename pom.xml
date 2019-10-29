@@ -67,7 +67,7 @@
         <!-- All versions. Keep in alphabetical order. Name format: version.${groupId}.${artifactIdOrWildcard}. -->
         <version.com.google.code.cookcc>0.3.3</version.com.google.code.cookcc>
         <version.com.google.guava.guava>20.0</version.com.google.guava.guava>
-        <version.com.puppycrawl.tools.checkstyle>6.1.1</version.com.puppycrawl.tools.checkstyle>
+        <version.com.puppycrawl.tools.checkstyle>8.18</version.com.puppycrawl.tools.checkstyle>
         <version.junit.junit>4.12</version.junit.junit>
 
         <version.org.apache.httpcomponents.httpclient>4.5.2</version.org.apache.httpcomponents.httpclient>
