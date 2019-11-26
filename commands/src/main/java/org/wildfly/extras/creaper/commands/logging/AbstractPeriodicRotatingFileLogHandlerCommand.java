@@ -19,7 +19,7 @@ abstract class AbstractPeriodicRotatingFileLogHandlerCommand implements OnlineCo
     protected final String fileRelativeTo;
     protected final String file;
 
-    protected AbstractPeriodicRotatingFileLogHandlerCommand(Builder builder) {
+    AbstractPeriodicRotatingFileLogHandlerCommand(Builder builder) {
         this.name = builder.name;
         this.autoflush = builder.autoflush;
         this.enabled = builder.enabled;
@@ -48,7 +48,7 @@ abstract class AbstractPeriodicRotatingFileLogHandlerCommand implements OnlineCo
         protected String fileRelativeTo;
         protected String file;
 
-        public Builder(String name, String file, String suffix) {
+        Builder(String name, String file, String suffix) {
             if (name == null) {
                 throw new IllegalArgumentException("name can not be null.");
             }

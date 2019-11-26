@@ -196,12 +196,12 @@ public final class AddDirContext implements OnlineCommand {
         }
     }
 
-    public static enum AuthenticationLevel {
+    public enum AuthenticationLevel {
 
         NONE, SIMPLE, STRONG
     }
 
-    public static enum ReferralMode {
+    public enum ReferralMode {
 
         FOLLOW, IGNORE, THROW
     }

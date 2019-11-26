@@ -114,13 +114,13 @@ public final class AddCredentialStoreAlias implements OnlineCommand {
         }
     }
 
-    public static enum EntryType {
+    public enum EntryType {
 
         OTHER("Other"), PASSWORD_CREDENTIAL("org.wildfly.security.credential.PasswordCredential");
 
         private final String entryTypeName;
 
-        private EntryType(String entryTypeName) {
+        EntryType(String entryTypeName) {
             this.entryTypeName = entryTypeName;
         }
 

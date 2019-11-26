@@ -100,7 +100,6 @@
             <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE"/>
         </module>
         <module name="LeftCurly">
-            <property name="maxLineLength" value="120"/>
 <!--
             <property name="ignoreEnums" value="false"/>
 -->

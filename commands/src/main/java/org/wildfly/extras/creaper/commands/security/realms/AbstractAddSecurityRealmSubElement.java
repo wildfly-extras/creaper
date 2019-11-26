@@ -30,7 +30,7 @@ abstract class AbstractAddSecurityRealmSubElement implements OnlineCommand, Offl
         private String securityRealmName;
         private boolean replaceExisting;
 
-        public Builder(String securityRealmName) {
+        Builder(String securityRealmName) {
             if (securityRealmName == null) {
                 throw new IllegalArgumentException("Name of security realm must be specified as non null value");
             }
