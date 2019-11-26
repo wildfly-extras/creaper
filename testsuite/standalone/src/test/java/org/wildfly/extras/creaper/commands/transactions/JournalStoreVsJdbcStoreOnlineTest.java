@@ -4,6 +4,7 @@ import org.jboss.arquillian.container.test.api.ContainerController;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -30,6 +31,7 @@ import static org.junit.Assume.assumeTrue;
 
 @Category(ManualTests.class)
 @RunWith(Arquillian.class)
+@Ignore("https://github.com/wildfly-extras/creaper/issues/166")
 public class JournalStoreVsJdbcStoreOnlineTest {
 
     private static final Address TRANSACTIONS_ADDRESS = Address.subsystem("transactions");
