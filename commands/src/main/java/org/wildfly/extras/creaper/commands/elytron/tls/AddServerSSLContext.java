@@ -47,6 +47,10 @@ public final class AddServerSSLContext extends AbstractAddSSLContext {
             throw new AssertionError("Elytron is available since WildFly 11.");
         }
 
+        if (cipherSuiteNames != null && ctx.version.lessThan(ServerVersion.VERSION_12_0_0)) {
+            throw new AssertionError("cipher-suite-names attribute is available since WildFly 19");
+        }
+
         Operations ops = new Operations(ctx.client);
         Address serverSSLContextAddress = Address.subsystem("elytron").and("server-ssl-context", name);
         if (replaceExisting) {
@@ -57,6 +61,7 @@ public final class AddServerSSLContext extends AbstractAddSSLContext {
         ops.add(serverSSLContextAddress, Values.empty()
                 .and("key-manager", keyManager)
                 .andOptional("cipher-suite-filter", cipherSuiteFilter)
+                .andOptional("cipher-suite-names", cipherSuiteNames)
                 .andOptional("maximum-session-cache-size", maximumSessionCacheSize)
                 .andOptional("session-timeout", sessionTimeout)
                 .andOptional("trust-manager", trustManager)
@@ -81,10 +86,15 @@ public final class AddServerSSLContext extends AbstractAddSSLContext {
             throw new AssertionError("Elytron is available since WildFly 11.");
         }
 
+        if (cipherSuiteNames != null && ctx.version.lessThan(ServerVersion.VERSION_12_0_0)) {
+            throw new AssertionError("cipher-suite-names attribute is available since WildFly 19");
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(AddServerSSLContext.class)
                 .subtree("elytronSubsystem", Subtree.subsystem("elytron"))
                 .parameter("atrName", name)
                 .parameter("atrCipherSuiteFilter", cipherSuiteFilter)
+                .parameter("atrCipherSuiteNames", cipherSuiteNames)
                 .parameter("atrMaximumSessionCacheSize", maximumSessionCacheSize)
                 .parameter("atrSessionTimeout", sessionTimeout)
                 .parameter("atrKeyManager", keyManager)

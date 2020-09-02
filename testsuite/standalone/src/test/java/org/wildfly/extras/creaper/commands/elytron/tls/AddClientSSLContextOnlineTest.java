@@ -3,6 +3,7 @@ package org.wildfly.extras.creaper.commands.elytron.tls;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.wildfly.extras.creaper.commands.elytron.CreateServerSSLContext.TLS13_CIPHER_SUITE_NAMES;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 
 @RunWith(Arquillian.class)
@@ -87,23 +89,33 @@ public class AddClientSSLContextOnlineTest extends AbstractAddSSLContextOnlineTe
         assertTrue("The client ssl context should be created", ops.exists(CLIENT_SSL_CONTEXT_ADDRESS));
 
         client.apply(addClientSSLContext2);
-        assertTrue("The cleint ssl context should be created", ops.exists(CLIENT_SSL_CONTEXT_ADDRESS));
+        assertTrue("The client ssl context should be created", ops.exists(CLIENT_SSL_CONTEXT_ADDRESS));
         // check whether it was really rewritten
         checkAttribute(CLIENT_SSL_CONTEXT_ADDRESS, "protocols", Arrays.asList("TLSv1.1"));
     }
 
     @Test
     public void addFullClientSSLContext() throws Exception {
-        AddClientSSLContext addClientSSLContext = new AddClientSSLContext.Builder(CLIENT_SSL_CONTEXT_NAME)
+        AddClientSSLContext.Builder addClientSSLContextBuilder =
+            new AddClientSSLContext.Builder(CLIENT_SSL_CONTEXT_NAME)
                 .cipherSuiteFilter("ALL")
                 .keyManager(TEST_KEY_MNGR_NAME)
                 .trustManager(TRUST_MNGR_NAME)
-                .protocols(CLIENT_SSL_CONTEXT_PROTOCOL)
-                .build();
-        client.apply(addClientSSLContext);
+                .protocols(CLIENT_SSL_CONTEXT_PROTOCOL);
+
+        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_12_0_0)) {
+            // This attribute has been added in WildFly 19.
+            addClientSSLContextBuilder.cipherSuiteNames(TLS13_CIPHER_SUITE_NAMES);
+        }
+
+        client.apply(addClientSSLContextBuilder.build());
         assertTrue("The client ssl context should be created", ops.exists(CLIENT_SSL_CONTEXT_ADDRESS));
 
         checkAttribute("cipher-suite-filter", "ALL");
+        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_12_0_0)) {
+            // This attribute has been added in WildFly 19.
+            checkAttribute("cipher-suite-names", TLS13_CIPHER_SUITE_NAMES);
+        }
         checkAttribute("key-manager", TEST_KEY_MNGR_NAME);
         checkAttribute("trust-manager", TRUST_MNGR_NAME);
         checkAttribute("protocols", Arrays.asList(CLIENT_SSL_CONTEXT_PROTOCOL));

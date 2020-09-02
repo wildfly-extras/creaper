@@ -32,6 +32,7 @@ public final class CreateServerSSLContext implements OnlineCommand {
     private final String name;
     protected final List<String> protocols;
     private final String cipherSuiteFilter;
+    private final String cipherSuiteNames;
     private final Boolean needClientAuth;
     private final Boolean wantClientAuth;
     private final Boolean authenticationOptional;
@@ -62,6 +63,10 @@ public final class CreateServerSSLContext implements OnlineCommand {
     // Multiple usage
     private final String algorithm;         // keystore manager, truststore manager
 
+    // Default set of cipher suites for TLSv1.3 to be set in 'cipher-suite-names' attribute.
+    public static final String TLS13_CIPHER_SUITE_NAMES =
+            "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256";
+
 
     private CreateServerSSLContext(Builder builder) {
         this.name = builder.name;
@@ -74,6 +79,7 @@ public final class CreateServerSSLContext implements OnlineCommand {
         this.trustStorePassword = builder.trustStorePassword;
         this.protocols = builder.protocols;
         this.cipherSuiteFilter = builder.cipherSuiteFilter;
+        this.cipherSuiteNames = builder.cipherSuiteNames;
         this.needClientAuth = builder.needClientAuth;
         this.wantClientAuth = builder.wantClientAuth;
         this.authenticationOptional = builder.authenticationOptional;
@@ -145,6 +151,7 @@ public final class CreateServerSSLContext implements OnlineCommand {
         AddServerSSLContext.Builder sslServerContextBuilder = new AddServerSSLContext.Builder(name)
                 .protocols((protocols == null) ? null : protocols.toArray(new String[protocols.size()]))
                 .cipherSuiteFilter(cipherSuiteFilter)
+                .cipherSuiteNames(cipherSuiteNames)
                 .needClientAuth(needClientAuth)
                 .sessionTimeout(sessionTimeout)
                 .maximumSessionCacheSize(maximumSessionCacheSize)
@@ -239,6 +246,7 @@ public final class CreateServerSSLContext implements OnlineCommand {
         private String name;
         private List<String> protocols;
         private String cipherSuiteFilter;
+        private String cipherSuiteNames;
         private Boolean needClientAuth;
         private Boolean wantClientAuth;
         private Boolean authenticationOptional;
@@ -322,6 +330,11 @@ public final class CreateServerSSLContext implements OnlineCommand {
 
         public Builder cipherSuiteFilter(String cipherSuiteFilter) {
             this.cipherSuiteFilter = cipherSuiteFilter;
+            return this;
+        }
+
+        public Builder cipherSuiteNames(String cipherSuiteNames) {
+            this.cipherSuiteNames = cipherSuiteNames;
             return this;
         }
 

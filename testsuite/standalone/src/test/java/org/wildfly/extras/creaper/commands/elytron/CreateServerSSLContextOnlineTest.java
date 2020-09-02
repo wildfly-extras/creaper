@@ -3,16 +3,20 @@ package org.wildfly.extras.creaper.commands.elytron;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.wildfly.extras.creaper.commands.elytron.CreateServerSSLContext.TLS13_CIPHER_SUITE_NAMES;
 
 import java.util.Arrays;
 
 import org.jboss.arquillian.junit.Arquillian;
+
+import org.wildfly.extras.creaper.commands.elytron.tls.AbstractAddSSLContextOnlineTest;
+import org.wildfly.extras.creaper.core.CommandFailedException;
+import org.wildfly.extras.creaper.core.ServerVersion;
+import org.wildfly.extras.creaper.core.online.operations.Address;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.wildfly.extras.creaper.commands.elytron.tls.AbstractAddSSLContextOnlineTest;
-import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.online.operations.Address;
 
 @RunWith(Arquillian.class)
 public class CreateServerSSLContextOnlineTest extends AbstractAddSSLContextOnlineTest {
@@ -103,7 +107,8 @@ public class CreateServerSSLContextOnlineTest extends AbstractAddSSLContextOnlin
 
     @Test
     public void addFullServerSSLContext() throws Exception {
-        CreateServerSSLContext createServerSSLContext = new CreateServerSSLContext.Builder(SERVER_SSL_CONTEXT_NAME)
+        CreateServerSSLContext.Builder createServerSSLContextBuilder =
+            new CreateServerSSLContext.Builder(SERVER_SSL_CONTEXT_NAME)
                 .keyStorePassword(PASSWORD)
                 .keyPassword(PASSWORD)
                 .cipherSuiteFilter("ALL")
@@ -124,12 +129,21 @@ public class CreateServerSSLContextOnlineTest extends AbstractAddSSLContextOnlin
                 .trustStorePassword(PASSWORD)
                 .trustStorePath("/path")
                 .trustStoreRelativeTo("jboss.server.config.dir")
-                .trustStoreRequired(false)
-                .build();
-        client.apply(createServerSSLContext);
+                .trustStoreRequired(false);
+
+        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_12_0_0)) {
+            // This attribute has been added in WildFly 19.
+            createServerSSLContextBuilder.cipherSuiteNames(TLS13_CIPHER_SUITE_NAMES);
+        }
+
+        client.apply(createServerSSLContextBuilder.build());
         assertTrue("The server ssl context should be created", ops.exists(SERVER_SSL_CONTEXT_ADDRESS));
 
         checkAttribute(SERVER_SSL_CONTEXT_ADDRESS, "cipher-suite-filter", "ALL");
+        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_12_0_0)) {
+            // This attribute has been added in WildFly 19.
+            checkAttribute(SERVER_SSL_CONTEXT_ADDRESS, "cipher-suite-names", TLS13_CIPHER_SUITE_NAMES);
+        }
         checkAttribute(SERVER_SSL_CONTEXT_ADDRESS, "maximum-session-cache-size", "0");
         checkAttribute(SERVER_SSL_CONTEXT_ADDRESS, "session-timeout", "0");
         checkAttribute(SERVER_SSL_CONTEXT_ADDRESS, "protocols", Arrays.asList(SERVER_SSL_CONTEXT_PROTOCOL));

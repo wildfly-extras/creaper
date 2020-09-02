@@ -10,6 +10,7 @@ abstract class AbstractAddSSLContext implements OnlineCommand, OfflineCommand {
 
     protected final String name;
     protected final String cipherSuiteFilter;
+    protected final String cipherSuiteNames;
     protected final List<String> protocols;
     protected final String keyManager;
     protected final String trustManager;
@@ -20,6 +21,7 @@ abstract class AbstractAddSSLContext implements OnlineCommand, OfflineCommand {
     protected AbstractAddSSLContext(Builder builder) {
         this.name = builder.name;
         this.cipherSuiteFilter = builder.cipherSuiteFilter;
+        this.cipherSuiteNames = builder.cipherSuiteNames;
         this.protocols = builder.protocols;
         this.keyManager = builder.keyManager;
         this.trustManager = builder.trustManager;
@@ -44,6 +46,7 @@ abstract class AbstractAddSSLContext implements OnlineCommand, OfflineCommand {
 
         protected final String name;
         protected String cipherSuiteFilter;
+        protected String cipherSuiteNames;
         protected List<String> protocols;
         protected String keyManager;
         protected String trustManager;
@@ -70,6 +73,11 @@ abstract class AbstractAddSSLContext implements OnlineCommand, OfflineCommand {
 
         public final THIS cipherSuiteFilter(String cipherSuiteFilter) {
             this.cipherSuiteFilter = cipherSuiteFilter;
+            return (THIS) this;
+        }
+
+        public final THIS cipherSuiteNames(String cipherSuiteNames) {
+            this.cipherSuiteNames = cipherSuiteNames;
             return (THIS) this;
         }
 

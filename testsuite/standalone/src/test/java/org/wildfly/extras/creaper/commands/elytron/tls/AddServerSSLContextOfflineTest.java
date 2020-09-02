@@ -2,6 +2,7 @@ package org.wildfly.extras.creaper.commands.elytron.tls;
 
 import static org.junit.Assert.fail;
 import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
+import static org.wildfly.extras.creaper.commands.elytron.CreateServerSSLContext.TLS13_CIPHER_SUITE_NAMES;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -13,23 +14,24 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
 
 public class AddServerSSLContextOfflineTest {
 
     private static final String SUBSYSTEM_EMPTY = ""
-            + "<server xmlns=\"urn:jboss:domain:5.0\">\n"
+            + "<server xmlns=\"urn:jboss:domain:13.0\">\n"
             + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:wildfly:elytron:1.0\">\n"
+            + "        <subsystem xmlns=\"urn:wildfly:elytron:10.0\">\n"
             + "        </subsystem>\n"
             + "    </profile>\n"
             + "</server>";
 
     private static final String SUBSYSTEM_TLS_EMPTY = ""
-            + "<server xmlns=\"urn:jboss:domain:5.0\">\n"
+            + "<server xmlns=\"urn:jboss:domain:13.0\">\n"
             + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:wildfly:elytron:1.0\">\n"
+            + "        <subsystem xmlns=\"urn:wildfly:elytron:10.0\">\n"
             + "            <tls>\n"
             + "            </tls>\n"
             + "        </subsystem>\n"
@@ -37,9 +39,9 @@ public class AddServerSSLContextOfflineTest {
             + "</server>";
 
     private static final String SUBSYSTEM_SERVER_SSL_CONTEXTS_EMPTY = ""
-            + "<server xmlns=\"urn:jboss:domain:5.0\">\n"
+            + "<server xmlns=\"urn:jboss:domain:13.0\">\n"
             + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:wildfly:elytron:1.0\">\n"
+            + "        <subsystem xmlns=\"urn:wildfly:elytron:10.0\">\n"
             + "            <tls>\n"
             + "                <server-ssl-contexts>\n"
             + "                </server-ssl-contexts>\n"
@@ -49,9 +51,9 @@ public class AddServerSSLContextOfflineTest {
             + "</server>";
 
     private static final String SUBSYSTEM_SIMPLE = ""
-            + "<server xmlns=\"urn:jboss:domain:5.0\">\n"
+            + "<server xmlns=\"urn:jboss:domain:13.0\">\n"
             + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:wildfly:elytron:1.0\">\n"
+            + "        <subsystem xmlns=\"urn:wildfly:elytron:10.0\">\n"
             + "            <tls>\n"
             + "                <server-ssl-contexts>\n"
             + "                    <server-ssl-context name=\"serverSslContext\" key-manager=\"keyManager\"/>\n"
@@ -62,9 +64,9 @@ public class AddServerSSLContextOfflineTest {
             + "</server>";
 
     private static final String SUBSYSTEM_EXPECTED_REPLACE = ""
-            + "<server xmlns=\"urn:jboss:domain:5.0\">\n"
+            + "<server xmlns=\"urn:jboss:domain:13.0\">\n"
             + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:wildfly:elytron:1.0\">\n"
+            + "        <subsystem xmlns=\"urn:wildfly:elytron:10.0\">\n"
             + "            <tls>\n"
             + "                <server-ssl-contexts>\n"
             + "                    <server-ssl-context name=\"serverSslContext\" key-manager=\"keyManager\" cipher-suite-filter=\"ALL\"/>\n"
@@ -75,9 +77,9 @@ public class AddServerSSLContextOfflineTest {
             + "</server>";
 
     private static final String SUBSYSTEM_SECOND_SERVER_SSL_CONTEXT = ""
-            + "<server xmlns=\"urn:jboss:domain:5.0\">\n"
+            + "<server xmlns=\"urn:jboss:domain:13.0\">\n"
             + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:wildfly:elytron:1.0\">\n"
+            + "        <subsystem xmlns=\"urn:wildfly:elytron:10.0\">\n"
             + "            <tls>\n"
             + "                <server-ssl-contexts>\n"
             + "                    <server-ssl-context name=\"serverSslContext\" key-manager=\"keyManager\"/>\n"
@@ -89,12 +91,13 @@ public class AddServerSSLContextOfflineTest {
             + "</server>";
 
     private static final String SUBSYSTEM_FULL = ""
-            + "<server xmlns=\"urn:jboss:domain:5.0\">\n"
+            + "<server xmlns=\"urn:jboss:domain:13.0\">\n"
             + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:wildfly:elytron:1.0\">\n"
+            + "        <subsystem xmlns=\"urn:wildfly:elytron:10.0\">\n"
             + "            <tls>\n"
             + "                <server-ssl-contexts>\n"
             + "                    <server-ssl-context name=\"serverSslContext\" cipher-suite-filter=\"ALL\" "
+            + "                                        cipher-suite-names=\"" + TLS13_CIPHER_SUITE_NAMES + "\" "
             + "                                        maximum-session-cache-size=\"40\" session-timeout=\"30\" "
             + "                                        key-manager=\"keyManager\" trust-manager=\"trustManager\" "
             + "                                        protocols=\"TLSv1.2 TLSv1.1\" authentication-optional=\"true\" "
@@ -251,7 +254,8 @@ public class AddServerSSLContextOfflineTest {
         OfflineManagementClient client = ManagementClient.offline(
                 OfflineOptions.standalone().configurationFile(cfg).build());
 
-        AddServerSSLContext addServerSslContext = new AddServerSSLContext.Builder("serverSslContext")
+        AddServerSSLContext.Builder addServerSslContextBuilder =
+            new AddServerSSLContext.Builder("serverSslContext")
                 .cipherSuiteFilter("ALL")
                 .maximumSessionCacheSize(40)
                 .sessionTimeout(30)
@@ -269,11 +273,15 @@ public class AddServerSSLContextOfflineTest {
                 .providerName("ksProvider")
                 .providers("ksProviderLoader")
                 .useCipherSuitesOrder(false)
-                .wrap(true)
-                .build();
+                .wrap(true);
+
+        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_12_0_0)) {
+            // This attribute has been added in WildFly 19.
+            addServerSslContextBuilder.cipherSuiteNames(TLS13_CIPHER_SUITE_NAMES);
+        }
 
         assertXmlIdentical(SUBSYSTEM_EMPTY, Files.toString(cfg, Charsets.UTF_8));
-        client.apply(addServerSslContext);
+        client.apply(addServerSslContextBuilder.build());
         assertXmlIdentical(SUBSYSTEM_FULL, Files.toString(cfg, Charsets.UTF_8));
     }
 }
