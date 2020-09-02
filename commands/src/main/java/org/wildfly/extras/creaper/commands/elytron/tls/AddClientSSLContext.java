@@ -22,6 +22,10 @@ public final class AddClientSSLContext extends AbstractAddSSLContext {
             throw new AssertionError("Elytron is available since WildFly 11.");
         }
 
+        if (cipherSuiteNames != null && ctx.version.lessThan(ServerVersion.VERSION_12_0_0)) {
+            throw new AssertionError("cipher-suite-names attribute is available since WildFly 19");
+        }
+
         Operations ops = new Operations(ctx.client);
         Address clientSSLContextAddress = Address.subsystem("elytron").and("client-ssl-context", name);
         if (replaceExisting) {
@@ -31,6 +35,7 @@ public final class AddClientSSLContext extends AbstractAddSSLContext {
 
         ops.add(clientSSLContextAddress, Values.empty()
                 .andOptional("cipher-suite-filter", cipherSuiteFilter)
+                .andOptional("cipher-suite-names", cipherSuiteNames)
                 .andOptional("key-manager", keyManager)
                 .andOptional("trust-manager", trustManager)
                 .andListOptional(String.class, "protocols", protocols));
@@ -42,10 +47,15 @@ public final class AddClientSSLContext extends AbstractAddSSLContext {
             throw new AssertionError("Elytron is available since WildFly 11.");
         }
 
+        if (cipherSuiteNames != null && ctx.version.lessThan(ServerVersion.VERSION_12_0_0)) {
+            throw new AssertionError("cipher-suite-names attribute is available since WildFly 19");
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(AddClientSSLContext.class)
                 .subtree("elytronSubsystem", Subtree.subsystem("elytron"))
                 .parameter("atrName", name)
                 .parameter("atrCipherSuiteFilter", cipherSuiteFilter)
+                .parameter("atrCipherSuiteNames", cipherSuiteNames)
                 .parameter("atrKeyManager", keyManager)
                 .parameter("atrTrustManager", trustManager)
                 .parameter("atrProtocols", protocols != null ? joinList(protocols) : null)

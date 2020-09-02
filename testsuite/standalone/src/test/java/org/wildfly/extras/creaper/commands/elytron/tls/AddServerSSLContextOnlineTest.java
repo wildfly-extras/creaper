@@ -3,6 +3,7 @@ package org.wildfly.extras.creaper.commands.elytron.tls;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.wildfly.extras.creaper.commands.elytron.CreateServerSSLContext.TLS13_CIPHER_SUITE_NAMES;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.elytron.mapper.AddConstantPrincipalTransformer;
 import org.wildfly.extras.creaper.commands.elytron.mapper.AddConstantRealmMapper;
 import org.wildfly.extras.creaper.core.CommandFailedException;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
@@ -164,7 +166,8 @@ public class AddServerSSLContextOnlineTest extends AbstractAddSSLContextOnlineTe
 
     @Test
     public void addFullServerSSLContext() throws Exception {
-        AddServerSSLContext addServerSSLContext = new AddServerSSLContext.Builder(SERVER_SSL_CONTEXT_NAME)
+        AddServerSSLContext.Builder addServerSSLContextBuilder =
+            new AddServerSSLContext.Builder(SERVER_SSL_CONTEXT_NAME)
                 .cipherSuiteFilter("ALL")
                 .keyManager(TEST_KEY_MNGR_NAME)
                 .trustManager(TRUST_MNGR_NAME)
@@ -180,12 +183,21 @@ public class AddServerSSLContextOnlineTest extends AbstractAddSSLContextOnlineTe
                 .postRealmPrincipalTransformer(POST_REALM_PRINCIPAL_TRANSFORMER)
                 .finalPrincipalTransformer(FINAL_PRINCIPAL_TRANSFORMER)
                 .useCipherSuitesOrder(false)
-                .wrap(true)
-                .build();
-        client.apply(addServerSSLContext);
+                .wrap(true);
+
+        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_12_0_0)) {
+            // This attribute has been added in WildFly 19.
+            addServerSSLContextBuilder.cipherSuiteNames(TLS13_CIPHER_SUITE_NAMES);
+        }
+
+        client.apply(addServerSSLContextBuilder.build());
         assertTrue("The server ssl context should be created", ops.exists(SERVER_SSL_CONTEXT_ADDRESS));
 
         checkAttribute("cipher-suite-filter", "ALL");
+        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_12_0_0)) {
+            // This attribute has been added in WildFly 19.
+            checkAttribute("cipher-suite-names", TLS13_CIPHER_SUITE_NAMES);
+        }
         checkAttribute("key-manager", TEST_KEY_MNGR_NAME);
         checkAttribute("trust-manager", TRUST_MNGR_NAME);
         checkAttribute("maximum-session-cache-size", "0");

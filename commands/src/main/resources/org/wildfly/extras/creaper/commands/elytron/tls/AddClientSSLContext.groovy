@@ -1,5 +1,6 @@
 sslContextAttrs = ['name': atrName]
 if (atrCipherSuiteFilter != null) sslContextAttrs['cipher-suite-filter'] = atrCipherSuiteFilter
+if (atrCipherSuiteNames != null) sslContextAttrs['cipher-suite-names'] = atrCipherSuiteNames
 if (atrKeyManager != null) sslContextAttrs['key-manager'] = atrKeyManager
 if (atrTrustManager != null) sslContextAttrs['trust-manager'] = atrTrustManager
 if (atrProtocols != null) sslContextAttrs['protocols'] = atrProtocols
