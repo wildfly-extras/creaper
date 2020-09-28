@@ -15,6 +15,9 @@ import org.wildfly.extras.creaper.core.online.operations.Operations;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 @RunWith(Arquillian.class)
 public class AddAggregateSecurityEventListenerOnlineTest extends AbstractElytronOnlineTest {
 
@@ -35,8 +38,30 @@ public class AddAggregateSecurityEventListenerOnlineTest extends AbstractElytron
     private static final Address TEST_SYSLOG_AUDIT_LOG_ADDRESS = SUBSYSTEM_ADDRESS
             .and("syslog-audit-log", TEST_SYSLOG_AUDIT_LOG_NAME);
 
+    private static final int SYSLOG_PORT = 9898;
+
+    // Simple thread that just listens on defined port. This is because syslog handlers
+    // check that the configured port is available and something listens there.
+    private static Thread syslogServerThread = new Thread() {
+        @Override
+        public void run() {
+            try (ServerSocket serverSocket = new ServerSocket(SYSLOG_PORT)) {
+                while (true) {
+                    serverSocket.accept();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    };
+
     @BeforeClass
     public static void createElytronAuditLogs() throws Exception {
+        // Start the 'syslog server' because without it addition of the syslog handlers
+        // would fail unless 'reconnect-attempts' is set to non-zero. Such check is
+        // implemented since WildFly 18.
+        syslogServerThread.start();
+
         OnlineManagementClient client = null;
         try {
             client = createManagementClient();
@@ -51,7 +76,7 @@ public class AddAggregateSecurityEventListenerOnlineTest extends AbstractElytron
 
             AddSyslogAuditLog addSyslogAuditLog = new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                     .serverAddress("localhost")
-                    .port(9898)
+                    .port(SYSLOG_PORT)
                     .hostName("Elytron-audit")
                     .build();
             client.apply(addSyslogAuditLog);
@@ -75,6 +100,9 @@ public class AddAggregateSecurityEventListenerOnlineTest extends AbstractElytron
             if (client != null) {
                 client.close();
             }
+
+            // Gently close the thread with fake 'syslog server'.
+            syslogServerThread.interrupt();
         }
     }
 

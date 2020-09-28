@@ -3,8 +3,13 @@ package org.wildfly.extras.creaper.commands.elytron.audit;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.elytron.AbstractElytronOnlineTest;
@@ -35,6 +40,31 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     private static final Address TEST_KEY_MNGR_NAME_ADDRESS = SUBSYSTEM_ADDRESS
             .and("key-manager", TEST_KEY_MNGR_NAME);
 
+    private static final int SYSLOG_PORT = 9898;
+
+    // Simple thread that just listens on defined port. This is because syslog handlers
+    // check that the configured port is available and something listens there.
+    private static Thread syslogServerThread = new Thread() {
+        @Override
+        public void run() {
+            try (ServerSocket serverSocket = new ServerSocket(SYSLOG_PORT)) {
+                while (true) {
+                    serverSocket.accept();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    };
+
+    @BeforeClass
+    public static void prepare() {
+        // Start the 'syslog server' because without it addition of the syslog handlers
+        // would fail unless 'reconnect-attempts' is set to non-zero. Such check is
+        // implemented since WildFly 18.
+        syslogServerThread.start();
+    }
+
     @After
     public void cleanup() throws Exception {
         ops.removeIfExists(TEST_SYSLOG_AUDIT_LOG_ADDRESS);
@@ -45,11 +75,17 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
         administration.reloadIfRequired();
     }
 
+    @AfterClass
+    public static void afterClass() {
+        // Gently close the thread with fake 'syslog server'.
+        syslogServerThread.interrupt();
+    }
+
     @Test
     public void addSimpleSyslogAuditLog() throws Exception {
         AddSyslogAuditLog addSyslogAuditLog = new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
 
@@ -62,12 +98,12 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     public void addTwoSyslogAuditLogs() throws Exception {
         AddSyslogAuditLog addSyslogAuditLog = new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
         AddSyslogAuditLog addSyslogAuditLog2 = new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME2)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
 
@@ -101,7 +137,7 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
 
         AddSyslogAuditLog addSyslogAuditLog = new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .format(AuditFormat.JSON)
                 .transport(AddSyslogAuditLog.TransportProtocolType.UDP)
@@ -112,7 +148,7 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
 
         assertTrue("Syslog audit log should be created", ops.exists(TEST_SYSLOG_AUDIT_LOG_ADDRESS));
         checkAttribute(TEST_SYSLOG_AUDIT_LOG_ADDRESS, "server-address", "localhost");
-        checkAttribute(TEST_SYSLOG_AUDIT_LOG_ADDRESS, "port", "9898");
+        checkAttribute(TEST_SYSLOG_AUDIT_LOG_ADDRESS, "port", String.valueOf(SYSLOG_PORT));
         checkAttribute(TEST_SYSLOG_AUDIT_LOG_ADDRESS, "host-name", "Elytron-audit");
         checkAttribute(TEST_SYSLOG_AUDIT_LOG_ADDRESS, "format", "JSON");
         checkAttribute(TEST_SYSLOG_AUDIT_LOG_ADDRESS, "transport", "UDP");
@@ -123,12 +159,12 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     public void addExistSyslogAuditLogNotAllowed() throws Exception {
         AddSyslogAuditLog addSyslogAuditLog = new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
         AddSyslogAuditLog addSyslogAuditLog2 = new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
 
@@ -142,12 +178,12 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     public void addExistSyslogAuditLogAllowed() throws Exception {
         AddSyslogAuditLog addSyslogAuditLog = new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
         AddSyslogAuditLog addSyslogAuditLog2 = new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("another-hostname")
                 .replaceExisting()
                 .build();
@@ -164,7 +200,7 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     public void addSyslogAuditLog_nullName() throws Exception {
         new AddSyslogAuditLog.Builder(null)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
 
@@ -175,7 +211,7 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     public void addSyslogAuditLog_emptyName() throws Exception {
         new AddSyslogAuditLog.Builder("")
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
 
@@ -186,7 +222,7 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     public void addSyslogAuditLog_nullServerAddress() throws Exception {
         new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress(null)
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
 
@@ -197,7 +233,7 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     public void addSyslogAuditLog_emptyServerAddress() throws Exception {
         new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("Elytron-audit")
                 .build();
 
@@ -218,7 +254,7 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     public void addSyslogAuditLog_nullHostName() throws Exception {
         new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName(null)
                 .build();
 
@@ -229,7 +265,7 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     public void addSyslogAuditLog_emptyHostName() throws Exception {
         new AddSyslogAuditLog.Builder(TEST_SYSLOG_AUDIT_LOG_NAME)
                 .serverAddress("localhost")
-                .port(9898)
+                .port(SYSLOG_PORT)
                 .hostName("")
                 .build();
 
