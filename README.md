@@ -267,6 +267,144 @@ Dependencies for `creaper-commands`:
         <version>6.0.2.Final</version>
     </dependency>
 
+#### WildFly 15 (15.0.0) (based on WildFly Core 7)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>7.0.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>7.0.0.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>7.0.0.Final</version>
+    </dependency>
+
+#### WildFly 16 (16.0.0) (based on WildFly Core 8)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>8.0.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>8.0.0.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>8.0.0.Final</version>
+    </dependency>
+
+#### WildFly 17 (17.0.0) (based on WildFly Core 9)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>9.0.1.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>9.0.1.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>9.0.1.Final</version>
+    </dependency>
+
+#### WildFly 18 (18.0.0) (based on WildFly Core 10)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>10.0.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>10.0.0.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>10.0.0.Final</version>
+    </dependency>
+
+#### WildFly 19 (19.0.0) (based on WildFly Core 11)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>11.0.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>11.0.0.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>11.0.0.Final</version>
+    </dependency>
+
+#### WildFly 20 (20.0.0) (based on WildFly Core 12)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>12.0.1.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>12.0.1.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>12.0.1.Final</version>
+    </dependency>
+
 ### Transitive Dependencies
 
 These are the dependencies that you will get transitively when you depend
