@@ -2,6 +2,10 @@
 
 ## 1.6.2 (not yet released)
 
+- added support for WildFly 12 - WildFly 20
+- added Elytron commands
+- added Address.profile
+
 ## 1.6.1 [The Cheela Edition](https://en.wikipedia.org/wiki/Dragon%27s_Egg) (2017-05-25)
 
 - fixed `ReloadToSnapshot` for managed domain
