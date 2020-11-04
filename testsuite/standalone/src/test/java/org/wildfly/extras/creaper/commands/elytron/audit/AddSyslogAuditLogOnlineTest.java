@@ -47,12 +47,22 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     private static Thread syslogServerThread = new Thread() {
         @Override
         public void run() {
-            try (ServerSocket serverSocket = new ServerSocket(SYSLOG_PORT)) {
+            ServerSocket serverSocket = null;
+            try {
+                serverSocket = new ServerSocket(SYSLOG_PORT);
                 while (true) {
                     serverSocket.accept();
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
+            } finally {
+                if (serverSocket != null) {
+                    try {
+                        serverSocket.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
         }
     };
