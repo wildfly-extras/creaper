@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.6.3 (not yet released)
+
 ## 1.6.2 [The Speedy Gonzales Edition](https://en.wikipedia.org/wiki/Speedy_Gonzales) (2020-11-05)
 
 - added support for WildFly 12 - WildFly 20
