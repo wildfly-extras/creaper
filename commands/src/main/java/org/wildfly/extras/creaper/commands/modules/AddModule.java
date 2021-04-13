@@ -36,6 +36,7 @@ public class AddModule implements OnlineCommand {
     private final String moduleName;
     private final String slot;
     private final String mainClass;
+    private final String moduleRootDir;
     private final String moduleXml;
     private final List<String> resources;
     private final List<String> dependencies;
@@ -46,6 +47,7 @@ public class AddModule implements OnlineCommand {
         this.moduleName = builder.moduleName;
         this.slot = builder.slot;
         this.mainClass = builder.mainClass;
+        this.moduleRootDir = builder.moduleRootDir;
         this.moduleXml = builder.moduleXml;
         this.resources = builder.resources;
         this.dependencies = builder.dependencies;
@@ -62,11 +64,17 @@ public class AddModule implements OnlineCommand {
         cmd.append(" --name=").append(moduleName);
         cmd.append(" --slot=").append(slot);
 
-        if (moduleXml != null)
-            cmd.append(" --module-xml=").append(moduleXml);
+        if (moduleRootDir != null) {
+            cmd.append(" --module-root-dir=").append(moduleRootDir);
+        }
 
-        if (mainClass != null)
+        if (moduleXml != null) {
+            cmd.append(" --module-xml=").append(moduleXml);
+        }
+
+        if (mainClass != null) {
             cmd.append(" --main-class=").append(mainClass);
+        }
 
         Joiner resourcesJoiner = Joiner.on(File.pathSeparatorChar);
         // resource-delimiter was added in WF 8, WFLY-1871
@@ -127,14 +135,15 @@ public class AddModule implements OnlineCommand {
     }
 
     public static final class Builder {
-        private char resourceDelimiter = File.pathSeparatorChar;
         private final String moduleName;
         private final String slot;
+        private char resourceDelimiter = File.pathSeparatorChar;
         private String moduleXml;
+        private String moduleRootDir;
         private String mainClass;
-        private List<String> resources;
-        private List<String> dependencies;
-        private List<String> properties;
+        private final List<String> resources;
+        private final List<String> dependencies;
+        private final List<String> properties;
 
         /**
          * @param moduleName the name of the module to be added (assumes the {@code main} slot)
@@ -207,6 +216,22 @@ public class AddModule implements OnlineCommand {
         }
 
         /**
+         * Use this argument if you have defined an external JBoss EAP module directory to use instead of the default
+         * EAP_HOME/modules/ directory.
+         *
+         * @see <a href="https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.3/html-single/configuration_guide/index#idm140645108782400">
+         * EAP Configuration guide
+         * </a>
+         */
+        public Builder moduleRootDir(File moduleRootDir) {
+            if (moduleRootDir == null) {
+                throw new IllegalArgumentException("moduleRootDir file cannot be null");
+            }
+            this.moduleRootDir = moduleRootDir.getAbsolutePath();
+            return this;
+        }
+
+        /**
          * The {@code module.xml} file which should be used for the added module. The file will be copied
          * to the created module's directory. If this argument is not specified, {@code module.xml} file
          * will be generated automatically.
@@ -224,10 +249,12 @@ public class AddModule implements OnlineCommand {
          * i.e. when the {@link #moduleXml(File)} isn't specified.
          */
         public Builder property(String name, String value) {
-            if (name == null)
+            if (name == null) {
                 throw new NullPointerException("property name cannot be null");
-            if (value == null)
+            }
+            if (value == null) {
                 throw new NullPointerException("property value cannot be null");
+            }
             properties.add(name + "=" + value);
             return this;
         }
@@ -238,8 +265,9 @@ public class AddModule implements OnlineCommand {
          * isn't specified.
          */
         public Builder mainClass(String mainClass) {
-            if (mainClass == null)
+            if (mainClass == null) {
                 throw new NullPointerException("mainClass cannot be null");
+            }
             this.mainClass = mainClass;
             return this;
         }
