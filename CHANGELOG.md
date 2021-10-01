@@ -1,6 +1,8 @@
 # Changelog
 
-## 1.6.3 (not yet released)
+## 2.0.0 (not yet released)
+
+- move to JDK 8 as a minimal required JDK version
 
 ## 1.6.2 [The Speedy Gonzales Edition](https://en.wikipedia.org/wiki/Speedy_Gonzales) (2020-11-05)
 
