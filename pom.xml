@@ -62,7 +62,9 @@
 
         <maven.jboss.ga.repository.url>https://maven.repository.redhat.com/ga/</maven.jboss.ga.repository.url>
 
-        <version.java>1.6</version.java>
+        <version.java>1.8</version.java>
+
+        <version.minimum-maven>3.3.9</version.minimum-maven>
 
         <!-- All versions. Keep in alphabetical order. Name format: version.${groupId}.${artifactIdOrWildcard}. -->
         <version.com.google.code.cookcc>0.3.3</version.com.google.code.cookcc>
@@ -77,11 +79,14 @@
         <version.org.apache.maven.plugins.maven-compiler-plugin>3.6.1</version.org.apache.maven.plugins.maven-compiler-plugin>
         <version.org.apache.maven.plugins.maven-dependency-plugin>3.0.0</version.org.apache.maven.plugins.maven-dependency-plugin>
         <version.org.apache.maven.plugins.maven-deploy-plugin>2.8.2</version.org.apache.maven.plugins.maven-deploy-plugin>
+        <version.org.apache.maven.plugins.maven-enforcer-plugin>3.0.0</version.org.apache.maven.plugins.maven-enforcer-plugin>
+        <version.org.apache.maven.plugins.maven-install-plugin>3.0.0-M1</version.org.apache.maven.plugins.maven-install-plugin>
         <version.org.apache.maven.plugins.maven-jar-plugin>3.0.2</version.org.apache.maven.plugins.maven-jar-plugin>
         <version.org.apache.maven.plugins.maven-javadoc-plugin>2.10.4</version.org.apache.maven.plugins.maven-javadoc-plugin>
         <version.org.apache.maven.plugins.maven-release-plugin>2.5.3</version.org.apache.maven.plugins.maven-release-plugin>
         <version.org.apache.maven.plugins.maven-resources-plugin>3.0.2</version.org.apache.maven.plugins.maven-resources-plugin>
         <version.org.apache.maven.plugins.maven-shade-plugin>3.0.0</version.org.apache.maven.plugins.maven-shade-plugin>
+        <version.org.apache.maven.plugins.maven-site-plugin>3.9.1</version.org.apache.maven.plugins.maven-site-plugin>
         <version.org.apache.maven.plugins.maven-source-plugin>3.0.1</version.org.apache.maven.plugins.maven-source-plugin>
         <version.org.apache.maven.plugins.maven-surefire-plugin>2.19.1</version.org.apache.maven.plugins.maven-surefire-plugin>
         <version.org.bouncycastle>1.55</version.org.bouncycastle>
@@ -437,6 +442,39 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${version.org.apache.maven.plugins.maven-enforcer-plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-versions</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <requireMavenVersion>
+                                        <version>[${version.minimum-maven},)</version>
+                                    </requireMavenVersion>
+                                    <requireJavaVersion>
+                                        <version>[${version.java},)</version>
+                                    </requireJavaVersion>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${version.org.apache.maven.plugins.maven-install-plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${version.org.apache.maven.plugins.maven-site-plugin}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -459,6 +497,10 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
