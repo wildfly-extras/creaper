@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file specifies a spotbugs filter for excluding reports that
+     should not be considered errors.
+
+     The format of this file is documented at:
+
+       https://spotbugs.readthedocs.io/en/latest/filter.html
+
+     When possible, please specify the full names of the bug codes,
+     using the pattern attribute, to make it clearer what reports are
+     being suppressed.  You can find a listing of codes at:
+
+       https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html
+  -->
+
+<FindBugsFilter>
+    <!-- Ideally we would fix all of these EI_EXPOSE_REP* errors with Collections.unmodifiable* or something similar,
+         although these methods are part of the release already and such change would mean change in behavior which
+         we would like to avoid now. -->
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.Mechanism" />
+        <Method name="getMechanismRealmConfigurations" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.authenticationclient.AddAuthenticationConfiguration$Builder" />
+        <Method name="credentialReference" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.credentialstore.AddCredentialStore$Builder" />
+        <Method name="credentialReference" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.dircontext.AddDirContext$Builder" />
+        <Method name="credentialReference" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.mapper.AddSimplePermissionMapper$PermissionMapping" />
+        <Method name="getPermissionSets" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.mapper.AddSimplePermissionMapper$PermissionMapping" />
+        <Method name="getPermissions" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.mapper.AddSimplePermissionMapper$PermissionMapping" />
+        <Method name="getPrincipals" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.mapper.AddSimplePermissionMapper$PermissionMapping" />
+        <Method name="getRoles" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.realm.AddJdbcRealm$PrincipalQuery" />
+        <Method name="getAttributeMapping" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.realm.AddLdapRealm$IdentityMapping" />
+        <Method name="getAttributeMappings" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.realm.AddLdapRealm$IdentityMapping" />
+        <Method name="getNewIdentityAttributes" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.realm.AddLdapRealm$NewIdentityAttributes" />
+        <Method name="getValues" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.realm.AddTokenRealm$Jwt" />
+        <Method name="getAudience" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.realm.AddTokenRealm$Jwt" />
+        <Method name="getIssuer" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.tls.AddKeyManager$Builder" />
+        <Method name="credentialReference" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.tls.AddKeyStore$Builder" />
+        <Method name="credentialReference" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.tls.AddLdapKeyStore$NewItemAttribute" />
+        <Method name="getValues" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.elytron.tls.AddLdapKeyStore$NewItemTemplate" />
+        <Method name="getNewItemAttributes" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.messaging.AddQueue$Builder" />
+        <Method name="jndiEntries" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.messaging.AddTopic$Builder" />
+        <Method name="jndiEntries" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.patching.PatchingOperations$PatchInfo" />
+        <Method name="getPatches" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.patching.PatchingOperations$PatchInfo" />
+        <Method name="setPatches" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.security.realms.AddLdapConnection$Builder" />
+        <Method name="setHandlesReferralsFor" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.security.realms.AddLdapConnection$Builder" />
+        <Method name="setProperties" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+        <Priority value="2" />
+    </Match>
+
+    <Match>
+        <Class name="org.wildfly.extras.creaper.commands.security.realms.KerberosKeytab" />
+        <Method name="getForHosts" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Priority value="2" />
+    </Match>
+</FindBugsFilter>
