@@ -1,7 +1,9 @@
 package org.wildfly.extras.creaper.commands.datasources;
 
 final class DatasourceConstants {
-    private DatasourceConstants() {} // avoid instantiation
+    private DatasourceConstants() {
+        // avoid instantiation
+    }
 
     static final int DEFAULT_BACKGROUND_VALIDATION_TIME = 60000;
 

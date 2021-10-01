@@ -220,7 +220,7 @@ public final class Subtree {
 
         private final String subsystemName;
 
-        public SubsystemSubtreeLocator(String subsystemName) {
+        SubsystemSubtreeLocator(String subsystemName) {
             this.subsystemName = subsystemName;
         }
 
@@ -271,7 +271,7 @@ public final class Subtree {
         private final String profileName;
         private final String subsystemName;
 
-        public SubsystemInProfileSubtreeLocator(String profileName, String subsystemName) {
+        SubsystemInProfileSubtreeLocator(String profileName, String subsystemName) {
             this.profileName = profileName;
             this.subsystemName = subsystemName;
         }

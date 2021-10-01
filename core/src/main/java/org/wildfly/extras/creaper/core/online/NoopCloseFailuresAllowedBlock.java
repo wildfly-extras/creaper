@@ -6,7 +6,8 @@ import java.io.IOException;
 final class NoopCloseFailuresAllowedBlock implements FailuresAllowedBlock {
     static final NoopCloseFailuresAllowedBlock INSTANCE = new NoopCloseFailuresAllowedBlock();
 
-    private NoopCloseFailuresAllowedBlock() {}
+    private NoopCloseFailuresAllowedBlock() {
+    }
 
     @Override
     public void close() throws IOException {

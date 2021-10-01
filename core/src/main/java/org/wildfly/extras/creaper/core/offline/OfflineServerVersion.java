@@ -12,7 +12,9 @@ import java.util.regex.Pattern;
 final class OfflineServerVersion {
     private static final Pattern ROOT_XMLNS = Pattern.compile("[\"']urn:jboss:domain:(\\d+)\\.(\\d+)[\"']");
 
-    private OfflineServerVersion() {} // avoid instantiation
+    private OfflineServerVersion() {
+        // avoid instantiation
+    }
 
     /**
      * Returns the management version of the server with given {@code configurationFile}.

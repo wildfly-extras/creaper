@@ -12,7 +12,9 @@ import static org.junit.Assert.fail;
  * to the needs of this project) and uses better terms ({@code assertXmlSimilar} instead of {@code assertXMLEqual}).
  */
 public final class XmlAssert {
-    private XmlAssert() {} // avoid instantiation
+    private XmlAssert() {
+        // avoid instantiation
+    }
 
     /** @see Diff#identical() */
     public static void assertXmlIdentical(String expected, String actual) throws IOException, SAXException {

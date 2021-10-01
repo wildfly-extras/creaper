@@ -29,7 +29,7 @@ abstract class AbstractLoggerCommand implements OnlineCommand, OfflineCommand {
         protected Boolean useParentHandler;
         protected String filter;
 
-        public Builder(String category) {
+        Builder(String category) {
             if (category == null || category.equals("")) {
                 throw new IllegalArgumentException("category can not be null nor empty string");
             }

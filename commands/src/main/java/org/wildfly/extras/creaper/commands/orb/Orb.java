@@ -5,7 +5,8 @@ package org.wildfly.extras.creaper.commands.orb;
  */
 public final class Orb {
 
-    private Orb() {}
+    private Orb() {
+    }
 
     public static ChangeOrb.Builder attributes() {
         return new ChangeOrb.Builder();

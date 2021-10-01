@@ -9,6 +9,7 @@
   -->
 <module name="Checker">
     <property name="charset" value="UTF-8"/>
+    <property name="cacheFile" value="target/cachefile"/>
 
     <module name="SuppressionFilter">
         <property name="file" value="checkstyle-suppressions.xml"/>
@@ -30,15 +31,14 @@
         <property name="lineSeparator" value="lf"/>
     </module>
 
-    <module name="TreeWalker">
-        <property name="cacheFile" value="target/cachefile"/>
-        <property name="tabWidth" value="4"/>
+    <!-- line length -->
+    <module name="LineLength">
+        <property name="max" value="120"/>
+        <property name="ignorePattern" value="^package|^import|href|http://|https://|ftp://|&quot;\p{Punct}*$"/>
+    </module>
 
-        <!-- line length -->
-        <module name="LineLength">
-            <property name="max" value="120"/>
-            <property name="ignorePattern" value="^package|^import|href|http://|https://|ftp://|&quot;\p{Punct}*$"/>
-        </module>
+    <module name="TreeWalker">
+        <property name="tabWidth" value="4"/>
 
         <!-- imports -->
         <module name="AvoidStarImport"/>
@@ -100,7 +100,6 @@
             <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE"/>
         </module>
         <module name="LeftCurly">
-            <property name="maxLineLength" value="120"/>
 <!--
             <property name="ignoreEnums" value="false"/>
 -->

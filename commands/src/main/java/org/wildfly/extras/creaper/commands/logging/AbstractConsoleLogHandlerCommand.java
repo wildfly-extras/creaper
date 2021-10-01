@@ -39,7 +39,7 @@ abstract class AbstractConsoleLogHandlerCommand implements OnlineCommand, Offlin
         protected LogLevel level;
         protected ConsoleTarget target;
 
-        public Builder(String name) {
+        Builder(String name) {
             if (name == null) {
                 throw new IllegalArgumentException("Name can not be null.");
             }

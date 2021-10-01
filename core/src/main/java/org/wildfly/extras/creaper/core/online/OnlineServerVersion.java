@@ -8,7 +8,9 @@ import org.wildfly.extras.creaper.core.ServerVersion;
 import java.io.IOException;
 
 final class OnlineServerVersion {
-    private OnlineServerVersion() {} // avoid instantiation
+    private OnlineServerVersion() {
+        // avoid instantiation
+    }
 
     /**
      * Returns the management version of the server which the {@code client} is connected to.

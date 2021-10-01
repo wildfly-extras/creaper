@@ -29,7 +29,8 @@ import java.util.List;
 public class ModelNodeResult extends ModelNode {
     /** @deprecated not supposed to be called directly, only for {@code Externalizable} */
     @Deprecated
-    public ModelNodeResult() {}
+    public ModelNodeResult() {
+    }
 
     public ModelNodeResult(ModelNode original) {
         this.set(original);
@@ -266,7 +267,7 @@ public class ModelNodeResult extends ModelNode {
 
         return new Iterable<ModelNodeResult>() {
             @Override
-            public final Iterator<ModelNodeResult> iterator() {
+            public Iterator<ModelNodeResult> iterator() {
                 return new Iterator<ModelNodeResult>() {
                     private int index = 0;
 

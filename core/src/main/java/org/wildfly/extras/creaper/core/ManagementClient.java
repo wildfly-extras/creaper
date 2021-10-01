@@ -16,7 +16,9 @@ import java.io.IOException;
  * guarantees are made!
  */
 public final class ManagementClient {
-    private ManagementClient() {} // avoid instantiation
+    private ManagementClient() {
+        // avoid instantiation
+    }
 
     /**
      * Creates an eagerly-initialized {@link org.wildfly.extras.creaper.core.online.OnlineManagementClient}. That is,

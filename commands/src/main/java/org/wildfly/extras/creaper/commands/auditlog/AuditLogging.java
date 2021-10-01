@@ -6,7 +6,8 @@ package org.wildfly.extras.creaper.commands.auditlog;
  */
 public final class AuditLogging {
 
-    private AuditLogging() {}
+    private AuditLogging() {
+    }
 
     /**
      * Configures the destinations where should be the auditable events sent to.
@@ -26,7 +27,8 @@ public final class AuditLogging {
 
         private static final AuditLogDestinationHandler INSTANCE = new AuditLogDestinationHandler();
 
-        private AuditLogDestinationHandler() {}
+        private AuditLogDestinationHandler() {
+        }
 
         public AuditLogFileHandler file() {
             return AuditLogFileHandler.INSTANCE;
@@ -49,7 +51,8 @@ public final class AuditLogging {
 
         private static final AuditLogger INSTANCE = new AuditLogger();
 
-        private AuditLogger() {}
+        private AuditLogger() {
+        }
 
         public AddAuditLogger.Builder add() {
             return new AddAuditLogger.Builder();
@@ -68,7 +71,8 @@ public final class AuditLogging {
 
         private static final AuditLogFileHandler INSTANCE = new AuditLogFileHandler();
 
-        private AuditLogFileHandler() {}
+        private AuditLogFileHandler() {
+        }
 
         public AddAuditLogFileHandler.Builder add(String name) {
             return new AddAuditLogFileHandler.Builder(name);
@@ -83,7 +87,8 @@ public final class AuditLogging {
 
         private static final AuditLogUdpSyslogHandler INSTANCE = new AuditLogUdpSyslogHandler();
 
-        private AuditLogUdpSyslogHandler() {}
+        private AuditLogUdpSyslogHandler() {
+        }
 
         public AddAuditLogSyslogHandler.UdpBuilder add(String name) {
             return new AddAuditLogSyslogHandler.UdpBuilder(name);
@@ -98,7 +103,8 @@ public final class AuditLogging {
 
         private static final AuditLogTcpSyslogHandler INSTANCE = new AuditLogTcpSyslogHandler();
 
-        private AuditLogTcpSyslogHandler() {}
+        private AuditLogTcpSyslogHandler() {
+        }
 
         public AddAuditLogSyslogHandler.TcpBuilder add(String name) {
             return new AddAuditLogSyslogHandler.TcpBuilder(name);
@@ -113,7 +119,8 @@ public final class AuditLogging {
 
         private static final AuditLogTlsSyslogHandler INSTANCE = new AuditLogTlsSyslogHandler();
 
-        private AuditLogTlsSyslogHandler() {}
+        private AuditLogTlsSyslogHandler() {
+        }
 
         public AddAuditLogSyslogHandler.TlsBuilder add(String name) {
             return new AddAuditLogSyslogHandler.TlsBuilder(name);

@@ -312,8 +312,7 @@ public final class AddSimplePermissionMapper implements OnlineCommand {
         }
     }
 
-    public static enum MappingMode {
-
+    public enum MappingMode {
         AND, FIRST, OR, UNLESS, XOR
     }
 

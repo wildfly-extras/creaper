@@ -124,8 +124,7 @@ public final class AddSyslogAuditLog implements OnlineCommand {
 
     }
 
-    public static enum TransportProtocolType {
-
+    public enum TransportProtocolType {
         UDP, TCP;
     }
 }

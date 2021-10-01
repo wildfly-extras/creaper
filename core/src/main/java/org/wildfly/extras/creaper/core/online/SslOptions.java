@@ -197,7 +197,7 @@ public final class SslOptions {
 
     /**
      * System properties like {@literal javax.net.ssl.keyStore} are not taken into account.
-     * See {@link http://docs.oracle.com/javase/6/docs/technotes/guides/security/jsse/JSSERefGuide.html#Customization}.
+     * @see <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/security/jsse/JSSERefGuide.html#Customization">http://docs.oracle.com/javase/6/docs/technotes/guides/security/jsse/JSSERefGuide.html#Customization</a>
      */
     SSLContext createSslContext() {
         final KeyManager[] keyManagers = this.getKeyManagers();

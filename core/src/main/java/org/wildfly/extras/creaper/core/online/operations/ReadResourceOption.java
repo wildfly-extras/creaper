@@ -54,7 +54,9 @@ public interface ReadResourceOption {
     };
 
     final class RecursiveDepth {
-        private RecursiveDepth() {} // avoid instantiation
+        private RecursiveDepth() {
+            // avoid instantiation
+        }
 
         public static ReadResourceOption of(final int depth) {
             return new ReadResourceOptionInternal() {
