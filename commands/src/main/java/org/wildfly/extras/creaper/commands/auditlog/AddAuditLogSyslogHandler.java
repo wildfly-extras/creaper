@@ -203,7 +203,7 @@ public final class AddAuditLogSyslogHandler implements OnlineCommand, OfflineCom
         protected String host;
         protected Integer port;
 
-        public AbstractBuilder(String name) {
+        AbstractBuilder(String name) {
             if (name == null) {
                 throw new IllegalArgumentException("Syslog handler name must be specified as non null value");
             }

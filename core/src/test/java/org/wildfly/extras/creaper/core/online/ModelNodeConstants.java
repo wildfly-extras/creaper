@@ -3,7 +3,9 @@ package org.wildfly.extras.creaper.core.online;
 import org.jboss.dmr.ModelNode;
 
 final class ModelNodeConstants {
-    private ModelNodeConstants() {} // avoid instantiation
+    private ModelNodeConstants() {
+        // avoid instantiation
+    }
 
     static final ModelNode EMPTY;
     static final ModelNode SUCCESS;

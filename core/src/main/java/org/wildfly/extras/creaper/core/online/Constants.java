@@ -11,7 +11,9 @@ import java.util.List;
  * It's meant to be the only set of constants that is needed.
  */
 public final class Constants extends ClientConstants {
-    private Constants() {} // avoid instantiation
+    private Constants() {
+        // avoid instantiation
+    }
 
     public static final String ALLOW_RESOURCE_SERVICE_RESTART = "allow-resource-service-restart";
     public static final String ATTRIBUTES_ONLY = "attributes-only";

@@ -225,8 +225,7 @@ public final class AddAuthenticationConfiguration implements OnlineCommand {
 
     }
 
-    public static enum ForwardingMode {
-
+    public enum ForwardingMode {
         AUTHENTICATION, AUTHORIZATION
     }
 }

@@ -7,7 +7,9 @@ import java.util.List;
 
 /** Note that this does <b>not</b> always produce a valid CLI string, it's just an approximation for logging! */
 final class ModelNodeOperationToCliString {
-    private ModelNodeOperationToCliString() {} // avoid instantiation
+    private ModelNodeOperationToCliString() {
+        // avoid instantiation
+    }
 
     // the implementation here is not very efficient with string handling, but it shouldn't pose a problem
 

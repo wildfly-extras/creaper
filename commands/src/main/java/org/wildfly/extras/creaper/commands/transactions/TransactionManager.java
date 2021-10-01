@@ -5,7 +5,8 @@ package org.wildfly.extras.creaper.commands.transactions;
  */
 public final class TransactionManager {
 
-    private TransactionManager() {}
+    private TransactionManager() {
+    }
 
     /**
      * If changing something is not needed, do not set it (it won't be changed)

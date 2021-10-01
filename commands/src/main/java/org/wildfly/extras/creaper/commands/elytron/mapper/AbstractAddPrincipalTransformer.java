@@ -22,7 +22,7 @@ abstract class AbstractAddPrincipalTransformer implements OnlineCommand {
         protected final List<String> principalTransformers = new ArrayList<String>();
         private boolean replaceExisting;
 
-        public Builder(String name) {
+        Builder(String name) {
             if (name == null) {
                 throw new IllegalArgumentException("Name of the name-decoder must be specified as non null value");
             }

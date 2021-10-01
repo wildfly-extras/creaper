@@ -85,5 +85,7 @@ final class FirstLevelXmlElementOrder {
         }
     }
 
-    private FirstLevelXmlElementOrder() {} // avoid instantiation
+    private FirstLevelXmlElementOrder() {
+        // avoid instantiation
+    }
 }

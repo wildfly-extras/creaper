@@ -54,7 +54,7 @@ abstract class AbstractAddSSLContext implements OnlineCommand, OfflineCommand {
         protected String providers;
         protected String providerName;
 
-        public Builder(String name) {
+        Builder(String name) {
             if (name == null) {
                 throw new IllegalArgumentException("Name of the ssl-context must be specified as non null value");
             }

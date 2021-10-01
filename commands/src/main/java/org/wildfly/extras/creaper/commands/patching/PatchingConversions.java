@@ -3,7 +3,9 @@ package org.wildfly.extras.creaper.commands.patching;
 import java.util.List;
 
 final class PatchingConversions {
-    private PatchingConversions() {} // avoid instantiation
+    private PatchingConversions() {
+        // avoid instantiation
+    }
 
     /**
      * Converts list to single string using comma as delimiter.

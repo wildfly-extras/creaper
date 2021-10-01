@@ -48,7 +48,7 @@ abstract class AbstractPeriodicRotatingFileLogHandlerCommand implements OnlineCo
         protected String fileRelativeTo;
         protected String file;
 
-        public Builder(String name, String file, String suffix) {
+        Builder(String name, String file, String suffix) {
             if (name == null) {
                 throw new IllegalArgumentException("name can not be null.");
             }

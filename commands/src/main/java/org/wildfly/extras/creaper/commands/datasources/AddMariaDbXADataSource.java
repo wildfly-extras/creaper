@@ -8,6 +8,7 @@ import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstant
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MARIADB_XA_DATASOURCE_CLASS;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MYSQL_EXCEPTION_SORTER;
 import static org.wildfly.extras.creaper.commands.datasources.DatasourceConstants.MYSQL_VALID_CONNECTION_CHECKER;
+
 /**
  * Creates a Maria DB XA datasource.
  *

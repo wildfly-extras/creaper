@@ -170,7 +170,7 @@ public final class PropertiesFileAuth {
         private final String roleOrGroup;
         private final boolean trueToAdd_falseToRemove;
 
-        public AbstractUserMapping(String username, String roleOrGroup, boolean trueToAdd_falseToRemove) {
+        AbstractUserMapping(String username, String roleOrGroup, boolean trueToAdd_falseToRemove) {
             this.username = username;
             this.roleOrGroup = roleOrGroup;
             this.trueToAdd_falseToRemove = trueToAdd_falseToRemove;

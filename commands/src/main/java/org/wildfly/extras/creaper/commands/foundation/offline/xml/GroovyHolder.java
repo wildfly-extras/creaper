@@ -5,7 +5,9 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
 final class GroovyHolder {
-    private GroovyHolder() {} // avoid instantiation
+    private GroovyHolder() {
+        // avoid instantiation
+    }
 
     static final GroovyClassLoader GROOVY = createGroovy();
 

@@ -95,8 +95,7 @@ public final class AddLogicalPermissionMapper implements OnlineCommand {
         }
     }
 
-    public static enum LogicalOperation {
-
+    public enum LogicalOperation {
         AND, UNLESS, OR, XOR
     }
 }

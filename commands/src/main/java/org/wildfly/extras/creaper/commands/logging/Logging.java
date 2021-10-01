@@ -2,7 +2,9 @@ package org.wildfly.extras.creaper.commands.logging;
 
 /** A slightly more convenient way to create commands that affect the {@code logging} subsystem. */
 public final class Logging {
-    private Logging() {} // avoid instantiation
+    private Logging() {
+        // avoid instantiation
+    }
 
     public static RootLogger rootLogger() {
         return RootLogger.INSTANCE;
@@ -21,7 +23,8 @@ public final class Logging {
     public static final class RootLogger {
         private static final RootLogger INSTANCE = new RootLogger();
 
-        private RootLogger() {}
+        private RootLogger() {
+        }
 
         public ChangeRootLogger.Builder change() {
             return new ChangeRootLogger.Builder();
@@ -31,7 +34,8 @@ public final class Logging {
     public static final class Logger {
         private static final Logger INSTANCE = new Logger();
 
-        private Logger() {}
+        private Logger() {
+        }
 
         public AddLogger.Builder add(String category) {
             return new AddLogger.Builder(category);
@@ -57,7 +61,8 @@ public final class Logging {
     public static final class LogHandler {
         private static final LogHandler INSTANCE = new LogHandler();
 
-        private LogHandler() {}
+        private LogHandler() {
+        }
 
         public ConsoleLogHandler console() {
             return ConsoleLogHandler.INSTANCE;
@@ -73,7 +78,8 @@ public final class Logging {
     public static final class ConsoleLogHandler {
         private static final ConsoleLogHandler INSTANCE = new ConsoleLogHandler();
 
-        private ConsoleLogHandler() {}
+        private ConsoleLogHandler() {
+        }
 
         public AddConsoleLogHandler.Builder add(String name) {
             return new AddConsoleLogHandler.Builder(name);
@@ -91,7 +97,8 @@ public final class Logging {
     public static final class PeriodicRotatingFileLogHandler {
         private static final PeriodicRotatingFileLogHandler INSTANCE = new PeriodicRotatingFileLogHandler();
 
-        private PeriodicRotatingFileLogHandler() {}
+        private PeriodicRotatingFileLogHandler() {
+        }
 
         /** all parameters are mandatory (i.e., must not be {@code null}) */
         public AddPeriodicRotatingFileLogHandler.Builder add(String name, String file, String suffix) {

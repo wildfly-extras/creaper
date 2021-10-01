@@ -90,8 +90,7 @@ public final class AddLogicalRoleMapper implements OnlineCommand {
 
     }
 
-    public static enum LogicalOperation {
-
+    public enum LogicalOperation {
         AND, MINUS, OR, XOR
     }
 }
