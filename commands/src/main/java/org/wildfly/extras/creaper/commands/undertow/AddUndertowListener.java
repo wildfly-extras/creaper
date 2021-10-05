@@ -59,8 +59,12 @@ public final class AddUndertowListener implements OnlineCommand {
     private Boolean enableSpdy;
     private String enabledCipherSuites;
     private String enabledProtocols;
+    /**
+     * @deprecated Use sslContext
+     */
     private String securityRealm;
     private SslVerifyClient verifyClient;
+    private String sslContext;
 
     // ajp
     private String scheme;
@@ -81,6 +85,7 @@ public final class AddUndertowListener implements OnlineCommand {
         this.enabledCipherSuites = builder.enabledCipherSuites;
         this.enabledProtocols = builder.enabledProtocols;
         this.securityRealm = builder.securityRealm;
+        this.sslContext = builder.sslContext;
         this.verifyClient = builder.verifyClient;
         initCommonOptions(builder);
     }
@@ -175,10 +180,14 @@ public final class AddUndertowListener implements OnlineCommand {
                         .andOptional("proxy-address-forwarding", proxyAddressForwarding);
                 break;
             case HTTPS_LISTENER:
+                if (securityRealm == null && sslContext == null) {
+                    throw new CommandFailedException("Either SSL context or security realm must be set!");
+                }
                 params = params.andOptional("enable-spdy", enableSpdy)
                         .andOptional("enabled-cipher-suites", enabledCipherSuites)
                         .andOptional("enabled-protocols", enabledProtocols)
-                        .and("security-realm", securityRealm)
+                        .andOptional("security-realm", securityRealm)
+                        .andOptional("ssl-context", sslContext)
                         .andOptional("verify-client", verifyClient != null ? verifyClient.name() : null);
                 break;
             case AJP_LISTENER:
@@ -562,7 +571,11 @@ public final class AddUndertowListener implements OnlineCommand {
         private Boolean enableSpdy;
         private String enabledCipherSuites;
         private String enabledProtocols;
+        /**
+         * @deprecated use sslContext
+         */
         private String securityRealm;
+        private String sslContext;
         private SslVerifyClient verifyClient;
 
         public HttpsBuilder(String listenerName, String serverName, String socketBinding) {
@@ -617,9 +630,21 @@ public final class AddUndertowListener implements OnlineCommand {
          * Note, there is also created {@link AddHttpsSecurityRealm} allowing to easily create security realm with
          * specified name
          * </p>
+         * @deprecated Use {@link #sslContext(String sslContext)} instead
          */
         public HttpsBuilder securityRealm(String securityRealm) {
             this.securityRealm = securityRealm;
+            return this;
+        }
+
+        /**
+         * Defines which {@code org.wildfly.security.ssl-context} should be used by this HTTPS listener. Note you can
+         * use {@link org.wildfly.extras.creaper.commands.elytron.CreateServerSSLContext} to create this capability.
+         * @param sslContext ssl context name
+         * @return instance of this builder
+         */
+        public HttpsBuilder sslContext(String sslContext) {
+            this.sslContext = sslContext;
             return this;
         }
 
