@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import org.wildfly.extras.creaper.commands.elytron.CreateServerSSLContext;
 import org.wildfly.extras.creaper.commands.socketbindings.AddSocketBinding;
 import org.wildfly.extras.creaper.commands.socketbindings.RemoveSocketBinding;
 import org.wildfly.extras.creaper.core.ManagementClient;
@@ -110,6 +111,41 @@ public class AddUndertowListenerOnlineTest {
         assertFalse(ops.exists(DEFAULT_SERVER_ADDRESS.and("https-listener", TEST_LISTENER_NAME)));
 
         client.apply(new RemoveHttpsSecurityRealm(realmName));
+        admin.reloadIfRequired();
+    }
+
+    @Test
+    public void addHttpsConnectorElytron_commandSucceeds() throws Exception {
+        String alias = "creaper";
+        File keystoreFile = tmp.newFile();
+        KeyStore keyStore = KeyPairAndCertificate.generateSelfSigned("Creaper").toKeyStore(alias, TEST_PASSWORD);
+        keyStore.store(new FileOutputStream(keystoreFile), TEST_PASSWORD.toCharArray());
+
+        String sslContextName = "CreaperSslContext";
+
+        client.apply(new CreateServerSSLContext.Builder(sslContextName)
+                .keyStorePath(keystoreFile.getAbsolutePath())
+                .keyStorePassword(TEST_PASSWORD)
+                .keyStoreAlias(alias)
+                .keyPassword(TEST_PASSWORD)
+                .trustStorePath(keystoreFile.getAbsolutePath())
+                .trustStorePassword(TEST_PASSWORD)
+                .build());
+
+        client.apply(new AddUndertowListener.HttpsBuilder(TEST_LISTENER_NAME, TEST_SOCKET_BINDING)
+                .sslContext(sslContextName)
+                .build());
+
+        assertTrue(ops.exists(DEFAULT_SERVER_ADDRESS.and("https-listener", TEST_LISTENER_NAME)));
+        ops.readAttribute(DEFAULT_SERVER_ADDRESS.and("https-listener", TEST_LISTENER_NAME), "socket-binding")
+                .assertSuccess();
+
+        client.apply(new RemoveUndertowListener.Builder(UndertowListenerType.HTTPS_LISTENER, TEST_LISTENER_NAME)
+                .forDefaultServer());
+        admin.reloadIfRequired();
+        assertFalse(ops.exists(DEFAULT_SERVER_ADDRESS.and("https-listener", TEST_LISTENER_NAME)));
+
+        ops.remove(Address.subsystem("elytron").and("server-ssl-context", sslContextName)).assertSuccess();
         admin.reloadIfRequired();
     }
 
