@@ -88,7 +88,7 @@
         <version.org.apache.maven.plugins.maven-site-plugin>3.9.1</version.org.apache.maven.plugins.maven-site-plugin>
         <version.org.apache.maven.plugins.maven-source-plugin>3.2.1</version.org.apache.maven.plugins.maven-source-plugin>
         <version.org.apache.maven.plugins.maven-surefire-plugin>3.0.0-M5</version.org.apache.maven.plugins.maven-surefire-plugin>
-        <version.org.bouncycastle>1.55</version.org.bouncycastle>
+        <version.org.bouncycastle>1.67</version.org.bouncycastle>
         <version.org.codehaus.groovy.groovy-everything>2.4.10</version.org.codehaus.groovy.groovy-everything>
         <version.org.codehaus.mojo.codenarc-maven-plugin>0.22-1</version.org.codehaus.mojo.codenarc-maven-plugin>
         <version.com.github.spotbugs.spotbugs-maven-plugin>4.4.1</version.com.github.spotbugs.spotbugs-maven-plugin>
