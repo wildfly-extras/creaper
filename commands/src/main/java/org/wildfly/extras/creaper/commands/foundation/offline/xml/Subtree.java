@@ -1,7 +1,7 @@
 package org.wildfly.extras.creaper.commands.foundation.offline.xml;
 
 import groovy.lang.Script;
-import groovy.util.slurpersupport.GPathResult;
+import groovy.xml.slurpersupport.GPathResult;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
 
 /**
