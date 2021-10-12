@@ -74,30 +74,6 @@ in previous WildFly versions, but was moved to a separate module due to
 messaging changes). These dependencies are not listed here, because there
 are no commands in Creaper that use them.
 
-#### JBoss AS 7
-
-Dependencies for `creaper-core`:
-
-    <!-- 7.5.0.Final-redhat-21 is JBoss EAP 6.4.0 -->
-    <dependency>
-        <groupId>org.jboss.as</groupId>
-        <artifactId>jboss-as-controller-client</artifactId>
-        <version>7.5.0.Final-redhat-21</version>
-    </dependency>
-    <dependency>
-        <groupId>org.jboss.as</groupId>
-        <artifactId>jboss-as-cli</artifactId>
-        <version>7.5.0.Final-redhat-21</version>
-    </dependency>
-
-Dependencies for `creaper-commands`:
-
-    <dependency>
-        <groupId>org.wildfly</groupId>
-        <artifactId>wildfly-patching</artifactId>
-        <version>7.5.0.Final-redhat-21</version>
-    </dependency>
-
 #### WildFly 8
 
 Dependencies for `creaper-core`:
