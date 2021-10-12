@@ -39,16 +39,16 @@ activate the `slow-tests` profile by running `mvn test -Pslow-tests`.
 
 By default, the tests run against WildFly 20. If you want to run the tests
 against previous WildFly, activate one of the test suite profiles:
-`mvn clean test -Pwildfly8`. Available profiles are:
+`mvn clean test -Pwildfly10`. Available profiles are:
 
-- `wildfly8`
-- `wildfly9`
+- `wildfly10`
+- `wildfly11`
 - ...
 - `wildfly20` (active by default)
 
 To run a single test from the test suite, the following Maven invocation works:
 `mvn clean test -pl testsuite/standalone/ -Dtest=...` (possibly with a profile
-activation `-Pwildfly8`). See
+activation `-Pwildfly10`). See
 [Surefire documentation](http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html)
 for more details about `-Dtest`.
 

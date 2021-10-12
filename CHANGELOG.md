@@ -5,6 +5,7 @@
 - move to JDK 8 as a minimal required JDK version
 - support for AS7 officially removed
   - note: the property `creaper.wildfly` and protocol `remoting` with `9999` are still kept as default for now
+- support for WildFly 8 and WildFly 9 officially removed
 
 ## 1.6.2 [The Speedy Gonzales Edition](https://en.wikipedia.org/wiki/Speedy_Gonzales) (2020-11-05)
 
