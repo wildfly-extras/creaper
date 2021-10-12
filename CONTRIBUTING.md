@@ -37,22 +37,14 @@ a running application server use Arquillian. This means that it's enough to run
 time to execute, so these are not executed by default. To execute them,
 activate the `slow-tests` profile by running `mvn test -Pslow-tests`.
 
-By default, the tests run against WildFly 10. If you want to run the tests
-against AS7 or previous WildFly, activate one of the test suite profiles:
+By default, the tests run against WildFly 20. If you want to run the tests
+against previous WildFly, activate one of the test suite profiles:
 `mvn clean test -Pwildfly8`. Available profiles are:
 
-- `as7` (see below)
 - `wildfly8`
 - `wildfly9`
-- `wildfly10` (active by default)
-
-Using the `as7` profile requires access to a Maven repository that, in addition
-to all other dependencies, also contains the respective AS7 distribution under
-these coordinates: `org.jboss.as:jboss-as-dist:${version.org.jboss.as.jboss-as-everything}`
-(see `pom.xml` for version number). The URL of the repository must be specified
-using a system property `maven.jboss.ga.repository.url` (again see `pom.xml`):
-
-    mvn clean test -Pas7 -Dmaven.jboss.ga.repository.url=...
+- ...
+- `wildfly20` (active by default)
 
 To run a single test from the test suite, the following Maven invocation works:
 `mvn clean test -pl testsuite/standalone/ -Dtest=...` (possibly with a profile
