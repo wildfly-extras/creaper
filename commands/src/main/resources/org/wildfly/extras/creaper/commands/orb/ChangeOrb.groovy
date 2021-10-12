@@ -1,5 +1,5 @@
 import org.wildfly.extras.creaper.commands.orb.Attribute
-import groovy.util.slurpersupport.GPathResult
+import groovy.xml.slurpersupport.GPathResult
 
 // --- HELPER METHODS
 java.util.LinkedHashMap.metaClass.fill = { GPathResult initPath, String attrName, Attribute attrToSet ->

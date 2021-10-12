@@ -2,9 +2,9 @@ package org.wildfly.extras.creaper.commands.foundation.offline.xml;
 
 import groovy.lang.GroovyCodeSource;
 import groovy.lang.Script;
-import groovy.util.XmlSlurper;
-import groovy.util.slurpersupport.GPathResult;
+import groovy.xml.XmlSlurper;
 import groovy.xml.XmlUtil;
+import groovy.xml.slurpersupport.GPathResult;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;

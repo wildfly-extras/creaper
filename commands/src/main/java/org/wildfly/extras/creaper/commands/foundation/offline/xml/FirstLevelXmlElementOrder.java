@@ -3,7 +3,7 @@ package org.wildfly.extras.creaper.commands.foundation.offline.xml;
 import com.google.common.base.Function;
 import com.google.common.collect.Ordering;
 import groovy.util.Node;
-import groovy.util.XmlParser;
+import groovy.xml.XmlParser;
 import groovy.xml.XmlUtil;
 
 import java.util.Collections;
