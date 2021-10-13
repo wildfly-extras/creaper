@@ -2,6 +2,7 @@ package org.wildfly.extras.creaper.commands.undertow;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -116,6 +117,10 @@ public class AddUndertowListenerOnlineTest {
 
     @Test
     public void addHttpsConnectorElytron_commandSucceeds() throws Exception {
+        // requires Elytron which is available since WildFly 11
+        Assume.assumeTrue("Elytron is available since WildFly 11.",
+                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_5_0_0));
+
         String alias = "creaper";
         File keystoreFile = tmp.newFile();
         KeyStore keyStore = KeyPairAndCertificate.generateSelfSigned("Creaper").toKeyStore(alias, TEST_PASSWORD);
