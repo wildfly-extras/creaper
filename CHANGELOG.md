@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.0.0 (not yet released)
+
 ## 2.0.0-Alpha.1
 
 - move to JDK 8 as a minimal required JDK version
