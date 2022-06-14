@@ -2,6 +2,9 @@
 
 ## 2.0.0 (not yet released)
 
+- aligned server dependencies with WildFly 10+ and JBoss EAP 7.0.0+
+- upgraded Google Guava to 31.1
+
 ## 2.0.0-Alpha.1
 
 - move to JDK 8 as a minimal required JDK version
