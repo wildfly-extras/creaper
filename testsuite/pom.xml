@@ -53,6 +53,9 @@
         <version.wildfly20>20.0.0.Final</version.wildfly20>
         <version.wildfly20.core>12.0.1.Final</version.wildfly20.core>
         <version.wildfly20.arquillian>2.2.0.Final</version.wildfly20.arquillian>
+        <version.wildfly21>21.0.2.Final</version.wildfly21>
+        <version.wildfly21.core>13.0.3.Final</version.wildfly21.core>
+        <version.wildfly21.arquillian>2.2.0.Final</version.wildfly21.arquillian>
         
 
         <managementPort.wildfly>9990</managementPort.wildfly>
@@ -138,6 +141,13 @@
         <wildfly20.arquillianContainer.groupId>org.wildfly.arquillian</wildfly20.arquillianContainer.groupId>
         <wildfly20.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly20.arquillianContainer.artifactId>
         <wildfly20.arquillianContainer.version>${version.wildfly20.arquillian}</wildfly20.arquillianContainer.version>
+
+        <wildfly21.applicationServer.groupId>org.wildfly</wildfly21.applicationServer.groupId>
+        <wildfly21.applicationServer.artifactId>wildfly-dist</wildfly21.applicationServer.artifactId>
+        <wildfly21.applicationServer.version>${version.wildfly21}</wildfly21.applicationServer.version>
+        <wildfly21.arquillianContainer.groupId>org.wildfly.arquillian</wildfly21.arquillianContainer.groupId>
+        <wildfly21.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly21.arquillianContainer.artifactId>
+        <wildfly21.arquillianContainer.version>${version.wildfly21.arquillian}</wildfly21.arquillianContainer.version>
 
         <!-- defined in profiles "wildfly10", "wildfly11", "wildfly12", "wildfly13", "wildfly14", "wildfly15",
              "wildfly16", "wildfly17", "wildfly18", "wildfly19" and "wildfly20" below -->
@@ -806,9 +816,6 @@
 
         <profile>
             <id>wildfly20</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
 
             <properties>
                 <version.java>1.8</version.java>
@@ -850,6 +857,56 @@
                     <groupId>org.wildfly.core</groupId>
                     <artifactId>wildfly-patching</artifactId>
                     <version>${version.wildfly20.core}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>wildfly21</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <properties>
+                <version.java>1.8</version.java>
+
+                <applicationServer.groupId>${wildfly21.applicationServer.groupId}</applicationServer.groupId>
+                <applicationServer.artifactId>${wildfly21.applicationServer.artifactId}</applicationServer.artifactId>
+                <applicationServer.version>${wildfly21.applicationServer.version}</applicationServer.version>
+                <applicationServer.managementPort>${managementPort.wildfly}</applicationServer.managementPort>
+
+                <arquillianContainer.groupId>${wildfly21.arquillianContainer.groupId}</arquillianContainer.groupId>
+                <arquillianContainer.artifactId>${wildfly21.arquillianContainer.artifactId}</arquillianContainer.artifactId>
+                <arquillianContainer.version>${wildfly21.arquillianContainer.version}</arquillianContainer.version>
+
+                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
+                <tests.specialJvmArgs>${specialJvmArgs.wildfly}</tests.specialJvmArgs>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-core</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.extras.creaper</groupId>
+                    <artifactId>creaper-commands</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-controller-client</artifactId>
+                    <version>${version.wildfly21.core}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-cli</artifactId>
+                    <version>${version.wildfly21.core}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-patching</artifactId>
+                    <version>${version.wildfly21.core}</version>
                 </dependency>
             </dependencies>
         </profile>
