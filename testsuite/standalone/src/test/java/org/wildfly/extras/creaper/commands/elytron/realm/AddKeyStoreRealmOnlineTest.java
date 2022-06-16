@@ -12,6 +12,10 @@ import org.wildfly.extras.creaper.commands.elytron.CredentialRef;
 import org.wildfly.extras.creaper.commands.elytron.tls.AddKeyStore;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.online.operations.Address;
+import org.wildfly.extras.creaper.core.online.operations.OperationException;
+import org.wildfly.extras.creaper.core.online.operations.Operations;
+
+import java.io.IOException;
 
 
 @RunWith(Arquillian.class)
@@ -30,7 +34,10 @@ public class AddKeyStoreRealmOnlineTest extends AbstractElytronOnlineTest {
     public void cleanup() throws Exception {
         ops.removeIfExists(TEST_ADD_KEY_STORE_REALM_ADDRESS);
         ops.removeIfExists(TEST_ADD_KEY_STORE_REALM_ADDRESS2);
-        removeAllElytronChildrenType("key-store");
+
+        removeKeyStoreIfExists("keyStore1");
+        removeKeyStoreIfExists("keyStore2");
+        removeKeyStoreIfExists("TEST_DEFAULT_KEYSTORE_NAME");
 
         administration.reloadIfRequired();
     }
@@ -127,5 +134,11 @@ public class AddKeyStoreRealmOnlineTest extends AbstractElytronOnlineTest {
                     .build())
                 .build();
         client.apply(addKeyStore);
+    }
+
+    private void removeKeyStoreIfExists(final String keyStoreName) throws IOException, OperationException {
+        final Operations ops = new Operations(client);
+        final Address keyStoreAddress = SUBSYSTEM_ADDRESS.and("key-store", keyStoreName);
+        ops.removeIfExists(keyStoreAddress);
     }
 }
