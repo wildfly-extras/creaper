@@ -48,8 +48,8 @@ public class AddCredentialStoreOnlineTest extends AbstractElytronOnlineTest {
     public void cleanup() throws Exception {
         ops.removeIfExists(TEST_CREDENTIAL_STORE_ADDRESS2);
         ops.removeIfExists(TEST_CREDENTIAL_STORE_ADDRESS);
-        ops.removeIfExists(TMP_PATH_ADDRESS);
         administration.reloadIfRequired();
+        ops.removeIfExists(TMP_PATH_ADDRESS);
     }
 
     @AfterClass
