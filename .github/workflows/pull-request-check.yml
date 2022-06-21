@@ -23,7 +23,7 @@ jobs:
           java-package: jdk
           architecture: x64
       - name: Tests - non-elytron
-        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=\!**.elytron.**.*
+        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=\!**.elytron.**
   Tests-elytron:
     runs-on: ubuntu-latest
     strategy:
@@ -40,4 +40,4 @@ jobs:
           java-package: jdk
           architecture: x64
       - name: Tests - elytron
-        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=**.elytron.**.*
+        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=**.elytron.**
