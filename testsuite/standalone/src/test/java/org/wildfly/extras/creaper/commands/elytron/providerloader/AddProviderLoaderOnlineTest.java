@@ -77,7 +77,10 @@ public class AddProviderLoaderOnlineTest extends AbstractElytronOnlineTest {
         AddProviderLoader addProviderLoader = new AddProviderLoader.Builder(TEST_PROVIDER_LOADER_NAME)
                 .module(TEST_MODULE_NAME)
                 .classNames(AddProviderLoaderImpl.class.getCanonicalName())
-                .addConfiguration("configurationName", "configurationValue")
+                // https://issues.redhat.com/browse/WFCORE-5952
+                // java.security.Provider changed after JDK8
+                // can be enabled again when we test only on JDK 11+ and update AddProviderLoaderImpl
+                // .addConfiguration("configurationName", "configurationValue")
                 .build();
 
         client.apply(addProviderLoader);
@@ -85,7 +88,8 @@ public class AddProviderLoaderOnlineTest extends AbstractElytronOnlineTest {
         assertTrue("Provider loader should be created", ops.exists(TEST_PROVIDER_LOADER_ADDRESS));
         checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "module", TEST_MODULE_NAME);
         checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "class-names[0]", AddProviderLoaderImpl.class.getCanonicalName());
-        checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "configuration.configurationName", "configurationValue");
+        // as above
+        // checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "configuration.configurationName", "configurationValue");
     }
 
     @Test
@@ -100,8 +104,11 @@ public class AddProviderLoaderOnlineTest extends AbstractElytronOnlineTest {
         AddProviderLoader addProviderLoader = new AddProviderLoader.Builder(TEST_PROVIDER_LOADER_NAME)
                 .module(TEST_MODULE_NAME)
                 .classNames(AddProviderLoaderImpl.class.getCanonicalName())
-                .path("application-users.properties")
-                .relativeTo("jboss.server.config.dir")
+                // https://issues.redhat.com/browse/WFCORE-5952
+                // java.security.Provider changed after JDK8
+                // can be enabled again when we test only on JDK 11+ and update AddProviderLoaderImpl
+                // .path("application-users.properties")
+                // .relativeTo("jboss.server.config.dir")
                 .build();
 
         client.apply(addProviderLoader);
@@ -109,8 +116,9 @@ public class AddProviderLoaderOnlineTest extends AbstractElytronOnlineTest {
         assertTrue("Provider loader should be created", ops.exists(TEST_PROVIDER_LOADER_ADDRESS));
         checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "module", TEST_MODULE_NAME);
         checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "class-names[0]", AddProviderLoaderImpl.class.getCanonicalName());
-        checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "path", "application-users.properties");
-        checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "relative-to", "jboss.server.config.dir");
+        // as above
+        // checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "path", "application-users.properties");
+        // checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "relative-to", "jboss.server.config.dir");
     }
 
     @Test
@@ -148,7 +156,10 @@ public class AddProviderLoaderOnlineTest extends AbstractElytronOnlineTest {
         AddProviderLoader addProviderLoader = new AddProviderLoader.Builder(TEST_PROVIDER_LOADER_NAME)
                 .module(TEST_MODULE_NAME)
                 .classNames(AddProviderLoaderImpl.class.getCanonicalName())
-                .addConfiguration("key", "value")
+                // https://issues.redhat.com/browse/WFCORE-5952
+                // java.security.Provider changed after JDK8
+                // can be enabled again when we test only on JDK 11+ and update AddProviderLoaderImpl
+                // .addConfiguration("key", "value")
                 .build();
 
         client.apply(addProviderLoader);
@@ -156,7 +167,8 @@ public class AddProviderLoaderOnlineTest extends AbstractElytronOnlineTest {
         assertTrue("Provider loader should be created", ops.exists(TEST_PROVIDER_LOADER_ADDRESS));
         checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "module", TEST_MODULE_NAME);
         checkAttribute(TEST_PROVIDER_LOADER_ADDRESS, "class-names[0]", AddProviderLoaderImpl.class.getCanonicalName());
-        checkAttributeObject(TEST_PROVIDER_LOADER_ADDRESS, "configuration", "key", "value");
+        // as above
+        // checkAttributeObject(TEST_PROVIDER_LOADER_ADDRESS, "configuration", "key", "value");
     }
 
     @Test(expected = CommandFailedException.class)
