@@ -37,7 +37,7 @@ public class AddKeyStoreRealmOnlineTest extends AbstractElytronOnlineTest {
 
         removeKeyStoreIfExists("keyStore1");
         removeKeyStoreIfExists("keyStore2");
-        removeKeyStoreIfExists("TEST_DEFAULT_KEYSTORE_NAME");
+        removeKeyStoreIfExists(TEST_DEFAULT_KEYSTORE_NAME);
 
         administration.reloadIfRequired();
     }
