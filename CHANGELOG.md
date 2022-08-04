@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.0.0 (not yet released)
+
 ## 2.0.0-Alpha.3
 
 - added support for WildFly 21 - WildFly 24
