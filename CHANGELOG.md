@@ -2,6 +2,8 @@
 
 ## 2.0.0 (not yet released)
 
+- added support for WildFly 21 - WildFly 24
+
 ## 2.0.0-Alpha.2
 
 - aligned server dependencies with WildFly 10+ and JBoss EAP 7.0.0+
