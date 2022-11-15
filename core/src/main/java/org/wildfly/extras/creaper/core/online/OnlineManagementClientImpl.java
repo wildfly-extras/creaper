@@ -9,7 +9,7 @@ import java.util.concurrent.TimeoutException;
 import org.jboss.as.cli.CliInitializationException;
 import org.jboss.as.cli.CommandContext;
 import org.jboss.as.cli.CommandFormatException;
-import org.jboss.as.cli.impl.WorkaroundForWFCORE526_CommandContextImpl;
+import org.jboss.as.cli.impl.CommandContextFactoryImpl;
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.as.controller.client.Operation;
 import org.jboss.dmr.ModelNode;
@@ -44,7 +44,7 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
         try {
             fakeJbossCliConfigToAvoidWarning();
 
-            this.cliContext = new WorkaroundForWFCORE526_CommandContextImpl(options.host, options.port);
+            this.cliContext = new CommandContextFactoryImpl().newCommandContext();
             cliContext.setSilent(true); // CLI shouldn't print messages to the console directly; proper logging is fine
             cliContext.bindClient(client);
         } catch (CliInitializationException e) {
