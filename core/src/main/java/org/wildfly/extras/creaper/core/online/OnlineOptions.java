@@ -1,8 +1,6 @@
 package org.wildfly.extras.creaper.core.online;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -14,6 +12,7 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.sasl.RealmCallback;
 import org.jboss.as.controller.client.ModelControllerClient;
+import org.jboss.as.controller.client.ModelControllerClientConfiguration;
 import org.jboss.dmr.ModelNode;
 import org.wildfly.extras.creaper.core.ManagementClient;
 
@@ -419,46 +418,14 @@ public final class OnlineOptions {
             return modelControllerClient;
         }
 
-        // the variant with the "protocol" parameter exists since WildFly 8, and if it is available, it is preferred
-        // to the protocol-less variant available in JBoss AS 7, because we want to choose the protocol dynamically
-        //
-        // also, in all versions of WildFly 8 and all versions of WildFly Core before 1.0.0.Beta4, the protocol-less
-        // variant is missing (see WFCORE-623)
-        try {
-            Method createMethod = ModelControllerClient.Factory.class.getMethod("create",
-                    String.class,          // protocol -- new in WildFly 8
-                    String.class,          // host
-                    int.class,             // port
-                    CallbackHandler.class, // callbackHandler
-                    SSLContext.class,      // sslContext
-                    int.class,             // connectionTimeout
-                    Map.class              // saslOptions
-            );
-
-            String protocolName = null;
-            if (protocol != null) {
-                protocolName = protocol.protocolName();
-            }
-
-            modelControllerClient = (ModelControllerClient) createMethod.invoke(null, // static method
-                    protocolName, host, port, callbackHandler, sslContext, connectionTimeout, saslOptions);
-        } catch (NoSuchMethodException e) {
-            if (protocol == ManagementProtocol.HTTP_REMOTING || protocol == ManagementProtocol.HTTPS_REMOTING) {
-                // user asks for WildFly, but the client library is from AS7, this can't work
-                throw new IllegalStateException("The server should be WildFly (either ManagementProtocol.HTTP(S)_REMOTING was used or the '"
-                        + CREAPER_WILDFLY + "' system property was set), but client libraries are AS7-only");
-            }
-
-            modelControllerClient = ModelControllerClient.Factory.create(host, port,
-                    callbackHandler, sslContext, connectionTimeout, saslOptions);
-        } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof IOException) {
-                throw (IOException) e.getCause();
-            }
-            throw new IOException(e);
-        } catch (IllegalAccessException e) {
-            throw new IOException(e);
-        }
+        modelControllerClient = ModelControllerClient.Factory.create(new ModelControllerClientConfiguration.Builder()
+                .setProtocol(protocol != null ? protocol.protocolName() : null)
+                .setHostName(host)
+                .setPort(port)
+                .setSslContext(sslContext)
+                .setConnectionTimeout(connectionTimeout)
+                .setSaslOptions(saslOptions)
+                .setHandler(callbackHandler).build());
 
         try {
             connectAndWaitUntilServerBoots(modelControllerClient, connectionTimeout, bootTimeout);
