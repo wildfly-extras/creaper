@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0 (not yet released)
+## 2.0.0-Alpha.4
 
 - compatibility with WildFly Core 20.0.0.Beta3 (WildFly 8)
 - removed the workaround for WFCORE-526
