@@ -58,6 +58,8 @@ public class AddKerberosAuthenticationOnlineTest {
         Assume.assumeTrue("Kerberos authentication in security realm is available since WildFly 9 or in EAP 6.4.x.",
                 serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_1_7_0)
                 && !serverVersion.inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
+        Assume.assumeFalse("Legacy security was removed in WildFly 25.",
+                serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0));
     }
 
     @Before

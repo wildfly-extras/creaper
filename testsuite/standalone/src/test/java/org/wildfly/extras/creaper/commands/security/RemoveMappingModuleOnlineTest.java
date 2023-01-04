@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
@@ -16,7 +20,6 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
-import org.junit.Ignore;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -58,6 +61,15 @@ public class RemoveMappingModuleOnlineTest {
             .type("role")
             .addModuleOption("realm", "ApplicationRealm")
             .build();
+
+    @BeforeClass
+    public static void checkServerVersionIsSupported() throws Exception {
+        // check version is supported
+        ServerVersion serverVersion
+                = ManagementClient.online(OnlineOptions.standalone().localDefault().build()).version();
+        Assume.assumeFalse("Legacy security was removed in WildFly 25.",
+                serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0));
+    }
 
     @Before
     public void connect() throws IOException, CommandFailedException, OperationException {

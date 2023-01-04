@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -35,6 +38,15 @@ public class AddPropertiesAuthorizationOnlineTest {
             = Address.coreService("management").and("security-realm", TEST_SECURITY_REALM_NAME);
     private static final Address TEST_SECURITY_REALM_PROPERTIES_AUTHZ_ADDRESS
             = TEST_SECURITY_REALM_ADDRESS.and("authorization", "properties");
+
+    @BeforeClass
+    public static void checkServerVersionIsSupported() throws Exception {
+        // check version is supported
+        ServerVersion serverVersion
+                = ManagementClient.online(OnlineOptions.standalone().localDefault().build()).version();
+        Assume.assumeFalse("Legacy security was removed in WildFly 25.",
+                serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0));
+    }
 
     @Before
     public void connect() throws Exception {

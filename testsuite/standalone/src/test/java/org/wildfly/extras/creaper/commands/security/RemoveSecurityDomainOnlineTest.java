@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
@@ -31,6 +34,15 @@ public class RemoveSecurityDomainOnlineTest {
     private static final String TEST_SECURITY_DOMAIN_NAME = "creaperSecDomain";
     private static final Address TEST_SECURITY_DOMAIN_ADDRESS
             = Address.subsystem("security").and("security-domain", TEST_SECURITY_DOMAIN_NAME);
+
+    @BeforeClass
+    public static void checkServerVersionIsSupported() throws Exception {
+        // check version is supported
+        ServerVersion serverVersion
+                = ManagementClient.online(OnlineOptions.standalone().localDefault().build()).version();
+        Assume.assumeFalse("Legacy security was removed in WildFly 25.",
+                serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0));
+    }
 
     @Before
     public void connect() throws IOException {
