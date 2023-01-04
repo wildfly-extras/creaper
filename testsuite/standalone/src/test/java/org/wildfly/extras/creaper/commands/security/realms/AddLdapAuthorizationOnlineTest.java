@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.ManagementClient;
@@ -17,7 +19,6 @@ import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.junit.Assume;
 import org.wildfly.extras.creaper.core.ServerVersion;
 
 import static org.junit.Assert.assertEquals;
@@ -50,6 +51,15 @@ public class AddLdapAuthorizationOnlineTest {
             .and("username-to-dn", "username-is-dn");
     private static final Address TEST_LDAP_CONNECTION_ADDRESS
             = Address.coreService("management").and("ldap-connection", TEST_LDAP_CONNECTION);
+
+    @BeforeClass
+    public static void checkServerVersionIsSupported() throws Exception {
+        // check version is supported
+        ServerVersion serverVersion
+                = ManagementClient.online(OnlineOptions.standalone().localDefault().build()).version();
+        Assume.assumeFalse("Legacy security was removed in WildFly 25.",
+                serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0));
+    }
 
     @Before
     public void connect() throws Exception {

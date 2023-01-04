@@ -83,6 +83,8 @@ public class AddUndertowListenerOnlineTest {
 
     @Test
     public void addHttpsConnector_commandSucceeds() throws Exception {
+        Assume.assumeFalse("Legacy security was removed in WildFly 25.",
+                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0));
         String alias = "creaper";
         File keystoreFile = tmp.newFile();
         KeyStore keyStore = KeyPairAndCertificate.generateSelfSigned("Creaper").toKeyStore(alias, TEST_PASSWORD);
@@ -156,6 +158,8 @@ public class AddUndertowListenerOnlineTest {
 
     @Test
     public void addSecurityRealm_withoutTruststore_commandSucceeds() throws Exception {
+        Assume.assumeFalse("Legacy security was removed in WildFly 25.",
+                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0));
         String alias = "creaper";
         File keystoreFile = tmp.newFile();
         KeyStore keyStore = KeyPairAndCertificate.generateSelfSigned("Creaper").toKeyStore(alias, TEST_PASSWORD);
