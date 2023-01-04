@@ -10,9 +10,11 @@ import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
+import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assume.assumeTrue;
 
@@ -20,9 +22,12 @@ public class HttpOnlineManagementClientTest extends OnlineManagementClientTest {
     private static final String USERNAME = "testuser";
     private static final String PASSWORD = "testpass";
     private static OfflineManagementClient offlineClient;
+    private static OnlineManagementClient nativeOnlineClient;
 
     @BeforeClass
-    public static void addUser() throws IOException, CommandFailedException {
+    public static void addUser() throws IOException, CommandFailedException, CliException, InterruptedException,
+            TimeoutException {
+        // first add user
         offlineClient = ManagementClient.offline(OfflineOptions.standalone()
                 .rootDirectory(new File("target/jboss-as"))
                 .configurationFile("standalone.xml")
@@ -30,10 +35,25 @@ public class HttpOnlineManagementClientTest extends OnlineManagementClientTest {
         );
 
         offlineClient.apply(PropertiesFileAuth.mgmtUsers().defineUser(USERNAME, PASSWORD));
+
+        if (offlineClient.version().greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            // then enable http authentication, so we can use http protocol
+            nativeOnlineClient = ManagementClient.online(OnlineOptions.standalone()
+                    .localDefault()
+                    .build());
+            nativeOnlineClient.executeCli("security enable-http-auth-management --no-reload");
+            new Administration(nativeOnlineClient).reload();
+        }
     }
 
     @AfterClass
-    public static void removeUser() throws CommandFailedException {
+    public static void removeUser() throws CommandFailedException, CliException, IOException, InterruptedException,
+            TimeoutException {
+        if (offlineClient.version().greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            nativeOnlineClient.executeCli("security disable-http-auth-management --no-reload");
+            new Administration(nativeOnlineClient).reload();
+        }
+
         offlineClient.apply(PropertiesFileAuth.mgmtUsers().undefineUser(USERNAME));
     }
 
