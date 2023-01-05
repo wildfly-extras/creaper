@@ -26,6 +26,9 @@ public final class AddJaasAuthentication extends AbstractAddSecurityRealmSubElem
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
         if (assignGroups != null) {
             if (ctx.version.lessThan(ServerVersion.VERSION_1_7_0)
                     || ctx.version.inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0)) {
@@ -46,6 +49,9 @@ public final class AddJaasAuthentication extends AbstractAddSecurityRealmSubElem
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
         if (assignGroups != null) {
             if (ctx.version.lessThan(ServerVersion.VERSION_1_7_0)
                     || ctx.version.inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0)) {

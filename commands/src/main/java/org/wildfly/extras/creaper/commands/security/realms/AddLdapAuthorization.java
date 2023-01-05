@@ -35,6 +35,10 @@ public final class AddLdapAuthorization extends AbstractAddSecurityRealmSubEleme
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         if (groupToPrincipal != null) {
             if (groupToPrincipal.preferOriginalConnection != null) {
                 if (ctx.version.lessThan(ServerVersion.VERSION_1_7_0)
@@ -146,6 +150,10 @@ public final class AddLdapAuthorization extends AbstractAddSecurityRealmSubEleme
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         if (groupToPrincipal != null) {
             if (groupToPrincipal.preferOriginalConnection != null) {
                 if (ctx.version.lessThan(ServerVersion.VERSION_1_7_0)

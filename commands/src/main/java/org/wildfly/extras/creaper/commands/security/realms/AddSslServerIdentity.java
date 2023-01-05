@@ -44,6 +44,10 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
 
     @Override
     public final void apply(OfflineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(AddSslServerIdentity.class)
                 .subtree("management", Subtree.management())
                 .parameter("realmName", securityRealmName)
@@ -65,6 +69,10 @@ public class AddSslServerIdentity extends AbstractAddSecurityRealmSubElement {
 
     @Override
     public final void apply(OnlineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         Address sslServerIdentitiesAddress = securityRealmAddress.and("server-identity", "ssl");
 
         Operations ops = new Operations(ctx.client);

@@ -3,6 +3,7 @@ package org.wildfly.extras.creaper.commands.security.realms;
 import java.util.concurrent.TimeoutException;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -32,12 +33,20 @@ public final class RemoveSecurityRealm implements OnlineCommand, OfflineCommand 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception,
             TimeoutException, InterruptedException {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         Operations ops = new Operations(ctx.client);
         ops.remove(Address.coreService("management").and("security-realm", securityRealmName));
     }
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(RemoveSecurityRealm.class)
                 .subtree("management", Subtree.management())
                 .parameter("atrSecurityRealmName", securityRealmName)

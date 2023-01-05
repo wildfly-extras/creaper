@@ -2,6 +2,7 @@ package org.wildfly.extras.creaper.commands.security.realms;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -25,6 +26,10 @@ public class AddTruststoreAuthentication extends AbstractAddSecurityRealmSubElem
 
     @Override
     public final void apply(OfflineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(AddTruststoreAuthentication.class)
                 .subtree("management", Subtree.management())
                 .parameter("realmName", securityRealmName)
@@ -38,6 +43,10 @@ public class AddTruststoreAuthentication extends AbstractAddSecurityRealmSubElem
 
     @Override
     public final void apply(OnlineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         Address truststoreAuthAddress = securityRealmAddress.and("authentication", "truststore");
 
         Operations ops = new Operations(ctx.client);

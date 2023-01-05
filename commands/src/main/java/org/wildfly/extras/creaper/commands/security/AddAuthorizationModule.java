@@ -7,6 +7,7 @@ import java.util.concurrent.TimeoutException;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
 import org.wildfly.extras.creaper.core.CommandFailedException;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.CliException;
@@ -43,6 +44,10 @@ public final class AddAuthorizationModule implements OnlineCommand, OfflineComma
     @Override
     public void apply(OnlineCommandContext ctx) throws CliException, CommandFailedException, IOException,
             TimeoutException, InterruptedException {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         Operations ops = new Operations(ctx.client);
         Address authorizationClassicAddress = Address.subsystem("security")
                 .and("security-domain", securityDomainName)
@@ -78,6 +83,10 @@ public final class AddAuthorizationModule implements OnlineCommand, OfflineComma
 
     @Override
     public void apply(OfflineCommandContext ctx) throws CommandFailedException, IOException {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(AddAuthorizationModule.class)
                 .subtree("securitySubsystem", Subtree.subsystem("security"))
                 .parameter("atrSecurityDomainName", securityDomainName)
