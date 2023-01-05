@@ -48,6 +48,8 @@ public class OfflineServerVersionTest {
     private static final String EAP7_LOGGING = "3.0";
     private static final String EAP7_EE = "4.0";
 
+    private static final String EAP8_EE = "6.0";
+
     private static final String WFLY12_ROOT = "6.0";
     private static final String WFLY13_ROOT = "7.0";
     private static final String WFLY14_ROOT = "8.0";
@@ -63,6 +65,7 @@ public class OfflineServerVersionTest {
     private static final String WFLY24_ROOT = "17.0";
     private static final String WFLY25_ROOT = "18.0";
     private static final String WFLY26_ROOT = "19.0";
+    private static final String WFLY27_ROOT = "20.0";
 
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();
@@ -183,6 +186,11 @@ public class OfflineServerVersionTest {
     }
 
     @Test
+    public void discoverStandaloneXml_wfly27() throws IOException {
+        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
     public void discoverHostXml_eap6() throws IOException {
         test(ServerVersion.VERSION_1_7_0, HOST_XML, EAP6_ROOT, EAP6_LOGGING, EAP6_EE);
     }
@@ -273,6 +281,11 @@ public class OfflineServerVersionTest {
     }
 
     @Test
+    public void discoverHostXml_wfly27() throws IOException {
+        test(ServerVersion.VERSION_20_0_0, HOST_XML, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
     public void discoverDomainXml_eap6() throws IOException {
         test(ServerVersion.VERSION_1_7_0, DOMAIN_XML, EAP6_ROOT, EAP6_LOGGING, EAP6_EE);
     }
@@ -360,6 +373,11 @@ public class OfflineServerVersionTest {
     @Test
     public void discoverDomainXml_wfly26() throws IOException {
         test(ServerVersion.VERSION_19_0_0, DOMAIN_XML, WFLY26_ROOT, EAP7_LOGGING, EAP7_EE);
+    }
+
+    @Test
+    public void discoverDomainXml_wfly27() throws IOException {
+        test(ServerVersion.VERSION_20_0_0, DOMAIN_XML, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     private void test(ServerVersion expected, String xmlPattern,
