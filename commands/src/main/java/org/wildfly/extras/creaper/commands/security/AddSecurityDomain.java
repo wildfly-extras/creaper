@@ -5,6 +5,7 @@ import java.util.concurrent.TimeoutException;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
 import org.wildfly.extras.creaper.core.CommandFailedException;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.CliException;
@@ -34,6 +35,10 @@ public class AddSecurityDomain implements OnlineCommand, OfflineCommand {
     @Override
     public void apply(OnlineCommandContext ctx) throws CliException, CommandFailedException, IOException,
             TimeoutException, InterruptedException {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         Operations ops = new Operations(ctx.client);
         Address securityDomainAddress = Address.subsystem("security").and("security-domain", securityDomainName);
         if (replaceExisting) {
@@ -50,6 +55,10 @@ public class AddSecurityDomain implements OnlineCommand, OfflineCommand {
 
     @Override
     public void apply(OfflineCommandContext ctx) throws CommandFailedException, IOException {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            throw new AssertionError("Legacy security was removed in WildFly 25.");
+        }
+
         ctx.client.apply(GroovyXmlTransform.of(AddSecurityDomain.class)
                 .subtree("securitySubsystem", Subtree.subsystem("security"))
                 .parameter("atrSecurityDomainName", securityDomainName)
