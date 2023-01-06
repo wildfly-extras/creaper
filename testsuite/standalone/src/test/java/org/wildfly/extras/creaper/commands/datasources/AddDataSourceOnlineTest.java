@@ -1,8 +1,10 @@
 package org.wildfly.extras.creaper.commands.datasources;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Assume;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
@@ -94,6 +96,10 @@ public class AddDataSourceOnlineTest {
 
     @Test(expected = CommandFailedException.class)
     public void addDataSource_commandFails() throws Exception {
+        Assume.assumeFalse("jndi-name validation was removed in WildFly 27, "
+                        + "see https://issues.redhat.com/browse/WFLY-16729",
+                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_20_0_0));
+
         AddDataSource addDataSource = new AddDataSource.Builder(TEST_DATASOURCE_NAME)
                 .jndiName("invalid-jndi-name")
                 .driverName("h2")
