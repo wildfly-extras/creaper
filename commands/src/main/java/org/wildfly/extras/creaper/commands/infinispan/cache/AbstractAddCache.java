@@ -38,6 +38,11 @@ abstract class AbstractAddCache implements OnlineCommand {
 
     @Override
     public final void apply(OnlineCommandContext ctx) throws Exception {
+        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_20_0_0)) {
+            throw new AssertionError("This command is not compatible with WildFly 27 and above, "
+                    + "see https://github.com/wildfly-extras/creaper/issues/218.");
+        }
+
         Values values = Values.empty()
                 .andOptional("jndi-name", jndiName)
                 .andOptional("module", module)
