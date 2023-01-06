@@ -2,7 +2,9 @@ package org.wildfly.extras.creaper.commands.infinispan.cache;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
@@ -31,6 +33,16 @@ public class AddDistributedCacheOnlineTest {
     private static final Address TEST_CACHE_ADDRESS = Address.subsystem("infinispan")
             .and("cache-container", "hibernate")
             .and("distributed-cache", TEST_CACHE_NAME);
+
+    @BeforeClass
+    public static void checkServerVersionIsSupported() throws Exception {
+        // check version is supported
+        ServerVersion serverVersion
+                = ManagementClient.online(OnlineOptions.standalone().localDefault().build()).version();
+        Assume.assumeFalse("The command is not compatible with WildFly 27 and above,"
+                        + " see https://github.com/wildfly-extras/creaper/issues/218.",
+                serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_20_0_0));
+    }
 
     @Before
     public void connect() throws Exception {
