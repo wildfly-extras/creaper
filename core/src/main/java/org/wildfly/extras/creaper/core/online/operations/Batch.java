@@ -3,7 +3,6 @@ package org.wildfly.extras.creaper.core.online.operations;
 import org.jboss.dmr.ModelNode;
 import org.wildfly.extras.creaper.core.online.Constants;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public final class Batch implements SharedCommonOperations<Batch> {
     private final OperationsModelNodeBuilder builder = new OperationsModelNodeBuilder();
 
     @Override
-    public Batch whoami() throws IOException {
+    public Batch whoami() {
         operations.add(builder.whoami());
         return this;
     }
