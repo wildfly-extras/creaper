@@ -2,6 +2,11 @@
 
 ## 2.0.0 (not yet released)
 
+- switch default protocol to `http-remoting`
+- switch default port to 9990
+- drop `creaper.wildfly` property
+- drop `remoting` protocol support
+
 ## 2.0.0-Alpha.4
 
 - compatibility with WildFly Core 20.0.0.Beta3 (WildFly 28)
