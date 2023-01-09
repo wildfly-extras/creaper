@@ -1,6 +1,6 @@
 # Creaper
 
-Creaper is a small library for JBoss AS 7 and WildFly management with a slight
+Creaper is a small library for WildFly management with a slight
 bias towards testing. It provides a simple API for managing a running server
 (online) or rewriting a configuration XML file of a stopped server (offline).
 Note that manipulating the XML files is generally discouraged and should only
@@ -26,7 +26,7 @@ separate projects as extensions of the creaper and maintained there.
 
 ### Creaper-testsuite
 Contains integration tests for the operations, commands and other functionalities provided by creaper, which are
-executed against different versions of JBoss AS 7/WildFly making sure that Creaper remains rock solid piece of code :-)
+executed against different versions of WildFly making sure that Creaper remains rock solid piece of code :-)
 
 
 ## Install
@@ -62,7 +62,7 @@ The latest and greatest released version is __`1.6.2`__.
 Creaper follows [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html)
 (aka _SemVer_) for versioning and also as a compatibility promise.
 
-### JBoss AS 7 / WildFly Client Libraries
+### WildFly Client Libraries
 
 __You have to provide both `*-controller-client` and `*-cli` yourself.__
 If you want to use commands for patching, you also have to provide
@@ -531,7 +531,7 @@ Build a management client like this:
 
     ManagementClient.online(OnlineOptions
             .standalone()
-            .hostAndPort("localhost", 9999)
+            .hostAndPort("localhost", 9990)
             .build()
     );
 
@@ -552,7 +552,7 @@ This was for standalone mode. For domain, it looks very similar:
             .forProfile("default")
             .forHost("master")
             .build()
-            .hostAndPort("localhost", 9999)
+            .hostAndPort("localhost", 9990)
             .build()
     );
 
@@ -595,46 +595,6 @@ expressed by throwing an exception. These exceptions are considered fatal;
 that is, if an exception happens, the server is in an unknown state and the
 only reasonable action is aborting everything and reporting a major fail.
 
-#### WildFly
-
-By default, `OnlineOptions.standalone().localDefault()` configures a management
-client that connects to `localhost:9999` using the `remote` protocol, which
-makes sense for JBoss AS 7.
-
-If you want to connect to WildFly (any version), you can use the `protocol`
-method:
-
-    ManagementClient.online(OnlineOptions
-            .standalone()
-            .localDefault()
-            .protocol(ManagementProtocol.HTTP_REMOTING)
-            .build()
-    );
-
-This changes the protocol to `http-remoting` and also changes the default port
-to `9990`. If you define the port directly (using `hostAndPort`), you still
-have to define the correct protocol.
-
-Also, you can use `.protocol(ManagementProtocol.REMOTE)` to switch
-the protocol back to `remote`, which is useful when using WildFly client
-libraries against an AS7-based server. (It can't work the other way around,
-so if you have AS7 client libraries and specify `http-remoting`, you'll get
-an exception.)
-
-Alternatively, you can define a system property `creaper.wildfly` (its value
-is ignored, the system property just needs to be defined). This switches
-the default protocol to `http-remoting` and the default port to `9990`
-(in case SSL is configured, this switches the default protocol to
-`https-remoting` and the default port to `9993`).
-
-This way, you can run the same code against JBoss AS 7 and WildFly without
-the need to rewrite or recompile anything. Just define a system property, and
-provide a proper version of client libraries (as explained above).
-
-Note that it would actually be possible to implement handling
-of the `creaper.wildfly` system property completely outside of Creaper just
-in terms of the `protocol` method.
-
 #### HTTP transport
 
 If you want to use HTTP transport for executing operation (`.protocol(ManagementProtocol.HTTP)`),
@@ -648,7 +608,7 @@ server looks like this:
 
     ManagementClient.offline(OfflineOptions
             .standalone()
-            .rootDirectory(new File("/tmp/jboss-eap-6.3"))
+            .rootDirectory(new File("/tmp/widfly-10"))
             .configurationFile("standalone.xml")
             .build()
     );
@@ -657,7 +617,7 @@ server looks like this:
             .domain()
             .forProfile("default")
             .build()
-            .rootDirectory(new File("/tmp/jboss-eap-6.3"))
+            .rootDirectory(new File("/tmp/wildfly-10"))
             .configurationFile("standalone.xml")
             .build()
     );

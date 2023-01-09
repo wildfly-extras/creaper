@@ -23,7 +23,6 @@ import org.wildfly.extras.creaper.core.ManagementClient;
  * quite a number of public types.
  */
 public final class OnlineOptions {
-    private static final String CREAPER_WILDFLY = "creaper.wildfly";
 
     public final boolean isStandalone;
 
@@ -48,26 +47,22 @@ public final class OnlineOptions {
     final boolean isWrappedClient; // see OnlineManagementClientImpl.reconnect
 
     private OnlineOptions(Data data) {
-        if (data.protocol == null && System.getProperty(CREAPER_WILDFLY) != null) {
+        if (data.protocol == null) {
             if (data.sslOptions == null) {
                 data.protocol = ManagementProtocol.HTTP_REMOTING;
             } else {
                 data.protocol = ManagementProtocol.HTTPS_REMOTING;
             }
-            // if the protocol wasn't set manually and the system property isn't set,
-            // it _doesn't_ mean that it's "remote"! see also OptionalOnlineOptions.protocol below
+            // if the protocol wasn't set manually, it _doesn't_ mean that it's "http-remoting"!
+            // see also OptionalOnlineOptions.protocol below
         }
 
         if (data.localDefault) {
             data.host = "localhost";
-            if (data.protocol == ManagementProtocol.HTTP_REMOTING || data.protocol == ManagementProtocol.HTTP) {
-                data.port = 9990;
-            } else if (data.protocol == ManagementProtocol.HTTPS_REMOTING) {
+            if (data.protocol == ManagementProtocol.HTTPS_REMOTING || data.protocol == ManagementProtocol.HTTPS) {
                 data.port = 9993;
-            } else if (data.protocol == ManagementProtocol.HTTPS) {
-                data.port = System.getProperty(CREAPER_WILDFLY) != null ? 9993 : 9443;
             } else {
-                data.port = 9999;
+                data.port = 9990;
             }
         }
 
@@ -196,10 +191,9 @@ public final class OnlineOptions {
 
         /**
          * <p>Connect to {@code localhost} and use the default management port of the application server.
-         * This is {@code 9999} by default (JBoss AS 7), and if the system property {@code creaper.wildfly} is defined,
-         * it changes to 9990 or (if {@link OptionalOnlineOptions#ssl(SslOptions) ssl} is used) to 9993 (WildFly).
-         * This makes it easy to run the same code against both AS7 and WildFly only by defining a single system
-         * property.</p>
+         * This is {@code 9990} by default, but if {@link OptionalOnlineOptions#ssl(SslOptions) ssl} is not null,
+         * then it is 9993.
+         * </p>
          *
          * <p>Alternatively, the {@link OptionalOnlineOptions#protocol(ManagementProtocol) protocol()} method
          * can be used, which takes precedence over the methods described above. When it is called, the default port
@@ -324,22 +318,13 @@ public final class OnlineOptions {
          * <p>This also affects the <i>server port</i>, if {@link ConnectionOnlineOptions#localDefault() localDefault}
          * is used.</p>
          *
-         * <p>AS7 uses a native remoting protocol, called {@code remote}. WildFly uses the remoting protocol wrapped
-         * in HTTP (using the HTTP upgrade mechanism), called {@code http-remoting}, or uses its secured version
-         * called {@code https-remoting}. When the client libraries on classpath match the server version, they should
-         * choose the correct protocol automatically, so in this situation, this method is not required. However, when
-         * using a single set of client libraries for all server versions (which is possible, because the client
-         * libraries should be backward compatible), this method must be used to specify the type of the server.</p>
+         * <p>WildFly uses the remoting protocol wrapped in HTTP (using the HTTP upgrade mechanism),
+         * called {@code http-remoting}, or uses its secured version called {@code https-remoting}.
          *
          * <p>The server port is only affected by this method when
          * {@link ConnectionOnlineOptions#localDefault() localDefault} is used. When server port is specified directly
          * (using {@link ConnectionOnlineOptions#hostAndPort(String, int) hostAndPort}), this method doesn't change it.
          * </p>
-         *
-         * <p>If the {@code creaper.wildfly} system property is set (because of
-         * {@link ConnectionOnlineOptions#localDefault() localDefault}), it is also used as a signal that the protocol
-         * should be {@code http-remoting}, but this method has a priority. When the system property is not set,
-         * it <i>doesn't</i> mean that the protocol should be {@code remote}; we simply don't know.</p>
          */
         public OptionalOnlineOptions protocol(ManagementProtocol protocol) {
             if (protocol == null) {

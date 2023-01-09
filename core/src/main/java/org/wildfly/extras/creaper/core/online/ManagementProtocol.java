@@ -1,8 +1,6 @@
 package org.wildfly.extras.creaper.core.online;
 
 public enum ManagementProtocol {
-    /** Used in JBoss AS 7. Default port 9999. */
-    REMOTE("remote"),
     /** Used in WildFly. Default port 9990. */
     HTTP_REMOTING("http-remoting"),
     /** Used in WildFly. Default port 9993. */
@@ -17,8 +15,7 @@ public enum ManagementProtocol {
     HTTP("http"),
     /**
      * {@code HTTPS} imposes the same limitations as {@link #HTTP}.
-     * <b>Default port is 9443 (AS7)</b> and can be set to <b>9993 (WildFly)</b> by setting the system property
-     * {@code creaper.wildfly} or by configuring the port explicitly.
+     * Default port 9993.
      */
     HTTPS("https"),
     ;
