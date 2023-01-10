@@ -21,18 +21,16 @@ This text assumes that the version number for a release is X.Y.Z.
 
 7. Your workspace should now be pristine. Check with `git status`.
 
-8. Make sure that your `JAVA_HOME` points to Java 6.
-   Check with `$JAVA_HOME/bin/java -version`. Also make sure that
-   your Maven version is 3.2.5 (which supports Java 6).
-   Check with `mvn --version`.
+8. Make sure that your `JAVA_HOME` points to Java 8.
+   Check with `$JAVA_HOME/bin/java -version`.
 
-9. `mvn release:prepare -Pas7 -Dmaven.jboss.ga.repository.url=...`
+9. `mvn release:prepare -Pwildfly10`
 
 10. Maven will ask 3 questions. You might want to manually enter X.Y.Z
     as an answer to the 1st question if the default answer is wrong.
     Default answers to the 2nd and 3rd questions are always OK.
 
-11. `mvn release:perform -Pas7 -Dmaven.jboss.ga.repository.url=...`
+11. `mvn release:perform -Pwildfly10`
 
 12. Go to `https://repository.jboss.org/nexus/index.html#stagingRepositories`
 

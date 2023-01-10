@@ -6,7 +6,7 @@ Use [GitHub Issues](https://github.com/wildfly-extras/creaper/issues).
 
 ## Git Workflow
 
-The `master` branch is used for developing the latest upcoming version.
+The `main` branch is used for developing the latest upcoming version.
 If older versions are still being developed, they have their own branches.
 
 All code contributions come in the form of pull requests. This is when code
@@ -37,14 +37,14 @@ a running application server use Arquillian. This means that it's enough to run
 time to execute, so these are not executed by default. To execute them,
 activate the `slow-tests` profile by running `mvn test -Pslow-tests`.
 
-By default, the tests run against WildFly 20. If you want to run the tests
-against previous WildFly, activate one of the test suite profiles:
+By default, the tests run against WildFly 27 when running on JDK 11+, WildFly 26 is used with JDK 8 (JDK 8 is required
+for release). If you want to run the tests against previous WildFly, activate one of the test suite profiles:
 `mvn clean test -Pwildfly10`. Available profiles are:
 
 - `wildfly10`
 - `wildfly11`
 - ...
-- `wildfly20` (active by default)
+- `wildfly27` (active by default)
 
 To run a single test from the test suite, the following Maven invocation works:
 `mvn clean test -pl testsuite/standalone/ -Dtest=...` (possibly with a profile
