@@ -7,11 +7,11 @@ import static org.wildfly.extras.creaper.commands.elytron.CreateServerSSLContext
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import java.io.File;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.wildfly.extras.creaper.XmlAssert;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.ServerVersion;
@@ -119,7 +119,7 @@ public class AddServerSSLContextOfflineTest {
 
     @Before
     public void setUp() {
-        XMLUnit.setNormalizeWhitespace(true);
+        XmlAssert.setNormalizeWhitespace(true);
     }
 
     @Test

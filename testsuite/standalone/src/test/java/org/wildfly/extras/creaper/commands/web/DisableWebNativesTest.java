@@ -2,8 +2,9 @@ package org.wildfly.extras.creaper.commands.web;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import org.custommonkey.xmlunit.XMLUnit;
+
 import org.jboss.logging.Logger;
+import org.wildfly.extras.creaper.XmlAssert;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
@@ -25,7 +26,7 @@ public class DisableWebNativesTest {
     @Before
     public void setUp() {
         // ignore whitespaces difference in "text" node
-        XMLUnit.setNormalizeWhitespace(true);
+        XmlAssert.setNormalizeWhitespace(true);
     }
 
     private static final String SUBSYSTEM_ORIGINAL = ""

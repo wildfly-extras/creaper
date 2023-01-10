@@ -5,13 +5,13 @@ import static org.wildfly.extras.creaper.XmlAssert.assertXmlSimilar;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.wildfly.extras.creaper.XmlAssert;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
@@ -123,7 +123,7 @@ public class ChangeOrbOfflineTest {
 
     @Before
     public void setUp() throws IOException {
-        XMLUnit.setNormalizeWhitespace(true);
+        XmlAssert.setNormalizeWhitespace(true);
     }
 
     @Test
