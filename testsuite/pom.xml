@@ -1177,7 +1177,7 @@
                 <arquillianContainer.version>${wildfly26.arquillianContainer.version}</arquillianContainer.version>
 
                 <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
-                <tests.specialJvmArgs>${specialJvmArgs.wildfly}</tests.specialJvmArgs>
+                <tests.specialJvmArgs></tests.specialJvmArgs>
             </properties>
 
             <dependencies>
@@ -1232,7 +1232,7 @@
                 <arquillianContainer.version>${wildfly27.arquillianContainer.version}</arquillianContainer.version>
 
                 <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
-                <tests.specialJvmArgs>${specialJvmArgs.wildfly}</tests.specialJvmArgs>
+                <tests.specialJvmArgs></tests.specialJvmArgs>
             </properties>
 
             <dependencies>
