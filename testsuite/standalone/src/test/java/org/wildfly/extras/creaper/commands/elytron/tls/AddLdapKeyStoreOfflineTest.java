@@ -6,11 +6,11 @@ import static org.wildfly.extras.creaper.XmlAssert.assertXmlIdentical;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import java.io.File;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.wildfly.extras.creaper.XmlAssert;
 import org.wildfly.extras.creaper.commands.elytron.tls.AddLdapKeyStore.NewItemAttributeBuilder;
 import org.wildfly.extras.creaper.commands.elytron.tls.AddLdapKeyStore.NewItemTemplateBuilder;
 import org.wildfly.extras.creaper.core.CommandFailedException;
@@ -129,7 +129,7 @@ public class AddLdapKeyStoreOfflineTest {
 
     @Before
     public void setUp() {
-        XMLUnit.setNormalizeWhitespace(true);
+        XmlAssert.setNormalizeWhitespace(true);
     }
 
     @Test

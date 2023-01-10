@@ -2,9 +2,6 @@ package org.wildfly.extras.creaper.commands.modules;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.ElementNameAndAttributeQualifier;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
@@ -23,13 +20,16 @@ import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.xml.sax.SAXException;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.DefaultNodeMatcher;
+import org.xmlunit.diff.Diff;
+import org.xmlunit.diff.ElementSelectors;
 
 import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 @RunWith(Arquillian.class)
 public class AddRemoveModuleTest {
@@ -64,8 +64,6 @@ public class AddRemoveModuleTest {
 
     @Before
     public void setUp() throws IOException {
-        XMLUnit.setNormalizeWhitespace(true);
-
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
     }
 
@@ -110,11 +108,10 @@ public class AddRemoveModuleTest {
         File moduleXml = new File(module, "main" + File.separator + "module.xml");
         assertTrue("File " + moduleXml.getName() + " should exist in " + module.getAbsolutePath(), moduleXml.exists());
 
-        Diff diff = new Diff(EXPECTED_MODULE_XML, Files.toString(moduleXml, Charsets.UTF_8));
-        diff.overrideElementQualifier(new ElementNameAndAttributeQualifier());
-        if (!diff.similar()) {
-            fail(diff.toString());
-        }
+        Diff diff = DiffBuilder.compare(EXPECTED_MODULE_XML).withTest(Files.toString(moduleXml, Charsets.UTF_8))
+                .normalizeWhitespace().withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byNameAndAllAttributes))
+                .build();
+        assertFalse(diff.toString(), diff.hasDifferences());
 
         // remove test module
         RemoveModule removeModule = new RemoveModule(TEST_MODULE_NAME);

@@ -100,7 +100,7 @@
         <version.org.jboss.modules.jboss-modules>2.0.3.Final</version.org.jboss.modules.jboss-modules>
         <version.org.jboss.shrinkwrap>1.2.6</version.org.jboss.shrinkwrap>
         <version.org.mockito.mockito-core>4.6.1</version.org.mockito.mockito-core>
-        <version.xmlunit.xmlunit>1.6</version.xmlunit.xmlunit>
+        <version.org.xmlunit.xmlunit-core>2.9.0</version.org.xmlunit.xmlunit-core>
     </properties>
 
     <dependencyManagement>
@@ -236,9 +236,9 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>xmlunit</groupId>
-                <artifactId>xmlunit</artifactId>
-                <version>${version.xmlunit.xmlunit}</version>
+                <groupId>org.xmlunit</groupId>
+                <artifactId>xmlunit-core</artifactId>
+                <version>${version.org.xmlunit.xmlunit-core}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

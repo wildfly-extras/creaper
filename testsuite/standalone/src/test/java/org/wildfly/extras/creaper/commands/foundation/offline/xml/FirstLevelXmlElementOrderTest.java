@@ -1,8 +1,8 @@
 package org.wildfly.extras.creaper.commands.foundation.offline.xml;
 
-import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.wildfly.extras.creaper.XmlAssert;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class FirstLevelXmlElementOrderTest {
 
     @BeforeClass
     public static void setUpXmlUnit() {
-        XMLUnit.setIgnoreWhitespace(true);
+        XmlAssert.setIgnoreWhitespace(true);
     }
 
     @Test

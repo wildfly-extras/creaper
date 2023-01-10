@@ -2,8 +2,8 @@ package org.wildfly.extras.creaper.commands.datasources;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.jboss.logging.Logger;
+import org.wildfly.extras.creaper.XmlAssert;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
@@ -52,7 +52,7 @@ public class RemoveDatasourceOfflineTest {
 
     @Before
     public void setUp() {
-        XMLUnit.setNormalizeWhitespace(true);
+        XmlAssert.setNormalizeWhitespace(true);
     }
 
     @Test
