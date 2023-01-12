@@ -1,10 +1,31 @@
 package org.wildfly.extras.creaper.core.online;
 
 public enum ManagementProtocol {
-    /** Used in WildFly. Default port 9990. */
+
+    /**
+     * Used in WildFly. Default port 9990.
+     * @deprecated use @{code REMOTE_HTTP} for WildFly 11 and above
+     */
+    @Deprecated
     HTTP_REMOTING("http-remoting"),
-    /** Used in WildFly. Default port 9993. */
+
+    /**
+     * Used in WildFly, supported since WildFly 11. Default port 9990.
+     */
+    REMOTE_HTTP("remote+http"),
+
+    /**
+     * Used in WildFly. Default port 9993.
+     * @deprecated use @{code REMOTE_HTTPS} for WildFly 11 and above
+     */
+    @Deprecated
     HTTPS_REMOTING("https-remoting"),
+
+    /**
+     * Used in WildFly, supported since WildFly 11. Default port 9993.
+     */
+    REMOTE_HTTPS("remote+https"),
+
     /**
      * With {@code HTTP}, the management client will not use the native management protocol,
      * but will instead use the HTTP management endpoint. The {@code ModelNode}s will be serialized to JSON. Operation

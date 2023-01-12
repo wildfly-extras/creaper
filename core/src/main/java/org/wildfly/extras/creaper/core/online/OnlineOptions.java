@@ -59,7 +59,8 @@ public final class OnlineOptions {
 
         if (data.localDefault) {
             data.host = "localhost";
-            if (data.protocol == ManagementProtocol.HTTPS_REMOTING || data.protocol == ManagementProtocol.HTTPS) {
+            if (data.protocol == ManagementProtocol.HTTPS_REMOTING || data.protocol == ManagementProtocol.REMOTE_HTTPS
+                    || data.protocol == ManagementProtocol.HTTPS) {
                 data.port = 9993;
             } else {
                 data.port = 9990;
@@ -82,8 +83,8 @@ public final class OnlineOptions {
         this.wrappedModelControllerClient = data.wrappedModelControllerClient;
         this.isWrappedClient = data.wrappedModelControllerClient != null;
 
-        if ((protocol == ManagementProtocol.HTTPS || protocol == ManagementProtocol.HTTPS_REMOTING)
-                && sslOptions == null) {
+        if ((protocol == ManagementProtocol.HTTPS || protocol == ManagementProtocol.HTTPS_REMOTING
+                || protocol == ManagementProtocol.REMOTE_HTTPS) && sslOptions == null) {
             throw new IllegalArgumentException("SSL must be configured when HTTPS or HTTPS_REMOTING protocol is used!");
         }
     }

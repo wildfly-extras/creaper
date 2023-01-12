@@ -2,8 +2,9 @@
 
 ## 2.0.0 (not yet released)
 
-- switch default protocol to `http-remoting`
+- switch default protocol to `http-remoting` (still default in WildFly 10)
 - switch default port to 9990
+- add `remote+http` and `remote+https` protocols, deprecated `http-remoting` and `https-remoting`
 - drop `creaper.wildfly` property
 - drop `remoting` protocol support
 
