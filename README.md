@@ -57,7 +57,7 @@ Then, declare the dependencies like this:
         <version>${version.org.wildfly.extras.creaper}</version>
     </dependency>
 
-The latest and greatest released version is __`1.6.2`__.
+The latest and greatest released version is __`2.0.0`__.
 
 Creaper follows [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html)
 (aka _SemVer_) for versioning and also as a compatibility promise.
