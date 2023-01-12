@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.0.1 (not yet released)
+
 ## 2.0.0 [The Road Runner](https://en.wikipedia.org/wiki/Wile_E._Coyote_and_the_Road_Runner) (2023-01-12)
 
 - switched default protocol to `http-remoting` (still default in WildFly 10)
