@@ -2,11 +2,14 @@
 
 ## 2.0.0 (not yet released)
 
-- switch default protocol to `http-remoting` (still default in WildFly 10)
-- switch default port to 9990
-- add `remote+http` and `remote+https` protocols, deprecated `http-remoting` and `https-remoting`
-- drop `creaper.wildfly` property
-- drop `remoting` protocol support
+- switched default protocol to `http-remoting` (still default in WildFly 10)
+- switched default port to 9990
+- added `remote+http` and `remote+https` protocols, deprecated `http-remoting` and `https-remoting`
+- dropped `creaper.wildfly` property
+- dropped `remoting` protocol support
+- added support for WildFly 25 - WildFly 27
+- updated `Batch.whoami` to not declare IOException
+- upgraded XMLUnit to 2.9.0 (used only in testsuite)
 
 ## 2.0.0-Alpha.4
 
