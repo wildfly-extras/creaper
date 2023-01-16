@@ -59,11 +59,17 @@ public final class OnlineOptions {
 
         if (data.localDefault) {
             data.host = "localhost";
-            if (data.protocol == ManagementProtocol.HTTPS_REMOTING || data.protocol == ManagementProtocol.REMOTE_HTTPS
-                    || data.protocol == ManagementProtocol.HTTPS) {
-                data.port = 9993;
-            } else {
-                data.port = 9990;
+            switch (data.protocol) {
+                case REMOTE:
+                    data.port = 9999;
+                    break;
+                case HTTPS_REMOTING:
+                case REMOTE_HTTPS:
+                case HTTPS:
+                    data.port = 9993;
+                    break;
+                default:
+                    data.port = 9990;
             }
         }
 
