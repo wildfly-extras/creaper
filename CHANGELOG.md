@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.1 (not yet released)
+## 2.0.1 (2023-01-16)
 
 - brought back `remote` protocol
 
