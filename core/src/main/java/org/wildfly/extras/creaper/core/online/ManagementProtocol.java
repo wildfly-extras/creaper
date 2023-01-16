@@ -2,6 +2,9 @@ package org.wildfly.extras.creaper.core.online;
 
 public enum ManagementProtocol {
 
+    /** Default port 9999. */
+    REMOTE("remote"),
+
     /**
      * Used in WildFly. Default port 9990.
      * @deprecated use @{code REMOTE_HTTP} for WildFly 11 and above
