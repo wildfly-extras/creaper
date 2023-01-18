@@ -2,6 +2,9 @@
 
 ## 2.0.2 (not yet released)
 
+- reverted `jboss-logging` -> `wildfly-logging` change
+- added JDK 17 CI
+
 ## 2.0.1 (2023-01-16)
 
 - brought back `remote` protocol
