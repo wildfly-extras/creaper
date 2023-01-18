@@ -96,7 +96,7 @@
         <version.org.hamcrest.hamcrest-core>2.2</version.org.hamcrest.hamcrest-core>
         <version.org.jboss.arquillian>1.6.0.Final</version.org.jboss.arquillian>
         <!-- EAP 7.0.0 (WildFly 10) -->
-        <version.org.wildfly.core.wildfly-everything>2.0.10.Final</version.org.wildfly.core.wildfly-everything>
+        <version.org.wildfly.core.wildfly-everything>2.2.0.Final</version.org.wildfly.core.wildfly-everything>
         <version.org.jboss.modules.jboss-modules>2.0.3.Final</version.org.jboss.modules.jboss-modules>
         <version.org.jboss.shrinkwrap>1.2.6</version.org.jboss.shrinkwrap>
         <version.org.mockito.mockito-core>4.6.1</version.org.mockito.mockito-core>
