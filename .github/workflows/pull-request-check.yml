@@ -9,9 +9,10 @@ jobs:
 
   Tests-non-elytron:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     strategy:
       matrix:
-        java: [ 8, 11 ]
+        java: [ 8, 11, 17 ]
       fail-fast: false
     name: Non-elytron tests on JDK ${{ matrix.java }}
     steps:
@@ -26,9 +27,10 @@ jobs:
         run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=\!**.elytron.**
   Tests-elytron:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     strategy:
       matrix:
-        java: [ 8, 11 ]
+        java: [ 8, 11, 17 ]
       fail-fast: false
     name: Elytron tests on JDK ${{ matrix.java }}
     steps:
