@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.2 (not yet released)
+## 2.0.2 (2023-01-18)
 
 - reverted `jboss-logging` -> `wildfly-logging` change
 - added JDK 17 CI
