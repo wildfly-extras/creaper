@@ -1156,13 +1156,6 @@
 
         <profile>
             <id>wildfly26</id>
-            <activation>
-                <!--
-                    WildFly 27+ requires JDK 11
-                    when activated, it deactivates 'activeByDefault' profile below
-                -->
-                <jdk>1.8</jdk>
-            </activation>
 
             <properties>
                 <version.java>1.8</version.java>
@@ -1211,11 +1204,7 @@
         <profile>
             <id>wildfly27</id>
             <activation>
-                <!--
-                    WildFly 27 doesn't support JDK 1.8
-                    WildFly 26 is used with JDK 1.8
-                    this gets deactivated on JDK 1.8 by wildfly26 profile above
-                -->
+                <!-- Note: WildFly 27 doesn't support JDK 1.8 anymore -->
                 <activeByDefault>true</activeByDefault>
             </activation>
 
