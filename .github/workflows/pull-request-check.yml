@@ -7,14 +7,14 @@ on:
 
 jobs:
 
-  Tests-non-elytron:
+  Tests-non-elytron-latest-wildfly:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       matrix:
         java: [ 8, 11, 17 ]
       fail-fast: false
-    name: Non-elytron tests on JDK ${{ matrix.java }}
+    name: Non-elytron tests on JDK ${{ matrix.java }} - default WildFly profile
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK ${{ matrix.java }}
@@ -25,14 +25,14 @@ jobs:
           architecture: x64
       - name: Tests - non-elytron
         run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=\!**.elytron.**
-  Tests-elytron:
+  Tests-elytron-latest-wildfly:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       matrix:
         java: [ 8, 11, 17 ]
       fail-fast: false
-    name: Elytron tests on JDK ${{ matrix.java }}
+    name: Elytron tests on JDK ${{ matrix.java }} - default WildFly profile
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK ${{ matrix.java }}
@@ -43,3 +43,39 @@ jobs:
           architecture: x64
       - name: Tests - elytron
         run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=**.elytron.**
+  Tests-non-elytron-wildfly-10:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        java: [ 8 ]
+      fail-fast: false
+    name: Non-elytron tests on JDK ${{ matrix.java }} - WildFly 10 profile
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: jdk
+          architecture: x64
+      - name: Tests - non-elytron
+        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=\!**.elytron.** -Pwildfly10
+  Tests-elytron-wildfly-10:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        java: [ 8 ]
+      fail-fast: false
+    name: Elytron tests on JDK ${{ matrix.java }} - WildFly 10 profile
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: jdk
+          architecture: x64
+      - name: Tests - elytron
+        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=**.elytron.** -Pwildfly10
