@@ -67,7 +67,7 @@
         <version.minimum-maven>3.3.9</version.minimum-maven>
 
         <!-- All versions. Keep in alphabetical order. Name format: version.${groupId}.${artifactIdOrWildcard}. -->
-        <version.com.google.guava.guava>31.1-jre</version.com.google.guava.guava>
+        <version.com.google.guava.guava>32.0.1-jre</version.com.google.guava.guava>
         <!-- checkstyle 9 is last version with JDK 8 support -->
         <version.com.puppycrawl.tools.checkstyle>9.3</version.com.puppycrawl.tools.checkstyle>
         <version.junit.junit>4.13.2</version.junit.junit>
