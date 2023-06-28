@@ -2,6 +2,8 @@
 
 ## 2.0.3 (not yet released)
 
+- added support for WildFly 28
+
 ## 2.0.2 (2023-01-18)
 
 - reverted `jboss-logging` -> `wildfly-logging` change
