@@ -75,12 +75,17 @@ public class ChangeOrbOnlineTest {
                 .transactions(TransactionValues.ON)
                 .rootContext("supported")
                 .exportCorbaloc(false)
-                .securityDomain("other")
                 .addComponentViaInterceptor(false)
                 .clientSupports(AuthValues.NONE)
                 .clientRequires(AuthValues.CLIENT_AUTH)
                 .serverSupports(AuthValues.NONE)
                 .serverRequires(AuthValues.CLIENT_AUTH);
+
+        if (onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            // legacy security was removed in WF25
+            cmdBuilder.securityDomain("other");
+        }
+
         if (isIiop) {
             cmdBuilder
                 .integrity(SupportedValues.SUPPORTED)
@@ -107,7 +112,9 @@ public class ChangeOrbOnlineTest {
         assertEquals("supported", attributes.get("root-context"));
         assertEquals("jacorb", attributes.get("socket-binding"));
         assertEquals("jacorb-ssl", attributes.get("ssl-socket-binding"));
-        assertEquals("other", attributes.get("security-domain"));
+        if (onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
+            assertEquals("other", attributes.get("security-domain"));
+        }
         assertEquals("ClientAuth", attributes.get("client-requires"));
         assertEquals("None", attributes.get("server-supports"));
         assertEquals("ClientAuth", attributes.get("server-requires"));
