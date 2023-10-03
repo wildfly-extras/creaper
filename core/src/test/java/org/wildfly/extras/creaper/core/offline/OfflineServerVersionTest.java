@@ -67,6 +67,7 @@ public class OfflineServerVersionTest {
     private static final String WFLY26_ROOT = "19.0";
     private static final String WFLY27_ROOT = "20.0";
     private static final String WFLY28_ROOT = "21.0";
+    private static final String WFLY29_ROOT = "22.0";
 
     private static final String COMMUNITY = "community";
     private static final String PREVIEW = "preview";
@@ -201,20 +202,24 @@ public class OfflineServerVersionTest {
     }
 
     @Test
+    public void discoverStandaloneXml_wfly29() throws IOException {
+        test(ServerVersion.VERSION_22_0_0, STANDALONE_XML, WFLY29_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
     public void discoverStandaloneXml_wfly34_community() throws IOException {
-        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, COMMUNITY,  WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
     public void discoverStandaloneXml_wfly34_experimental() throws IOException {
         // Doesn't currently exist but verify it can be parsed correctly.
-        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, EXPERIMENTAL,  WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, EXPERIMENTAL, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
     public void discoverStandaloneXml_wfly34_preview() throws IOException {
         // Doesn't currently exist but verify it can be parsed correctly.
-        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, PREVIEW,  WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, PREVIEW, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
@@ -318,6 +323,10 @@ public class OfflineServerVersionTest {
     }
 
     @Test
+    public void discoverHostXml_wfly29() throws IOException {
+        test(ServerVersion.VERSION_22_0_0, HOST_XML, WFLY29_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
     public void discoverHostXml_wfly34_community() throws IOException {
         test(ServerVersion.VERSION_20_0_0, HOST_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
@@ -435,6 +444,10 @@ public class OfflineServerVersionTest {
     }
 
     @Test
+    public void discoverDomainXml_wfly29() throws IOException {
+        test(ServerVersion.VERSION_22_0_0, DOMAIN_XML, WFLY29_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
     public void discoverDomainXml_wfly34_community() throws IOException {
         test(ServerVersion.VERSION_20_0_0, DOMAIN_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
