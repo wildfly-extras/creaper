@@ -42,6 +42,9 @@ public class RemoveConnectionFactoryFromRAOnlineTest {
 
     @Test
     public void removeConnectionFactoryTestcase() throws Exception {
+        // uses legacy security which no longer works in WildFly 29+
+        // (likely it was already no-op in few previous WF releases)
+        Assume.assumeTrue(client.version().lessThan(ServerVersion.VERSION_22_0_0));
         client.apply(new AddResourceAdapter.Builder(RA_ID, "org.jboss.genericjms", TransactionType.NONE).build());
         admin.reloadIfRequired();
         client.apply(new AddConnectionFactoryToRA.Builder("cf1", "java:/jms/myRAConnectionFactory", RA_ID)
