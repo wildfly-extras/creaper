@@ -44,9 +44,10 @@ def dsDefinition = {
             }
         }
         if (nn(userName, password, securityDomain)) {
-            security {
-                if (nn(userName)) 'user-name'(userName)
-                if (nn(password)) 'password'(password)
+            securityAttrs = [:]
+            if (nn(userName)) securityAttrs['user-name'] = userName
+            if (nn(password)) securityAttrs['password'] = password
+            security(securityAttrs) {
                 if (nn(securityDomain)) 'security-domain'(securityDomain)
             }
         }
