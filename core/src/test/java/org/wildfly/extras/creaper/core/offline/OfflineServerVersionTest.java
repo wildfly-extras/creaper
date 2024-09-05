@@ -68,6 +68,10 @@ public class OfflineServerVersionTest {
     private static final String WFLY27_ROOT = "20.0";
     private static final String WFLY28_ROOT = "21.0";
 
+    private static final String COMMUNITY = "community";
+    private static final String PREVIEW = "preview";
+    private static final String EXPERIMENTAL = "experimental";
+
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();
 
@@ -197,6 +201,23 @@ public class OfflineServerVersionTest {
     }
 
     @Test
+    public void discoverStandaloneXml_wfly34_community() throws IOException {
+        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, COMMUNITY,  WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
+    public void discoverStandaloneXml_wfly34_experimental() throws IOException {
+        // Doesn't currently exist but verify it can be parsed correctly.
+        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, EXPERIMENTAL,  WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
+    public void discoverStandaloneXml_wfly34_preview() throws IOException {
+        // Doesn't currently exist but verify it can be parsed correctly.
+        test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, PREVIEW,  WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
     public void discoverHostXml_eap6() throws IOException {
         test(ServerVersion.VERSION_1_7_0, HOST_XML, EAP6_ROOT, EAP6_LOGGING, EAP6_EE);
     }
@@ -294,6 +315,23 @@ public class OfflineServerVersionTest {
     @Test
     public void discoverHostXml_wfly28() throws IOException {
         test(ServerVersion.VERSION_21_0_0, HOST_XML, WFLY28_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
+    public void discoverHostXml_wfly34_community() throws IOException {
+        test(ServerVersion.VERSION_20_0_0, HOST_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
+    public void discoverHostXml_wfly34_preview() throws IOException {
+        // Doesn't currently exist but verify it can be parsed correctly.
+        test(ServerVersion.VERSION_20_0_0, HOST_XML, PREVIEW, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
+    public void discoverHostXml_wfly34_experimental() throws IOException {
+        // Doesn't currently exist but verify it can be parsed correctly.
+        test(ServerVersion.VERSION_20_0_0, HOST_XML, EXPERIMENTAL, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
@@ -396,10 +434,33 @@ public class OfflineServerVersionTest {
         test(ServerVersion.VERSION_21_0_0, DOMAIN_XML, WFLY28_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
+    @Test
+    public void discoverDomainXml_wfly34_community() throws IOException {
+        test(ServerVersion.VERSION_20_0_0, DOMAIN_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
+    public void discoverDomainXml_wfly34_preview() throws IOException {
+        // Doesn't currently exist but verify it can be parsed correctly.
+        test(ServerVersion.VERSION_20_0_0, DOMAIN_XML, PREVIEW, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
+    public void discoverDomainXml_wfly34_experimental() throws IOException {
+        // Doesn't currently exist but verify it can be parsed correctly.
+        test(ServerVersion.VERSION_20_0_0, DOMAIN_XML, EXPERIMENTAL, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
     private void test(ServerVersion expected, String xmlPattern,
                       String rootVersion, String loggingVersion, String eeVersion) throws IOException {
+        test(expected, xmlPattern, null, rootVersion, loggingVersion, eeVersion);
+    }
+
+    private void test(ServerVersion expected, String xmlPattern, String stability,
+                      String rootVersion, String loggingVersion, String eeVersion) throws IOException {
+        String version = stability == null ? rootVersion : stability + ":" + rootVersion;
         String xml = xmlPattern
-                .replace("%ROOT_VERSION%", rootVersion)
+                .replace("%ROOT_VERSION%", version)
                 .replace("%LOGGING_VERSION%", loggingVersion)
                 .replace("%EE_VERSION%", eeVersion);
 
