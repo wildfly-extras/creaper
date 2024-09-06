@@ -1,5 +1,6 @@
 package org.wildfly.extras.creaper.commands.patching;
 
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -35,6 +36,10 @@ public final class RollbackPatch implements OnlineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws IOException {
+        if (ctx.version.greaterThan(ServerVersion.VERSION_21_0_0)) {
+            // https://issues.redhat.com/browse/WFCORE-6206
+            throw new AssertionError("Patching has been removed in WildFly 29.");
+        }
         Operations ops = new Operations(ctx.client);
         ops.invoke("rollback", Address.coreService("patching"), Values.empty()
                 .andOptional("patch-id", patchId)

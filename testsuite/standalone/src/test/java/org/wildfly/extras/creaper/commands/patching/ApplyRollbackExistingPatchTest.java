@@ -5,8 +5,10 @@ import org.jboss.arquillian.container.test.api.ContainerController;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.Assume;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
@@ -62,6 +64,8 @@ public class ApplyRollbackExistingPatchTest {
     @Test
     @InSequence(2)
     public void applyPatch() throws Exception {
+        checkServerVersionIsSupported();
+
         File patchZip = tmp.newFile("test-patch.zip");
 
         String serverName = "WildFly";
@@ -93,7 +97,9 @@ public class ApplyRollbackExistingPatchTest {
 
     @Test
     @InSequence(3)
-    public void restartServerAfterPatchApply() throws TimeoutException, InterruptedException {
+    public void restartServerAfterPatchApply() throws TimeoutException, InterruptedException, IOException {
+        checkServerVersionIsSupported();
+
         controller.stop(ManualTests.ARQUILLIAN_CONTAINER);
         controller.start(ManualTests.ARQUILLIAN_CONTAINER);
         client.reconnect(10);
@@ -102,18 +108,24 @@ public class ApplyRollbackExistingPatchTest {
     @Test
     @InSequence(4)
     public void assertPatchInstalled() throws IOException {
+        checkServerVersionIsSupported();
+
         assertTrue(patching.isPatchInstalled("test-patch"));
     }
 
     @Test
     @InSequence(5)
-    public void rollbackPatch() throws CommandFailedException {
+    public void rollbackPatch() throws CommandFailedException, IOException {
+        checkServerVersionIsSupported();
+
         client.apply(new RollbackPatch.Builder("test-patch").resetConfiguration(false).build());
     }
 
     @Test
     @InSequence(6)
-    public void restartServerAfterPatchRollback() throws TimeoutException, InterruptedException {
+    public void restartServerAfterPatchRollback() throws TimeoutException, InterruptedException, IOException {
+        checkServerVersionIsSupported();
+
         controller.stop(ManualTests.ARQUILLIAN_CONTAINER);
         controller.start(ManualTests.ARQUILLIAN_CONTAINER);
         client.reconnect(10);
@@ -122,6 +134,8 @@ public class ApplyRollbackExistingPatchTest {
     @Test
     @InSequence(7)
     public void assertPatchNotInstalled() throws IOException {
+        checkServerVersionIsSupported();
+
         assertFalse(patching.isAnyPatchInstalled());
     }
 
@@ -134,5 +148,14 @@ public class ApplyRollbackExistingPatchTest {
     @After
     public void tearDown() throws IOException {
         client.close();
+    }
+
+    private void checkServerVersionIsSupported() throws IOException {
+        // check version is supported
+        ServerVersion serverVersion
+                = client.version();
+        // https://issues.redhat.com/browse/WFCORE-6206
+        Assume.assumeFalse("Patching has been removed in WildFly 29.",
+                serverVersion.greaterThan(ServerVersion.VERSION_21_0_0));
     }
 }
