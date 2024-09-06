@@ -10,7 +10,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 final class OfflineServerVersion {
-    private static final Pattern ROOT_XMLNS = Pattern.compile("[\"']urn:jboss:domain:(\\d+)\\.(\\d+)[\"']");
+
+    /*
+     * The namespaces in WildFly may also contain an optional Stability qualifier e.g.
+     *
+     *     urn:jboss:domain:community:21.0
+     *
+     * Within the regular expression "(?:community:|preview:|experimental:)?":
+     *  - This is a non capturing group to avoid changing the index of the versions.
+     *  - The group is optional so can appear 0 or 1 times.
+     *  - As the stability qualifier appears in the same space as some subsystem names
+     *    the allowed qualifiers are specified.
+     */
+
+    private static final Pattern ROOT_XMLNS = Pattern.compile("[\"']urn:jboss:domain:(?:community:|preview:|experimental:)?(\\d+)\\.(\\d+)[\"']");
 
     private OfflineServerVersion() {
         // avoid instantiation
