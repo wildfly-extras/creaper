@@ -1,6 +1,7 @@
 package org.wildfly.extras.creaper.commands.patching;
 
 import org.jboss.dmr.ModelNode;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -13,10 +14,12 @@ import java.util.Collections;
 import java.util.List;
 
 public final class PatchingOperations {
+    private final OnlineManagementClient client;
     private final Operations ops;
     private final Address patchingAddress;
 
     public PatchingOperations(OnlineManagementClient client) {
+        this.client = client;
         this.ops = new Operations(client);
         this.patchingAddress = Address.coreService("patching");
     }
@@ -25,6 +28,7 @@ public final class PatchingOperations {
      * @return list of history entries of all patches that have been applied; never {@code null}
      */
     public List<PatchHistoryEntry> getHistory() throws IOException {
+        checkServerVersionIsSupported();
         List<ModelNode> asList = ops.invoke("show-history", patchingAddress).listValue();
         List<PatchHistoryEntry> entries = new ArrayList<PatchHistoryEntry>(asList.size());
 
@@ -59,6 +63,7 @@ public final class PatchingOperations {
      * @return information about current patch state as a {@code PatchInfo} object; never {@code null}
      */
     public PatchInfo getPatchInfo() throws IOException {
+        checkServerVersionIsSupported();
         ModelNodeResult modelNodeResult = ops.readResource(patchingAddress, ReadResourceOption.RECURSIVE,
                 ReadResourceOption.INCLUDE_RUNTIME);
         modelNodeResult.assertDefinedValue();
@@ -80,6 +85,7 @@ public final class PatchingOperations {
      * @throws IOException when IO error occurs
      */
     public String getCumulativePatchId() throws IOException {
+        checkServerVersionIsSupported();
         return ops.readAttribute(patchingAddress, "cumulative-patch-id").stringValue(null);
     }
 
@@ -89,6 +95,7 @@ public final class PatchingOperations {
      * @throws IOException when IO error occurs
      */
     public String getCurrentServerVersion() throws IOException {
+        checkServerVersionIsSupported();
         return ops.readAttribute(patchingAddress, "version").stringValue(null);
     }
 
@@ -97,6 +104,7 @@ public final class PatchingOperations {
      * @throws IOException when IO error occurs
      */
     public List<String> getPatchesIds() throws IOException {
+        checkServerVersionIsSupported();
         return ops.readAttribute(patchingAddress, "patches").stringListValue(Collections.<String>emptyList());
     }
 
@@ -233,6 +241,17 @@ public final class PatchingOperations {
         @Override
         public String toString() {
             return "PatchHistoryEntry {patchId='" + patchId + "\', type='" + type + "\', appliedAt='" + appliedAt + "\'}";
+        }
+    }
+
+    private void checkServerVersionIsSupported() {
+        try {
+            if (client.version().greaterThan(ServerVersion.VERSION_21_0_0)) {
+                // https://issues.redhat.com/browse/WFCORE-6206
+                throw new AssertionError("Patching subsystem has been removed in WildFly 29.");
+            }
+        } catch (IOException ioe) {
+            throw new IllegalStateException(ioe);
         }
     }
 }

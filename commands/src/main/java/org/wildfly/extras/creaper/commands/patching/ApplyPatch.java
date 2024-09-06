@@ -1,6 +1,7 @@
 package org.wildfly.extras.creaper.commands.patching;
 
 import org.wildfly.extras.creaper.core.CommandFailedException;
+import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
@@ -31,6 +32,11 @@ public final class ApplyPatch implements OnlineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws CliException, CommandFailedException, IOException {
+        if (ctx.options.isStandalone && ctx.version.greaterThan(ServerVersion.VERSION_21_0_0)) {
+            // https://issues.redhat.com/browse/WFCORE-6206
+            throw new AssertionError("Patching has been removed in WildFly 29.");
+        }
+
         StringBuilder cmd = new StringBuilder("patch apply " + patchPath);
         if (ctx.options.isDomain) {
             cmd.append(" --host=");
