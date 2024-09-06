@@ -17,7 +17,7 @@ final class OfflineServerVersion {
      *     urn:jboss:domain:community:21.0
      *
      * Within the regular expression "(?:community:|preview:|experimental:)?":
-     *  - This it a non capturing group to avoid changing the index of the versions.
+     *  - This is a non capturing group to avoid changing the index of the versions.
      *  - The group is optional so can appear 0 or 1 times.
      *  - As the stability qualifier appears in the same space as some subsystem names
      *    the allowed qualifiers are specified.
