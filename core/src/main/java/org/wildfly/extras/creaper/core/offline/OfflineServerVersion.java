@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 final class OfflineServerVersion {
 
     /*
-     * The namespaces in WildFly may also contain an optional Stabilty qualifier e.g.
+     * The namespaces in WildFly may also contain an optional Stability qualifier e.g.
      *
      *     urn:jboss:domain:community:21.0
      *
