@@ -2,7 +2,7 @@
 
 ## 2.0.3 (not yet released)
 
-- added support for WildFly 28 - 29
+- added support for WildFly 28 - 30
 
 ## 2.0.2 (2023-01-18)
 
