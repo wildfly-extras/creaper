@@ -63,7 +63,7 @@ public class AddMessagingConnectorOnlineTest {
     @Test
     public void addGenericConnector() throws CommandFailedException, IOException {
         AddMessagingConnector addMessagingConnector = new AddMessagingConnector.GenericBuilder(TEST_CONNECTOR)
-                .socketBinding("testSocketBinding")
+                .socketBinding("http")
                 .factoryClass("testClass")
                 .build();
 
@@ -79,7 +79,7 @@ public class AddMessagingConnectorOnlineTest {
     @Test
     public void addRemoteConnector() throws CommandFailedException, IOException {
         AddMessagingConnector addMessagingConnector = new AddMessagingConnector.RemoteBuilder(TEST_CONNECTOR)
-                .socketBinding("testSocketBinding")
+                .socketBinding("http")
                 .build();
 
         client.apply(addMessagingConnector);
