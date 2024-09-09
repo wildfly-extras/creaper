@@ -46,6 +46,7 @@ public class ServerVersionTest {
         assertSame(ServerVersion.VERSION_21_0_0, ServerVersion.from(21, 0, 0));
         assertSame(ServerVersion.VERSION_22_0_0, ServerVersion.from(22, 0, 0));
         assertSame(ServerVersion.VERSION_23_0_0, ServerVersion.from(23, 0, 0));
+        assertSame(ServerVersion.VERSION_24_0_0, ServerVersion.from(24, 0, 0));
 
         assertNotSame(ServerVersion.from(42, 42, 42), ServerVersion.from(42, 42, 42));
     }
@@ -87,6 +88,7 @@ public class ServerVersionTest {
         assertSame(ServerVersion.VERSION_21_0_0, ServerVersion.from(21, 0, 0));
         assertSame(ServerVersion.VERSION_22_0_0, ServerVersion.from(22, 0, 0));
         assertSame(ServerVersion.VERSION_23_0_0, ServerVersion.from(23, 0, 0));
+        assertSame(ServerVersion.VERSION_24_0_0, ServerVersion.from(24, 0, 0));
 
         assertEquals(ServerVersion.from(42, 42, 42), ServerVersion.from(42, 42, 42));
     }
