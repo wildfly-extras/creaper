@@ -108,6 +108,8 @@ public final class ServerVersion {
     public static final ServerVersion VERSION_24_0_0 = new ServerVersion(24, 0, 0);
     /** WF 32.0.x.Final */
     public static final ServerVersion VERSION_25_0_0 = new ServerVersion(25, 0, 0);
+    /** WF 33.0.x.Final */
+    public static final ServerVersion VERSION_26_0_0 = new ServerVersion(26, 0, 0);
 
     private static final ServerVersion[] KNOWN_VERSIONS = {
             VERSION_0_0_0,
@@ -146,7 +148,8 @@ public final class ServerVersion {
             VERSION_22_0_0,
             VERSION_23_0_0,
             VERSION_24_0_0,
-            VERSION_25_0_0
+            VERSION_25_0_0,
+            VERSION_26_0_0
     };
 
     /**
