@@ -437,8 +437,6 @@
             <id>wildfly10</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly10.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly10.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly10.applicationServer.version}</applicationServer.version>
@@ -483,8 +481,6 @@
             <id>wildfly11</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly11.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly11.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly11.applicationServer.version}</applicationServer.version>
@@ -530,8 +526,6 @@
             <id>wildfly12</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly12.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly12.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly12.applicationServer.version}</applicationServer.version>
@@ -577,8 +571,6 @@
             <id>wildfly13</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly13.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly13.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly13.applicationServer.version}</applicationServer.version>
@@ -624,8 +616,6 @@
             <id>wildfly14</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly14.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly14.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly14.applicationServer.version}</applicationServer.version>
@@ -671,8 +661,6 @@
             <id>wildfly15</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly15.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly15.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly15.applicationServer.version}</applicationServer.version>
@@ -718,8 +706,6 @@
             <id>wildfly16</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly16.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly16.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly16.applicationServer.version}</applicationServer.version>
@@ -765,8 +751,6 @@
             <id>wildfly17</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly17.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly17.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly17.applicationServer.version}</applicationServer.version>
@@ -812,8 +796,6 @@
             <id>wildfly18</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly18.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly18.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly18.applicationServer.version}</applicationServer.version>
@@ -859,8 +841,6 @@
             <id>wildfly19</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly19.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly19.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly19.applicationServer.version}</applicationServer.version>
@@ -906,8 +886,6 @@
             <id>wildfly20</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly20.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly20.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly20.applicationServer.version}</applicationServer.version>
@@ -953,8 +931,6 @@
             <id>wildfly21</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly21.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly21.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly21.applicationServer.version}</applicationServer.version>
@@ -1000,8 +976,6 @@
             <id>wildfly22</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly22.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly22.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly22.applicationServer.version}</applicationServer.version>
@@ -1047,8 +1021,6 @@
             <id>wildfly23</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly23.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly23.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly23.applicationServer.version}</applicationServer.version>
@@ -1094,8 +1066,6 @@
             <id>wildfly24</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly24.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly24.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly24.applicationServer.version}</applicationServer.version>
@@ -1141,8 +1111,6 @@
             <id>wildfly25</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly25.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly25.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly25.applicationServer.version}</applicationServer.version>
@@ -1188,8 +1156,6 @@
             <id>wildfly26</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly26.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly26.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly26.applicationServer.version}</applicationServer.version>
@@ -1235,8 +1201,6 @@
             <id>wildfly27</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly27.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly27.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly27.applicationServer.version}</applicationServer.version>
@@ -1282,8 +1246,6 @@
             <id>wildfly28</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly28.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly28.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly28.applicationServer.version}</applicationServer.version>
@@ -1329,8 +1291,6 @@
             <id>wildfly29</id>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly29.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly29.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly29.applicationServer.version}</applicationServer.version>
@@ -1380,8 +1340,6 @@
             </activation>
 
             <properties>
-                <version.java>1.8</version.java>
-
                 <applicationServer.groupId>${wildfly30.applicationServer.groupId}</applicationServer.groupId>
                 <applicationServer.artifactId>${wildfly30.applicationServer.artifactId}</applicationServer.artifactId>
                 <applicationServer.version>${wildfly30.applicationServer.version}</applicationServer.version>
