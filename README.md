@@ -611,6 +611,29 @@ Dependencies for `creaper-commands`:
         <version>24.0.1.Final</version>
     </dependency>
 
+#### WildFly 33 (33.0.1) (based on WildFly Core 25)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>25.0.1.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>25.0.1.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>25.0.1.Final</version>
+    </dependency>
+
 ### Transitive Dependencies
 
 These are the dependencies that you will get transitively when you depend

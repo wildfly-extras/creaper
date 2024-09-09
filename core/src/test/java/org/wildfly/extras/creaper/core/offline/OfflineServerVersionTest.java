@@ -71,6 +71,7 @@ public class OfflineServerVersionTest {
     private static final String WFLY30_ROOT = "23.0";
     private static final String WFLY31_ROOT = "24.0";
     private static final String WFLY32_ROOT = "25.0";
+    private static final String WFLY33_ROOT = "26.0";
 
     private static final String COMMUNITY = "community";
     private static final String PREVIEW = "preview";
@@ -224,6 +225,11 @@ public class OfflineServerVersionTest {
         test(ServerVersion.VERSION_25_0_0, STANDALONE_XML, WFLY32_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
+    @Test
+    public void discoverStandaloneXml_wfly33() throws IOException {
+        test(ServerVersion.VERSION_26_0_0, STANDALONE_XML, WFLY33_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
     public void discoverStandaloneXml_wfly34_community() throws IOException {
         test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
@@ -360,6 +366,11 @@ public class OfflineServerVersionTest {
         test(ServerVersion.VERSION_25_0_0, HOST_XML, WFLY32_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
+    @Test
+    public void discoverHostXml_wfly33() throws IOException {
+        test(ServerVersion.VERSION_26_0_0, HOST_XML, WFLY33_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
     public void discoverHostXml_wfly34_community() throws IOException {
         test(ServerVersion.VERSION_20_0_0, HOST_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
@@ -494,6 +505,11 @@ public class OfflineServerVersionTest {
     @Test
     public void discoverDomainXml_wfly32() throws IOException {
         test(ServerVersion.VERSION_25_0_0, DOMAIN_XML, WFLY32_ROOT, EAP7_LOGGING, EAP8_EE);
+    }
+
+    @Test
+    public void discoverDomainXml_wfly33() throws IOException {
+        test(ServerVersion.VERSION_26_0_0, DOMAIN_XML, WFLY33_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     public void discoverDomainXml_wfly34_community() throws IOException {
