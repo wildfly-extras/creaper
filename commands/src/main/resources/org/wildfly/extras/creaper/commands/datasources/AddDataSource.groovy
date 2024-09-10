@@ -1,3 +1,9 @@
+// security parameters used as elements: https://issues.redhat.com/browse/WFLY-18324
+stringSubsystemValues = datasources.'@xmlns'.text().tokenize(":")[-1].tokenize(".")
+major = stringSubsystemValues[0].toInteger()
+minor = stringSubsystemValues[1].toInteger()
+securityParamsAsElements = major <= 7 && minor < 2
+
 // attributes of <datasource>
 datasourceAttrs = ['pool-name': poolName]
 if (nn(jta)) datasourceAttrs['jta'] = jta
@@ -45,9 +51,15 @@ def dsDefinition = {
         }
         if (nn(userName, password, securityDomain)) {
             securityAttrs = [:]
-            if (nn(userName)) securityAttrs['user-name'] = userName
-            if (nn(password)) securityAttrs['password'] = password
+            if (!securityParamsAsElements) { // see https://issues.redhat.com/browse/WFLY-18324
+                if (nn(userName)) securityAttrs['user-name'] = userName
+                if (nn(password)) securityAttrs['password'] = password
+            }
             security(securityAttrs) {
+                if (securityParamsAsElements) { // see https://issues.redhat.com/browse/WFLY-18324
+                    if (nn(userName)) 'user-name'(userName)
+                    if (nn(password)) 'password'(password)
+                }
                 if (nn(securityDomain)) 'security-domain'(securityDomain)
             }
         }
