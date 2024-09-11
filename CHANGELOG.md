@@ -3,6 +3,8 @@
 ## 2.0.3 (not yet released)
 
 - added support for WildFly 28 - 30
+- upgraded groovy to 4.0.22
+- added JDK 21 CI
 
 ## 2.0.2 (2023-01-18)
 
