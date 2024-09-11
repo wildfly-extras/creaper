@@ -10,7 +10,7 @@ package org.wildfly.extras.creaper.commands.orb;
  *   <li>undefined value - current value will be undefined</li>
  * </ul>
  */
-final class Attribute<T> {
+public final class Attribute<T> {
     private final T value;
     private final boolean isToUndefine;
 
