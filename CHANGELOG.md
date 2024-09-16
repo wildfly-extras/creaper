@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.0.4 (not yet released)
+
 ## 2.0.3 (2024-09-16)
 
 - added support for WildFly 28 - 33
