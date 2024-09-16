@@ -1,6 +1,8 @@
 # Changelog
 
-## 2.0.4 (not yet released)
+## 2.1.0 (not yet released)
+
+- dropped explicit dependency on `jboss-logging`
 
 ## 2.0.3 (2024-09-16)
 

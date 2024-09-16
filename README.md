@@ -68,6 +68,10 @@ __You have to provide both `*-controller-client` and `*-cli` yourself.__
 If you want to use commands for patching, you also have to provide
 `wildfly-patching`.
 
+You might need to tweak other dependencies to transitively bring
+compatible `jboss-logging` from `wildfly-core` or explicitly provide
+compatible version. WildFly 34 and newer requires at least `3.6.0`.
+
 Other dependencies might be required if you're using "local" CLI operations,
 such as `jms-queue add ...` on WildFly 10 (it was a built-in operation
 in previous WildFly versions, but was moved to a separate module due to
@@ -641,7 +645,6 @@ on Creaper:
 
 - `creaper-core`:
     - `com.google.guava:guava`
-    - `org.jboss.logging:jboss-logging`
 - `creaper-commands`:
     - everything from `creaper-core`
     - `org.codehaus.groovy:groovy`
