@@ -2,9 +2,10 @@
 
 ## 2.0.3 (not yet released)
 
-- added support for WildFly 28 - 30
-- upgraded groovy to 4.0.22
+- added support for WildFly 28 - 33
+- updated the namespace detection for the root namespace to support stability level qualifiers
 - added JDK 21 CI
+- upgraded groovy to 4.0.22
 
 ## 2.0.2 (2023-01-18)
 
