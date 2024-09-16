@@ -641,7 +641,6 @@ on Creaper:
 
 - `creaper-core`:
     - `com.google.guava:guava`
-    - `org.jboss.logging:jboss-logging`
 - `creaper-commands`:
     - everything from `creaper-core`
     - `org.codehaus.groovy:groovy`
