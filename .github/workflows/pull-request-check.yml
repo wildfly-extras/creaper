@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        java: [ 11, 17, 21 ]
+        java: [ 17, 21 ]
       fail-fast: false
     name: Non-elytron tests on JDK ${{ matrix.java }} - default WildFly profile
     steps:
@@ -30,7 +30,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        java: [ 11, 17, 21 ]
+        java: [ 17, 21 ]
       fail-fast: false
     name: Elytron tests on JDK ${{ matrix.java }} - default WildFly profile
     steps:
@@ -79,3 +79,39 @@ jobs:
           architecture: x64
       - name: Tests - elytron
         run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=**.elytron.** -Pwildfly10
+  Tests-non-elytron-wildfly-34:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        java: [ 11 ]
+      fail-fast: false
+    name: Non-elytron tests on JDK ${{ matrix.java }} - WildFly 34 profile
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: jdk
+          architecture: x64
+      - name: Tests - non-elytron
+        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=\!**.elytron.** -Pwildfly34
+  Tests-elytron-wildfly-34:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        java: [ 11 ]
+      fail-fast: false
+    name: Elytron tests on JDK ${{ matrix.java }} - WildFly 34 profile
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: jdk
+          architecture: x64
+      - name: Tests - elytron
+        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=**.elytron.** -Pwildfly34
