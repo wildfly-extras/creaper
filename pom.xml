@@ -81,10 +81,11 @@
         <version.org.apache.maven.plugins.maven-dependency-plugin>3.6.0</version.org.apache.maven.plugins.maven-dependency-plugin>
         <version.org.apache.maven.plugins.maven-deploy-plugin>3.1.1</version.org.apache.maven.plugins.maven-deploy-plugin>
         <version.org.apache.maven.plugins.maven-enforcer-plugin>3.3.0</version.org.apache.maven.plugins.maven-enforcer-plugin>
+        <version.org.apache.maven.plugins.maven-gpg-plugin>3.2.7</version.org.apache.maven.plugins.maven-gpg-plugin>
         <version.org.apache.maven.plugins.maven-install-plugin>3.1.1</version.org.apache.maven.plugins.maven-install-plugin>
         <version.org.apache.maven.plugins.maven-jar-plugin>3.3.0</version.org.apache.maven.plugins.maven-jar-plugin>
         <version.org.apache.maven.plugins.maven-javadoc-plugin>3.5.0</version.org.apache.maven.plugins.maven-javadoc-plugin>
-        <version.org.apache.maven.plugins.maven-release-plugin>3.0.1</version.org.apache.maven.plugins.maven-release-plugin>
+        <version.org.apache.maven.plugins.maven-release-plugin>3.1.1</version.org.apache.maven.plugins.maven-release-plugin>
         <version.org.apache.maven.plugins.maven-resources-plugin>3.3.1</version.org.apache.maven.plugins.maven-resources-plugin>
         <version.org.apache.maven.plugins.maven-shade-plugin>3.5.0</version.org.apache.maven.plugins.maven-shade-plugin>
         <version.org.apache.maven.plugins.maven-site-plugin>4.0.0-M8</version.org.apache.maven.plugins.maven-site-plugin>
@@ -349,6 +350,7 @@
                     <configuration>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                         <tagNameFormat>v@{version}</tagNameFormat>
+                        <releaseProfiles>release-sign-artifacts</releaseProfiles>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -438,6 +440,11 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${version.org.apache.maven.plugins.maven-gpg-plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
                     <version>${version.org.apache.maven.plugins.maven-install-plugin}</version>
                 </plugin>
@@ -507,6 +514,26 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>codenarc-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
