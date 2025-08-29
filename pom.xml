@@ -45,14 +45,14 @@
     </issueManagement>
     <distributionManagement>
         <repository>
-            <id>jboss-releases-repository</id>
-            <name>JBoss Releases Repository</name>
-            <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/</url>
+            <id>jbossqe-eap-releases-repository</id>
+            <name>JBoss QE EAP Releases Repository</name>
+            <url>https://repository.jboss.org/nexus/repository/jbossqe-eap/</url>
         </repository>
         <snapshotRepository>
             <id>jboss-snapshots-repository</id>
             <name>JBoss Snapshots Repository</name>
-            <url>https://repository.jboss.org/nexus/content/repositories/snapshots/</url>
+            <url>https://repository.jboss.org/nexus/repository/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 

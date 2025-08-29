@@ -18,7 +18,7 @@ Usage:
             <repositories>
                 <repository>
                     <id>jboss-public</id>
-                    <url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
+                    <url>https://repository.jboss.org/nexus/repository/public/</url>
                 </repository>
             </repositories>
         </profile>

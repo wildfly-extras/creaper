@@ -40,7 +40,7 @@ repository like this:
         <repository>
             <id>jboss-public-repository-group</id>
             <name>JBoss Public Maven Repository Group</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+            <url>https://repository.jboss.org/nexus/repository/public/</url>
         </repository>
     </repositories>
 

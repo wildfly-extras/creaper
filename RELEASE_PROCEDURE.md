@@ -32,24 +32,13 @@ This text assumes that the version number for a release is X.Y.Z.
 
 11. `mvn release:perform -Pwildfly10`
 
-12. Go to `https://repository.jboss.org/nexus/index.html#stagingRepositories`
+12. Create a GitHub Release.
 
-13. Find the correct staging repository; it will be called
-    `wildfly_extras-NNNN`. Verify the owner name; it should be your
-    JBoss.org username. Also check the content of the repository.
+13. Close the relevant GitHub Milestone. Optionally create a new Milestone.
 
-14. Close the staging repository. Nexus will perform some validations.
-    If successful, Nexus will send a confirmation e-mail.
-
-15. Release the repository. Nexus will send another confirmation e-mail.
-
-16. Create a GitHub Release.
-
-17. Close the relevant GitHub Milestone. Optionally create a new Milestone.
-
-18. Add a new heading to the top of `CHANGELOG.md`.
+14. Add a new heading to the top of `CHANGELOG.md`.
     Its text should be: `X.Y.Z+1 (not yet released)`.
 
-19. `git commit -m "add next version number to changelog"`
+15. `git commit -m "add next version number to changelog"`
 
-20. Send a release announcement.
+16. Send a release announcement.
