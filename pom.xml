@@ -101,7 +101,7 @@
         <version.org.jboss.modules.jboss-modules>2.0.3.Final</version.org.jboss.modules.jboss-modules>
         <version.org.jboss.shrinkwrap>1.2.6</version.org.jboss.shrinkwrap>
         <version.org.mockito.mockito-core>4.6.1</version.org.mockito.mockito-core>
-        <version.org.xmlunit.xmlunit-core>2.9.0</version.org.xmlunit.xmlunit-core>
+        <version.org.xmlunit.xmlunit-core>2.10.0</version.org.xmlunit.xmlunit-core>
     </properties>
 
     <dependencyManagement>
