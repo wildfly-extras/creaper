@@ -114,6 +114,16 @@ public final class ServerVersion {
     public static final ServerVersion VERSION_27_0_0 = new ServerVersion(27, 0, 0);
     /** WF 35.0.x.Final */
     public static final ServerVersion VERSION_28_0_0 = new ServerVersion(28, 0, 0);
+    /** WF 36.0.x.Final */
+    public static final ServerVersion VERSION_29_0_0 = new ServerVersion(29, 0, 0);
+    /** WF 37.0.x.Final */
+    public static final ServerVersion VERSION_30_0_0 = new ServerVersion(30, 0, 0);
+    /** WF 38.0.x.Final */
+    public static final ServerVersion VERSION_31_0_0 = new ServerVersion(31, 0, 0);
+    /** WF 39.0.x.Final */
+    public static final ServerVersion VERSION_32_0_0 = new ServerVersion(32, 0, 0);
+    /** WF 40.0.x.Final */
+    public static final ServerVersion VERSION_33_0_0 = new ServerVersion(33, 0, 0);
 
     private static final ServerVersion[] KNOWN_VERSIONS = {
             VERSION_0_0_0,
@@ -155,7 +165,12 @@ public final class ServerVersion {
             VERSION_25_0_0,
             VERSION_26_0_0,
             VERSION_27_0_0,
-            VERSION_28_0_0
+            VERSION_28_0_0,
+            VERSION_29_0_0,
+            VERSION_30_0_0,
+            VERSION_31_0_0,
+            VERSION_32_0_0,
+            VERSION_33_0_0
     };
 
     /**

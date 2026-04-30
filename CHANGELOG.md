@@ -3,7 +3,7 @@
 ## 2.1.0 (not yet released)
 
 - dropped explicit dependency on `jboss-logging`
-- added support for WildFly 34 - 35
+- added support for WildFly 34 - 39
 - upgraded minimum Java version from 8 to 11
 - upgraded compile-time WildFly Core dependency to 29.0.0.Final
 - upgraded groovy to 4.0.30
