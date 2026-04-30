@@ -4,6 +4,7 @@
 
 - dropped explicit dependency on `jboss-logging`
 - added support for WildFly 34 - 39
+- **removed** support for WildFly 10 - 26; minimum supported version is now WildFly 27 (EAP 8.0+)
 - **removed** `ManagementProtocol.HTTP`, `ManagementProtocol.HTTPS`, and `HttpModelControllerClient`;
   the WildFly HTTP management interface (`http-interface`) has been deprecated since WildFly 9 (2015,
   management model version 1.7.0) and none of the known consumers use it
