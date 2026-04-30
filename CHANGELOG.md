@@ -4,6 +4,11 @@
 
 - dropped explicit dependency on `jboss-logging`
 - added support for WildFly 34 - 35
+- upgraded minimum Java version from 8 to 11
+- upgraded compile-time WildFly Core dependency to 29.0.0.Final
+- upgraded groovy to 4.0.30
+- upgraded Arquillian Core to 1.10.0
+- upgraded SpotBugs Maven plugin to 4.9.8.3
 
 ## 2.0.3 (2024-09-16)
 
