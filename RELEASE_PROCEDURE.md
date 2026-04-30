@@ -21,16 +21,16 @@ This text assumes that the version number for a release is X.Y.Z.
 
 7. Your workspace should now be pristine. Check with `git status`.
 
-8. Make sure that your `JAVA_HOME` points to Java 8.
+8. Make sure that your `JAVA_HOME` points to Java 17.
    Check with `$JAVA_HOME/bin/java -version`.
 
-9. `mvn release:prepare -Pwildfly10`
+9. `mvn release:prepare -Pwildfly27`
 
 10. Maven will ask 3 questions. You might want to manually enter X.Y.Z
     as an answer to the 1st question if the default answer is wrong.
     Default answers to the 2nd and 3rd questions are always OK.
 
-11. `mvn release:perform -Pwildfly10`
+11. `mvn release:perform -Pwildfly27`
 
 12. Create a GitHub Release.
 

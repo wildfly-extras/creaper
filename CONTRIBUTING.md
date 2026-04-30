@@ -37,24 +37,24 @@ a running application server use Arquillian. This means that it's enough to run
 time to execute, so these are not executed by default. To execute them,
 activate the `slow-tests` profile by running `mvn test -Pslow-tests`.
 
-By default, the tests run against WildFly 27 when running on JDK 11+, WildFly 26 is used with JDK 8 (JDK 8 is required
-for release). If you want to run the tests against previous WildFly, activate one of the test suite profiles:
-`mvn clean test -Pwildfly10`. Available profiles are:
+By default, the tests run against WildFly 39. If you want to run the tests
+against a different WildFly version, activate one of the test suite profiles:
+`mvn clean test -Pwildfly27`. Available profiles are:
 
-- `wildfly10`
-- `wildfly11`
+- `wildfly27`
+- `wildfly28`
 - ...
-- `wildfly27` (active by default)
+- `wildfly39` (active by default)
 
 To run a single test from the test suite, the following Maven invocation works:
 `mvn clean test -pl testsuite/standalone/ -Dtest=...` (possibly with a profile
-activation `-Pwildfly10`). See
+activation `-Pwildfly27`). See
 [Surefire documentation](http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html)
 for more details about `-Dtest`.
 
 Running `mvn verify` will take much longer, because it will:
 
-- run static analysis (Checkstyle, CodeNarc and Findbugs)
+- run static analysis (Checkstyle, CodeNarc and SpotBugs)
 - generate source and javadoc JARs
 
 When developing, `mvn test` is probably enough most of the time. Running
@@ -64,8 +64,8 @@ a pull request.
 ## Code Style
 
 The Java code must adhere to the Checkstyle ruleset (`checkstyle.xml`) and
-the Groovy code must adhere to the CodeNarc ruleset (`codenarc.xml`). Both
-these rulesets are derived from common code styles that are widely used.
+the Groovy code must adhere to the CodeNarc ruleset (`codenarc.xml`).
+Both these rulesets are derived from common code styles that are widely used.
 
 The most important parts are: 4-space indentation, no tabs, max 120 characters
 per line, opening braces always at the end of line and closing braces always

@@ -2,9 +2,9 @@
 
 Creaper is a small library for WildFly management with a slight
 bias towards testing. It provides a simple API for managing a running server
-(online) or rewriting a configuration XML file of a stopped server (offline).
-Note that manipulating the XML files is generally discouraged and should only
-be used when absolutely necessary.
+(online). Offline management (rewriting a configuration XML file of a stopped
+server) is **deprecated** — use online management operations with an embedded
+server instead.
 
 Please refer to these WildFly wiki pages for an in-depth description
 of the management functionalities:
@@ -72,11 +72,9 @@ You might need to tweak other dependencies to transitively bring
 compatible `jboss-logging` from `wildfly-core` or explicitly provide
 compatible version. WildFly 34 and newer requires at least `3.6.0`.
 
-Other dependencies might be required if you're using "local" CLI operations,
-such as `jms-queue add ...` on WildFly 10 (it was a built-in operation
-in previous WildFly versions, but was moved to a separate module due to
-messaging changes). These dependencies are not listed here, because there
-are no commands in Creaper that use them.
+Other dependencies might be required if you're using "local" CLI operations.
+These dependencies are not listed here, because there are no commands
+in Creaper that use them.
 
 <details>
 <summary>Older WildFly versions (10 - 38)</summary>
@@ -790,20 +788,16 @@ on Creaper:
     - `com.google.guava:guava`
 - `creaper-commands`:
     - everything from `creaper-core`
-    - `org.codehaus.groovy:groovy`
-    - `org.codehaus.groovy:groovy-xml`
+    - `org.apache.groovy:groovy` (deprecated — only used by the deprecated offline subsystem)
+    - `org.apache.groovy:groovy-xml` (deprecated — only used by the deprecated offline subsystem)
 
 If you need to bring your own version of some of these libraries, you should
 use dependency exclusions.
 
-Specifically for Groovy: this is only needed for offline management
-(i.e, XML configuration files manipulation). Creaper only needs `groovy` and
-`groovy-xml`, but excluding them and providing `groovy-all` should work too.
-
 ## Use
 
 The entrypoint is `org.wildfly.extras.creaper.core.ManagementClient`. From this
-class, you can get management clients for both online and offline use.
+class, you can get a management client for online use (offline is deprecated).
 
 After reading this document, consider reading the design document as well
 (`DESIGN.md`), it can help you understand some of the design constraints
@@ -879,7 +873,10 @@ expressed by throwing an exception. These exceptions are considered fatal;
 that is, if an exception happens, the server is in an unknown state and the
 only reasonable action is aborting everything and reporting a major fail.
 
-### Offline
+### Offline (Deprecated)
+
+> **Deprecated:** The offline management subsystem is deprecated. Use online
+> management operations with an embedded server instead.
 
 The API closely resembles the online counterpart. "Connecting" to an offline
 server looks like this:
@@ -928,9 +925,10 @@ the backup (there's of course a command to restore it, too).
 
 ### Building Commands
 
-Those 3 commands shown above (`CliFile`, `ConfigurationFileBackup` and
-`XmlTransform`) are foundational. They are meant to be used as building blocks
-for more higher-level commands, rather than being used directly.
+The `CliFile` command shown above is foundational. It is meant to be used
+as a building block for more higher-level commands, rather than being used
+directly. (`ConfigurationFileBackup` and `XmlTransform` are deprecated along
+with the offline subsystem.)
 
 For example, you can have a CLI file that configures a datasource. Instead of
 applying a `CliFile` command directly, you should create a command with
@@ -946,7 +944,7 @@ a descriptive name:
 In this example, the CLI file is loaded from classpath. It must be a sibling
 of the `SetupDatasource` class and be named `SetupDatasource.cli`.
 
-In the same way, you can create a command for offline usage:
+In the same way, you can create a command for offline usage (deprecated):
 
     public class SetupDatasource implements OfflineCommand {
         @Override
@@ -959,29 +957,9 @@ In this example, the Groovy script that does the XML transformation is loaded
 from classpath. It must be a sibling of the `SetupDatasource` class and
 be named `SetupDatasource.groovy`.
 
-If you have both online and offline implementations of a command, it is
-preferrable to merge them into a single class:
-
-    public class SetupDatasource implements OnlineCommand, OfflineCommand {
-        @Override
-        public void apply(OnlineCommandContext ctx) throws CommandFailedException {
-            ctx.client.apply(new CliFile(SetupDatasource.class));
-        }
-
-        @Override
-        public void apply(OfflineCommandContext ctx) throws CommandFailedException {
-            ctx.client.apply(GroovyXmlTransform.of(SetupDatasource.class));
-        }
-
-        @Override
-        public String toString() {
-            return "SetupDatasource";
-        }
-    }
-
-Note the `toString` method -- it should return a short description useful
-for logging purposes. It's not mandatory, but highly recommended at least
-for often used commands.
+Note the `toString` method on commands -- it should return a short description
+useful for logging purposes. It's not mandatory, but highly recommended at
+least for often used commands.
 
 Your new command can be used in the same way the built-in commands are:
 
