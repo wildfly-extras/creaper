@@ -6,7 +6,11 @@ import org.wildfly.extras.creaper.core.ServerVersion;
 /**
  * A management client that works against a configuration file of a <i>stopped</i> application server. If the server
  * is running, it will not pick up the configuration file changes and even overwrite them when it gets stopped.
+ *
+ * @deprecated Offline XML manipulation is superseded by the embedded server configuration approach.
+ * Use online management operations with an embedded server instead.
  */
+@Deprecated
 public interface OfflineManagementClient {
     /** The {@link OfflineOptions} this client was created with. */
     OfflineOptions options();

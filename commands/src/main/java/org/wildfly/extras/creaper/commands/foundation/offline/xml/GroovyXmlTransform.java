@@ -23,7 +23,11 @@ import java.util.Set;
 /**
  * An offline command that runs a XML transformation on the configuration file which the offline management client
  * is connected to. The transformation is defined by a Groovy script loaded from classpath.
+ *
+ * @deprecated Offline XML manipulation is superseded by the embedded server configuration approach.
+ * Use online management operations with an embedded server instead.
  */
+@Deprecated
 public final class GroovyXmlTransform implements OfflineCommand {
     private final TransformationScript script;
     private final Map<String, Subtree> subtrees;

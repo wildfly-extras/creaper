@@ -10,7 +10,11 @@ import org.wildfly.extras.creaper.core.Command;
  * <p>Error handling for commands is provided automatically by the {@code ManagementClient}. That is, when you are
  * implementing the {@code apply} method, you <i>should</i> let all the exceptions bubble up. Only catch exceptions
  * if you can recover from them. This is signified by the {@code throws} clause of the {@code apply} method anyway.</p>
+ *
+ * @deprecated Offline XML manipulation is superseded by the embedded server configuration approach.
+ * Use online management operations with an embedded server instead.
  */
+@Deprecated
 public interface OfflineCommand extends Command {
     void apply(OfflineCommandContext ctx) throws Exception;
 

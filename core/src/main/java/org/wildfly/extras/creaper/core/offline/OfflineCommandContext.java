@@ -4,6 +4,11 @@ import org.wildfly.extras.creaper.core.ServerVersion;
 
 import java.io.File;
 
+/**
+ * @deprecated Offline XML manipulation is superseded by the embedded server configuration approach.
+ * Use online management operations with an embedded server instead.
+ */
+@Deprecated
 public final class OfflineCommandContext {
     public final OfflineManagementClient client;
     public final OfflineOptions options; // same as client.options()
