@@ -8,6 +8,7 @@
   the WildFly HTTP management interface (`http-interface`) has been deprecated since WildFly 9 (2015,
   management model version 1.7.0) and none of the known consumers use it
 - removed `httpclient` (Apache HttpComponents Client 4) dependency
+- fixed test compatibility with WildFly 39 infinispan schema changes
 - upgraded minimum Java version from 8 to 11
 - upgraded compile-time WildFly Core dependency to 29.0.0.Final
 - upgraded groovy to 4.0.30

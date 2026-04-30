@@ -294,6 +294,7 @@ public class OperationsTest {
 
         ModelNodeResult result = ops.add(address);
         result.assertSuccess();
+        ops.add(address.and("local-cache", "default"));
         admin.reloadIfRequired();
 
         result = ops.readAttribute(address, "statistics-enabled", ReadAttributeOption.NOT_INCLUDE_DEFAULTS);
@@ -310,6 +311,7 @@ public class OperationsTest {
 
         ModelNodeResult result = ops.add(address, Values.of("statistics-enabled", true));
         result.assertSuccess();
+        ops.add(address.and("local-cache", "default"));
         admin.reloadIfRequired();
 
         result = ops.readAttribute(address, "statistics-enabled", ReadAttributeOption.NOT_INCLUDE_DEFAULTS);
@@ -327,6 +329,7 @@ public class OperationsTest {
 
         ModelNodeResult result = ops.add(address, Values.ofList("aliases", "bar", "baz"));
         result.assertSuccess();
+        ops.add(address.and("local-cache", "default"));
         admin.reloadIfRequired();
 
         result = ops.readAttribute(address, "aliases");
@@ -346,6 +349,7 @@ public class OperationsTest {
         ModelNodeResult result = ops.add(address, Values.of("statistics-enabled", true)
                 .andList("aliases", "bar", "baz"));
         result.assertSuccess();
+        ops.add(address.and("local-cache", "default"));
         admin.reloadIfRequired();
 
         result = ops.readAttribute(address, "statistics-enabled", ReadAttributeOption.NOT_INCLUDE_DEFAULTS);
@@ -386,8 +390,10 @@ public class OperationsTest {
         result = ops.batch(new Batch()
                 .add(Address.subsystem("infinispan").and("cache-container", "foo"),
                         Values.of("statistics-enabled", true))
+                .add(Address.subsystem("infinispan").and("cache-container", "foo").and("local-cache", "default"))
                 .add(Address.subsystem("infinispan").and("cache-container", "bar"),
                         Values.of("statistics-enabled", true))
+                .add(Address.subsystem("infinispan").and("cache-container", "bar").and("local-cache", "default"))
         );
         result.assertSuccess();
         admin.reloadIfRequired();
@@ -447,6 +453,7 @@ public class OperationsTest {
         assertFalse(result);
 
         ops.add(address);
+        ops.add(address.and("local-cache", "default"));
 
         result = ops.removeIfExists(address);
         assertTrue(result);
