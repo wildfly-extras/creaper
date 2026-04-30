@@ -12,17 +12,16 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        java: [ 17, 21 ]
+        java: [ 17, 21, 25 ]
       fail-fast: false
     name: Non-elytron tests on JDK ${{ matrix.java }} - default WildFly profile
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
-          java-package: jdk
-          architecture: x64
+          distribution: temurin
       - name: Tests - non-elytron
         run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=\!**.elytron.**
   Tests-elytron-latest-wildfly:
@@ -30,55 +29,18 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        java: [ 17, 21 ]
+        java: [ 17, 21, 25 ]
       fail-fast: false
     name: Elytron tests on JDK ${{ matrix.java }} - default WildFly profile
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
-          java-package: jdk
-          architecture: x64
+          distribution: temurin
       - name: Tests - elytron
         run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=**.elytron.**
-  Tests-non-elytron-wildfly-10:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    strategy:
-      matrix:
-        java: [ 8 ]
-      fail-fast: false
-    name: Non-elytron tests on JDK ${{ matrix.java }} - WildFly 10 profile
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ matrix.java }}
-          java-package: jdk
-          architecture: x64
-      - name: Tests - non-elytron
-        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=\!**.elytron.** -Pwildfly10
-  Tests-elytron-wildfly-10:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    strategy:
-      matrix:
-        java: [ 8 ]
-      fail-fast: false
-    name: Elytron tests on JDK ${{ matrix.java }} - WildFly 10 profile
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ matrix.java }}
-          java-package: jdk
-          architecture: x64
-      - name: Tests - elytron
-        run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=**.elytron.** -Pwildfly10
   Tests-non-elytron-wildfly-34:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -88,13 +50,12 @@ jobs:
       fail-fast: false
     name: Non-elytron tests on JDK ${{ matrix.java }} - WildFly 34 profile
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
-          java-package: jdk
-          architecture: x64
+          distribution: temurin
       - name: Tests - non-elytron
         run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=\!**.elytron.** -Pwildfly34
   Tests-elytron-wildfly-34:
@@ -106,12 +67,11 @@ jobs:
       fail-fast: false
     name: Elytron tests on JDK ${{ matrix.java }} - WildFly 34 profile
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
-          java-package: jdk
-          architecture: x64
+          distribution: temurin
       - name: Tests - elytron
         run: mvn verify -s settings.xml -B -fae -Dmaven.test.redirectTestOutputToFile=true -Dtest=**.elytron.** -Pwildfly34
