@@ -17,6 +17,7 @@
 - upgraded groovy to 4.0.30
 - upgraded Arquillian Core to 1.10.0
 - upgraded SpotBugs Maven plugin to 4.9.8.3
+- added JDK 25 CI, removed WildFly 10 / JDK 8 CI
 
 ## 2.0.3 (2024-09-16)
 
