@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0 (not yet released)
+## 3.0.0 (not yet released)
 
 - dropped explicit dependency on `jboss-logging`
 - added support for WildFly 34 - 39
