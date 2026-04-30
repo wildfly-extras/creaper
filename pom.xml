@@ -37,7 +37,7 @@
         <connection>scm:git:git@github.com:wildfly-extras/creaper.git</connection>
         <developerConnection>scm:git:git@github.com:wildfly-extras/creaper.git</developerConnection>
         <url>https://github.com/wildfly-extras/creaper</url>
-        <tag>v2.0.0-Alpha.1</tag>
+        <tag>HEAD</tag>
     </scm>
     <issueManagement>
         <system>GitHub</system>
