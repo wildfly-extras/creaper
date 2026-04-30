@@ -2,7 +2,6 @@ package org.wildfly.extras.creaper.commands.transactions;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -43,9 +42,6 @@ public final class ChangeJdbcTransactionAttributes implements OfflineCommand, On
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        ctx.version.assertAtLeast(ServerVersion.VERSION_1_5_0,
-                "JDBC options are available for EAP 6.2.0 and higher");
-
         GroovyXmlTransform transform = GroovyXmlTransform.of(ChangeJdbcTransactionAttributes.class)
                 .subtree("transactions", Subtree.subsystem("transactions"))
 
@@ -69,9 +65,6 @@ public final class ChangeJdbcTransactionAttributes implements OfflineCommand, On
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        ctx.version.assertAtLeast(ServerVersion.VERSION_1_5_0,
-                "JDBC options are available for EAP 6.2.0 and higher");
-
         Batch batch = new Batch();
         Operations ops = new Operations(ctx.client);
         Address address = Address.subsystem("transactions");

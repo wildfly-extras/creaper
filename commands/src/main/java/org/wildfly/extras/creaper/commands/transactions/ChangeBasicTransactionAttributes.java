@@ -2,7 +2,6 @@ package org.wildfly.extras.creaper.commands.transactions;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -107,33 +106,18 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             batch.writeAttribute(transatcionsAddress, "default-timeout", timeout);
         }
 
-        // cli allows both enable-statistics and statistics-enabled for WildFly 8 and WildFly 9,
-        // statistics-enabled is in configuration files since WildFly 8
         if (statisticsEnabled != null) {
-            if (ctx.version.lessThan(ServerVersion.VERSION_2_0_0)) {
-                batch.writeAttribute(transatcionsAddress, "enable-statistics", statisticsEnabled);
-            } else {
-                batch.writeAttribute(transatcionsAddress, "statistics-enabled", statisticsEnabled);
-            }
+            batch.writeAttribute(transatcionsAddress, "statistics-enabled", statisticsEnabled);
         }
         if (jts != null) {
             batch.writeAttribute(transatcionsAddress, "jts", jts);
         }
 
         if (useJournalStore != null) {
-            if (ctx.version.lessThan(ServerVersion.VERSION_4_0_0)) {
-                batch.writeAttribute(transatcionsAddress, "use-hornetq-store", useJournalStore);
-            } else {
-                batch.writeAttribute(transatcionsAddress, "use-journal-store", useJournalStore);
-
-            }
+            batch.writeAttribute(transatcionsAddress, "use-journal-store", useJournalStore);
         }
         if (journalStoreEnableAsyncIO != null) {
-            if (ctx.version.lessThan(ServerVersion.VERSION_4_0_0)) {
-                batch.writeAttribute(transatcionsAddress, "hornetq-store-enable-async-io", journalStoreEnableAsyncIO);
-            } else {
-                batch.writeAttribute(transatcionsAddress, "journal-store-enable-async-io", journalStoreEnableAsyncIO);
-            }
+            batch.writeAttribute(transatcionsAddress, "journal-store-enable-async-io", journalStoreEnableAsyncIO);
         }
         if (processIdUuid != null || processIdSocketBinding != null) {
             if (processIdUuid != null) {

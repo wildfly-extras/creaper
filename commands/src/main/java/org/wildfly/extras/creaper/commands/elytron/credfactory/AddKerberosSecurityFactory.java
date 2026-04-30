@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -52,10 +51,6 @@ public final class AddKerberosSecurityFactory implements OnlineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        if (ctx.version.lessThan(ServerVersion.VERSION_5_0_0)) {
-            throw new AssertionError("Elytron is available since WildFly 11.");
-        }
-
         Operations ops = new Operations(ctx.client);
         Address kerberosSecurityFactoryAddress = Address.subsystem("elytron").and("kerberos-security-factory", name);
         if (replaceExisting) {

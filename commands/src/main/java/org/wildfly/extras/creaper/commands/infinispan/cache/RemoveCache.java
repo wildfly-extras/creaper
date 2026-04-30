@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.infinispan.cache;
 
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -33,9 +32,7 @@ public final class RemoveCache implements OnlineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        Operations ops = new Operations(ctx.client);
-        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_5_0_0))
-            ops = ops.headers(Headers.allowResourceServiceRestart());
+        Operations ops = new Operations(ctx.client).headers(Headers.allowResourceServiceRestart());
         ops.remove(address);
     }
 }

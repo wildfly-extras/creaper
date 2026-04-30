@@ -224,13 +224,6 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
             }
         }
 
-        if (enableAfterCreation && ctx.version.lessThan(ServerVersion.VERSION_2_0_0)) {
-            // AS7 needs this to actually enable the datasource, because the "enabled" attribute in fact doesn't work
-            //
-            // for WildFly, the "enabled" attribute works fine and this must not be called (enabling twice is an error)
-            batch.invoke("enable", dsAddress);
-        }
-
         ops.batch(batch);
     }
 

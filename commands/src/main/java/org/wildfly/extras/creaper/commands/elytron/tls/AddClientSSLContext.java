@@ -2,7 +2,6 @@ package org.wildfly.extras.creaper.commands.elytron.tls;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -18,14 +17,6 @@ public final class AddClientSSLContext extends AbstractAddSSLContext {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        if (ctx.version.lessThan(ServerVersion.VERSION_5_0_0)) {
-            throw new AssertionError("Elytron is available since WildFly 11.");
-        }
-
-        if (cipherSuiteNames != null && ctx.version.lessThan(ServerVersion.VERSION_12_0_0)) {
-            throw new AssertionError("cipher-suite-names attribute is available since WildFly 19");
-        }
-
         Operations ops = new Operations(ctx.client);
         Address clientSSLContextAddress = Address.subsystem("elytron").and("client-ssl-context", name);
         if (replaceExisting) {
@@ -43,14 +34,6 @@ public final class AddClientSSLContext extends AbstractAddSSLContext {
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        if (ctx.version.lessThan(ServerVersion.VERSION_5_0_0)) {
-            throw new AssertionError("Elytron is available since WildFly 11.");
-        }
-
-        if (cipherSuiteNames != null && ctx.version.lessThan(ServerVersion.VERSION_12_0_0)) {
-            throw new AssertionError("cipher-suite-names attribute is available since WildFly 19");
-        }
-
         ctx.client.apply(GroovyXmlTransform.of(AddClientSSLContext.class)
                 .subtree("elytronSubsystem", Subtree.subsystem("elytron"))
                 .parameter("atrName", name)

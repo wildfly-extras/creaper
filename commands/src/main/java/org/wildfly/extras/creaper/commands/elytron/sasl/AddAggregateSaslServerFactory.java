@@ -3,7 +3,6 @@ package org.wildfly.extras.creaper.commands.elytron.sasl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -25,10 +24,6 @@ public final class AddAggregateSaslServerFactory implements OnlineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        if (ctx.version.lessThan(ServerVersion.VERSION_5_0_0)) {
-            throw new AssertionError("Elytron is available since WildFly 11.");
-        }
-
         Operations ops = new Operations(ctx.client);
         Address factoryAddress = Address.subsystem("elytron")
                 .and("aggregate-sasl-server-factory", name);

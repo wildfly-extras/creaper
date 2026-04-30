@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.elytron.audit;
 
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -32,10 +31,6 @@ public final class AddSyslogAuditLog implements OnlineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        if (ctx.version.lessThan(ServerVersion.VERSION_5_0_0)) {
-            throw new AssertionError("Elytron is available since WildFly 11.");
-        }
-
         Operations ops = new Operations(ctx.client);
         Address syslogAuditAddress = Address.subsystem("elytron").and("syslog-audit-log", name);
         if (replaceExisting) {

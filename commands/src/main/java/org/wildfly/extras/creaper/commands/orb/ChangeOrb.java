@@ -256,11 +256,7 @@ public final class ChangeOrb implements OfflineCommand, OnlineCommand {
         IIOP;
 
         static OrbType get(ServerVersion serverVersion) {
-            if (serverVersion.lessThan(ServerVersion.VERSION_3_0_0)) {
-                return JACORB;
-            } else {
-                return IIOP;
-            }
+            return IIOP;
         }
 
         String subsystemName() {

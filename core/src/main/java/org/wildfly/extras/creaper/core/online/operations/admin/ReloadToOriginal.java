@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.core.online.operations.admin;
 
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -31,9 +30,6 @@ public final class ReloadToOriginal {
     public ReloadToOriginal(OnlineManagementClient client, int timeoutInSeconds) throws IOException {
         if (!client.options().isStandalone) {
             throw new IllegalStateException("ReloadToOriginal is only supported for a standalone server");
-        }
-        if (client.version().lessThan(ServerVersion.VERSION_1_4_0)) {
-            throw new IllegalStateException("ReloadToOriginal requires at least JBoss AS 7.2.0 (EAP 6.1.0)");
         }
 
         this.client = client;

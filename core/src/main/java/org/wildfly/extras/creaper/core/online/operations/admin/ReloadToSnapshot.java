@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.core.online.operations.admin;
 
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -24,10 +23,6 @@ public final class ReloadToSnapshot {
     }
 
     public ReloadToSnapshot(OnlineManagementClient client, String snapshot, int timeoutInSeconds) throws IOException {
-        if (client.version().lessThan(ServerVersion.VERSION_5_0_0)) {
-            throw new IllegalStateException("ReloadToSnapshot requires at least WildFly Core 3.");
-        }
-
         this.client = client;
         this.snapshot = snapshot;
         this.timeoutInSeconds = timeoutInSeconds;

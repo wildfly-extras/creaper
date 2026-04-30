@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.commands.undertow;
 
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -24,9 +23,6 @@ public final class RemoveUndertowListener implements OnlineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws IOException {
-        // Undertow is available since WildFly 8
-        ctx.version.assertAtLeast(ServerVersion.VERSION_2_0_0);
-
         Operations ops = new Operations(ctx.client);
         Address listenerAddress = Address.subsystem("undertow").and("server", serverName)
                 .and(listenerType.listenerTypeName(), listenerName);

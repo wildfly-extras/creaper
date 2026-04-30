@@ -29,12 +29,10 @@ public final class AddDistributedCache extends AbstractAddCache {
 
     @Override
     protected Values addValuesSpecificForCacheType(Values generalCacheValues, ServerVersion version) {
-        if (version.greaterThanOrEqualTo(ServerVersion.VERSION_3_0_0)) {  // WildFly 9+ only
-            generalCacheValues = generalCacheValues
-                    .andOptional("capacity-factor", capacityFactor)
-                    .andOptional("consistent-hash-strategy",
-                            consistentHashStrategy != null ? consistentHashStrategy.getType() : null);
-        }
+        generalCacheValues = generalCacheValues
+                .andOptional("capacity-factor", capacityFactor)
+                .andOptional("consistent-hash-strategy",
+                        consistentHashStrategy != null ? consistentHashStrategy.getType() : null);
 
         return generalCacheValues
                 .andOptional("async-marshalling", asyncMarshalling)
