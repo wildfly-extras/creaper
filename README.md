@@ -879,12 +879,6 @@ expressed by throwing an exception. These exceptions are considered fatal;
 that is, if an exception happens, the server is in an unknown state and the
 only reasonable action is aborting everything and reporting a major fail.
 
-#### HTTP transport
-
-If you want to use HTTP transport for executing operation (`.protocol(ManagementProtocol.HTTP)`),
-you need to provide Apache HttpComponents Client 4 by yourself. Please notice that `reload` operation through HTTP
-transport may fail with WildFly 10.0.0.
-
 ### Offline
 
 The API closely resembles the online counterpart. "Connecting" to an offline

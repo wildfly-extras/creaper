@@ -180,8 +180,7 @@ public final class SslOptions {
         /**
          * Errors during hostname verification will be ignored.
          * Hostname verification is an HTTPS concept, so this method only makes sense when using
-         * {@link ManagementProtocol#HTTPS}. There's no such thing as hostname verification with the native management
-         * protocols.
+         * {@link ManagementProtocol#HTTPS_REMOTING} or {@link ManagementProtocol#REMOTE_HTTPS}.
          */
         public Builder turnOffHostnameVerification() {
             this.hostnameVerification = false;

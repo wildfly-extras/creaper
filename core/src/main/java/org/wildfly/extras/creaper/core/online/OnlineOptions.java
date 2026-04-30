@@ -65,7 +65,6 @@ public final class OnlineOptions {
                     break;
                 case HTTPS_REMOTING:
                 case REMOTE_HTTPS:
-                case HTTPS:
                     data.port = 9993;
                     break;
                 default:
@@ -89,9 +88,9 @@ public final class OnlineOptions {
         this.wrappedModelControllerClient = data.wrappedModelControllerClient;
         this.isWrappedClient = data.wrappedModelControllerClient != null;
 
-        if ((protocol == ManagementProtocol.HTTPS || protocol == ManagementProtocol.HTTPS_REMOTING
+        if ((protocol == ManagementProtocol.HTTPS_REMOTING
                 || protocol == ManagementProtocol.REMOTE_HTTPS) && sslOptions == null) {
-            throw new IllegalArgumentException("SSL must be configured when HTTPS or HTTPS_REMOTING protocol is used!");
+            throw new IllegalArgumentException("SSL must be configured when HTTPS_REMOTING or REMOTE_HTTPS protocol is used!");
         }
     }
 
@@ -390,25 +389,6 @@ public final class OnlineOptions {
         }
 
         ModelControllerClient modelControllerClient;
-
-        if (protocol == ManagementProtocol.HTTP || protocol == ManagementProtocol.HTTPS) {
-            modelControllerClient = new HttpModelControllerClient(host, port, username, password, connectionTimeout,
-                    sslOptions);
-            try {
-                connectAndWaitUntilServerBoots(modelControllerClient, connectionTimeout, bootTimeout);
-            } catch (Exception e) {
-                modelControllerClient.close();
-
-                if (e instanceof IOException) {
-                    throw (IOException) e;
-                } else if (e instanceof IllegalStateException) {
-                    throw (IllegalStateException) e;
-                } else {
-                    throw new IllegalStateException(e);
-                }
-            }
-            return modelControllerClient;
-        }
 
         modelControllerClient = ModelControllerClient.Factory.create(new ModelControllerClientConfiguration.Builder()
                 .setProtocol(protocol != null ? protocol.protocolName() : null)

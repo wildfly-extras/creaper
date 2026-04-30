@@ -28,20 +28,6 @@ public enum ManagementProtocol {
      * Used in WildFly, supported since WildFly 11. Default port 9993.
      */
     REMOTE_HTTPS("remote+https"),
-
-    /**
-     * With {@code HTTP}, the management client will not use the native management protocol,
-     * but will instead use the HTTP management endpoint. The {@code ModelNode}s will be serialized to JSON. Operation
-     * attachments are not supported (yet), so deploying will not work. If username and password is not provided,
-     * no authentication method will be used.
-     * Default port 9990.
-     */
-    HTTP("http"),
-    /**
-     * {@code HTTPS} imposes the same limitations as {@link #HTTP}.
-     * Default port 9993.
-     */
-    HTTPS("https"),
     ;
 
     private final String protocolName;
