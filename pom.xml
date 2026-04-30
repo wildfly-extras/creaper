@@ -62,17 +62,16 @@
 
         <maven.jboss.ga.repository.url>https://maven.repository.redhat.com/ga/</maven.jboss.ga.repository.url>
 
-        <version.java>1.8</version.java>
+        <version.java>11</version.java>
 
         <version.minimum-maven>3.3.9</version.minimum-maven>
 
         <!-- All versions. Keep in alphabetical order. Name format: version.${groupId}.${artifactIdOrWildcard}. -->
         <version.com.google.guava.guava>32.0.1-jre</version.com.google.guava.guava>
-        <!-- checkstyle 9 is last version with JDK 8 support -->
         <version.com.puppycrawl.tools.checkstyle>9.3</version.com.puppycrawl.tools.checkstyle>
         <version.junit.junit>4.13.2</version.junit.junit>
 
-        <version.org.apache.groovy.groovy-everything>4.0.22</version.org.apache.groovy.groovy-everything>
+        <version.org.apache.groovy.groovy-everything>4.0.30</version.org.apache.groovy.groovy-everything>
         <version.org.apache.httpcomponents.httpclient>4.5.13</version.org.apache.httpcomponents.httpclient>
         <version.org.apache.maven.plugins.maven-antrun-plugin>3.1.0</version.org.apache.maven.plugins.maven-antrun-plugin>
         <version.org.apache.maven.plugins.maven-checkstyle-plugin>3.3.0</version.org.apache.maven.plugins.maven-checkstyle-plugin>
@@ -92,12 +91,11 @@
         <version.org.apache.maven.plugins.maven-source-plugin>3.3.0</version.org.apache.maven.plugins.maven-source-plugin>
         <version.org.apache.maven.plugins.maven-surefire-plugin>3.1.2</version.org.apache.maven.plugins.maven-surefire-plugin>
         <version.org.bouncycastle>1.84</version.org.bouncycastle>
-        <version.org.codehaus.mojo.codenarc-maven-plugin>0.22-1</version.org.codehaus.mojo.codenarc-maven-plugin>
-        <version.com.github.spotbugs.spotbugs-maven-plugin>4.7.3.5</version.com.github.spotbugs.spotbugs-maven-plugin>
+        <version.com.github.spotbugs.spotbugs-maven-plugin>4.9.8.3</version.com.github.spotbugs.spotbugs-maven-plugin>
         <version.org.hamcrest.hamcrest-core>2.2</version.org.hamcrest.hamcrest-core>
-        <version.org.jboss.arquillian>1.6.0.Final</version.org.jboss.arquillian>
-        <!-- EAP 7.0.0 (WildFly 10) -->
-        <version.org.wildfly.core.wildfly-everything>2.2.0.Final</version.org.wildfly.core.wildfly-everything>
+        <version.org.jboss.arquillian>1.10.0.Final</version.org.jboss.arquillian>
+        <!-- WildFly 37 (Core 29) - minimum version with CompletableFuture-based ModelControllerClient -->
+        <version.org.wildfly.core.wildfly-everything>29.0.0.Final</version.org.wildfly.core.wildfly-everything>
         <version.org.jboss.modules.jboss-modules>2.0.3.Final</version.org.jboss.modules.jboss-modules>
         <version.org.jboss.shrinkwrap>1.2.6</version.org.jboss.shrinkwrap>
         <version.org.mockito.mockito-core>4.6.1</version.org.mockito.mockito-core>
@@ -479,45 +477,6 @@
         </plugins>
     </build>
     <profiles>
-        <profile>
-            <id>java8</id>
-            <activation>
-                <jdk>1.8</jdk>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>codenarc-maven-plugin</artifactId>
-                            <version>${version.org.codehaus.mojo.codenarc-maven-plugin}</version>
-                            <configuration>
-                                <sourceDirectory>${project.basedir}/src</sourceDirectory>
-                                <rulesetfiles>file:codenarc.xml</rulesetfiles>
-                                <maxPriority1Violations>0</maxPriority1Violations>
-                                <maxPriority2Violations>0</maxPriority2Violations>
-                                <maxPriority3Violations>0</maxPriority3Violations>
-                            </configuration>
-                            <executions>
-                                <execution>
-                                    <id>codenarc</id>
-                                    <phase>verify</phase>
-                                    <goals>
-                                        <goal>codenarc</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>codenarc-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>release-sign-artifacts</id>
             <build>
