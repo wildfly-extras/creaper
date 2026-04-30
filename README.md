@@ -78,6 +78,9 @@ in previous WildFly versions, but was moved to a separate module due to
 messaging changes). These dependencies are not listed here, because there
 are no commands in Creaper that use them.
 
+<details>
+<summary>Older WildFly versions (10 - 38)</summary>
+
 #### WildFly 10 (based on WildFly Core 2)
 
 Dependencies for `creaper-core`:
@@ -682,6 +685,100 @@ Dependencies for `creaper-commands`:
         <groupId>org.wildfly.core</groupId>
         <artifactId>wildfly-patching</artifactId>
         <version>27.0.1.Final</version>
+    </dependency>
+
+#### WildFly 36 (36.0.1) (based on WildFly Core 28)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>28.0.1.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>28.0.1.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>28.0.1.Final</version>
+    </dependency>
+
+#### WildFly 37 (37.0.1) (based on WildFly Core 29)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>29.0.1.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>29.0.1.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>29.0.1.Final</version>
+    </dependency>
+
+#### WildFly 38 (38.0.1) (based on WildFly Core 30)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>30.0.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>30.0.0.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>30.0.0.Final</version>
+    </dependency>
+
+</details>
+
+#### WildFly 39 (39.0.1) (based on WildFly Core 31)
+
+Dependencies for `creaper-core`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-controller-client</artifactId>
+        <version>31.0.3.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-cli</artifactId>
+        <version>31.0.3.Final</version>
+    </dependency>
+
+Dependencies for `creaper-commands`:
+
+    <dependency>
+        <groupId>org.wildfly.core</groupId>
+        <artifactId>wildfly-patching</artifactId>
+        <version>31.0.3.Final</version>
     </dependency>
 
 ### Transitive Dependencies
