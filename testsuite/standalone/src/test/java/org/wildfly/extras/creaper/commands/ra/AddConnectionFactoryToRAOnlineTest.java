@@ -30,7 +30,6 @@ public class AddConnectionFactoryToRAOnlineTest {
     @Before
     public void connect() throws IOException {
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
-        Assume.assumeTrue(client.version().greaterThanOrEqualTo(ServerVersion.VERSION_3_0_0));
         ops = new Operations(client);
         admin = new Administration(client);
     }

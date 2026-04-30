@@ -66,8 +66,6 @@
 
         <managementPort.wildfly>9990</managementPort.wildfly>
 
-        <ignoredCategory.wildfly11 />
-
         <wildfly27.applicationServer.groupId>org.wildfly</wildfly27.applicationServer.groupId>
         <wildfly27.applicationServer.artifactId>wildfly-dist</wildfly27.applicationServer.artifactId>
         <wildfly27.applicationServer.version>${version.wildfly27}</wildfly27.applicationServer.version>
@@ -166,8 +164,7 @@
         <wildfly40.arquillianContainer.artifactId>wildfly-arquillian-container-managed</wildfly40.arquillianContainer.artifactId>
         <wildfly40.arquillianContainer.version>${version.wildfly40.arquillian}</wildfly40.arquillianContainer.version>
 
-        <!-- defined in profiles "wildfly10", "wildfly11", "wildfly12", "wildfly13", "wildfly14", "wildfly15",
-             "wildfly16", "wildfly17", "wildfly18", "wildfly19" and "wildfly20" below -->
+        <!-- defined in profiles below -->
         <applicationServer.groupId>MUST-BE-DEFINED</applicationServer.groupId>
         <applicationServer.artifactId>MUST-BE-DEFINED</applicationServer.artifactId>
         <applicationServer.version>MUST-BE-DEFINED</applicationServer.version>
@@ -177,7 +174,6 @@
         <arquillianContainer.artifactId>MUST-BE-DEFINED</arquillianContainer.artifactId>
         <arquillianContainer.version>MUST-BE-DEFINED</arquillianContainer.version>
 
-        <tests.ignoredCategory>MUST-BE-DEFINED</tests.ignoredCategory>
         <tests.specialJvmArgs>MUST-BE-DEFINED</tests.specialJvmArgs>
     </properties>
 
@@ -290,7 +286,7 @@
                             <id>default-test</id>
                             <configuration>
                                 <excludedGroups>org.wildfly.extras.creaper.test.ManualTests,
-                                    org.wildfly.extras.creaper.test.SlowTests, ${tests.ignoredCategory}</excludedGroups>
+                                    org.wildfly.extras.creaper.test.SlowTests</excludedGroups>
                                 <systemPropertyVariables>
                                     <management.port>${applicationServer.managementPort}</management.port>
                                 </systemPropertyVariables>
@@ -307,7 +303,7 @@
                                 <goal>test</goal>
                             </goals>
                             <configuration>
-                                <groups>org.wildfly.extras.creaper.test.ManualTests AND NOT ${tests.ignoredCategory}</groups>
+                                <groups>org.wildfly.extras.creaper.test.ManualTests</groups>
                                 <systemPropertyVariables>
                                     <arquillian.launch>jboss-manual-group</arquillian.launch>
                                     <management.port>${applicationServer.managementPort}</management.port>
@@ -345,7 +341,7 @@
                                     <goal>test</goal>
                                 </goals>
                                 <configuration>
-                                    <groups>org.wildfly.extras.creaper.test.SlowTests AND NOT ${tests.ignoredCategory}</groups>
+                                    <groups>org.wildfly.extras.creaper.test.SlowTests</groups>
                                     <systemPropertyVariables>
                                         <management.port>${applicationServer.managementPort}</management.port>
                                     </systemPropertyVariables>
@@ -371,7 +367,6 @@
                 <arquillianContainer.artifactId>${wildfly27.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly27.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -416,7 +411,6 @@
                 <arquillianContainer.artifactId>${wildfly28.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly28.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -461,7 +455,6 @@
                 <arquillianContainer.artifactId>${wildfly29.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly29.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -506,7 +499,6 @@
                 <arquillianContainer.artifactId>${wildfly30.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly30.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -551,7 +543,6 @@
                 <arquillianContainer.artifactId>${wildfly31.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly31.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -596,7 +587,6 @@
                 <arquillianContainer.artifactId>${wildfly32.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly32.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -641,7 +631,6 @@
                 <arquillianContainer.artifactId>${wildfly33.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly33.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -686,7 +675,6 @@
                 <arquillianContainer.artifactId>${wildfly34.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly34.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -731,7 +719,6 @@
                 <arquillianContainer.artifactId>${wildfly35.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly35.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -776,7 +763,6 @@
                 <arquillianContainer.artifactId>${wildfly36.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly36.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -821,7 +807,6 @@
                 <arquillianContainer.artifactId>${wildfly37.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly37.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -866,7 +851,6 @@
                 <arquillianContainer.artifactId>${wildfly38.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly38.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -917,7 +901,6 @@
                 <arquillianContainer.artifactId>${wildfly39.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly39.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 
@@ -962,7 +945,6 @@
                 <arquillianContainer.artifactId>${wildfly40.arquillianContainer.artifactId}</arquillianContainer.artifactId>
                 <arquillianContainer.version>${wildfly40.arquillianContainer.version}</arquillianContainer.version>
 
-                <tests.ignoredCategory>${ignoredCategory.wildfly11}</tests.ignoredCategory>
                 <tests.specialJvmArgs />
             </properties>
 

@@ -98,10 +98,8 @@ public class AddDistributedCacheOnlineTest {
         assertEquals(1780L, ops.readAttribute(TEST_CACHE_ADDRESS, "l1-lifespan").longValue());
         assertEquals(3, ops.readAttribute(TEST_CACHE_ADDRESS, "owners").intValue());
         assertEquals(74, ops.readAttribute(TEST_CACHE_ADDRESS, "segments").intValue());
-        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_3_0_0)) {  // WildFly 9+ only
-            assertEquals(1.47, ops.readAttribute(TEST_CACHE_ADDRESS, "capacity-factor").doubleValue(), 0.001);
-            assertEquals(ConsistentHashStrategy.INTER_CACHE.getType(),
-                    ops.readAttribute(TEST_CACHE_ADDRESS, "consistent-hash-strategy").stringValue());
-        }
+        assertEquals(1.47, ops.readAttribute(TEST_CACHE_ADDRESS, "capacity-factor").doubleValue(), 0.001);
+        assertEquals(ConsistentHashStrategy.INTER_CACHE.getType(),
+                ops.readAttribute(TEST_CACHE_ADDRESS, "consistent-hash-strategy").stringValue());
     }
 }

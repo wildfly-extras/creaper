@@ -7,16 +7,12 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.elytron.AbstractElytronOnlineTest;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
-import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 
 @RunWith(Arquillian.class)
@@ -33,11 +29,7 @@ public class AddPermissionSetOnlineTest extends AbstractElytronOnlineTest {
 
     @BeforeClass
     public static void checkServerVersionIsSupported() throws Exception {
-        // check version is supported
-        ServerVersion serverVersion
-                = ManagementClient.online(OnlineOptions.standalone().localDefault().build()).version();
-        Assume.assumeTrue("Permission set is available since WildFly 13.",
-                serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_7_0_0));
+        // Permission set is available since WildFly 13.
     }
 
     @After

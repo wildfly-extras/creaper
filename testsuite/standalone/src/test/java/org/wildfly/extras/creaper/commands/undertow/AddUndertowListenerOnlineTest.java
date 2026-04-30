@@ -28,7 +28,6 @@ import java.security.KeyStore;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
 
 @Category(WildFlyTests.class)
 @RunWith(Arquillian.class)
@@ -50,8 +49,6 @@ public class AddUndertowListenerOnlineTest {
     @Before
     public void connect() throws Exception {
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
-        assumeTrue("The test requires Undertow that supports HTTP/2 options on listener, which is available since WildFly 9",
-                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_3_0_0));
         ops = new Operations(client);
         admin = new Administration(client);
 
@@ -119,10 +116,6 @@ public class AddUndertowListenerOnlineTest {
 
     @Test
     public void addHttpsConnectorElytron_commandSucceeds() throws Exception {
-        // requires Elytron which is available since WildFly 11
-        Assume.assumeTrue("Elytron is available since WildFly 11.",
-                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_5_0_0));
-
         String alias = "creaper";
         File keystoreFile = tmp.newFile();
         KeyStore keyStore = KeyPairAndCertificate.generateSelfSigned("Creaper").toKeyStore(alias, TEST_PASSWORD);
