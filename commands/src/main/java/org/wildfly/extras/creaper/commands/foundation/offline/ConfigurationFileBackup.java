@@ -15,7 +15,11 @@ import java.io.IOException;
  * violated, an exception is thrown. For special circumstances, when the backup that was already acquired is no longer
  * needed and is not going to be restored, a {@code destroy} command is provided. If there was no backup acquired,
  * the destroy command does nothing.
+ *
+ * @deprecated Offline XML manipulation is superseded by the embedded server configuration approach.
+ * Use online management operations with an embedded server instead.
  */
+@Deprecated
 public final class ConfigurationFileBackup {
     private static final Logger log = Logger.getLogger(ConfigurationFileBackup.class);
 

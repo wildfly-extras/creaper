@@ -52,7 +52,10 @@ public final class ManagementClient {
      * @param options connection options (root directory of the application server etc.)
      * @throws IOException if the specified configuration file doesn't exist or an I/O error occurs during initial
      * discovery
+     * @deprecated Offline XML manipulation is superseded by the embedded server configuration approach.
+     * Use online management operations with an embedded server instead.
      */
+    @Deprecated
     public static OfflineManagementClient offline(OfflineOptions options) throws IOException {
         return OfflineClientFactory.instance.create(options);
     }

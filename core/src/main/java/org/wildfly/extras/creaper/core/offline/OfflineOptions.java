@@ -10,7 +10,11 @@ import java.io.IOException;
  * actually set. That means that the IDE guides you through the configuration and once the code compiles, you can be
  * sure you didn't forget anything important. The downside is that the implementation is a bit involved and exposes
  * quite a number of public types.
+ *
+ * @deprecated Offline XML manipulation is superseded by the embedded server configuration approach.
+ * Use online management operations with an embedded server instead.
  */
+@Deprecated
 public final class OfflineOptions {
     public final boolean isStandalone;
 
