@@ -46,7 +46,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        java: [ 11 ]
+        java: [ 17 ]
       fail-fast: false
     name: Non-elytron tests on JDK ${{ matrix.java }} - WildFly 34 profile
     steps:
@@ -63,7 +63,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        java: [ 11 ]
+        java: [ 17 ]
       fail-fast: false
     name: Elytron tests on JDK ${{ matrix.java }} - WildFly 34 profile
     steps:

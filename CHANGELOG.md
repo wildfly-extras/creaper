@@ -12,9 +12,9 @@
 - deprecated the entire offline commands subsystem (`OfflineManagementClient`, `OfflineCommand`,
   `OfflineOptions`, `GroovyXmlTransform`, etc.); offline XML manipulation is superseded by the
   embedded server configuration approach — use online management operations with an embedded server instead
-- upgraded minimum Java version from 8 to 11
+- upgraded minimum Java version from 8 to 17
 - upgraded compile-time WildFly Core dependency to 29.0.0.Final
-- upgraded groovy to 4.0.30
+- upgraded groovy to 4.0.31
 - upgraded Arquillian Core to 1.10.0
 - upgraded SpotBugs Maven plugin to 4.9.8.3
 - added JDK 25 CI, removed WildFly 10 / JDK 8 CI
