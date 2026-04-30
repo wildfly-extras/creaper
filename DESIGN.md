@@ -6,7 +6,7 @@
 - small API surface
 - usage agnostic
 - allowing configuration changes in an online (against running server)
-  or offline (against a configuration file of a stopped server) fashion
+  fashion; offline (against a configuration file) is deprecated
 - provide a helping hand with testing management operations
 
 ## Non-goals
@@ -39,7 +39,8 @@
 
 - an entrypoint that can perform operations and commands
 - online management and offline management are separate and have separate
-  entrypoints (`OnlineManagementClient` and `OfflineManagementClient`)
+  entrypoints (`OnlineManagementClient` and `OfflineManagementClient`);
+  the offline subsystem is deprecated
 - online and offline commands are also separate (`OnlineCommand` and
   `OfflineCommand`), which provides for compile-time type checking
 
