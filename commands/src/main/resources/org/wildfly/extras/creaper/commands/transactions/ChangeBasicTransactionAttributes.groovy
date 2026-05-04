@@ -1,8 +1,5 @@
-import org.wildfly.extras.creaper.core.ServerVersion
-
-// attributes names by version
-statisticsEnabledAttrName = serverVersion.lessThan(ServerVersion.VERSION_2_0_0) ? 'enable-statistics' : 'statistics-enabled'
-useJournalStoreAttrName = serverVersion.lessThan(ServerVersion.VERSION_4_0_0) ? 'use-hornetq-store' : 'use-journal-store'
+statisticsEnabledAttrName = 'statistics-enabled'
+useJournalStoreAttrName = 'use-journal-store'
 
 if (nn(nodeIdentifier)) {
     transactions.'core-environment'.'@node-identifier' = nodeIdentifier as String

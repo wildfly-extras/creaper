@@ -14,6 +14,11 @@
   the WildFly HTTP management interface (`http-interface`) has been deprecated since WildFly 9 (2015,
   management model version 1.7.0) and none of the known consumers use it
 - removed `httpclient` (Apache HttpComponents Client 4) dependency
+- **fixed** infinispan cache commands (`AddDistributedCache`, `AddInvalidationCache`, `AddReplicatedCache`,
+  `AddLocalCache`) to work with WildFly 27+; **removed** builder methods for attributes dropped from the
+  infinispan subsystem: `jndiName()`, `module()`, `start()`, `asyncMarshalling()`, `mode()`,
+  `queueFlushInterval()`, `consistentHashStrategy()` and the `CacheMode` / `ConsistentHashStrategy` enums
+  (fixes #218)
 - fixed test compatibility with WildFly 39 infinispan schema changes
 - deprecated the entire offline commands subsystem (`OfflineManagementClient`, `OfflineCommand`,
   `OfflineOptions`, `GroovyXmlTransform`, etc.); offline XML manipulation is superseded by the

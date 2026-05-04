@@ -4,24 +4,16 @@ import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.operations.Values;
 
 public final class AddDistributedCache extends AbstractAddCache {
-    private final Boolean asyncMarshalling;
-    private final CacheMode mode;
-    private final Long queueFlushInterval;
     private final Long remoteTimeout;
     private final Double capacityFactor;
-    private final ConsistentHashStrategy consistentHashStrategy;
     private final Long l1lifespan;
     private final Integer owners;
     private final Integer segments;
 
     private AddDistributedCache(Builder builder) {
         super(builder, CacheType.DISTRIBUTED_CACHE);
-        this.asyncMarshalling = builder.asyncMarshalling;
-        this.mode = builder.mode;
-        this.queueFlushInterval = builder.queueFlushInterval;
         this.remoteTimeout = builder.remoteTimeout;
         this.capacityFactor = builder.capacityFactor;
-        this.consistentHashStrategy = builder.consistentHashStrategy;
         this.l1lifespan = builder.l1lifespan;
         this.owners = builder.owners;
         this.segments = builder.segments;
@@ -29,49 +21,23 @@ public final class AddDistributedCache extends AbstractAddCache {
 
     @Override
     protected Values addValuesSpecificForCacheType(Values generalCacheValues, ServerVersion version) {
-        generalCacheValues = generalCacheValues
-                .andOptional("capacity-factor", capacityFactor)
-                .andOptional("consistent-hash-strategy",
-                        consistentHashStrategy != null ? consistentHashStrategy.getType() : null);
-
         return generalCacheValues
-                .andOptional("async-marshalling", asyncMarshalling)
-                .andOptional("mode", mode != null ? mode.getMode() : null)
-                .andOptional("queue-flush-interval", queueFlushInterval)
                 .andOptional("remote-timeout", remoteTimeout)
+                .andOptional("capacity-factor", capacityFactor)
                 .andOptional("l1-lifespan", l1lifespan)
                 .andOptional("owners", owners)
                 .andOptional("segments", segments);
     }
 
     public static final class Builder extends AbstractAddCache.Builder<Builder> {
-        private Boolean asyncMarshalling;
-        private CacheMode mode;
-        private Long queueFlushInterval;
         private Long remoteTimeout;
         private Double capacityFactor;
-        private ConsistentHashStrategy consistentHashStrategy;
         private Long l1lifespan;
         private Integer owners;
         private Integer segments;
 
         public Builder(String name) {
             super(name);
-        }
-
-        public Builder asyncMarshalling(Boolean asyncMarshalling) {
-            this.asyncMarshalling = asyncMarshalling;
-            return this;
-        }
-
-        public Builder mode(CacheMode mode) {
-            this.mode = mode;
-            return this;
-        }
-
-        public Builder queueFlushInterval(Long queueFlushInterval) {
-            this.queueFlushInterval = queueFlushInterval;
-            return this;
         }
 
         public Builder remoteTimeout(Long remoteTimeout) {
@@ -81,11 +47,6 @@ public final class AddDistributedCache extends AbstractAddCache {
 
         public Builder capacityFactor(Double capacityFactor) {
             this.capacityFactor = capacityFactor;
-            return this;
-        }
-
-        public Builder consistentHashStrategy(ConsistentHashStrategy consistentHashStrategy) {
-            this.consistentHashStrategy = consistentHashStrategy;
             return this;
         }
 
