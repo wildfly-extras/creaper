@@ -7,7 +7,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
-import org.junit.BeforeClass;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.elytron.AbstractElytronOnlineTest;
@@ -26,10 +26,6 @@ public class AddPermissionSetOnlineTest extends AbstractElytronOnlineTest {
             .and("permission-set", TEST_PERMISSION_SET_NAME2);
 
     private static final String ELYTRON_MODULE = "org.wildfly.security.elytron";
-
-    @BeforeClass
-    public static void checkServerVersionIsSupported() throws Exception {
-    }
 
     @After
     public void cleanup() throws Exception {

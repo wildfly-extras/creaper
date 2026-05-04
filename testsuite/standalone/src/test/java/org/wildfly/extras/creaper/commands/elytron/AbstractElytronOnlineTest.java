@@ -14,7 +14,7 @@ import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
@@ -32,10 +32,6 @@ public abstract class AbstractElytronOnlineTest {
     protected Administration administration;
 
     protected static final Address SUBSYSTEM_ADDRESS = Address.subsystem("elytron");
-
-    @BeforeClass
-    public static void checkServerVersionIsSupported() throws Exception {
-    }
 
     @Before
     public void setupCreaperForTest() throws IOException {
