@@ -11,37 +11,6 @@ import static org.junit.Assert.assertTrue;
 public class ServerVersionTest {
     @Test
     public void referenceEquality() {
-        assertSame(ServerVersion.VERSION_0_0_0, ServerVersion.from(0, 0, 0));
-        assertSame(ServerVersion.VERSION_1_0_0, ServerVersion.from(1, 0, 0));
-        assertSame(ServerVersion.VERSION_1_1_0, ServerVersion.from(1, 1, 0));
-        assertSame(ServerVersion.VERSION_1_2_0, ServerVersion.from(1, 2, 0));
-        assertSame(ServerVersion.VERSION_1_3_0, ServerVersion.from(1, 3, 0));
-        assertSame(ServerVersion.VERSION_1_4_0, ServerVersion.from(1, 4, 0));
-        assertSame(ServerVersion.VERSION_1_5_0, ServerVersion.from(1, 5, 0));
-        assertSame(ServerVersion.VERSION_1_6_0, ServerVersion.from(1, 6, 0));
-        assertSame(ServerVersion.VERSION_1_7_0, ServerVersion.from(1, 7, 0));
-        assertSame(ServerVersion.VERSION_1_8_0, ServerVersion.from(1, 8, 0));
-        assertSame(ServerVersion.VERSION_2_0_0, ServerVersion.from(2, 0, 0));
-        assertSame(ServerVersion.VERSION_2_1_0, ServerVersion.from(2, 1, 0));
-        assertSame(ServerVersion.VERSION_2_2_0, ServerVersion.from(2, 2, 0));
-        assertSame(ServerVersion.VERSION_3_0_0, ServerVersion.from(3, 0, 0));
-        assertSame(ServerVersion.VERSION_4_0_0, ServerVersion.from(4, 0, 0));
-        assertSame(ServerVersion.VERSION_4_1_0, ServerVersion.from(4, 1, 0));
-        assertSame(ServerVersion.VERSION_4_2_0, ServerVersion.from(4, 2, 0));
-        assertSame(ServerVersion.VERSION_5_0_0, ServerVersion.from(5, 0, 0));
-        assertSame(ServerVersion.VERSION_6_0_0, ServerVersion.from(6, 0, 0));
-        assertSame(ServerVersion.VERSION_7_0_0, ServerVersion.from(7, 0, 0));
-        assertSame(ServerVersion.VERSION_8_0_0, ServerVersion.from(8, 0, 0));
-        assertSame(ServerVersion.VERSION_9_0_0, ServerVersion.from(9, 0, 0));
-        assertSame(ServerVersion.VERSION_10_0_0, ServerVersion.from(10, 0, 0));
-        assertSame(ServerVersion.VERSION_12_0_0, ServerVersion.from(12, 0, 0));
-        assertSame(ServerVersion.VERSION_13_0_0, ServerVersion.from(13, 0, 0));
-        assertSame(ServerVersion.VERSION_14_0_0, ServerVersion.from(14, 0, 0));
-        assertSame(ServerVersion.VERSION_15_0_0, ServerVersion.from(15, 0, 0));
-        assertSame(ServerVersion.VERSION_16_0_0, ServerVersion.from(16, 0, 0));
-        assertSame(ServerVersion.VERSION_17_0_0, ServerVersion.from(17, 0, 0));
-        assertSame(ServerVersion.VERSION_18_0_0, ServerVersion.from(18, 0, 0));
-        assertSame(ServerVersion.VERSION_19_0_0, ServerVersion.from(19, 0, 0));
         assertSame(ServerVersion.VERSION_20_0_0, ServerVersion.from(20, 0, 0));
         assertSame(ServerVersion.VERSION_21_0_0, ServerVersion.from(21, 0, 0));
         assertSame(ServerVersion.VERSION_22_0_0, ServerVersion.from(22, 0, 0));
@@ -62,37 +31,6 @@ public class ServerVersionTest {
 
     @Test
     public void equality() {
-        assertEquals(ServerVersion.VERSION_0_0_0, ServerVersion.from(0, 0, 0));
-        assertEquals(ServerVersion.VERSION_1_0_0, ServerVersion.from(1, 0, 0));
-        assertEquals(ServerVersion.VERSION_1_1_0, ServerVersion.from(1, 1, 0));
-        assertEquals(ServerVersion.VERSION_1_2_0, ServerVersion.from(1, 2, 0));
-        assertEquals(ServerVersion.VERSION_1_3_0, ServerVersion.from(1, 3, 0));
-        assertEquals(ServerVersion.VERSION_1_4_0, ServerVersion.from(1, 4, 0));
-        assertEquals(ServerVersion.VERSION_1_5_0, ServerVersion.from(1, 5, 0));
-        assertEquals(ServerVersion.VERSION_1_6_0, ServerVersion.from(1, 6, 0));
-        assertEquals(ServerVersion.VERSION_1_7_0, ServerVersion.from(1, 7, 0));
-        assertEquals(ServerVersion.VERSION_1_8_0, ServerVersion.from(1, 8, 0));
-        assertEquals(ServerVersion.VERSION_2_0_0, ServerVersion.from(2, 0, 0));
-        assertEquals(ServerVersion.VERSION_2_1_0, ServerVersion.from(2, 1, 0));
-        assertEquals(ServerVersion.VERSION_2_2_0, ServerVersion.from(2, 2, 0));
-        assertEquals(ServerVersion.VERSION_3_0_0, ServerVersion.from(3, 0, 0));
-        assertEquals(ServerVersion.VERSION_4_0_0, ServerVersion.from(4, 0, 0));
-        assertEquals(ServerVersion.VERSION_4_1_0, ServerVersion.from(4, 1, 0));
-        assertEquals(ServerVersion.VERSION_4_2_0, ServerVersion.from(4, 2, 0));
-        assertEquals(ServerVersion.VERSION_5_0_0, ServerVersion.from(5, 0, 0));
-        assertEquals(ServerVersion.VERSION_6_0_0, ServerVersion.from(6, 0, 0));
-        assertEquals(ServerVersion.VERSION_7_0_0, ServerVersion.from(7, 0, 0));
-        assertEquals(ServerVersion.VERSION_8_0_0, ServerVersion.from(8, 0, 0));
-        assertEquals(ServerVersion.VERSION_9_0_0, ServerVersion.from(9, 0, 0));
-        assertEquals(ServerVersion.VERSION_10_0_0, ServerVersion.from(10, 0, 0));
-        assertEquals(ServerVersion.VERSION_12_0_0, ServerVersion.from(12, 0, 0));
-        assertEquals(ServerVersion.VERSION_13_0_0, ServerVersion.from(13, 0, 0));
-        assertSame(ServerVersion.VERSION_14_0_0, ServerVersion.from(14, 0, 0));
-        assertSame(ServerVersion.VERSION_15_0_0, ServerVersion.from(15, 0, 0));
-        assertSame(ServerVersion.VERSION_16_0_0, ServerVersion.from(16, 0, 0));
-        assertSame(ServerVersion.VERSION_17_0_0, ServerVersion.from(17, 0, 0));
-        assertSame(ServerVersion.VERSION_18_0_0, ServerVersion.from(18, 0, 0));
-        assertSame(ServerVersion.VERSION_19_0_0, ServerVersion.from(19, 0, 0));
         assertSame(ServerVersion.VERSION_20_0_0, ServerVersion.from(20, 0, 0));
         assertSame(ServerVersion.VERSION_21_0_0, ServerVersion.from(21, 0, 0));
         assertSame(ServerVersion.VERSION_22_0_0, ServerVersion.from(22, 0, 0));

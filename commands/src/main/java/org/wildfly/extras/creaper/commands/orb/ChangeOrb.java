@@ -16,14 +16,7 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-/**
- * Creaper command which allows settings of orb subsystem
- *
- * <ul>
- *   <li>JacORB for AS7 and WildFly <= 8</li>
- *   <li>OpenJDK IIOP ORB for WildFly >= 9</li>
- * </ul>
- */
+/** Creaper command which allows settings of the iiop-openjdk subsystem. */
 public final class ChangeOrb implements OfflineCommand, OnlineCommand {
 
     private static final String JACORB_SUBSYSTEM_NAME = "jacorb";
@@ -250,9 +243,7 @@ public final class ChangeOrb implements OfflineCommand, OnlineCommand {
     }
 
     enum OrbType {
-        // jacorb in AS7 and WFLY 8
         JACORB,
-        // openjdk iiop in WFLY 9 and higher
         IIOP;
 
         static OrbType get(ServerVersion serverVersion) {

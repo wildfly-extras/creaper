@@ -39,32 +39,10 @@ public class OfflineServerVersionTest {
             + "    </profiles>\n"
             + "</domain>";
 
-    private static final String EAP6_ROOT = "1.7";
-    private static final String EAP6_LOGGING = "1.5";
-    private static final String EAP6_EE = "1.2";
-
-    private static final String EAP70_ROOT = "4.0";
-    private static final String EAP71_ROOT = "5.0";
     private static final String EAP7_LOGGING = "3.0";
-    private static final String EAP7_EE = "4.0";
 
     private static final String EAP8_EE = "6.0";
 
-    private static final String WFLY12_ROOT = "6.0";
-    private static final String WFLY13_ROOT = "7.0";
-    private static final String WFLY14_ROOT = "8.0";
-    private static final String WFLY15_ROOT = "9.0";
-    private static final String WFLY16_ROOT = "10.0";
-    private static final String WFLY17_ROOT = "10.0";
-    private static final String WFLY18_ROOT = "10.0";
-    private static final String WFLY19_ROOT = "12.0";
-    private static final String WFLY20_ROOT = "13.0";
-    private static final String WFLY21_ROOT = "14.0";
-    private static final String WFLY22_ROOT = "15.0";
-    private static final String WFLY23_ROOT = "16.0";
-    private static final String WFLY24_ROOT = "17.0";
-    private static final String WFLY25_ROOT = "18.0";
-    private static final String WFLY26_ROOT = "19.0";
     private static final String WFLY27_ROOT = "20.0";
     private static final String WFLY28_ROOT = "21.0";
     private static final String WFLY29_ROOT = "22.0";
@@ -79,121 +57,6 @@ public class OfflineServerVersionTest {
 
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();
-
-    @Test
-    public void as70x() throws IOException {
-        test(ServerVersion.VERSION_0_0_0, STANDALONE_XML, "1.0", EAP6_LOGGING, EAP6_EE);
-    }
-
-    @Test
-    public void as710() throws IOException {
-        test(ServerVersion.VERSION_1_0_0, STANDALONE_XML, "1.1", EAP6_LOGGING, EAP6_EE);
-    }
-
-    @Test
-    public void as711() throws IOException {
-        test(ServerVersion.VERSION_1_1_0, STANDALONE_XML, "1.2", EAP6_LOGGING, EAP6_EE);
-    }
-
-    @Test
-    public void eap60x() throws IOException {
-        test(ServerVersion.VERSION_1_2_0, STANDALONE_XML, "1.3", EAP6_LOGGING, EAP6_EE);
-    }
-
-    @Test
-    public void eap61x() throws IOException {
-        test(ServerVersion.VERSION_1_4_0, STANDALONE_XML, "1.4", EAP6_LOGGING, EAP6_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_eap6() throws IOException {
-        test(ServerVersion.VERSION_1_7_0, STANDALONE_XML, EAP6_ROOT, EAP6_LOGGING, EAP6_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_eap70() throws IOException {
-        test(ServerVersion.VERSION_4_0_0, STANDALONE_XML, EAP70_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_eap71() throws IOException {
-        test(ServerVersion.VERSION_5_0_0, STANDALONE_XML, EAP71_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly12() throws IOException {
-        test(ServerVersion.VERSION_6_0_0, STANDALONE_XML, WFLY12_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly13() throws IOException {
-        test(ServerVersion.VERSION_7_0_0, STANDALONE_XML, WFLY13_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly14() throws IOException {
-        test(ServerVersion.VERSION_8_0_0, STANDALONE_XML, WFLY14_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly15() throws IOException {
-        test(ServerVersion.VERSION_9_0_0, STANDALONE_XML, WFLY15_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly16() throws IOException {
-        test(ServerVersion.VERSION_10_0_0, STANDALONE_XML, WFLY16_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly17() throws IOException {
-        test(ServerVersion.VERSION_10_0_0, STANDALONE_XML, WFLY17_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly18() throws IOException {
-        test(ServerVersion.VERSION_10_0_0, STANDALONE_XML, WFLY18_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly19() throws IOException {
-        test(ServerVersion.VERSION_12_0_0, STANDALONE_XML, WFLY19_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly20() throws IOException {
-        test(ServerVersion.VERSION_13_0_0, STANDALONE_XML, WFLY20_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly21() throws IOException {
-        test(ServerVersion.VERSION_14_0_0, STANDALONE_XML, WFLY21_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly22() throws IOException {
-        test(ServerVersion.VERSION_15_0_0, STANDALONE_XML, WFLY22_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly23() throws IOException {
-        test(ServerVersion.VERSION_16_0_0, STANDALONE_XML, WFLY23_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly24() throws IOException {
-        test(ServerVersion.VERSION_17_0_0, STANDALONE_XML, WFLY24_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly25() throws IOException {
-        test(ServerVersion.VERSION_18_0_0, STANDALONE_XML, WFLY25_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverStandaloneXml_wfly26() throws IOException {
-        test(ServerVersion.VERSION_19_0_0, STANDALONE_XML, WFLY26_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
 
     @Test
     public void discoverStandaloneXml_wfly27() throws IOException {
@@ -230,110 +93,18 @@ public class OfflineServerVersionTest {
         test(ServerVersion.VERSION_26_0_0, STANDALONE_XML, WFLY33_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
-    public void discoverStandaloneXml_wfly34_community() throws IOException {
+    public void discoverStandaloneXml_community() throws IOException {
         test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
-    public void discoverStandaloneXml_wfly34_experimental() throws IOException {
-        // Doesn't currently exist but verify it can be parsed correctly.
+    public void discoverStandaloneXml_experimental() throws IOException {
         test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, EXPERIMENTAL, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
-    public void discoverStandaloneXml_wfly34_preview() throws IOException {
-        // Doesn't currently exist but verify it can be parsed correctly.
+    public void discoverStandaloneXml_preview() throws IOException {
         test(ServerVersion.VERSION_20_0_0, STANDALONE_XML, PREVIEW, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
-    }
-
-    @Test
-    public void discoverHostXml_eap6() throws IOException {
-        test(ServerVersion.VERSION_1_7_0, HOST_XML, EAP6_ROOT, EAP6_LOGGING, EAP6_EE);
-    }
-
-    @Test
-    public void discoverHostXml_eap70() throws IOException {
-        test(ServerVersion.VERSION_4_0_0, HOST_XML, EAP70_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_eap71() throws IOException {
-        test(ServerVersion.VERSION_5_0_0, HOST_XML, EAP71_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly12() throws IOException {
-        test(ServerVersion.VERSION_6_0_0, HOST_XML, WFLY12_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly13() throws IOException {
-        test(ServerVersion.VERSION_7_0_0, HOST_XML, WFLY13_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly14() throws IOException {
-        test(ServerVersion.VERSION_8_0_0, HOST_XML, WFLY14_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly15() throws IOException {
-        test(ServerVersion.VERSION_9_0_0, HOST_XML, WFLY15_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly16() throws IOException {
-        test(ServerVersion.VERSION_10_0_0, HOST_XML, WFLY16_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly17() throws IOException {
-        test(ServerVersion.VERSION_10_0_0, HOST_XML, WFLY17_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly18() throws IOException {
-        test(ServerVersion.VERSION_10_0_0, HOST_XML, WFLY18_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly19() throws IOException {
-        test(ServerVersion.VERSION_12_0_0, HOST_XML, WFLY19_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly20() throws IOException {
-        test(ServerVersion.VERSION_13_0_0, HOST_XML, WFLY20_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly21() throws IOException {
-        test(ServerVersion.VERSION_14_0_0, HOST_XML, WFLY21_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly22() throws IOException {
-        test(ServerVersion.VERSION_15_0_0, HOST_XML, WFLY22_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly23() throws IOException {
-        test(ServerVersion.VERSION_16_0_0, HOST_XML, WFLY23_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly24() throws IOException {
-        test(ServerVersion.VERSION_17_0_0, HOST_XML, WFLY24_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly25() throws IOException {
-        test(ServerVersion.VERSION_18_0_0, HOST_XML, WFLY25_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverHostXml_wfly26() throws IOException {
-        test(ServerVersion.VERSION_19_0_0, HOST_XML, WFLY26_ROOT, EAP7_LOGGING, EAP7_EE);
     }
 
     @Test
@@ -371,110 +142,18 @@ public class OfflineServerVersionTest {
         test(ServerVersion.VERSION_26_0_0, HOST_XML, WFLY33_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
-    public void discoverHostXml_wfly34_community() throws IOException {
+    public void discoverHostXml_community() throws IOException {
         test(ServerVersion.VERSION_20_0_0, HOST_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
-    public void discoverHostXml_wfly34_preview() throws IOException {
-        // Doesn't currently exist but verify it can be parsed correctly.
+    public void discoverHostXml_preview() throws IOException {
         test(ServerVersion.VERSION_20_0_0, HOST_XML, PREVIEW, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
-    public void discoverHostXml_wfly34_experimental() throws IOException {
-        // Doesn't currently exist but verify it can be parsed correctly.
+    public void discoverHostXml_experimental() throws IOException {
         test(ServerVersion.VERSION_20_0_0, HOST_XML, EXPERIMENTAL, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_eap6() throws IOException {
-        test(ServerVersion.VERSION_1_7_0, DOMAIN_XML, EAP6_ROOT, EAP6_LOGGING, EAP6_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_eap70() throws IOException {
-        test(ServerVersion.VERSION_4_0_0, DOMAIN_XML, EAP70_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_eap71() throws IOException {
-        test(ServerVersion.VERSION_5_0_0, DOMAIN_XML, EAP71_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly12() throws IOException {
-        test(ServerVersion.VERSION_6_0_0, DOMAIN_XML, WFLY12_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly13() throws IOException {
-        test(ServerVersion.VERSION_7_0_0, DOMAIN_XML, WFLY13_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly14() throws IOException {
-        test(ServerVersion.VERSION_8_0_0, DOMAIN_XML, WFLY14_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly15() throws IOException {
-        test(ServerVersion.VERSION_9_0_0, DOMAIN_XML, WFLY15_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly16() throws IOException {
-        test(ServerVersion.VERSION_10_0_0, DOMAIN_XML, WFLY16_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly17() throws IOException {
-        test(ServerVersion.VERSION_10_0_0, DOMAIN_XML, WFLY17_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly18() throws IOException {
-        test(ServerVersion.VERSION_10_0_0, DOMAIN_XML, WFLY18_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly19() throws IOException {
-        test(ServerVersion.VERSION_12_0_0, DOMAIN_XML, WFLY19_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly20() throws IOException {
-        test(ServerVersion.VERSION_13_0_0, DOMAIN_XML, WFLY20_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly21() throws IOException {
-        test(ServerVersion.VERSION_14_0_0, DOMAIN_XML, WFLY21_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly22() throws IOException {
-        test(ServerVersion.VERSION_15_0_0, DOMAIN_XML, WFLY22_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly23() throws IOException {
-        test(ServerVersion.VERSION_16_0_0, DOMAIN_XML, WFLY23_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly24() throws IOException {
-        test(ServerVersion.VERSION_17_0_0, DOMAIN_XML, WFLY24_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly25() throws IOException {
-        test(ServerVersion.VERSION_18_0_0, DOMAIN_XML, WFLY25_ROOT, EAP7_LOGGING, EAP7_EE);
-    }
-
-    @Test
-    public void discoverDomainXml_wfly26() throws IOException {
-        test(ServerVersion.VERSION_19_0_0, DOMAIN_XML, WFLY26_ROOT, EAP7_LOGGING, EAP7_EE);
     }
 
     @Test
@@ -512,19 +191,17 @@ public class OfflineServerVersionTest {
         test(ServerVersion.VERSION_26_0_0, DOMAIN_XML, WFLY33_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
-    public void discoverDomainXml_wfly34_community() throws IOException {
+    public void discoverDomainXml_community() throws IOException {
         test(ServerVersion.VERSION_20_0_0, DOMAIN_XML, COMMUNITY, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
-    public void discoverDomainXml_wfly34_preview() throws IOException {
-        // Doesn't currently exist but verify it can be parsed correctly.
+    public void discoverDomainXml_preview() throws IOException {
         test(ServerVersion.VERSION_20_0_0, DOMAIN_XML, PREVIEW, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 
     @Test
-    public void discoverDomainXml_wfly34_experimental() throws IOException {
-        // Doesn't currently exist but verify it can be parsed correctly.
+    public void discoverDomainXml_experimental() throws IOException {
         test(ServerVersion.VERSION_20_0_0, DOMAIN_XML, EXPERIMENTAL, WFLY27_ROOT, EAP7_LOGGING, EAP8_EE);
     }
 

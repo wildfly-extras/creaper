@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.foundation.offline.ConfigurationFileBackup;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
@@ -61,7 +60,7 @@ public class ChangeOrbOnlineTest {
     @Test
     @InSequence(2)
     public void changeAll() throws Exception {
-        boolean isIiop = !onlineClient.version().lessThan(ServerVersion.VERSION_3_0_0);
+        boolean isIiop = true;
         Address address = isIiop ? Address.subsystem("iiop-openjdk") : Address.subsystem("jacorb");
 
         ChangeOrb.Builder cmdBuilder = Orb.attributes()
@@ -80,11 +79,6 @@ public class ChangeOrbOnlineTest {
                 .clientRequires(AuthValues.CLIENT_AUTH)
                 .serverSupports(AuthValues.NONE)
                 .serverRequires(AuthValues.CLIENT_AUTH);
-
-        if (onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
-            // legacy security was removed in WF25
-            cmdBuilder.securityDomain("other");
-        }
 
         if (isIiop) {
             cmdBuilder
@@ -112,9 +106,6 @@ public class ChangeOrbOnlineTest {
         assertEquals("supported", attributes.get("root-context"));
         assertEquals("jacorb", attributes.get("socket-binding"));
         assertEquals("jacorb-ssl", attributes.get("ssl-socket-binding"));
-        if (onlineClient.version().lessThanOrEqualTo(ServerVersion.VERSION_18_0_0)) {
-            assertEquals("other", attributes.get("security-domain"));
-        }
         assertEquals("ClientAuth", attributes.get("client-requires"));
         assertEquals("None", attributes.get("server-supports"));
         assertEquals("ClientAuth", attributes.get("server-requires"));

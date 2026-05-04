@@ -245,7 +245,6 @@ public class AddClientSSLContextOfflineTest {
                 .providerName("ksProvider")
                 .providers("ksProviderLoader");
 
-        // This attribute has been added in WildFly 19.
         addClientSslContextBuilder.cipherSuiteNames(TLS13_CIPHER_SUITE_NAMES);
 
         assertXmlIdentical(SUBSYSTEM_EMPTY, Files.toString(cfg, Charsets.UTF_8));

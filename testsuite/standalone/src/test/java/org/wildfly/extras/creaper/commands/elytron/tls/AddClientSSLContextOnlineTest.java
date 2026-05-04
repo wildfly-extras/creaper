@@ -102,14 +102,14 @@ public class AddClientSSLContextOnlineTest extends AbstractAddSSLContextOnlineTe
                 .trustManager(TRUST_MNGR_NAME)
                 .protocols(CLIENT_SSL_CONTEXT_PROTOCOL);
 
-        // This attribute has been added in WildFly 19.
+
         addClientSSLContextBuilder.cipherSuiteNames(TLS13_CIPHER_SUITE_NAMES);
 
         client.apply(addClientSSLContextBuilder.build());
         assertTrue("The client ssl context should be created", ops.exists(CLIENT_SSL_CONTEXT_ADDRESS));
 
         checkAttribute("cipher-suite-filter", "ALL");
-        // This attribute has been added in WildFly 19.
+
         checkAttribute("cipher-suite-names", TLS13_CIPHER_SUITE_NAMES);
         checkAttribute("key-manager", TEST_KEY_MNGR_NAME);
         checkAttribute("trust-manager", TRUST_MNGR_NAME);

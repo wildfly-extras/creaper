@@ -209,7 +209,7 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
             .andOptional("use-ccm", useCcm)
             .andOptional("prepared-statements-cache-size", preparedStatementCacheSize)
             .andOptional("share-prepared-statements", sharePreparedStatements)
-            .and("enabled", enableAfterCreation); // enough to enable/disable on WildFly, and AS7 can handle it too
+            .and("enabled", enableAfterCreation);
         if (flushStrategy != null) values = values.and("flush-strategy", flushStrategy.value());
         if (transactionIsolation != null) values = values.and("transaction-isolation", transactionIsolation.value());
         if (trackStatements != null) values = values.and("track-statements", trackStatements.value());

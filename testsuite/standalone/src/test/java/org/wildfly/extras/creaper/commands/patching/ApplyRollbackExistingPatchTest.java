@@ -75,7 +75,7 @@ public class ApplyRollbackExistingPatchTest {
         }
 
         ModelNodeResult serverVersionResult = ops.readAttribute(Address.root(), "product-version");
-        if (!serverVersionResult.hasDefinedValue()) { // happens on WildFly 8
+        if (!serverVersionResult.hasDefinedValue()) {
             serverVersionResult = ops.readAttribute(Address.root(), "release-version");
         }
         serverVersionResult.assertDefinedValue("Server version required for generating a test patch");

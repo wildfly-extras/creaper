@@ -10,12 +10,6 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-/**
- * <p>Please note that <b>WildFly 9 has a bug</b>: if the JDBC store is enabled, it isn't automatically disabled
- * when enabling the journal store. Moreover, disabling the JDBC store properly requires server restart,
- * which is why this command doesn't do that under the hood. All other versions (WildFly 8 and previous,
- * WildFly 10 and later) are fine.</p>
- */
 public final class ChangeBasicTransactionAttributes implements OnlineCommand, OfflineCommand {
 
     private final Integer timeout;
@@ -153,12 +147,6 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
 
     }
 
-    /**
-     * <p>Please note that <b>WildFly 9 has a bug</b>: if the JDBC store is enabled, it isn't automatically disabled
-     * when enabling the journal store. Moreover, disabling the JDBC store properly requires server restart,
-     * which is why this command doesn't do that under the hood. All other versions (WildFly 8 and previous,
-     * WildFly 10 and later) are fine.</p>
-     */
     public static final class Builder {
 
         private Integer timeout;
@@ -190,9 +178,6 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             return this;
         }
 
-        /**
-         * "hornetq-store-enable-async-io" will be used for AS7, WildFly 8 and WildFly 9
-         */
         public Builder journalStoreEnableAsyncIO(boolean val) {
             journalStoreEnableAsyncIO = val;
             return this;
@@ -216,9 +201,6 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             return this;
         }
 
-        /**
-         * "use-hornetq-store" will be used for AS7, WildFly 8 and WildFly 9
-         */
         public Builder useJournalStore(boolean val) {
             useJournalStore = val;
             return this;

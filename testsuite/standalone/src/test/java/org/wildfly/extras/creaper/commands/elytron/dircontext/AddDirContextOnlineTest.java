@@ -139,7 +139,6 @@ public class AddDirContextOnlineTest extends AbstractElytronOnlineTest {
         assertTrue("Dir context should be created", ops.exists(TEST_DIR_CONTEXT_ADDRESS));
 
 
-        // Since WildFly 15, created https://issues.redhat.com/browse/WFLY-13935
         final String throwString = "throw";
 
         checkAttribute(TEST_DIR_CONTEXT_ADDRESS, "url", "localhost");

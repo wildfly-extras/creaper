@@ -233,7 +233,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
             .andOptional("wrap-xa-resource", wrapXaResource)
             .andOptional("xa-datasource-class", xaDatasourceClass)
             .andOptional("xa-resource-timeout", xaResourceTimeout)
-            .and("enabled", enableAfterCreation); // enough to enable/disable on WildFly, and AS7 can handle it too
+            .and("enabled", enableAfterCreation);
         if (flushStrategy != null) values = values.and("flush-strategy", flushStrategy.value());
         if (transactionIsolation != null) values = values.and("transaction-isolation", transactionIsolation.value());
         if (trackPreparedStatements != null) values = values.and("track-statements", trackPreparedStatements.value());

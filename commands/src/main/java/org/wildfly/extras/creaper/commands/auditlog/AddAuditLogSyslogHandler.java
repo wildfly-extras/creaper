@@ -291,7 +291,6 @@ public final class AddAuditLogSyslogHandler implements OnlineCommand, OfflineCom
             return this;
         }
 
-        /** This is only supported for EAP 6.4.x or WildFly 9.0.0 and above. */
         public TcpBuilder reconnectTimeout(int reconnectTimeout) {
             this.reconnectTimeout = reconnectTimeout;
             return this;
@@ -328,7 +327,6 @@ public final class AddAuditLogSyslogHandler implements OnlineCommand, OfflineCom
             return this;
         }
 
-        /** This is only supported for EAP 6.4.x or WildFly 9.0.0 and above. */
         public TlsBuilder reconnectTimeout(int reconnectTimeout) {
             this.reconnectTimeout = reconnectTimeout;
             return this;

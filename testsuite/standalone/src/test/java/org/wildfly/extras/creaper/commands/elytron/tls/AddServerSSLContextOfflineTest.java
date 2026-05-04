@@ -274,7 +274,6 @@ public class AddServerSSLContextOfflineTest {
                 .useCipherSuitesOrder(false)
                 .wrap(true);
 
-        // This attribute has been added in WildFly 19.
         addServerSslContextBuilder.cipherSuiteNames(TLS13_CIPHER_SUITE_NAMES);
 
         assertXmlIdentical(SUBSYSTEM_EMPTY, Files.toString(cfg, Charsets.UTF_8));

@@ -17,7 +17,6 @@ import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 
 import java.io.IOException;
 
-// doesn't work on AS7/EAP6 because org.jboss.genericjms module.xml requires external jars
 @RunWith(Arquillian.class)
 public class RemoveConnectionFactoryFromRAOnlineTest {
     private static final String RA_ID = "genericjmsRA";

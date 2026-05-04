@@ -79,19 +79,11 @@ public final class AddDistributedCache extends AbstractAddCache {
             return this;
         }
 
-        /**
-         * {@code capacity-factor} is only supported on WildFly 9 and above,
-         * this setting will be ignored on previous versions.
-         */
         public Builder capacityFactor(Double capacityFactor) {
             this.capacityFactor = capacityFactor;
             return this;
         }
 
-        /**
-         * {@code consistent-hash-strategy} is only supported on WildFly 9 and above,
-         * this setting will be ignored on previous versions.
-         */
         public Builder consistentHashStrategy(ConsistentHashStrategy consistentHashStrategy) {
             this.consistentHashStrategy = consistentHashStrategy;
             return this;

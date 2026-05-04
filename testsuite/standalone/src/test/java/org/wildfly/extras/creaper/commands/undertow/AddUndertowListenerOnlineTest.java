@@ -2,7 +2,6 @@ package org.wildfly.extras.creaper.commands.undertow;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,7 +12,6 @@ import org.wildfly.extras.creaper.commands.elytron.CreateServerSSLContext;
 import org.wildfly.extras.creaper.commands.socketbindings.AddSocketBinding;
 import org.wildfly.extras.creaper.commands.socketbindings.RemoveSocketBinding;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -79,42 +77,6 @@ public class AddUndertowListenerOnlineTest {
     }
 
     @Test
-    public void addHttpsConnector_commandSucceeds() throws Exception {
-        Assume.assumeFalse("Legacy security was removed in WildFly 25.",
-                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0));
-        String alias = "creaper";
-        File keystoreFile = tmp.newFile();
-        KeyStore keyStore = KeyPairAndCertificate.generateSelfSigned("Creaper").toKeyStore(alias, TEST_PASSWORD);
-        keyStore.store(new FileOutputStream(keystoreFile), TEST_PASSWORD.toCharArray());
-
-        String realmName = "CreaperRealm";
-
-        client.apply(new AddHttpsSecurityRealm.Builder(realmName)
-                .keystorePath(keystoreFile.getAbsolutePath())
-                .keystorePassword(TEST_PASSWORD)
-                .alias(alias)
-                .truststorePath(keystoreFile.getAbsolutePath())
-                .truststorePassword(TEST_PASSWORD)
-                .build());
-
-        client.apply(new AddUndertowListener.HttpsBuilder(TEST_LISTENER_NAME, TEST_SOCKET_BINDING)
-                .securityRealm(realmName)
-                .build());
-
-        assertTrue(ops.exists(DEFAULT_SERVER_ADDRESS.and("https-listener", TEST_LISTENER_NAME)));
-        ops.readAttribute(DEFAULT_SERVER_ADDRESS.and("https-listener", TEST_LISTENER_NAME), "socket-binding")
-                .assertSuccess();
-
-        client.apply(new RemoveUndertowListener.Builder(UndertowListenerType.HTTPS_LISTENER, TEST_LISTENER_NAME)
-                .forDefaultServer());
-        admin.reloadIfRequired();
-        assertFalse(ops.exists(DEFAULT_SERVER_ADDRESS.and("https-listener", TEST_LISTENER_NAME)));
-
-        client.apply(new RemoveHttpsSecurityRealm(realmName));
-        admin.reloadIfRequired();
-    }
-
-    @Test
     public void addHttpsConnectorElytron_commandSucceeds() throws Exception {
         String alias = "creaper";
         File keystoreFile = tmp.newFile();
@@ -148,29 +110,6 @@ public class AddUndertowListenerOnlineTest {
         ops.remove(Address.subsystem("elytron").and("server-ssl-context", sslContextName)).assertSuccess();
         admin.reloadIfRequired();
     }
-
-    @Test
-    public void addSecurityRealm_withoutTruststore_commandSucceeds() throws Exception {
-        Assume.assumeFalse("Legacy security was removed in WildFly 25.",
-                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_18_0_0));
-        String alias = "creaper";
-        File keystoreFile = tmp.newFile();
-        KeyStore keyStore = KeyPairAndCertificate.generateSelfSigned("Creaper").toKeyStore(alias, TEST_PASSWORD);
-        keyStore.store(new FileOutputStream(keystoreFile), TEST_PASSWORD.toCharArray());
-
-        String realmName = "CreaperRealm";
-
-        client.apply(new AddHttpsSecurityRealm.Builder(realmName)
-                .keystorePath(keystoreFile.getAbsolutePath())
-                .keystorePassword(TEST_PASSWORD)
-                .alias(alias)
-                .build());
-        assertTrue(ops.exists(Address.coreService("management").and("security-realm", realmName)));
-
-        client.apply(new RemoveHttpsSecurityRealm(realmName));
-        admin.reloadIfRequired();
-    }
-
 
     @Test
     public void addAjpConnector_commandSucceeds() throws Exception {

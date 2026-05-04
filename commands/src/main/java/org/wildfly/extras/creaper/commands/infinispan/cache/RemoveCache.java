@@ -7,8 +7,7 @@ import org.wildfly.extras.creaper.core.online.operations.Headers;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
 /**
- * Removes an Infinispan cache.
- * Since WildFly 11 / EAP 7.1, this operation requires a reload, and this command
+ * Removes an Infinispan cache. This operation requires a reload, and this command
  * automatically appends the allow-resource-service-restart header.
  */
 public final class RemoveCache implements OnlineCommand {

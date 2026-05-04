@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.test.ManualTests;
@@ -57,11 +56,6 @@ public class ShutdownTest {
     @Test
     @InSequence(4)
     public void shutdownGracefully() throws Exception {
-        if (client.version().lessThan(ServerVersion.VERSION_3_0_0)) {
-            // graceful shutdown not supported
-            return;
-        }
-
         assertTrue(controller.isStarted(ManualTests.ARQUILLIAN_CONTAINER));
 
         admin.shutdownGracefully(5);
@@ -79,11 +73,6 @@ public class ShutdownTest {
     @Test
     @InSequence(6)
     public void shutdownGracefullyWithZeroTimeout() throws Exception {
-        if (client.version().lessThan(ServerVersion.VERSION_3_0_0)) {
-            // graceful shutdown not supported
-            return;
-        }
-
         assertTrue(controller.isStarted(ManualTests.ARQUILLIAN_CONTAINER));
 
         admin.shutdownGracefully(0);

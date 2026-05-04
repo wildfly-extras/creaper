@@ -35,7 +35,6 @@ public abstract class AbstractElytronOnlineTest {
 
     @BeforeClass
     public static void checkServerVersionIsSupported() throws Exception {
-        // Elytron is available since WildFly 11.
     }
 
     @Before

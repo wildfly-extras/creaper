@@ -8,6 +8,8 @@
 - **removed** legacy security commands (security domains, security realms, LDAP, Kerberos, etc.);
   the legacy security subsystem was removed from WildFly in version 25 — use Elytron instead
 - removed dead version checks for WildFly < 27 from all commands
+- **removed** `ServerVersion` constants for WildFly < 27 (`VERSION_0_0_0` through `VERSION_19_0_0`);
+  use `ServerVersion.from(major, minor, micro)` if you need to represent older versions
 - **removed** `ManagementProtocol.HTTP`, `ManagementProtocol.HTTPS`, and `HttpModelControllerClient`;
   the WildFly HTTP management interface (`http-interface`) has been deprecated since WildFly 9 (2015,
   management model version 1.7.0) and none of the known consumers use it

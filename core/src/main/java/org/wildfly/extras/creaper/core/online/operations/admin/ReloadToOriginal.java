@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
  * <p> Currently, managed domain <b>is not supported</b>.</p>
  *
  * <p>For more information about how the server supports this feature, see
- * <a href="http://lists.jboss.org/pipermail/jboss-as7-dev/2012-July/006280.html">http://lists.jboss.org/pipermail/jboss-as7-dev/2012-July/006280.html</a>.</p>
+ * <a href="https://lists.jboss.org/pipermail/jboss-as7-dev/2012-July/006280.html">the original discussion</a>.</p>
  */
 public final class ReloadToOriginal {
     private final OnlineManagementClient client;

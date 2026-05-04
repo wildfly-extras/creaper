@@ -29,7 +29,6 @@ public class AddPermissionSetOnlineTest extends AbstractElytronOnlineTest {
 
     @BeforeClass
     public static void checkServerVersionIsSupported() throws Exception {
-        // Permission set is available since WildFly 13.
     }
 
     @After
