@@ -28,7 +28,8 @@
 - upgraded groovy to 4.0.31
 - upgraded Arquillian Core to 1.10.0
 - upgraded SpotBugs Maven plugin to 4.9.8.3
-- added JDK 25 CI, replaced WildFly 34 CI with WildFly 27 (lowest supported), removed WildFly 10 / JDK 8 CI
+- added JDK 25 CI, replaced WildFly 34 CI with WildFly 27 (lowest supported), removed WildFly 10 / JDK 8 CI,
+  merged elytron / non-elytron CI jobs (legacy security commands were removed)
 
 ## 2.0.3 (2024-09-16)
 
