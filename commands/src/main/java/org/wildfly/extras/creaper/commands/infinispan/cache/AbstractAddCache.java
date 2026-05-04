@@ -4,6 +4,7 @@ import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
+import org.wildfly.extras.creaper.core.online.operations.Headers;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
 
@@ -35,7 +36,7 @@ abstract class AbstractAddCache implements OnlineCommand {
                 .andOptional("statistics-enabled", statisticsEnabled);
         values = addValuesSpecificForCacheType(values, ctx.version);
 
-        Operations ops = new Operations(ctx.client);
+        Operations ops = new Operations(ctx.client).headers(Headers.allowResourceServiceRestart());
         ops.add(address, values);
     }
 
