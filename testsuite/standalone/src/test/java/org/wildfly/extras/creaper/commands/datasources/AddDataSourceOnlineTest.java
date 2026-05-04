@@ -1,7 +1,6 @@
 package org.wildfly.extras.creaper.commands.datasources;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
