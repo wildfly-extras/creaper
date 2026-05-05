@@ -1,5 +1,7 @@
 # Changelog
 
+## 3.0.1 (not yet released)`
+
 ## 3.0.0 [The Blue Box Edition](https://en.wikipedia.org/wiki/TARDIS) (2026-05-05)
 
 - Upgraded minimum Java version from 8 to 17.
