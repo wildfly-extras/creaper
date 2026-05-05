@@ -15,7 +15,6 @@ import org.wildfly.extras.creaper.commands.elytron.tls.AddKeyManager;
 import org.wildfly.extras.creaper.commands.elytron.tls.AddKeyStore;
 import org.wildfly.extras.creaper.commands.elytron.tls.AddServerSSLContext;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 
 @RunWith(Arquillian.class)
@@ -140,13 +139,7 @@ public class AddDirContextOnlineTest extends AbstractElytronOnlineTest {
         assertTrue("Dir context should be created", ops.exists(TEST_DIR_CONTEXT_ADDRESS));
 
 
-        final String throwString;
-        if (client.version().lessThan(ServerVersion.VERSION_9_0_0)) {
-            throwString = "THROW";
-        } else {
-            // Since WildFly 15, created https://issues.redhat.com/browse/WFLY-13935
-            throwString = "throw";
-        }
+        final String throwString = "throw";
 
         checkAttribute(TEST_DIR_CONTEXT_ADDRESS, "url", "localhost");
         checkAttribute(TEST_DIR_CONTEXT_ADDRESS, "authentication-level", "STRONG");

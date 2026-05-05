@@ -2,7 +2,6 @@ package org.wildfly.extras.creaper.commands.transactions;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -11,12 +10,6 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-/**
- * <p>Please note that <b>WildFly 9 has a bug</b>: if the JDBC store is enabled, it isn't automatically disabled
- * when enabling the journal store. Moreover, disabling the JDBC store properly requires server restart,
- * which is why this command doesn't do that under the hood. All other versions (WildFly 8 and previous,
- * WildFly 10 and later) are fine.</p>
- */
 public final class ChangeBasicTransactionAttributes implements OnlineCommand, OfflineCommand {
 
     private final Integer timeout;
@@ -107,33 +100,18 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             batch.writeAttribute(transatcionsAddress, "default-timeout", timeout);
         }
 
-        // cli allows both enable-statistics and statistics-enabled for WildFly 8 and WildFly 9,
-        // statistics-enabled is in configuration files since WildFly 8
         if (statisticsEnabled != null) {
-            if (ctx.version.lessThan(ServerVersion.VERSION_2_0_0)) {
-                batch.writeAttribute(transatcionsAddress, "enable-statistics", statisticsEnabled);
-            } else {
-                batch.writeAttribute(transatcionsAddress, "statistics-enabled", statisticsEnabled);
-            }
+            batch.writeAttribute(transatcionsAddress, "statistics-enabled", statisticsEnabled);
         }
         if (jts != null) {
             batch.writeAttribute(transatcionsAddress, "jts", jts);
         }
 
         if (useJournalStore != null) {
-            if (ctx.version.lessThan(ServerVersion.VERSION_4_0_0)) {
-                batch.writeAttribute(transatcionsAddress, "use-hornetq-store", useJournalStore);
-            } else {
-                batch.writeAttribute(transatcionsAddress, "use-journal-store", useJournalStore);
-
-            }
+            batch.writeAttribute(transatcionsAddress, "use-journal-store", useJournalStore);
         }
         if (journalStoreEnableAsyncIO != null) {
-            if (ctx.version.lessThan(ServerVersion.VERSION_4_0_0)) {
-                batch.writeAttribute(transatcionsAddress, "hornetq-store-enable-async-io", journalStoreEnableAsyncIO);
-            } else {
-                batch.writeAttribute(transatcionsAddress, "journal-store-enable-async-io", journalStoreEnableAsyncIO);
-            }
+            batch.writeAttribute(transatcionsAddress, "journal-store-enable-async-io", journalStoreEnableAsyncIO);
         }
         if (processIdUuid != null || processIdSocketBinding != null) {
             if (processIdUuid != null) {
@@ -169,12 +147,6 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
 
     }
 
-    /**
-     * <p>Please note that <b>WildFly 9 has a bug</b>: if the JDBC store is enabled, it isn't automatically disabled
-     * when enabling the journal store. Moreover, disabling the JDBC store properly requires server restart,
-     * which is why this command doesn't do that under the hood. All other versions (WildFly 8 and previous,
-     * WildFly 10 and later) are fine.</p>
-     */
     public static final class Builder {
 
         private Integer timeout;
@@ -206,9 +178,6 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             return this;
         }
 
-        /**
-         * "hornetq-store-enable-async-io" will be used for AS7, WildFly 8 and WildFly 9
-         */
         public Builder journalStoreEnableAsyncIO(boolean val) {
             journalStoreEnableAsyncIO = val;
             return this;
@@ -232,9 +201,6 @@ public final class ChangeBasicTransactionAttributes implements OnlineCommand, Of
             return this;
         }
 
-        /**
-         * "use-hornetq-store" will be used for AS7, WildFly 8 and WildFly 9
-         */
         public Builder useJournalStore(boolean val) {
             useJournalStore = val;
             return this;

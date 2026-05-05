@@ -13,10 +13,9 @@ enum CommonRestartOperation implements RestartOperation {
         @Override
         public boolean isRequired(ModelNodeResult serverStateResult, boolean isManagedServerInDomain) {
             if (isManagedServerInDomain) {
-                // reloading an individual server in managed domain is not supported on AS 7, so when trying to figure
-                // out if reload of host in domain is required, some servers on that host might actually signal
-                // "restart required" (even if it would be "reload required" in the same situation in standalone);
-                // this is also true even on WildFly, which supports reloading a server in domain (see WFLY-351)
+                // when trying to figure out if reload of host in domain is required, some servers on that host
+                // might actually signal "restart required" (even if it would be "reload required" in standalone);
+                // see WFLY-351
                 //
                 // anyway, reloading a host means restarting all its servers, so returning true is fine in this case
                 if (Constants.CONTROLLER_PROCESS_STATE_RESTART_REQUIRED.equals(serverStateResult.stringValue())) {

@@ -172,27 +172,6 @@
         <Priority value="2" />
     </Match>
 
-    <Match>
-        <Class name="org.wildfly.extras.creaper.commands.security.realms.AddLdapConnection$Builder" />
-        <Method name="setHandlesReferralsFor" />
-        <Bug pattern="EI_EXPOSE_REP2" />
-        <Priority value="2" />
-    </Match>
-
-    <Match>
-        <Class name="org.wildfly.extras.creaper.commands.security.realms.AddLdapConnection$Builder" />
-        <Method name="setProperties" />
-        <Bug pattern="EI_EXPOSE_REP2" />
-        <Priority value="2" />
-    </Match>
-
-    <Match>
-        <Class name="org.wildfly.extras.creaper.commands.security.realms.KerberosKeytab" />
-        <Method name="getForHosts" />
-        <Bug pattern="EI_EXPOSE_REP" />
-        <Priority value="2" />
-    </Match>
-
     <!-- CT_CONSTRUCTOR_THROW flags non-final classes whose constructors can throw, as a potential
          finalizer attack vector. All 19 hits are internal Builder classes where this is not a concern. -->
     <Match>

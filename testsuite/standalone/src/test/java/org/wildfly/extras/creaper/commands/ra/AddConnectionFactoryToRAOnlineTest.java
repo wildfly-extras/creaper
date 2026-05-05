@@ -19,7 +19,6 @@ import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
 
 import java.io.IOException;
 
-// doesn't work on AS7/EAP6 because org.jboss.genericjms module.xml requires external jars
 @RunWith(Arquillian.class)
 public class AddConnectionFactoryToRAOnlineTest {
     private static final String RA_ID = "genericjmsRA";
@@ -30,7 +29,6 @@ public class AddConnectionFactoryToRAOnlineTest {
     @Before
     public void connect() throws IOException {
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
-        Assume.assumeTrue(client.version().greaterThanOrEqualTo(ServerVersion.VERSION_3_0_0));
         ops = new Operations(client);
         admin = new Administration(client);
     }

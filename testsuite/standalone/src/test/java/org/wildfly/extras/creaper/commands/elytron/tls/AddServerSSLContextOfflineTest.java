@@ -14,7 +14,6 @@ import org.junit.rules.TemporaryFolder;
 import org.wildfly.extras.creaper.XmlAssert;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
 
@@ -275,10 +274,7 @@ public class AddServerSSLContextOfflineTest {
                 .useCipherSuitesOrder(false)
                 .wrap(true);
 
-        if (client.version().greaterThanOrEqualTo(ServerVersion.VERSION_12_0_0)) {
-            // This attribute has been added in WildFly 19.
-            addServerSslContextBuilder.cipherSuiteNames(TLS13_CIPHER_SUITE_NAMES);
-        }
+        addServerSslContextBuilder.cipherSuiteNames(TLS13_CIPHER_SUITE_NAMES);
 
         assertXmlIdentical(SUBSYSTEM_EMPTY, Files.toString(cfg, Charsets.UTF_8));
         client.apply(addServerSslContextBuilder.build());

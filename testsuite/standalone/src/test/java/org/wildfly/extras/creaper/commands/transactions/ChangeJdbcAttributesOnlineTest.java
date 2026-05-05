@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.foundation.offline.ConfigurationFileBackup;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
@@ -25,8 +24,6 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
 
 @Category(ManualTests.class)
 @RunWith(Arquillian.class)
@@ -58,9 +55,6 @@ public class ChangeJdbcAttributesOnlineTest {
     @Test
     @InSequence(2)
     public void changeAll() throws Exception {
-        assumeTrue(onlineClient.version().greaterThanOrEqualTo(ServerVersion.VERSION_1_5_0));
-        assumeFalse(onlineClient.version().equals(ServerVersion.VERSION_3_0_0));
-
         ChangeJdbcTransactionAttributes cmd = TransactionManager.jdbc()
                 .useJdbcStore(true)
                 .storeDatasource("datasource")

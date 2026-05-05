@@ -2,7 +2,6 @@ package org.wildfly.extras.creaper.commands.transactions;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -11,14 +10,6 @@ import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Batch;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 
-/**
- * JDBC options are available for EAP 6.2.0 and higher in transaction subsystem.
- *
- * <p>Please note that <b>WildFly 9 has a bug</b>: if the journal store is enabled, it isn't automatically disabled
- * when enabling the JDBC store. Moreover, disabling the journal store properly requires server restart,
- * which is why this command doesn't do that under the hood. All other versions (WildFly 8 and previous,
- * WildFly 10 and later) are fine.</p>
- */
 public final class ChangeJdbcTransactionAttributes implements OfflineCommand, OnlineCommand {
 
     private final Boolean useJdbcStore;
@@ -43,9 +34,6 @@ public final class ChangeJdbcTransactionAttributes implements OfflineCommand, On
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        ctx.version.assertAtLeast(ServerVersion.VERSION_1_5_0,
-                "JDBC options are available for EAP 6.2.0 and higher");
-
         GroovyXmlTransform transform = GroovyXmlTransform.of(ChangeJdbcTransactionAttributes.class)
                 .subtree("transactions", Subtree.subsystem("transactions"))
 
@@ -69,9 +57,6 @@ public final class ChangeJdbcTransactionAttributes implements OfflineCommand, On
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        ctx.version.assertAtLeast(ServerVersion.VERSION_1_5_0,
-                "JDBC options are available for EAP 6.2.0 and higher");
-
         Batch batch = new Batch();
         Operations ops = new Operations(ctx.client);
         Address address = Address.subsystem("transactions");
@@ -104,14 +89,6 @@ public final class ChangeJdbcTransactionAttributes implements OfflineCommand, On
         ops.batch(batch);
     }
 
-    /**
-     * JDBC options are available for EAP 6.2.0 and higher in transaction subsystem.
-     *
-     * <p>Please note that <b>WildFly 9 has a bug</b>: if the journal store is enabled, it isn't automatically disabled
-     * when enabling the JDBC store. Moreover, disabling the journal store properly requires server restart,
-     * which is why this command doesn't do that under the hood. All other versions (WildFly 8 and previous,
-     * WildFly 10 and later) are fine.</p>
-     */
     public static final class Builder {
 
         protected Boolean useJdbcStore;

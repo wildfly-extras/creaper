@@ -209,7 +209,7 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
             .andOptional("use-ccm", useCcm)
             .andOptional("prepared-statements-cache-size", preparedStatementCacheSize)
             .andOptional("share-prepared-statements", sharePreparedStatements)
-            .and("enabled", enableAfterCreation); // enough to enable/disable on WildFly, and AS7 can handle it too
+            .and("enabled", enableAfterCreation);
         if (flushStrategy != null) values = values.and("flush-strategy", flushStrategy.value());
         if (transactionIsolation != null) values = values.and("transaction-isolation", transactionIsolation.value());
         if (trackStatements != null) values = values.and("track-statements", trackStatements.value());
@@ -222,13 +222,6 @@ public class AddDataSource implements OnlineCommand, OfflineCommand {
                 batch.add(dsAddress.and("connection-properties", entry.getKey()),
                         Values.of("value", entry.getValue()));
             }
-        }
-
-        if (enableAfterCreation && ctx.version.lessThan(ServerVersion.VERSION_2_0_0)) {
-            // AS7 needs this to actually enable the datasource, because the "enabled" attribute in fact doesn't work
-            //
-            // for WildFly, the "enabled" attribute works fine and this must not be called (enabling twice is an error)
-            batch.invoke("enable", dsAddress);
         }
 
         ops.batch(batch);

@@ -4,10 +4,21 @@
 
 - dropped explicit dependency on `jboss-logging`
 - added support for WildFly 34 - 39
+- **removed** support for WildFly 10 - 26; minimum supported version is now WildFly 27 (EAP 8.0+)
+- **removed** legacy security commands (security domains, security realms, LDAP, Kerberos, etc.);
+  the legacy security subsystem was removed from WildFly in version 25 — use Elytron instead
+- removed dead version checks for WildFly < 27 from all commands
+- **removed** `ServerVersion` constants for WildFly < 27 (`VERSION_0_0_0` through `VERSION_19_0_0`);
+  use `ServerVersion.from(major, minor, micro)` if you need to represent older versions
 - **removed** `ManagementProtocol.HTTP`, `ManagementProtocol.HTTPS`, and `HttpModelControllerClient`;
   the WildFly HTTP management interface (`http-interface`) has been deprecated since WildFly 9 (2015,
   management model version 1.7.0) and none of the known consumers use it
 - removed `httpclient` (Apache HttpComponents Client 4) dependency
+- **fixed** infinispan cache commands (`AddDistributedCache`, `AddInvalidationCache`, `AddReplicatedCache`,
+  `AddLocalCache`) to work with WildFly 27+; **removed** builder methods for attributes dropped from the
+  infinispan subsystem: `jndiName()`, `module()`, `start()`, `asyncMarshalling()`, `mode()`,
+  `queueFlushInterval()`, `consistentHashStrategy()` and the `CacheMode` / `ConsistentHashStrategy` enums
+  (fixes #218)
 - fixed test compatibility with WildFly 39 infinispan schema changes
 - deprecated the entire offline commands subsystem (`OfflineManagementClient`, `OfflineCommand`,
   `OfflineOptions`, `GroovyXmlTransform`, etc.); offline XML manipulation is superseded by the
@@ -17,7 +28,8 @@
 - upgraded groovy to 4.0.31
 - upgraded Arquillian Core to 1.10.0
 - upgraded SpotBugs Maven plugin to 4.9.8.3
-- added JDK 25 CI, removed WildFly 10 / JDK 8 CI
+- added JDK 25 CI, replaced WildFly 34 CI with WildFly 27 (lowest supported), removed WildFly 10 / JDK 8 CI,
+  merged elytron / non-elytron CI jobs (legacy security commands were removed)
 
 ## 2.0.3 (2024-09-16)
 

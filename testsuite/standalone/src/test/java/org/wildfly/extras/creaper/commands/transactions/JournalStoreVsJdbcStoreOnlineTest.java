@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.foundation.offline.ConfigurationFileBackup;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineManagementClient;
 import org.wildfly.extras.creaper.core.offline.OfflineOptions;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
@@ -26,8 +25,6 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
 
 @Category(ManualTests.class)
 @RunWith(Arquillian.class)
@@ -60,9 +57,6 @@ public class JournalStoreVsJdbcStoreOnlineTest {
     @Test
     @InSequence(2)
     public void enableJournalStore() throws Exception {
-        assumeTrue(onlineClient.version().greaterThanOrEqualTo(ServerVersion.VERSION_1_5_0));
-        assumeFalse(onlineClient.version().equals(ServerVersion.VERSION_3_0_0));
-
         onlineClient.apply(TransactionManager.basicAttributes().useJournalStore(true).build());
 
         ModelNodeResult result = ops.readAttribute(TRANSACTIONS_ADDRESS, journalStoreAttribute());
@@ -90,9 +84,6 @@ public class JournalStoreVsJdbcStoreOnlineTest {
     @Test
     @InSequence(4)
     public void enableJdbcStore() throws Exception {
-        assumeTrue(onlineClient.version().greaterThanOrEqualTo(ServerVersion.VERSION_1_5_0));
-        assumeFalse(onlineClient.version().equals(ServerVersion.VERSION_3_0_0));
-
         onlineClient.apply(TransactionManager.jdbc().useJdbcStore(true).storeDatasource("datasource").build());
 
         ModelNodeResult result = ops.readAttribute(TRANSACTIONS_ADDRESS, "use-jdbc-store");
@@ -111,8 +102,8 @@ public class JournalStoreVsJdbcStoreOnlineTest {
         offlineClient.apply(CONFIGURATION_BACKUP.restore());
     }
 
-    private String journalStoreAttribute() throws IOException {
-        return onlineClient.version().lessThan(ServerVersion.VERSION_4_0_0) ? "use-hornetq-store" : "use-journal-store";
+    private String journalStoreAttribute() {
+        return "use-journal-store";
     }
 }
 

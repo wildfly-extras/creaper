@@ -5,7 +5,6 @@ import com.google.common.base.Joiner;
 import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -77,11 +76,8 @@ public class AddModule implements OnlineCommand {
         }
 
         Joiner resourcesJoiner = Joiner.on(File.pathSeparatorChar);
-        // resource-delimiter was added in WF 8, WFLY-1871
-        if (ctx.version.greaterThanOrEqualTo(ServerVersion.VERSION_2_0_0)) {
-            cmd.append(" --resource-delimiter=").append(resourceDelimiter);
-            resourcesJoiner = Joiner.on(resourceDelimiter);
-        }
+        cmd.append(" --resource-delimiter=").append(resourceDelimiter);
+        resourcesJoiner = Joiner.on(resourceDelimiter);
 
         if (!resources.isEmpty()) {
             cmd.append(" --resources=").append(resourcesJoiner.join(resources).replaceAll(" ", "\\\\ "));

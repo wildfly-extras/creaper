@@ -75,8 +75,6 @@ final class OnlineManagementClientImpl implements OnlineManagementClient {
     }
 
     private static void fakeJbossCliConfigToAvoidWarning() {
-        // this works since AS 7.2.0, that is EAP 6.1.0 and above
-        // jboss-as-cli 7.0.x and 7.1.x don't know this system property
         if (System.getProperty(JBOSS_CLI_CONFIG) == null) {
             // setting the property to a path of a non-existing file is actually fine -- if the file doesn't exist,
             // a default set of configuration values will be used (just like when no path to jboss-cli.xml is set)

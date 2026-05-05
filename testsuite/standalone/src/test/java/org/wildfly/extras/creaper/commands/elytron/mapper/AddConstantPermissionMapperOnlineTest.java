@@ -7,12 +7,10 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.elytron.AbstractElytronOnlineTest;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 
@@ -109,9 +107,6 @@ public class AddConstantPermissionMapperOnlineTest extends AbstractElytronOnline
 
     @Test
     public void addFullConstantPermissionMapper_permissionSets() throws Exception {
-        Assume.assumeTrue("permission-set is available since WildFly 13.",
-                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_7_0_0));
-
         AddConstantPermissionMapper addConstantPermissionMapper
                 = new AddConstantPermissionMapper.Builder(TEST_CONSTANT_PERMISSION_MAPPER_NAME)
                 .addPermissionSets(PREDEFINED_PERMISSION_SET1, PREDEFINED_PERMISSION_SET2)

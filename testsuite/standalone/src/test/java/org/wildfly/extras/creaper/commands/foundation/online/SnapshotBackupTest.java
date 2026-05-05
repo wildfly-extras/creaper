@@ -19,11 +19,10 @@ import org.wildfly.extras.creaper.core.online.OnlineOptions;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.OperationException;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
-import org.wildfly.extras.creaper.test.WildFly11Tests;
 import org.wildfly.extras.creaper.test.WildFlyTests;
 import org.xml.sax.SAXException;
 
-@Category({WildFlyTests.class, WildFly11Tests.class})
+@Category(WildFlyTests.class)
 @RunWith(Arquillian.class)
 public class SnapshotBackupTest {
 

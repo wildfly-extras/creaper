@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.jboss.dmr.ModelNode;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -26,10 +25,6 @@ public final class AddPermissionSet implements OnlineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        if (ctx.version.lessThan(ServerVersion.VERSION_7_0_0)) {
-            throw new AssertionError("Elytron permission-set is available since WildFly 13.");
-        }
-
         Operations ops = new Operations(ctx.client);
         Address mapperAddress = Address.subsystem("elytron").and("permission-set", name);
         if (replaceExisting) {

@@ -233,7 +233,7 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
             .andOptional("wrap-xa-resource", wrapXaResource)
             .andOptional("xa-datasource-class", xaDatasourceClass)
             .andOptional("xa-resource-timeout", xaResourceTimeout)
-            .and("enabled", enableAfterCreation); // enough to enable/disable on WildFly, and AS7 can handle it too
+            .and("enabled", enableAfterCreation);
         if (flushStrategy != null) values = values.and("flush-strategy", flushStrategy.value());
         if (transactionIsolation != null) values = values.and("transaction-isolation", transactionIsolation.value());
         if (trackPreparedStatements != null) values = values.and("track-statements", trackPreparedStatements.value());
@@ -246,13 +246,6 @@ public class AddXADataSource implements OnlineCommand, OfflineCommand {
                 batch.add(dsAddress.and("xa-datasource-properties", entry.getKey()),
                         Values.of("value", entry.getValue()));
             }
-        }
-
-        if (enableAfterCreation && ctx.version.lessThan(ServerVersion.VERSION_2_0_0)) {
-            // AS7 needs this to actually enable the datasource, because the "enabled" attribute in fact doesn't work
-            //
-            // for WildFly, the "enabled" attribute works fine and this must not be called (enabling twice is an error)
-            batch.invoke("enable", dsAddress);
         }
 
         ops.batch(batch);

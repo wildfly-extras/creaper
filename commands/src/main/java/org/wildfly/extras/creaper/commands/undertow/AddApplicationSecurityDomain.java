@@ -7,7 +7,6 @@ import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 import org.wildfly.extras.creaper.core.online.operations.Operations;
 import org.wildfly.extras.creaper.core.online.operations.Values;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.admin.Administration;
@@ -31,10 +30,6 @@ public final class AddApplicationSecurityDomain implements OnlineCommand, Offlin
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        // Undertow is available since WildFly 8, but some options are only available since WildFly 11;
-        // for now, restricting to WildFly 11 and above
-        ctx.version.assertAtLeast(ServerVersion.VERSION_5_0_0);
-
         Operations ops = new Operations(ctx.client);
         Address address = Address.subsystem("undertow").and("application-security-domain", name);
         if (replaceExisting) {
@@ -50,10 +45,6 @@ public final class AddApplicationSecurityDomain implements OnlineCommand, Offlin
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        // Undertow is available since WildFly 8, but some options are only available since WildFly 11;
-        // for now, restricting to WildFly 11 and above
-        ctx.version.assertAtLeast(ServerVersion.VERSION_5_0_0);
-
         ctx.client.apply(GroovyXmlTransform.of(AddApplicationSecurityDomain.class)
                 .subtree("undertowSubsystem", Subtree.subsystem("undertow"))
                 .parameter("atrName", name)

@@ -70,8 +70,7 @@ public class AddSyslogAuditLogOnlineTest extends AbstractElytronOnlineTest {
     @BeforeClass
     public static void prepare() {
         // Start the 'syslog server' because without it addition of the syslog handlers
-        // would fail unless 'reconnect-attempts' is set to non-zero. Such check is
-        // implemented since WildFly 18.
+        // would fail unless 'reconnect-attempts' is set to non-zero.
         syslogServerThread.start();
     }
 

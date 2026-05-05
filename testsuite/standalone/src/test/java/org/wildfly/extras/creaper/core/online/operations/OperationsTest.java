@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
 import org.wildfly.extras.creaper.core.ManagementVersionPart;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -24,7 +23,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
 
 @RunWith(Arquillian.class)
 public class OperationsTest {
@@ -44,19 +42,11 @@ public class OperationsTest {
         ops = new Operations(client);
         admin = new Administration(client);
 
-        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) { // AS7, JBoss Web
-            webSubsystem = "web";
-            defaultHostAddress = Address.subsystem("web").and("virtual-server", "default-host");
-            jspConfigurationAddress = Address.subsystem("web").and("configuration", "jsp-configuration");
-            httpConnectorAddress = Address.subsystem("web").and("connector", "http");
-            requestCountAttribute = "requestCount";
-        } else { // WildFly, Undertow
-            webSubsystem = "undertow";
-            defaultHostAddress = Address.subsystem("undertow").and("server", "default-server").and("host", "default-host");
-            jspConfigurationAddress = Address.subsystem("undertow").and("servlet-container", "default").and("setting", "jsp");
-            httpConnectorAddress = Address.subsystem("undertow").and("server", "default-server").and("http-listener", "default");
-            requestCountAttribute = "request-count";
-        }
+        webSubsystem = "undertow";
+        defaultHostAddress = Address.subsystem("undertow").and("server", "default-server").and("host", "default-host");
+        jspConfigurationAddress = Address.subsystem("undertow").and("servlet-container", "default").and("setting", "jsp");
+        httpConnectorAddress = Address.subsystem("undertow").and("server", "default-server").and("http-listener", "default");
+        requestCountAttribute = "request-count";
     }
 
     @After
@@ -66,10 +56,6 @@ public class OperationsTest {
 
     @Test
     public void headers() throws Exception {
-        // WildFly 8 doesn't require "reload" after removing a socket binding (why?)
-        assumeFalse("This test can't work on WildFly 8 (but works on AS7 and WildFly >= 9)",
-                client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
-
         String socketBindingName = "creaper-test-socket-binding";
         Address socketBindingAddress = Address.of("socket-binding-group", "standard-sockets")
                 .and("socket-binding", socketBindingName);
@@ -217,11 +203,7 @@ public class OperationsTest {
     public void readResource_recursive() throws IOException {
         ModelNodeResult result = ops.readResource(Address.subsystem(webSubsystem), ReadResourceOption.RECURSIVE);
         result.assertDefinedValue();
-        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) {
-            assertTrue(result.value().get("configuration", "jsp-configuration").hasDefined("development"));
-        } else {
-            assertTrue(result.value().get("servlet-container", "default", "setting", "jsp").hasDefined("development"));
-        }
+        assertTrue(result.value().get("servlet-container", "default", "setting", "jsp").hasDefined("development"));
     }
 
     @Test
@@ -229,19 +211,11 @@ public class OperationsTest {
         ModelNodeResult result = ops.readResource(Address.subsystem(webSubsystem),
                 ReadResourceOption.RECURSIVE, ReadResourceOption.NOT_INCLUDE_DEFAULTS);
         result.assertDefinedValue();
-        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) {
-            assertFalse(result.value().get("configuration", "jsp-configuration").hasDefined("development"));
-        } else {
-            assertFalse(result.value().get("servlet-container", "default", "setting", "jsp").hasDefined("development"));
-        }
+        assertFalse(result.value().get("servlet-container", "default", "setting", "jsp").hasDefined("development"));
     }
 
     @Test
     public void readResource_includeRuntime() throws IOException {
-        // WildFly 8 doesn't have the "request-count" attribute in the "undertow" subsystem
-        assumeFalse("This test can't work on WildFly 8 (but works on AS7 and WildFly >= 9)",
-                client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
-
         ModelNodeResult result = ops.readResource(httpConnectorAddress, ReadResourceOption.INCLUDE_RUNTIME);
         result.assertDefinedValue();
         assertTrue("Runtime value should be shown", result.value().hasDefined(requestCountAttribute));
@@ -249,10 +223,6 @@ public class OperationsTest {
 
     @Test
     public void readResource_notIncludeRuntime() throws IOException {
-        // WildFly 8 doesn't have the "request-count" attribute in the "undertow" subsystem
-        assumeFalse("This test can't work on WildFly 8 (but works on AS7 and WildFly >= 9)",
-                client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
-
         ModelNodeResult result = ops.readResource(httpConnectorAddress, ReadResourceOption.NOT_INCLUDE_RUNTIME);
         result.assertDefinedValue();
         assertFalse("Runtime value shouldn't be shown", result.value().hasDefined(requestCountAttribute));
@@ -260,18 +230,10 @@ public class OperationsTest {
 
     @Test
     public void readResource_recursive_includeRuntime() throws IOException {
-        // WildFly 8 doesn't have the "request-count" attribute in the "undertow" subsystem
-        assumeFalse("This test can't work on WildFly 8 (but works on AS7 and WildFly >= 9)",
-                client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0));
-
         ModelNodeResult result = ops.readResource(Address.subsystem(webSubsystem), ReadResourceOption.INCLUDE_RUNTIME,
                 ReadResourceOption.RECURSIVE);
         result.assertDefinedValue();
-        if (client.version().lessThan(ServerVersion.VERSION_2_0_0)) {
-            assertTrue(result.value().get("connector", "http").hasDefined("requestCount"));
-        } else {
-            assertTrue(result.value().get("server", "default-server", "http-listener", "default").hasDefined("request-count"));
-        }
+        assertTrue(result.value().get("server", "default-server", "http-listener", "default").hasDefined("request-count"));
     }
 
     @Test

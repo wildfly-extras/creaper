@@ -1,7 +1,6 @@
 package org.wildfly.extras.creaper.commands.undertow;
 
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -130,10 +129,6 @@ public final class AddUndertowListener implements OnlineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws CommandFailedException, IOException {
-        // Undertow is available since WildFly 8, but some options (e.g. HTTP/2) are only available
-        // since WildFly 9; for now, restricting to WildFly 9 and above
-        ctx.version.assertAtLeast(ServerVersion.VERSION_3_0_0);
-
         Operations ops = new Operations(ctx.client);
         Address listenerAddress = Address.subsystem("undertow").and("server", serverName)
                 .and(listenerType.listenerTypeName(), listenerName);

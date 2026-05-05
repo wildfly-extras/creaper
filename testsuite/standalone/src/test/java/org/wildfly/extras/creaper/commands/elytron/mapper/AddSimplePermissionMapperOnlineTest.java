@@ -8,12 +8,10 @@ import java.io.IOException;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.commands.elytron.AbstractElytronOnlineTest;
 import org.wildfly.extras.creaper.core.CommandFailedException;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.operations.Address;
 
@@ -167,8 +165,6 @@ public class AddSimplePermissionMapperOnlineTest extends AbstractElytronOnlineTe
 
     @Test
     public void addFullSimplePermissionMapper_permissionSets() throws Exception {
-        Assume.assumeTrue("permission-set is available since WildFly 13.",
-                client.version().greaterThanOrEqualTo(ServerVersion.VERSION_7_0_0));
         AddSimplePermissionMapper addSimplePermissionMapper
                 = new AddSimplePermissionMapper.Builder(TEST_SIMPLE_PERMISSION_MAPPER_NAME)
                 .mappingMode(AddSimplePermissionMapper.MappingMode.OR)

@@ -2,7 +2,6 @@ package org.wildfly.extras.creaper.commands.logging;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommandContext;
 import org.wildfly.extras.creaper.core.online.operations.Address;
@@ -16,11 +15,6 @@ public final class ChangeConsoleLogHandler extends AbstractConsoleLogHandlerComm
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        if (ConsoleTarget.CONSOLE == target) {
-            ctx.client.version().assertAtLeast(ServerVersion.VERSION_3_0_0,
-                    "ConsoleTarget.CONSOLE is only available since WildFly 9");
-        }
-
         Operations ops = new Operations(ctx.client);
 
         Address handlerAddress = Address.subsystem("logging").and("console-handler", name);

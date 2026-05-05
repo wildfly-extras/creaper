@@ -37,20 +37,6 @@ public class ChangeBasicAttributesOfflineTest {
             + "    </profile>\n"
             + "</server>";
 
-    private static final String TRANSACTION_DEFAULT_EAP64 = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
-            + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:jboss:domain:transactions:1.5\">\n"
-            + "            <core-environment>\n"
-            + "                <process-id>\n"
-            + "                    <uuid/>\n"
-            + "                </process-id>\n"
-            + "            </core-environment>\n"
-            + "            <recovery-environment socket-binding=\"txn-recovery-environment\" status-socket-binding=\"txn-status-manager\"/>\n"
-            + "            <jdbc-store datasource-jndi-name=\"test\" />\n"
-            + "        </subsystem>"
-            + "    </profile>\n"
-            + "</server>";
 
     private static final String TRANSACTION_CHANGE_FIRST_WILDFLY10 = ""
             + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
@@ -70,23 +56,6 @@ public class ChangeBasicAttributesOfflineTest {
             + "    </profile>\n"
             + "</server>";
 
-    private static final String TRANSACTION_CHANGE_FIRST_EAP64 = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
-            + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:jboss:domain:transactions:1.5\">\n"
-            + "            <core-environment node-identifier=\"3\">\n"
-            + "                <process-id>\n"
-            + "                    <socket socket-binding=\"a\" socket-process-id-max-ports=\"100\"/>\n"
-            + "                </process-id>\n"
-            + "            </core-environment>\n"
-            + "            <recovery-environment socket-binding=\"socket-binding\" status-socket-binding=\"status-binding\" recovery-listener=\"true\"/>\n"
-            + "            <coordinator-environment enable-statistics=\"true\" enable-tsm-status=\"true\" default-timeout=\"999\"/>\n"
-            + "             <object-store path=\"path\" relative-to=\"relative-to\"/>\n"
-            + "            <jts/>\n"
-            + "            <use-hornetq-store enable-async-io=\"true\"/>\n"
-            + "        </subsystem>"
-            + "    </profile>\n"
-            + "</server>";
 
     private static final String TRANSACTION_CHANGE_SECOND_WILDFLY10 = ""
             + "<server xmlns=\"urn:jboss:domain:4.0\">\n"
@@ -104,21 +73,6 @@ public class ChangeBasicAttributesOfflineTest {
             + "    </profile>\n"
             + "</server>";
 
-    private static final String TRANSACTION_CHANGE_SECOND_EAP64 = ""
-            + "<server xmlns=\"urn:jboss:domain:1.7\">\n"
-            + "    <profile>\n"
-            + "        <subsystem xmlns=\"urn:jboss:domain:transactions:1.5\">\n"
-            + "            <core-environment node-identifier=\"1\">\n"
-            + "                <process-id>\n"
-            + "                    <uuid/>\n"
-            + "                </process-id>\n"
-            + "            </core-environment>\n"
-            + "            <recovery-environment socket-binding=\"socket-binding-change\" status-socket-binding=\"status-binding-change\" recovery-listener=\"false\"/>\n"
-            + "            <coordinator-environment enable-statistics=\"false\" enable-tsm-status=\"false\" default-timeout=\"0\"/>\n"
-            + "            <object-store path=\"path-change\" relative-to=\"relative-to-change\"/>\n"
-            + "        </subsystem>"
-            + "    </profile>\n"
-            + "</server>";
 
 
     @Rule
@@ -137,7 +91,6 @@ public class ChangeBasicAttributesOfflineTest {
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][] {
             {TRANSACTION_DEFAULT_WILDFLY10, TRANSACTION_CHANGE_FIRST_WILDFLY10, TRANSACTION_CHANGE_SECOND_WILDFLY10},
-            {TRANSACTION_DEFAULT_EAP64, TRANSACTION_CHANGE_FIRST_EAP64, TRANSACTION_CHANGE_SECOND_EAP64}
         });
     }
 

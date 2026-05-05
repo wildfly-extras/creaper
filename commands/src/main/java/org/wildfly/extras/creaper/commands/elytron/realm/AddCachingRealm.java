@@ -2,7 +2,6 @@ package org.wildfly.extras.creaper.commands.elytron.realm;
 
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.GroovyXmlTransform;
 import org.wildfly.extras.creaper.commands.foundation.offline.xml.Subtree;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.offline.OfflineCommand;
 import org.wildfly.extras.creaper.core.offline.OfflineCommandContext;
 import org.wildfly.extras.creaper.core.online.OnlineCommand;
@@ -30,10 +29,6 @@ public final class AddCachingRealm implements OnlineCommand, OfflineCommand {
 
     @Override
     public void apply(OnlineCommandContext ctx) throws Exception {
-        if (ctx.version.lessThan(ServerVersion.VERSION_5_0_0)) {
-            throw new AssertionError("Elytron is available since WildFly 11.");
-        }
-
         Operations ops = new Operations(ctx.client);
         Address securityRealmAddress = Address.subsystem("elytron").and("caching-realm", name);
         if (replaceExisting) {
@@ -49,10 +44,6 @@ public final class AddCachingRealm implements OnlineCommand, OfflineCommand {
 
     @Override
     public void apply(OfflineCommandContext ctx) throws Exception {
-        if (ctx.version.lessThan(ServerVersion.VERSION_5_0_0)) {
-            throw new AssertionError("Elytron is available since WildFly 11.");
-        }
-
         ctx.client.apply(GroovyXmlTransform.of(AddCachingRealm.class)
                 .subtree("elytronSubsystem", Subtree.subsystem("elytron"))
                 .parameter("atrName", name)

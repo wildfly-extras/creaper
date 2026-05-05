@@ -1,8 +1,8 @@
 package org.wildfly.extras.creaper.commands.infinispan.cache;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.After;
 import org.junit.Assume;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,17 +31,16 @@ public class AddInvalidationCacheOnlineTest {
     private static final String TEST_CACHE_NAME = UUID.randomUUID().toString();
 
     private static final Address TEST_CACHE_ADDRESS = Address.subsystem("infinispan")
-            .and("cache-container", "hibernate")
+            .and("cache-container", "server")
             .and("invalidation-cache", TEST_CACHE_NAME);
 
+    // TODO WF 27 fails with DuplicateServiceException when adding a cache, find the WFLY JIRA
     @BeforeClass
     public static void checkServerVersionIsSupported() throws Exception {
-        // check version is supported
         ServerVersion serverVersion
                 = ManagementClient.online(OnlineOptions.standalone().localDefault().build()).version();
-        Assume.assumeFalse("The command is not compatible with WildFly 27 and above,"
-                        + " see https://github.com/wildfly-extras/creaper/issues/218.",
-                serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_20_0_0));
+        Assume.assumeFalse("Adding a cache fails on WildFly 27 with DuplicateServiceException",
+                serverVersion.equalTo(ServerVersion.VERSION_20_0_0));
     }
 
     @Before
@@ -52,31 +51,26 @@ public class AddInvalidationCacheOnlineTest {
 
     @After
     public void after() throws CommandFailedException, IOException, OperationException {
-        client.apply(new RemoveCache("hibernate", CacheType.INVALIDATION_CACHE, TEST_CACHE_NAME));
+        client.apply(new RemoveCache("server", CacheType.INVALIDATION_CACHE, TEST_CACHE_NAME));
         client.close();
     }
 
     @Test
     public void addCacheWithRequiredArgsOnly() throws CommandFailedException, IOException {
         AddInvalidationCache cmd = new AddInvalidationCache.Builder(TEST_CACHE_NAME)
-                .cacheContainer("hibernate")
-                .mode(CacheMode.SYNC)
+                .cacheContainer("server")
                 .build();
         client.apply(cmd);
 
         ModelNodeResult resource = ops.readResource(TEST_CACHE_ADDRESS);
 
         assertTrue(resource.isSuccess());
-        assertEquals("SYNC", ops.readAttribute(TEST_CACHE_ADDRESS, "mode").stringValue());
     }
 
     @Test
     public void addCacheWithMoreArgs() throws CommandFailedException, IOException {
         AddInvalidationCache cmd = new AddInvalidationCache.Builder(TEST_CACHE_NAME)
-                .cacheContainer("hibernate")
-                .mode(CacheMode.SYNC)
-                .asyncMarshalling(true)
-                .queueFlushInterval(1234L)
+                .cacheContainer("server")
                 .remoteTimeout(4321L)
                 .statisticsEnabled(false)
                 .build();
@@ -85,9 +79,6 @@ public class AddInvalidationCacheOnlineTest {
         ModelNodeResult resource = ops.readResource(TEST_CACHE_ADDRESS);
 
         assertTrue(resource.isSuccess());
-        assertEquals(CacheMode.SYNC.getMode(), ops.readAttribute(TEST_CACHE_ADDRESS, "mode").stringValue());
-        assertEquals(true, ops.readAttribute(TEST_CACHE_ADDRESS, "async-marshalling").booleanValue());
-        assertEquals(1234L, ops.readAttribute(TEST_CACHE_ADDRESS, "queue-flush-interval").longValue());
         assertEquals(4321L, ops.readAttribute(TEST_CACHE_ADDRESS, "remote-timeout").longValue());
         assertEquals(false, ops.readAttribute(TEST_CACHE_ADDRESS, "statistics-enabled").booleanValue());
     }

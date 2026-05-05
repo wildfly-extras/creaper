@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.core.online.operations.admin;
 
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
 
 import java.io.IOException;
@@ -113,7 +112,6 @@ public class Administration {
      * requests to finish
      */
     public final void shutdownGracefully(int timeoutInSeconds) throws IOException {
-        client.version().assertAtLeast(ServerVersion.VERSION_3_0_0, "Graceful shutdown is only supported since WildFly 9");
         ops.shutdown(timeoutInSeconds);
     }
 

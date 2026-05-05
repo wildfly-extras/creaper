@@ -13,11 +13,9 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -34,15 +32,6 @@ public abstract class AbstractElytronOnlineTest {
     protected Administration administration;
 
     protected static final Address SUBSYSTEM_ADDRESS = Address.subsystem("elytron");
-
-    @BeforeClass
-    public static void checkServerVersionIsSupported() throws Exception {
-        // check version is supported
-        ServerVersion serverVersion
-                = ManagementClient.online(OnlineOptions.standalone().localDefault().build()).version();
-        Assume.assumeTrue("Elytron is available since WildFly 11.",
-                serverVersion.greaterThanOrEqualTo(ServerVersion.VERSION_5_0_0));
-    }
 
     @Before
     public void setupCreaperForTest() throws IOException {

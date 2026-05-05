@@ -15,10 +15,7 @@ public final class TransactionManager {
         return new ChangeBasicTransactionAttributes.Builder();
     }
 
-    /**
-     * If changing something is not needed, do not set it (it won't be changed)
-     * JDBC options are available for EAP 6.2.0 and higher in transaction subsystem.
-     */
+    /** If changing something is not needed, do not set it (it won't be changed). */
     public static ChangeJdbcTransactionAttributes.Builder jdbc() {
         return new ChangeJdbcTransactionAttributes.Builder();
     }

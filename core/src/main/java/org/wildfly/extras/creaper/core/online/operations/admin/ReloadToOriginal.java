@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.core.online.operations.admin;
 
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -18,7 +17,7 @@ import java.util.concurrent.TimeoutException;
  * <p> Currently, managed domain <b>is not supported</b>.</p>
  *
  * <p>For more information about how the server supports this feature, see
- * <a href="http://lists.jboss.org/pipermail/jboss-as7-dev/2012-July/006280.html">http://lists.jboss.org/pipermail/jboss-as7-dev/2012-July/006280.html</a>.</p>
+ * <a href="https://lists.jboss.org/pipermail/jboss-as7-dev/2012-July/006280.html">the original discussion</a>.</p>
  */
 public final class ReloadToOriginal {
     private final OnlineManagementClient client;
@@ -31,9 +30,6 @@ public final class ReloadToOriginal {
     public ReloadToOriginal(OnlineManagementClient client, int timeoutInSeconds) throws IOException {
         if (!client.options().isStandalone) {
             throw new IllegalStateException("ReloadToOriginal is only supported for a standalone server");
-        }
-        if (client.version().lessThan(ServerVersion.VERSION_1_4_0)) {
-            throw new IllegalStateException("ReloadToOriginal requires at least JBoss AS 7.2.0 (EAP 6.1.0)");
         }
 
         this.client = client;

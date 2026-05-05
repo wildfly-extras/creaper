@@ -34,8 +34,7 @@ public final class AddMssqlXADataSource extends AddXADataSource {
         if (backgroundValidation == null) backgroundValidation = true;
         if (backgroundValidationMillis == null) backgroundValidationMillis = DEFAULT_BACKGROUND_VALIDATION_TIME;
         if (validConnectionCheckerClass == null) validConnectionCheckerClass = MSSQL_VALID_CONNECTION_CHECKER;
-        if (exceptionSorterClass == null && serverVersion.greaterThan(ServerVersion.VERSION_1_7_0)) {
-            // implementation of MS SQL exception sorter was not available in previous versions
+        if (exceptionSorterClass == null) {
             exceptionSorterClass = MSSQL_EXCEPTION_SORTER;
         }
         if (sameRmOverride == null) sameRmOverride = true;

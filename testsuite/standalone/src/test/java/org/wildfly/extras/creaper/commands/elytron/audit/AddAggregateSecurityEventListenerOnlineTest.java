@@ -68,8 +68,7 @@ public class AddAggregateSecurityEventListenerOnlineTest extends AbstractElytron
     @BeforeClass
     public static void createElytronAuditLogs() throws Exception {
         // Start the 'syslog server' because without it addition of the syslog handlers
-        // would fail unless 'reconnect-attempts' is set to non-zero. Such check is
-        // implemented since WildFly 18.
+        // would fail unless 'reconnect-attempts' is set to non-zero.
         syslogServerThread.start();
 
         OnlineManagementClient client = null;

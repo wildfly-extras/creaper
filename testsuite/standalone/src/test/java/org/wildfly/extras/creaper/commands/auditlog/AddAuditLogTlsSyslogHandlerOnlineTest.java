@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -48,19 +47,11 @@ public class AddAuditLogTlsSyslogHandlerOnlineTest {
     private Operations ops;
     private Administration administration;
 
-    private boolean reconnectTimeoutSupported;
-
     @Before
     public void connect() throws IOException {
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
         ops = new Operations(client);
         administration = new Administration(client);
-
-        reconnectTimeoutSupported = true;
-        if (client.version().lessThan(ServerVersion.VERSION_1_7_0)
-                || client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0)) {
-            reconnectTimeoutSupported = false;
-        }
     }
 
     @After
@@ -90,10 +81,8 @@ public class AddAuditLogTlsSyslogHandlerOnlineTest {
                 .keystorePath("test.keystore")
                 .keystoreRelativeTo("jboss.dir")
                 .authenticationType(AuthenticationType.TRUSTSTORE)
+                .reconnectTimeout(-1)
                 .replaceExisting();
-        if (reconnectTimeoutSupported) {
-            addTlsSyslogHandler.reconnectTimeout(-1);
-        }
         client.apply(addTlsSyslogHandler.build());
 
         assertTrue("The TLS syslog handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
@@ -108,9 +97,7 @@ public class AddAuditLogTlsSyslogHandlerOnlineTest {
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "host", "127.0.0.1");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "port", "514");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "message-transfer", "OCTET_COUNTING");
-        if (reconnectTimeoutSupported) {
-            checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
-        }
+        checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
         checkAttribute(TEST_HANDLER_TRUSTSTORE_ADDRESS, "keystore-password", "keystorePassword");
         checkAttribute(TEST_HANDLER_TRUSTSTORE_ADDRESS, "keystore-path", "test.keystore");
         checkAttribute(TEST_HANDLER_TRUSTSTORE_ADDRESS, "keystore-relative-to", "jboss.dir");
@@ -134,10 +121,8 @@ public class AddAuditLogTlsSyslogHandlerOnlineTest {
                 .keystorePath("test.keystore")
                 .keystoreRelativeTo("jboss.dir")
                 .authenticationType(AuthenticationType.CLIENT_CERTIFICATE_STORE)
+                .reconnectTimeout(-1)
                 .replaceExisting();
-        if (reconnectTimeoutSupported) {
-            addTlsSyslogHandler.reconnectTimeout(-1);
-        }
         client.apply(addTlsSyslogHandler.build());
 
         assertTrue("The TLS syslog handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
@@ -152,9 +137,7 @@ public class AddAuditLogTlsSyslogHandlerOnlineTest {
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "host", "127.0.0.1");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "port", "514");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "message-transfer", "OCTET_COUNTING");
-        if (reconnectTimeoutSupported) {
-            checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
-        }
+        checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
         checkAttribute(TEST_HANDLER_CLIENT_CERTIFICATE_STORE_ADDRESS, "key-password", "keyPassword");
         checkAttribute(TEST_HANDLER_CLIENT_CERTIFICATE_STORE_ADDRESS, "keystore-password", "keystorePassword");
         checkAttribute(TEST_HANDLER_CLIENT_CERTIFICATE_STORE_ADDRESS, "keystore-path", "test.keystore");
@@ -187,10 +170,8 @@ public class AddAuditLogTlsSyslogHandlerOnlineTest {
                 .keystorePath("test.keystore")
                 .keystoreRelativeTo("jboss.dir")
                 .authenticationType(AuthenticationType.CLIENT_CERTIFICATE_STORE)
+                .reconnectTimeout(-1)
                 .replaceExisting();
-        if (reconnectTimeoutSupported) {
-            addTlsSyslogHandler2.reconnectTimeout(-1);
-        }
         client.apply(addTlsSyslogHandler2.build());
 
         assertTrue("The TLS syslog handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
@@ -205,9 +186,7 @@ public class AddAuditLogTlsSyslogHandlerOnlineTest {
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "host", "127.0.0.1");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "port", "514");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "message-transfer", "OCTET_COUNTING");
-        if (reconnectTimeoutSupported) {
-            checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
-        }
+        checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
         checkAttribute(TEST_HANDLER_CLIENT_CERTIFICATE_STORE_ADDRESS, "key-password", "keyPassword");
         checkAttribute(TEST_HANDLER_CLIENT_CERTIFICATE_STORE_ADDRESS, "keystore-password", "keystorePassword");
         checkAttribute(TEST_HANDLER_CLIENT_CERTIFICATE_STORE_ADDRESS, "keystore-path", "test.keystore");

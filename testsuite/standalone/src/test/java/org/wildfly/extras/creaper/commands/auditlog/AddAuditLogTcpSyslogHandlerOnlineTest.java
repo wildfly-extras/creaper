@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.extras.creaper.core.CommandFailedException;
 import org.wildfly.extras.creaper.core.ManagementClient;
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.CliException;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -38,19 +37,11 @@ public class AddAuditLogTcpSyslogHandlerOnlineTest {
     private Operations ops;
     private Administration administration;
 
-    private boolean reconnectTimeoutSupported;
-
     @Before
     public void connect() throws IOException {
         client = ManagementClient.online(OnlineOptions.standalone().localDefault().build());
         ops = new Operations(client);
         administration = new Administration(client);
-
-        reconnectTimeoutSupported = true;
-        if (client.version().lessThan(ServerVersion.VERSION_1_7_0)
-                || client.version().inRange(ServerVersion.VERSION_2_0_0, ServerVersion.VERSION_2_2_0)) {
-            reconnectTimeoutSupported = false;
-        }
     }
 
     @After
@@ -75,10 +66,8 @@ public class AddAuditLogTcpSyslogHandlerOnlineTest {
                 .truncate(false)
                 .messageTransfer(MessageTransferType.OCTET_COUNTING)
                 .port(9898)
-                .host("127.0.0.1");
-        if (reconnectTimeoutSupported) {
-            addTcpSyslogHandler.reconnectTimeout(-1);
-        }
+                .host("127.0.0.1")
+                .reconnectTimeout(-1);
         client.apply(addTcpSyslogHandler.build());
 
         assertTrue("The TCP syslog handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
@@ -93,9 +82,7 @@ public class AddAuditLogTcpSyslogHandlerOnlineTest {
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "host", "127.0.0.1");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "port", "9898");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "message-transfer", "OCTET_COUNTING");
-        if (reconnectTimeoutSupported) {
-            checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
-        }
+        checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
     }
 
     @Test
@@ -117,10 +104,8 @@ public class AddAuditLogTcpSyslogHandlerOnlineTest {
                 .host("localhost")
                 .port(9898)
                 .messageTransfer(MessageTransferType.NON_TRANSPARENT_FRAMING)
+                .reconnectTimeout(-1)
                 .replaceExisting();
-        if (reconnectTimeoutSupported) {
-            addTcpSyslogHandler2.reconnectTimeout(-1);
-        }
         client.apply(addTcpSyslogHandler2.build());
 
         assertTrue("The TCP syslog handler should be created", ops.exists(TEST_HANDLER_ADDRESS));
@@ -135,9 +120,7 @@ public class AddAuditLogTcpSyslogHandlerOnlineTest {
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "host", "localhost");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "port", "9898");
         checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "message-transfer", "NON_TRANSPARENT_FRAMING");
-        if (reconnectTimeoutSupported) {
-            checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
-        }
+        checkAttribute(TEST_HANDLER_PROTOCOL_ADDRESS, "reconnect-timeout", "-1");
     }
 
     @Test(expected = CommandFailedException.class)

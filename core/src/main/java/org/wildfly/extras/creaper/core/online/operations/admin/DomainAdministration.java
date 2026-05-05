@@ -1,6 +1,5 @@
 package org.wildfly.extras.creaper.core.online.operations.admin;
 
-import org.wildfly.extras.creaper.core.ServerVersion;
 import org.wildfly.extras.creaper.core.online.Constants;
 import org.wildfly.extras.creaper.core.online.ModelNodeResult;
 import org.wildfly.extras.creaper.core.online.OnlineManagementClient;
@@ -241,7 +240,6 @@ public final class DomainAdministration extends Administration {
      */
     public void shutdownGracefully(String host, int timeoutInSeconds) throws IOException, InterruptedException,
             TimeoutException {
-        client.version().assertAtLeast(ServerVersion.VERSION_3_0_0, "Graceful shutdown is only supported since WildFly 9");
         domainOps.shutdown(host, timeoutInSeconds);
     }
 
@@ -284,8 +282,6 @@ public final class DomainAdministration extends Administration {
 
     void shutdownServersGracefully(String host, List<String> servers, int timeoutInSeconds) throws IOException,
             InterruptedException, TimeoutException {
-        client.version().assertAtLeast(ServerVersion.VERSION_3_0_0, "Graceful shutdown is only supported since WildFly 9");
-
         Batch batch = new Batch();
         for (String server : servers) {
             batch.invoke(Constants.STOP, Address.host(host).and(Constants.SERVER_CONFIG, server),
